@@ -10,6 +10,7 @@ This site showcases selected projects and research.
 
 <img
   class="avatar"
-  src="{{ '/assets/img/hossain.jpg' | relative_url }}"
+  src="/assets/img/hossain.jpg"
   alt="Hossain Pazooki"
 >
+
