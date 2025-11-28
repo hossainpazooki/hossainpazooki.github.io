@@ -31,18 +31,15 @@
   flex: 1 1 260px;
 }
 
-.hero-photo img {
-  width: 180px;      /* or 150px if you prefer smaller */
-  height: auto;      /* keep the natural aspect ratio */
-  border-radius: 4px;/* small rounding; use 0px for sharp corners */
-  border: 2px solid #eaecef;
+.hero-photo {
+  flex: 0 0 210px;   /* gives some space for a bigger photo */
+  text-align: right;
 }
 
-
 .hero-photo img {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
+  width: 200px;      /* larger photo */
+  height: 200px;
+  border-radius: 50%;  /* keep it circular */
   object-fit: cover;
   border: 2px solid #eaecef;
 }
