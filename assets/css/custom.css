@@ -41,7 +41,7 @@
   height: 200px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: 50% 10%;  /* center horizontally, a bit higher vertically */
+  object-position: 50% 30%;  /* center horizontally, a bit higher vertically */
   border: 2px solid #eaecef;
 }
 
