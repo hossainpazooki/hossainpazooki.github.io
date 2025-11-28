@@ -6,13 +6,26 @@ title: Home
 <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}">
 
 <section class="hero">
-  <h1>Hi, I'm Hossain Pazooki</h1>
-  <p class="small">I build systems at the edge of networking, data science, and fintech.</p>
-  <p>
-    <strong>Featured:</strong> <a href="{{ '/rwa' | relative_url }}">RWA Compliance Navigator</a>
-    <span class="badge">New</span>
-  </p>
+  <div class="hero-header">
+    <img
+      class="avatar"
+      src="{{ '/assets/img/hossain.jpg' | relative_url }}"
+      alt="Hossain Pazooki"
+    >
+    <div>
+      <h1>Hi, I'm Hossain Pazooki</h1>
+      <p class="small">
+        I build systems at the edge of networking, data science, and fintech.
+      </p>
+      <p>
+        <strong>Featured:</strong>
+        <a href="{{ '/rwa' | relative_url }}">RWA Compliance Navigator</a>
+        <span class="badge">New</span>
+      </p>
+    </div>
+  </div>
 </section>
+
 
 ## Latest public repositories
 <div class="card-grid">
