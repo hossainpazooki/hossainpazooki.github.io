@@ -19,11 +19,12 @@ title: Home
       </p>
     </div>
     <div class="hero-photo">
-      <img
-        class="avatar"
-        src="{{ '/assets/img/hossain.jpg' | relative_url }}"
-        alt="Hossain Pazooki"
-      >
+    <img
+      class="avatar"
+      src="/assets/img/hossain.jpeg"
+      alt="Hossain Pazooki"
+    >
+
 
     </div>
   </div>
