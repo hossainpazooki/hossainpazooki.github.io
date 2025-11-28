@@ -6,13 +6,8 @@ title: Home
 <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}">
 
 <section class="hero">
-  <div class="hero-header">
-    <img
-      class="avatar"
-      src="{{ '/assets/img/hossain.jpg' | relative_url }}"
-      alt="Hossain Pazooki"
-    >
-    <div>
+  <div class="hero-inner">
+    <div class="hero-text">
       <h1>Hi, I'm Hossain Pazooki</h1>
       <p class="small">
         I build systems at the edge of networking, data science, and fintech.
@@ -23,8 +18,15 @@ title: Home
         <span class="badge">New</span>
       </p>
     </div>
+    <div class="hero-photo">
+      <img
+        src="{{ '/assets/img/hossain.jpg' | relative_url }}"
+        alt="Hossain Pazooki"
+      >
+    </div>
   </div>
 </section>
+
 
 
 ## Latest public repositories
