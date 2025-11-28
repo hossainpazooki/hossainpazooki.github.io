@@ -1,0 +1,25 @@
+title: "Hossain Pazooki"
+description: "Projects, research, and experiments"
+url: "https://hossainpazooki.github.io"
+baseurl: ""
+theme: null
+remote_theme: pages-themes/cayman@v0.2.0
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-github-metadata
+
+header_pages:
+  - projects.md
+  - rwa.md
+  - about.md
+  - resume.md
+
+# Helps jekyll-github-metadata resolve the owner/repo
+repository: "hossainpazooki/hossainpazooki.github.io"
+
+markdown: kramdown
+kramdown:
+  input: GFM
