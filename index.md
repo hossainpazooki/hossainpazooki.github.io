@@ -19,17 +19,19 @@ title: Home
       </p>
     </div>
     <div class="hero-photo">
-    <img
-      class="avatar"
-      src="/assets/img/hossain.jpeg"
-      alt="Hossain Pazooki"
-    >
-
-
+      <img
+        class="avatar"
+        src="/assets/img/hossain.jpeg"
+        alt="Hossain Pazooki"
+      >
     </div>
   </div>
 </section>
 
+## About
+
+### Summary
+Combine research rigor, fast learning, and reliable execution to turn complex rules into executable models, prototype workflow tools, and write clear, audit‑ready docs.
 
 
 ## Latest public repositories
