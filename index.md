@@ -59,7 +59,7 @@ Rule Modeling · Decision Tables · Exception/Precedence Policies · Algorithmic
    | sort: "pushed_at"
    | reverse %}
 {% for repo in repos limit: 6 %}
-  {% if repo.name != "hossainpazooki.github.io" and repo.name != "RWAs" %}
+  {% if repo.name != "hossainpazooki.github.io" and repo.name != "RWAs" and repo.name != "TCP-IP" %}
     <div class="card">
       <h3><a href="{{ repo.html_url }}">{{ repo.name }}</a></h3>
       <p>{{ repo.description }}</p>
