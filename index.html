@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0B0E13" />
+<title>Hossain Pazooki — AI/ML Engineer &amp; Tech Lead</title>
+<meta name="description" content="AI/ML Engineer & Tech Lead building agentic AI for regulated domains. The model interprets, a deterministic engine executes the consequential action, every decision carries an audit trace." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0B0E13;
+    --ink-2:#0E121A;
+    --panel:#11151D;
+    --panel-2:#141925;
+    --line:#1C2330;
+    --line-soft:#161C27;
+    --text:#E7EAF0;
+    --text-2:#B7BFCD;
+    --muted:#828C9D;
+    --gold:#E0A436;
+    --gold-dim:#7a5d22;
+    --ok:#5BB98C;
+    --warn:#E0A436;
+    --block:#D4654A;
+    --maxw:1080px;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--gold);color:var(--ink)}
+
+  :focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  /* ---------- eyebrow / mono labels ---------- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+    display:inline-flex;
+    align-items:center;
+    gap:.6em;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--gold);
+    display:inline-block;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,14,19,.72);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    height:60px;
+  }
+  .brand{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:.04em;
+    color:var(--text);
+    display:inline-flex;align-items:center;gap:.5em;
+  }
+  .brand .dot{color:var(--gold)}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--muted);
+    letter-spacing:.02em;
+    transition:color .18s ease;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.ext{color:var(--gold)}
+  .nav-links a.ext:hover{color:#f3c269}
+  @media(max-width:620px){
+    .nav-links a.hideable{display:none}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding:88px 0 64px}
+  .hero .eyebrow{margin-bottom:26px}
+  .name{
+    font-weight:700;
+    font-size:clamp(46px,9.5vw,104px);
+    line-height:.96;
+    letter-spacing:-.03em;
+    margin-bottom:30px;
+  }
+  .name .ln2{color:var(--text-2)}
+
+  /* the signature: assertion / gate panel */
+  .gate{
+    border:1px solid var(--line);
+    background:
+      linear-gradient(180deg,rgba(224,164,54,.05),rgba(224,164,54,0) 90px),
+      var(--panel);
+    border-radius:8px;
+    max-width:660px;
+    overflow:hidden;
+    box-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
+  }
+  .gate-bar{
+    border-bottom:1px solid var(--line);
+    padding:11px 18px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:rgba(255,255,255,.012);
+  }
+  .gate-bar .lights{display:inline-flex;gap:6px}
+  .gate-bar .lights i{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--line)}
+  .gate-bar .lights i:nth-child(1){background:#2a3543}
+  .gate-bar .lights i:nth-child(2){background:#2a3543}
+  .gate-bar .lights i:nth-child(3){background:var(--gold-dim)}
+  .gate-body{padding:24px 18px 18px}
+  .assert{
+    font-family:var(--mono);
+    font-size:clamp(14px,2.4vw,17px);
+    line-height:1.85;
+    color:var(--text);
+  }
+  .assert .k{color:var(--gold)}
+  .assert .c{color:var(--muted)}
+  .gate-foot{
+    margin-top:20px;
+    padding-top:16px;
+    border-top:1px dashed var(--line);
+    display:flex;align-items:center;justify-content:space-between;
+    gap:14px;flex-wrap:wrap;
+  }
+  .gate-foot .meta{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--muted);
+    letter-spacing:.02em;
+  }
+  .gate-foot .meta b{color:var(--text-2);font-weight:500}
+  .verdict{
+    font-family:var(--mono);
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:7px 13px;
+    border-radius:999px;
+    border:1px solid var(--gold-dim);
+    color:var(--gold);
+    background:rgba(224,164,54,.08);
+    display:inline-flex;align-items:center;gap:8px;
+    white-space:nowrap;
+    transition:color .3s ease, border-color .3s ease, background .3s ease;
+  }
+  .verdict .tick{
+    width:7px;height:7px;border-radius:50%;background:var(--gold);
+    box-shadow:0 0 0 0 rgba(224,164,54,.5);
+  }
+  .verdict[data-state="eval"]{
+    color:var(--muted);border-color:var(--line);background:transparent;
+  }
+  .verdict[data-state="eval"] .tick{background:var(--muted);animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:.25}}
+
+  .lede{
+    margin-top:34px;
+    max-width:620px;
+    font-size:clamp(16px,2.4vw,19px);
+    line-height:1.65;
+    color:var(--text-2);
+  }
+  .lede b{color:var(--text);font-weight:500}
+
+  .cta-row{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--mono);
+    font-size:13.5px;
+    letter-spacing:.02em;
+    padding:12px 20px;
+    border-radius:6px;
+    display:inline-flex;align-items:center;gap:9px;
+    transition:transform .15s ease, background .18s ease, border-color .18s ease;
+  }
+  .btn-primary{background:var(--gold);color:#10110d;font-weight:600}
+  .btn-primary:hover{transform:translateY(-1px);background:#edb24a}
+  .btn-ghost{border:1px solid var(--line);color:var(--text-2)}
+  .btn-ghost:hover{border-color:var(--muted);color:var(--text)}
+
+  /* ---------- section frame ---------- */
+  .section{padding:74px 0;border-top:1px solid var(--line-soft)}
+  .section-head{margin-bottom:42px}
+  .section-head h2{
+    margin-top:18px;
+    font-size:clamp(24px,4vw,34px);
+    font-weight:600;
+    letter-spacing:-.02em;
+    line-height:1.15;
+    max-width:680px;
+  }
+  .section-head p{
+    margin-top:14px;max-width:600px;color:var(--muted);font-size:15.5px;
+  }
+
+  /* ---------- capabilities ---------- */
+  .facts{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line-soft);
+    border:1px solid var(--line-soft);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .fact{background:var(--ink-2);padding:24px 22px;display:flex;flex-direction:column;gap:10px}
+  .fact .big{
+    font-family:var(--mono);
+    font-size:clamp(22px,3.4vw,30px);
+    font-weight:600;
+    color:var(--text);
+    letter-spacing:-.01em;
+    line-height:1.1;
+  }
+  .fact .big .u{color:var(--gold)}
+  .fact .cap{font-size:13px;color:var(--muted);line-height:1.5}
+  .fact .trace{
+    margin-top:auto;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.04em;
+    color:var(--gold-dim);
+    padding-top:12px;
+  }
+  @media(max-width:860px){.facts{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.facts{grid-template-columns:1fr}}
+
+  /* ---------- work ledger ---------- */
+  .ledger{border-top:1px solid var(--line)}
+  .rec{
+    display:grid;
+    grid-template-columns:160px 1fr;
+    gap:30px;
+    padding:30px 8px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    transition:background .18s ease;
+  }
+  .rec::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+    background:var(--gold);transform:scaleY(0);transform-origin:top;
+    transition:transform .22s ease;
+  }
+  .rec:hover{background:linear-gradient(90deg,rgba(224,164,54,.035),transparent 60%)}
+  .rec:hover::before{transform:scaleY(1)}
+  .rec .kind{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    padding-top:5px;
+  }
+  .rec .kind .tag{color:var(--gold)}
+  .rec h3{
+    font-size:21px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px;
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  }
+  .rec h3 .src{
+    font-family:var(--mono);font-size:12px;font-weight:400;color:var(--muted);
+    letter-spacing:.02em;
+  }
+  .rec p{color:var(--text-2);font-size:15px;max-width:620px;line-height:1.62}
+  .rec .detail{color:var(--muted);font-size:13.5px;margin-top:7px;max-width:620px}
+  .stack{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
+  .stack span{
+    font-family:var(--mono);font-size:11.5px;color:var(--text-2);
+    border:1px solid var(--line);border-radius:4px;padding:3px 9px;
+    background:rgba(255,255,255,.012);
+  }
+  @media(max-width:680px){
+    .rec{grid-template-columns:1fr;gap:12px;padding:26px 4px}
+    .rec .kind{padding-top:0}
+  }
+
+  /* ---------- skills ---------- */
+  .skills{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+  .skill-grp{background:var(--ink-2);padding:22px 22px}
+  .skill-grp h4{
+    font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+  }
+  .skill-grp ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .skill-grp li{
+    font-size:14.5px;color:var(--text-2);display:flex;gap:10px;align-items:baseline;
+  }
+  .skill-grp li::before{content:"—";color:var(--muted);font-family:var(--mono);font-size:12px}
+  @media(max-width:680px){.skills{grid-template-columns:1fr}}
+
+  /* ---------- career ---------- */
+  .timeline{border-left:1px solid var(--line);margin-left:6px}
+  .job{position:relative;padding:0 0 38px 30px}
+  .job:last-child{padding-bottom:0}
+  .job::before{
+    content:"";position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;
+    background:var(--ink);border:1px solid var(--muted);
+  }
+  .job.now::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 4px rgba(224,164,54,.14)}
+  .job .yr{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+  .job h3{font-size:18px;font-weight:600;margin-top:6px}
+  .job h3 .co{color:var(--gold);font-weight:500}
+  .job .where{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:3px}
+  .job ul{list-style:none;margin-top:13px;display:flex;flex-direction:column;gap:8px}
+  .job li{font-size:14.5px;color:var(--text-2);line-height:1.55;padding-left:18px;position:relative}
+  .job li::before{content:"›";position:absolute;left:0;color:var(--gold);font-family:var(--mono)}
+
+  .edu{
+    margin-top:34px;border:1px solid var(--line);border-radius:8px;
+    padding:20px 22px;background:var(--ink-2);
+    display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center;
+  }
+  .edu .d{font-size:15px}
+  .edu .d b{font-weight:600}
+  .edu .d span{color:var(--muted);font-size:13.5px}
+  .edu .yr{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:46px 0 60px}
+  .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end}
+  .foot .col-thesis{max-width:380px}
+  .foot .col-thesis .t{font-family:var(--mono);font-size:13px;color:var(--text-2);line-height:1.7}
+  .foot .col-thesis .t .k{color:var(--gold)}
+  .foot .copy{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:18px}
+  .foot-links{display:flex;flex-direction:column;gap:11px;text-align:right}
+  .foot-links a{
+    font-family:var(--mono);font-size:13.5px;color:var(--text-2);
+    display:inline-flex;gap:9px;justify-content:flex-end;align-items:center;
+    transition:color .16s ease;
+  }
+  .foot-links a:hover{color:var(--gold)}
+  .foot-links a .arr{color:var(--muted)}
+  @media(max-width:560px){
+    .foot{flex-direction:column;align-items:flex-start}
+    .foot-links{text-align:left}
+    .foot-links a{justify-content:flex-start}
+  }
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">HP<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="#work" class="hideable">work</a>
+      <a href="#skills" class="hideable">skills</a>
+      <a href="#career" class="hideable">career</a>
+      <a href="https://hossainpazooki.com" class="ext" target="_blank" rel="noopener">hossainpazooki.com&nbsp;↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">AI/ML Engineer &amp; Tech Lead — New York</span>
+      <h1 class="name">Hossain<br /><span class="ln2">Pazooki</span></h1>
+
+      <div class="gate" role="img" aria-label="Architectural thesis: the model interprets, a deterministic engine executes the consequential action, every decision carries an audit trace. Gate verified.">
+        <div class="gate-bar">
+          <span>integrity_gate.assert</span>
+          <span class="lights"><i></i><i></i><i></i></span>
+        </div>
+        <div class="gate-body">
+          <div class="assert" aria-hidden="true">
+            <span class="c">// the conviction every system inherits</span><br />
+            <span class="k">interpret</span> &nbsp;→ the model reads intent, never the final word<br />
+            <span class="k">execute</span> &nbsp;&nbsp;→ a deterministic engine takes the consequential action<br />
+            <span class="k">attest</span> &nbsp;&nbsp;&nbsp;→ every decision carries an audit trace
+          </div>
+          <div class="gate-foot">
+            <span class="meta">policy:&nbsp;<b>fail-closed on unevaluable</b></span>
+            <span class="verdict" data-state="eval" id="verdict"><span class="tick"></span><span id="verdict-text">evaluating…</span></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="lede">I build agentic AI for regulated domains — healthcare claims, cross-border compliance, financial risk — <b>where a wrong answer has a real cost and "it usually works" isn't good enough.</b></p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#work">View selected work →</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="section" id="proof">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">What the work proves</span>
+        <h2>Correctness you can audit — not confidence you have to trust.</h2>
+      </div>
+      <div class="facts reveal">
+        <div class="fact">
+          <div class="big"><span class="u">34%</span> fewer</div>
+          <div class="cap">claim denials, after a production failure exposed systematic LLM over-confidence and I rebuilt the decision gate.</div>
+          <div class="trace">trace · orawell · healthcare RCM</div>
+        </div>
+        <div class="fact">
+          <div class="big">5-tier<br />gate</div>
+          <div class="cap">verification layers (T0 schema → T4 cross-rule) decide what the model is <em>allowed</em> to act on.</div>
+          <div class="trace">trace · atlas · consistency engine</div>
+        </div>
+        <div class="fact">
+          <div class="big">fail-<span class="u">closed</span></div>
+          <div class="cap">on unevaluable, not just on failure. Absence of valid proof is a denial, never a default-pass.</div>
+          <div class="trace">trace · intent-layer · authorization</div>
+        </div>
+        <div class="fact">
+          <div class="big"><span class="u">458+</span> tests</div>
+          <div class="cap">strict mypy, CI/CD discipline, content-addressed artifacts. The audit trail is the build.</div>
+          <div class="trace">trace · ci · implemented ≠ asserted</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Selected work</span>
+        <h2>A portfolio of one conviction.</h2>
+        <p>Two planes — policy and runtime — and the verification tooling that keeps them honest. AI interprets; deterministic engines execute; every decision leaves a trace.</p>
+      </div>
+
+      <div class="ledger">
+        <article class="rec reveal">
+          <div class="kind"><span class="tag">policy plane</span><br />regulatory engine</div>
+          <div>
+            <h3>ATLAS <span class="src">featured</span></h3>
+            <p>A regulatory rule-execution engine. Compiles regulation into content-addressed, dual-signature-verified artifacts; a Rust kernel executes them deterministically and fails closed on a verification miss.</p>
+            <div class="detail">5-tier consistency engine (T0 schema · T1 lexical · T2 embeddings · T3 NLI · T4 cross-rule) — every tier with a heuristic fallback, every verdict reproducible.</div>
+            <div class="stack"><span>Rust</span><span>ke-runtime</span><span>PyO3</span><span>BLAKE3</span><span>Temporal</span></div>
+          </div>
+        </article>
+
+        <article class="rec reveal">
+          <div class="kind"><span class="tag">runtime plane</span><br />compliance navigator</div>
+          <div>
+            <h3>COMPASS</h3>
+            <p>Cross-border digital-asset compliance, evaluated in real time. Resolves jurisdiction conflicts across MiCA, FCA, and the GENIUS Act, and moves a position through explicit verdict states: compliant → conditional → blocked.</p>
+            <div class="detail">The runtime counterpart to ATLAS — same conviction, opposite plane. Policy is authored once; the runtime decides under it, transparently.</div>
+            <div class="stack"><span>FastAPI</span><span>PydanticAI</span><span>React</span><span>TypeScript</span><span>EKS</span></div>
+          </div>
+        </article>
+
+        <article class="rec reveal">
+          <div class="kind"><span class="tag">open source</span><br />verification toolkit</div>
+          <div>
+            <h3>rigor <span class="src">github.com/hossainpazooki</span></h3>
+            <p>A Claude Code plugin that holds agents to their evidence: blocks unverified claims, refuses silent git-history rewrites, and enforces a hard line between what's implemented and what's merely planned.</p>
+            <div class="detail">Built under its own rules — the plugin's construction is gated by the same discipline it ships.</div>
+            <div class="stack"><span>Node</span><span>hooks</span><span>skills</span><span>git-guard</span></div>
+          </div>
+        </article>
+
+        <article class="rec reveal">
+          <div class="kind"><span class="tag">authorization kernel</span><br />domain-agnostic</div>
+          <div>
+            <h3>Intent Layer</h3>
+            <p>A fitness-gate: an irreversible action is authorized only by a reproducible, measured demonstration that it meets declared criteria. No valid demonstration means denial — by construction.</p>
+            <div class="detail">Two defining properties: fail-closed on unevaluable, and byte-reproducible provenance of the authorization decision itself.</div>
+            <div class="stack"><span>Rust</span><span>content-addressed</span><span>provenance</span></div>
+          </div>
+        </article>
+
+        <article class="rec reveal">
+          <div class="kind"><span class="tag">applied ML</span><br />multi-omics QA</div>
+          <div>
+            <h3>CLUE</h3>
+            <p>Upstream label correction for multi-omics cohorts. Detects mislabeled samples through cross-omics concordance scoring, before bad labels poison everything downstream.</p>
+            <div class="detail">Run with a strict line between a verified experiment and a verified result — a self-injected score that's arithmetically real but experimentally self-referential is not a result.</div>
+            <div class="stack"><span>Python</span><span>scikit-learn</span><span>CPTAC/TCGA</span></div>
+          </div>
+        </article>
+
+        <article class="rec reveal">
+          <div class="kind"><span class="tag">risk ML</span><br />lending</div>
+          <div>
+            <h3>CLDD</h3>
+            <p>A lending default-detection system — quantitative risk modeling in the same auditable mold: every score traceable to the inputs and the model version that produced it.</p>
+            <div class="stack"><span>Python</span><span>VaR / CVaR</span><span>stress testing</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section" id="skills">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Technical skills</span>
+        <h2>Across the stack, end to end.</h2>
+      </div>
+      <div class="skills reveal">
+        <div class="skill-grp">
+          <h4>Agentic AI &amp; LLMs</h4>
+          <ul>
+            <li>Multi-agent orchestration (PydanticAI)</li>
+            <li>Hybrid RAG — BM25 + vector retrieval</li>
+            <li>Evaluation infra: precision / recall / hallucination tracking</li>
+            <li>Confidence calibration &amp; verification gates</li>
+          </ul>
+        </div>
+        <div class="skill-grp">
+          <h4>Languages</h4>
+          <ul>
+            <li>Python — FastAPI, async, strict typing</li>
+            <li>Rust — deterministic execution kernels</li>
+            <li>Go — services</li>
+            <li>TypeScript / React — frontends</li>
+          </ul>
+        </div>
+        <div class="skill-grp">
+          <h4>ML &amp; quantitative</h4>
+          <ul>
+            <li>Applied ML &amp; model serving / drift monitoring</li>
+            <li>Genomics &amp; multi-omics pipelines</li>
+            <li>Quant risk — VaR / CVaR, stress testing</li>
+            <li>Econometrics &amp; causal inference</li>
+          </ul>
+        </div>
+        <div class="skill-grp">
+          <h4>Infrastructure</h4>
+          <ul>
+            <li>Kubernetes / EKS, Terraform IaC</li>
+            <li>Temporal durable workflows</li>
+            <li>PostgreSQL / TimescaleDB</li>
+            <li>CI/CD, content-addressed artifacts, audit pipelines</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER -->
+  <section class="section" id="career">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Career</span>
+        <h2>Where the conviction was earned.</h2>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="job now">
+          <div class="yr">2024 — 2026 · Full-time</div>
+          <h3>AI/ML Tech Lead — <span class="co">Orawell Group</span></h3>
+          <div class="where">New York, NY · healthcare revenue-cycle management</div>
+          <ul>
+            <li>Led a team building agentic compliance pipelines — PydanticAI agents orchestrating claim review, denial prediction, and appeal generation with human-in-the-loop checkpoints.</li>
+            <li>Designed a 5-tier confidence-calibration system after a production failure exposed systematic over-confidence in LLM decisions — reduced claim denial rates by 34%.</li>
+            <li>Built a hybrid retrieval pipeline (BM25 + vector) over regulatory and payer-policy documents, with a structured eval framework tracking precision, recall, and hallucination rate.</li>
+            <li>Owned the infrastructure: FastAPI, PostgreSQL, Kubernetes on EKS, Terraform IaC, CI/CD with strict mypy enforcement and 458+ tests.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="yr">2022 — 2024 · Full-time</div>
+          <h3>Co-Founder — <span class="co">Engager Inc.</span></h3>
+          <div class="where">New York, NY</div>
+          <ul>
+            <li>Built the platform from the first commit to production — establishing architecture, CI/CD, and engineering practice.</li>
+            <li>Designed and shipped the core backend and frontend (React, Python).</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="yr">2020 — 2022 · Full-time</div>
+          <h3>Founding ML Engineer — <span class="co">3DEO</span></h3>
+          <div class="where">Los Angeles, CA · metal additive-manufacturing R&amp;D</div>
+          <ul>
+            <li>Built the ML platform: a unified data layer linking process parameters, characterization, and production outcomes by part ID across sintering logs, mechanical-test data, and QA.</li>
+            <li>Shipped model-serving hooks that scored new production runs automatically, plus drift monitoring against characterization ground truth.</li>
+            <li>Translated materials-team objectives — yield, faster qualification — into tractable ML KPIs with non-technical domain experts.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="yr">2019 — 2020 · Full-time</div>
+          <h3>Data Engineer — <span class="co">Penske Media Corporation</span></h3>
+          <div class="where">Marketing analytics &amp; revenue</div>
+          <ul>
+            <li>Built marketing-analytics models and reporting infrastructure supporting ad sales and audience monetization across PMC's portfolio.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="yr">2017 — 2019</div>
+          <h3>Econometrics Research — <span class="co">Institute for New Economic Thinking</span></h3>
+          <div class="where">Sovereign-wealth-fund investment &amp; capital-allocation models</div>
+        </div>
+      </div>
+
+      <div class="edu reveal">
+        <div class="d"><b>University of Southern California</b><br /><span>B.S. Electrical Engineering · B.A. Economics · 2-yr econometrics research at INET</span></div>
+        <div class="yr">2013 — 2019</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div class="col-thesis">
+      <div class="t"><span class="k">interpret</span> → <span class="k">execute</span> → <span class="k">attest</span>.<br />AI you can prove, not just trust.</div>
+      <div class="copy">© 2026 Hossain Pazooki · New York</div>
+    </div>
+    <div class="foot-links">
+      <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="arr">↗</span></a>
+      <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
+      <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+      <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // The signature moment: the integrity gate evaluates, then verifies. Once, on load.
+  (function(){
+    var v = document.getElementById('verdict');
+    var t = document.getElementById('verdict-text');
+    if(!v || !t) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function verify(){
+      v.setAttribute('data-state','ok');
+      t.textContent = 'verified';
+      v.setAttribute('aria-label','verified');
+    }
+    if(reduce){ verify(); }
+    else { setTimeout(verify, 850); }
+  })();
+
+  // Scroll reveal
+  (function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var items = document.querySelectorAll('.reveal');
+    if(reduce || !('IntersectionObserver' in window)){
+      items.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+    items.forEach(function(el){ io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
