@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0B0E13" />
+<title>rigor — verification &amp; discipline for Claude Code</title>
+<meta name="description" content="rigor is a Claude Code plugin that stops you from trusting an agent's self-reported success. Before 'tests pass', 'deployed', or 'done' is believed, rigor makes the agent try to break the claim." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0B0E13;
+    --ink-2:#0E121A;
+    --panel:#11151D;
+    --panel-2:#141925;
+    --line:#1C2330;
+    --line-soft:#161C27;
+    --text:#E7EAF0;
+    --text-2:#B7BFCD;
+    --muted:#828C9D;
+    --gold:#E0A436;
+    --gold-dim:#7a5d22;
+    --ok:#5BB98C;
+    --ok-dim:#2c5a44;
+    --block:#D4654A;
+    --block-dim:#6a3327;
+    --maxw:1080px;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--gold);color:var(--ink)}
+
+  :focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  code, .cmd{font-family:var(--mono)}
+  p code, li code, td code{
+    font-size:.9em;color:var(--gold);
+    background:rgba(224,164,54,.07);
+    border:1px solid rgba(224,164,54,.14);
+    border-radius:4px;padding:1px 6px;white-space:nowrap;
+  }
+
+  /* ---------- eyebrow ---------- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);
+    display:inline-flex;align-items:center;gap:.6em;
+  }
+  .eyebrow::before{
+    content:"";width:18px;height:1px;background:var(--gold);display:inline-block;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,14,19,.72);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{
+    font-family:var(--mono);font-weight:600;font-size:15px;
+    letter-spacing:.04em;color:var(--text);
+    display:inline-flex;align-items:center;gap:.5em;
+  }
+  .brand .dot{color:var(--gold)}
+  .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
+  .nav-links{display:flex;gap:24px;align-items:center}
+  .nav-links a{
+    font-family:var(--mono);font-size:13px;color:var(--muted);
+    letter-spacing:.02em;transition:color .18s ease;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.ext{color:var(--gold)}
+  .nav-links a.ext:hover{color:#f3c269}
+  @media(max-width:760px){.nav-links a.hideable{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:84px 0 64px}
+  .hero .eyebrow{margin-bottom:24px}
+  .title{
+    font-weight:700;
+    font-size:clamp(40px,7.6vw,84px);
+    line-height:1.02;letter-spacing:-.03em;
+    margin-bottom:26px;max-width:900px;
+  }
+  .title .ln2{color:var(--text-2)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}
+  .chip{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+    color:var(--text-2);border:1px solid var(--line);border-radius:999px;
+    padding:5px 12px;background:rgba(255,255,255,.012);
+  }
+  .chip b{color:var(--gold);font-weight:600}
+  .lede{
+    max-width:640px;font-size:clamp(16px,2.4vw,19px);
+    line-height:1.65;color:var(--text-2);
+  }
+  .lede b{color:var(--text);font-weight:500}
+  .cta-row{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;
+    padding:12px 20px;border-radius:6px;
+    display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+    transition:transform .15s ease, background .18s ease, border-color .18s ease;
+  }
+  .btn-primary{background:var(--gold);color:#10110d;font-weight:600;border:0}
+  .btn-primary:hover{transform:translateY(-1px);background:#edb24a}
+  .btn-ghost{border:1px solid var(--line);color:var(--text-2);background:transparent}
+  .btn-ghost:hover{border-color:var(--muted);color:var(--text)}
+
+  /* ---------- terminal / gate panels ---------- */
+  .gate{
+    border:1px solid var(--line);
+    background:
+      linear-gradient(180deg,rgba(224,164,54,.05),rgba(224,164,54,0) 90px),
+      var(--panel);
+    border-radius:8px;overflow:hidden;
+    box-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
+  }
+  .gate-bar{
+    border-bottom:1px solid var(--line);
+    padding:11px 18px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    font-family:var(--mono);font-size:11.5px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    background:rgba(255,255,255,.012);
+  }
+  .gate-bar .lights{display:inline-flex;gap:6px}
+  .gate-bar .lights i{width:8px;height:8px;border-radius:50%;display:inline-block;background:#2a3543}
+  .gate-bar .lights i:nth-child(3){background:var(--gold-dim)}
+  .gate-body{padding:20px 18px 18px}
+
+  /* hero refute demo */
+  .refute-demo{max-width:680px;margin-top:36px}
+  .rd-row{
+    font-family:var(--mono);
+    font-size:clamp(12px,2.1vw,14px);
+    line-height:1.6;
+    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+    padding:9px 2px;
+  }
+  .rd-row + .rd-row{border-top:1px dashed var(--line-soft)}
+  .rd-claim{color:var(--text)}
+  .rd-claim .q{color:var(--gold)}
+  .rd-why{color:var(--muted);font-size:.86em}
+  .rd-verdict{
+    margin-left:auto;
+    font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    padding:3px 10px;border-radius:999px;border:1px solid var(--line);
+    color:var(--muted);white-space:nowrap;
+    transition:color .3s ease,border-color .3s ease,background .3s ease;
+  }
+  .rd-row[data-state="eval"] .rd-verdict{animation:blink 1s steps(2) infinite}
+  .rd-row[data-state="ok"] .rd-verdict{color:var(--ok);border-color:var(--ok-dim);background:rgba(91,185,140,.07)}
+  .rd-row[data-state="bad"] .rd-verdict{color:var(--block);border-color:var(--block-dim);background:rgba(212,101,74,.07)}
+  .rd-row[data-state="eval"] .rd-why{visibility:hidden}
+  @keyframes blink{50%{opacity:.3}}
+
+  /* install / code block */
+  .codeblock{max-width:680px}
+  .codeblock pre{
+    padding:18px;overflow-x:auto;
+    font-family:var(--mono);font-size:13.5px;line-height:1.8;color:var(--text-2);
+  }
+  .codeblock pre .p{color:var(--gold)}
+  .codeblock pre .c{color:var(--muted)}
+  .copy-btn{
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);border:1px solid var(--line);border-radius:5px;
+    background:transparent;padding:4px 10px;cursor:pointer;
+    transition:color .15s ease,border-color .15s ease;
+  }
+  .copy-btn:hover{color:var(--text);border-color:var(--muted)}
+  .copy-btn.done{color:var(--ok);border-color:var(--ok-dim)}
+
+  /* ---------- sections ---------- */
+  .section{padding:74px 0;border-top:1px solid var(--line-soft)}
+  .section-head{margin-bottom:40px}
+  .section-head h2{
+    margin-top:18px;
+    font-size:clamp(24px,4vw,34px);
+    font-weight:600;letter-spacing:-.02em;line-height:1.15;max-width:720px;
+  }
+  .section-head p{margin-top:14px;max-width:640px;color:var(--muted);font-size:15.5px}
+  .section-head p b{color:var(--text-2);font-weight:500}
+
+  /* ---------- lie cards ---------- */
+  .lies{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+  .lie{background:var(--ink-2);padding:24px 22px;display:flex;flex-direction:column;gap:10px}
+  .lie .sig{
+    font-family:var(--mono);font-size:13px;color:var(--ok);
+  }
+  .lie .sig::before{content:"✓ ";}
+  .lie .truth{font-size:14px;color:var(--text-2);line-height:1.6}
+  .lie .truth b{color:var(--block);font-weight:500}
+  @media(max-width:760px){.lies{grid-template-columns:1fr}}
+  .defs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;margin-top:26px}
+  .def{background:var(--ink-2);padding:22px}
+  .def h4{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .def p{font-size:14.5px;color:var(--text-2);line-height:1.6}
+  @media(max-width:680px){.defs{grid-template-columns:1fr}}
+
+  /* ---------- flow diagrams ---------- */
+  .flow{
+    display:flex;align-items:center;gap:0;flex-wrap:wrap;
+    font-family:var(--mono);
+  }
+  .fnode{
+    border:1px solid var(--line);border-radius:8px;
+    background:var(--ink-2);padding:14px 16px;
+    font-size:12.5px;line-height:1.55;color:var(--text-2);
+    flex:1 1 180px;min-width:170px;
+  }
+  .fnode .t{color:var(--text);font-weight:600;display:block;margin-bottom:3px}
+  .fnode.gold{border-color:var(--gold-dim);background:linear-gradient(180deg,rgba(224,164,54,.06),rgba(224,164,54,.015)),var(--ink-2)}
+  .fnode.gold .t{color:var(--gold)}
+  .fnode.ok{border-color:var(--ok-dim)}
+  .fnode.ok .t{color:var(--ok)}
+  .fnode.bad{border-color:var(--block-dim)}
+  .fnode.bad .t{color:var(--block)}
+  .farrow{
+    align-self:center;color:var(--muted);font-size:14px;
+    padding:0 12px;user-select:none;flex:0 0 auto;
+  }
+  .farrow .lbl{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+  .fsplit{display:flex;flex-direction:column;gap:10px;flex:1 1 200px;min-width:180px}
+  @media(max-width:820px){
+    .flow{flex-direction:column;align-items:stretch}
+    .fnode{flex:0 0 auto;min-width:0}
+    .fsplit{flex:0 0 auto;min-width:0}
+    .farrow{transform:rotate(90deg);padding:8px 0;align-self:flex-start;margin-left:24px}
+  }
+
+  /* vertical step chain (fan-out) */
+  .chain{border-left:1px solid var(--line);margin-left:6px;margin-top:8px}
+  .step{position:relative;padding:0 0 26px 30px}
+  .step:last-child{padding-bottom:0}
+  .step::before{
+    content:"";position:absolute;left:-5px;top:8px;width:9px;height:9px;border-radius:50%;
+    background:var(--ink);border:1px solid var(--muted);
+  }
+  .step.gold::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 4px rgba(224,164,54,.14)}
+  .step.halt::before{background:var(--block);border-color:var(--block);box-shadow:0 0 0 4px rgba(212,101,74,.14)}
+  .step h4{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text)}
+  .step h4 .n{color:var(--muted);font-weight:400;font-size:12px;margin-right:8px}
+  .step p{font-size:14px;color:var(--text-2);max-width:620px;margin-top:5px;line-height:1.6}
+  .step p b{color:var(--gold);font-weight:500}
+  .step.halt h4{color:var(--block)}
+
+  /* ---------- picker ---------- */
+  .pills{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}
+  .pill{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.01em;
+    color:var(--text-2);border:1px solid var(--line);border-radius:999px;
+    background:rgba(255,255,255,.012);padding:8px 15px;cursor:pointer;
+    transition:color .15s ease,border-color .15s ease,background .15s ease;
+  }
+  .pill:hover{color:var(--text);border-color:var(--muted)}
+  .pill.active{color:var(--gold);border-color:var(--gold-dim);background:rgba(224,164,54,.08)}
+  .reco{display:none}
+  .reco.show{display:block}
+  .reco .gate-body{display:flex;flex-direction:column;gap:14px}
+  .reco-cmd{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  }
+  .reco-cmd code{
+    font-family:var(--mono);font-size:clamp(15px,2.6vw,19px);font-weight:600;color:var(--gold);
+  }
+  .reco-move{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em}
+  .reco-move b{color:var(--text-2);font-weight:500}
+  .reco-what{font-size:14.5px;color:var(--text-2);line-height:1.65;max-width:640px}
+  .reco-link{font-family:var(--mono);font-size:12.5px;color:var(--gold)}
+  .reco-link:hover{color:#f3c269}
+  .picker-hint{font-family:var(--mono);font-size:12.5px;color:var(--muted);padding:14px 2px}
+
+  .hooks-note{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;margin-top:26px}
+  .hook{background:var(--ink-2);padding:20px 22px}
+  .hook h4{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--gold);margin-bottom:8px}
+  .hook h4 .auto{color:var(--muted);font-weight:400;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-left:8px}
+  .hook p{font-size:14px;color:var(--text-2);line-height:1.6}
+  @media(max-width:680px){.hooks-note{grid-template-columns:1fr}}
+
+  /* ---------- facts strip ---------- */
+  .facts{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+    background:var(--line-soft);border:1px solid var(--line-soft);
+    border-radius:8px;overflow:hidden;
+  }
+  .fact{background:var(--ink-2);padding:22px 20px;display:flex;flex-direction:column;gap:8px}
+  .fact .big{
+    font-family:var(--mono);font-size:clamp(22px,3.2vw,28px);font-weight:600;
+    color:var(--text);letter-spacing:-.01em;line-height:1.1;
+  }
+  .fact .big .u{color:var(--gold)}
+  .fact .cap{font-size:12.5px;color:var(--muted);line-height:1.5}
+  @media(max-width:900px){.facts{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.facts{grid-template-columns:1fr 1fr}}
+
+  /* ---------- code vs judgment ---------- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+  .half{background:var(--ink-2);padding:26px 24px}
+  .half h3{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+  .half.code h3{color:var(--ok)}
+  .half.judge h3{color:var(--gold)}
+  .half .sub{font-size:13.5px;color:var(--muted);margin-bottom:16px}
+  .half ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .half li{font-size:14px;color:var(--text-2);display:flex;gap:10px;align-items:baseline;line-height:1.55}
+  .half.code li::before{content:"$";color:var(--ok);font-family:var(--mono);font-size:12px}
+  .half.judge li::before{content:"—";color:var(--muted);font-family:var(--mono);font-size:12px}
+  @media(max-width:760px){.split{grid-template-columns:1fr}}
+  .adr-note{
+    margin-top:22px;border:1px solid var(--block-dim);border-radius:8px;
+    background:linear-gradient(180deg,rgba(212,101,74,.05),rgba(212,101,74,.01)),var(--ink-2);
+    padding:18px 22px;font-size:14px;color:var(--text-2);line-height:1.65;max-width:100%;
+  }
+  .adr-note b{color:var(--block);font-weight:600;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+
+  /* ---------- dispatch ---------- */
+  .answers{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;margin-top:26px}
+  .answer{background:var(--ink-2);padding:22px}
+  .answer h4{font-size:15px;font-weight:600;color:var(--text);margin-bottom:8px}
+  .answer p{font-size:13.5px;color:var(--text-2);line-height:1.6}
+  @media(max-width:820px){.answers{grid-template-columns:1fr}}
+
+  /* ---------- data-eng cards ---------- */
+  .dcards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+  .dcard{background:var(--ink-2);padding:22px}
+  .dcard h4{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--gold);margin-bottom:8px}
+  .dcard .fail{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+  .dcard p{font-size:14px;color:var(--text-2);line-height:1.6}
+  .dcard p b{color:var(--text);font-weight:500}
+  @media(max-width:680px){.dcards{grid-template-columns:1fr}}
+
+  /* ---------- audit simulator ---------- */
+  .sim{display:grid;grid-template-columns:1.4fr 1fr;gap:26px;align-items:start}
+  @media(max-width:860px){.sim{grid-template-columns:1fr}}
+  .check-list{display:flex;flex-direction:column;gap:2px}
+  .check-item{
+    display:flex;gap:13px;align-items:baseline;
+    padding:11px 12px;border-radius:6px;cursor:pointer;
+    transition:background .15s ease;
+  }
+  .check-item:hover{background:rgba(255,255,255,.02)}
+  .check-item input{
+    accent-color:var(--gold);width:15px;height:15px;flex:0 0 auto;
+    transform:translateY(2px);cursor:pointer;
+  }
+  .check-item .lab{font-size:14px;color:var(--text-2);line-height:1.5}
+  .check-item .lab b{color:var(--text);font-weight:500}
+  .check-item .w{font-family:var(--mono);font-size:11px;color:var(--gold-dim);margin-left:auto;flex:0 0 auto}
+  .verdict-panel{position:sticky;top:84px}
+  .verdict-body{padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+  .v-state{
+    font-family:var(--mono);font-size:clamp(24px,3.4vw,32px);font-weight:600;letter-spacing:.04em;
+    transition:color .3s ease;
+  }
+  .v-state[data-v="rejected"]{color:var(--block)}
+  .v-state[data-v="provisional"]{color:var(--gold)}
+  .v-state[data-v="trusted"]{color:var(--ok)}
+  .v-score{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .v-score b{color:var(--text-2);font-weight:500}
+  .v-assess{font-size:14px;color:var(--text-2);line-height:1.6}
+  .v-next{font-family:var(--mono);font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px;line-height:1.7}
+  .v-next code{color:var(--gold);background:none;border:0;padding:0}
+  .v-flag{
+    display:none;font-family:var(--mono);font-size:12px;line-height:1.6;
+    color:var(--block);border:1px solid var(--block-dim);border-radius:6px;
+    background:rgba(212,101,74,.06);padding:10px 12px;
+  }
+  .v-flag.show{display:block}
+
+  /* ---------- status table ---------- */
+  .table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:640px;background:var(--ink-2)}
+  th,td{
+    text-align:left;padding:13px 16px;font-size:13.5px;color:var(--text-2);
+    border-bottom:1px solid var(--line-soft);vertical-align:top;line-height:1.55;
+  }
+  th{
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;background:rgba(255,255,255,.012);
+  }
+  tr:last-child td{border-bottom:0}
+  td .comp{font-family:var(--mono);font-size:12.5px;color:var(--text)}
+  .pill-status{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 9px;border-radius:999px;white-space:nowrap;
+  }
+  .pill-status.settled{color:var(--ok);border:1px solid var(--ok-dim);background:rgba(91,185,140,.07)}
+  .pill-status.scoped{color:var(--gold);border:1px solid var(--gold-dim);background:rgba(224,164,54,.07)}
+  .pill-status.prov{color:var(--muted);border:1px solid var(--line);background:transparent}
+  .misfire-note{
+    margin-top:22px;font-size:14.5px;color:var(--text-2);line-height:1.65;max-width:680px;
+  }
+  .misfire-note b{color:var(--text);font-weight:500}
+
+  /* deep links */
+  .deep{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;margin-top:30px}
+  .deep a{background:var(--ink-2);padding:20px 22px;display:flex;flex-direction:column;gap:7px;transition:background .18s ease}
+  .deep a:hover{background:var(--panel-2)}
+  .deep h4{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text)}
+  .deep h4 .arr{color:var(--gold)}
+  .deep p{font-size:13px;color:var(--muted);line-height:1.55}
+  @media(max-width:760px){.deep{grid-template-columns:1fr}}
+
+  /* ---------- CTA ---------- */
+  .cta{padding:84px 0;border-top:1px solid var(--line-soft);text-align:left}
+  .cta h2{font-size:clamp(26px,4.4vw,38px);font-weight:600;letter-spacing:-.02em;max-width:700px}
+  .cta p{margin-top:14px;color:var(--muted);font-size:15.5px;max-width:600px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:46px 0 60px}
+  .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end}
+  .foot .col-thesis{max-width:400px}
+  .foot .col-thesis .t{font-family:var(--mono);font-size:13px;color:var(--text-2);line-height:1.7}
+  .foot .col-thesis .t .k{color:var(--gold)}
+  .foot .copy{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:18px}
+  .foot-links{display:flex;flex-direction:column;gap:11px;text-align:right}
+  .foot-links a{
+    font-family:var(--mono);font-size:13.5px;color:var(--text-2);
+    display:inline-flex;gap:9px;justify-content:flex-end;align-items:center;
+    transition:color .16s ease;
+  }
+  .foot-links a:hover{color:var(--gold)}
+  .foot-links a .arr{color:var(--muted)}
+  @media(max-width:560px){
+    .foot{flex-direction:column;align-items:flex-start}
+    .foot-links{text-align:left}
+    .foot-links a{justify-content:flex-start}
+  }
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top"><span class="up">hp /</span>rigor<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="#problem" class="hideable">problem</a>
+      <a href="#commands" class="hideable">commands</a>
+      <a href="#dispatch" class="hideable">dispatch</a>
+      <a href="#audit" class="hideable">audit</a>
+      <a href="#status" class="hideable">status</a>
+      <a href="https://github.com/hossainpazooki/rigor" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">A Claude Code plugin — verification &amp; discipline</span>
+      <h1 class="title">Don't trust the claim.<br /><span class="ln2">Try to break it.</span></h1>
+
+      <div class="chips" aria-label="At a glance">
+        <span class="chip">open source</span>
+        <span class="chip"><b>13</b> skills</span>
+        <span class="chip"><b>7</b> commands</span>
+        <span class="chip"><b>5</b> agents</span>
+        <span class="chip"><b>2</b> hooks</span>
+        <span class="chip"><b>6</b> mechanical gates</span>
+        <span class="chip">built under its own rules</span>
+      </div>
+
+      <p class="lede">rigor stops you from trusting an agent's self-reported success. Before <b>"tests pass"</b>, <b>"deployed"</b>, or <b>"done"</b> is believed, it makes the agent try to break the claim — and blocks it from writing your git history while it's at it.</p>
+
+      <div class="gate refute-demo" role="img" aria-label="Demo: three agent claims run through refute. 'Tests pass' is rejected because the test exercised a bypass fixture. 'Recomputed from raw source' is trusted. 'Deploy succeeded' is rejected because the probe was vacuous.">
+        <div class="gate-bar">
+          <span>refute.run — three claims, attacked</span>
+          <span class="lights"><i></i><i></i><i></i></span>
+        </div>
+        <div class="gate-body" aria-hidden="true">
+          <div class="rd-row" data-state="eval">
+            <span class="rd-claim cmd"><span class="q">"tests pass"</span></span>
+            <span class="rd-why">traced: the green run exercised a bypass fixture</span>
+            <span class="rd-verdict">refuting…</span>
+          </div>
+          <div class="rd-row" data-state="eval">
+            <span class="rd-claim cmd"><span class="q">"34% fewer"</span></span>
+            <span class="rd-why">recomputed from the raw source — survives</span>
+            <span class="rd-verdict">refuting…</span>
+          </div>
+          <div class="rd-row" data-state="eval">
+            <span class="rd-claim cmd"><span class="q">"deploy succeeded"</span></span>
+            <span class="rd-why">probe passes with the deploy absent — vacuous</span>
+            <span class="rd-verdict">refuting…</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gate codeblock" style="margin-top:18px">
+        <div class="gate-bar">
+          <span>claude — install</span>
+          <button class="copy-btn" type="button" data-copy="/plugin marketplace add hossainpazooki/rigor
+/plugin install rigor@rigor">copy</button>
+        </div>
+        <pre><span class="c"># in a Claude Code session</span>
+<span class="p">/plugin</span> marketplace add hossainpazooki/rigor
+<span class="p">/plugin</span> install rigor@rigor</pre>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#commands">Find your command →</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/rigor" target="_blank" rel="noopener">View on GitHub ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/rigor#readme" target="_blank" rel="noopener">Read the README ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="section" id="problem">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The problem it exists for</span>
+        <h2>The correct-shaped lie.</h2>
+        <p>Agent output often <b>looks</b> finished: a green test run, a confident summary, an exit code 0. Output with the form of correctness but not the evidence — every component of rigor is one defense against it.</p>
+      </div>
+
+      <div class="lies reveal">
+        <div class="lie">
+          <div class="sig">tests pass — 42 passed, 0 failed</div>
+          <div class="truth">The test exercised a <b>bypass fixture</b> — a stub path the production flow never takes. The green run validated nothing.</div>
+        </div>
+        <div class="lie">
+          <div class="sig">metric confirmed: 34% improvement</div>
+          <div class="truth">The number was <b>restated from memory</b>, not recomputed from the source. It's arithmetic-shaped, not arithmetic.</div>
+        </div>
+        <div class="lie">
+          <div class="sig">feature implemented, build green</div>
+          <div class="truth">It compiles — but it was <b>never wired in</b>. Present in the codebase, unreachable from the product.</div>
+        </div>
+      </div>
+
+      <div class="section-head reveal" style="margin-top:64px;margin-bottom:28px">
+        <span class="eyebrow">The core move</span>
+        <h2>refute — don't accept a claim, attack it.</h2>
+        <p>Everything else in the plugin is this one move specialized onto a bigger unit: a question, a build, a deploy's aftermath, a dataset.</p>
+      </div>
+
+      <div class="flow reveal" role="img" aria-label="Flow: a load-bearing claim goes into refute, which tries to break it. If it survives it is trusted and safe to write down; if it breaks it is rejected and must be fixed first.">
+        <div class="fnode">
+          <span class="t">a load-bearing claim</span>
+          a number · a "tests pass" · a "done"
+        </div>
+        <span class="farrow">→</span>
+        <div class="fnode gold">
+          <span class="t">refute</span>
+          try to break it
+        </div>
+        <span class="farrow">→</span>
+        <div class="fsplit">
+          <div class="fnode ok">
+            <span class="t">survives → trusted</span>
+            safe to write down
+          </div>
+          <div class="fnode bad">
+            <span class="t">breaks → rejected</span>
+            fix first
+          </div>
+        </div>
+      </div>
+
+      <div class="defs reveal">
+        <div class="def">
+          <h4>load-bearing claim</h4>
+          <p>A claim a decision rests on. "Tests pass" before a merge is load-bearing; a passing lint note is not. rigor spends its skepticism where a wrong claim is expensive.</p>
+        </div>
+        <div class="def">
+          <h4>negative control</h4>
+          <p>A check that must <em>fail</em> when the thing it checks for is absent. A probe that would pass either way proves nothing — rigor calls that a <strong>vacuous probe</strong> and refuses to credit it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PICKER -->
+  <section class="section" id="commands">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Which command, when</span>
+        <h2>What are you about to trust?</h2>
+        <p>Pick the thing you're about to believe. rigor has one command for it — and a specific way of attacking it.</p>
+      </div>
+
+      <div class="pills reveal" id="symptom-pills" role="group" aria-label="Pick what you are about to trust">
+        <button class="pill" type="button" data-symptom="claim">a "done" / "tests pass"</button>
+        <button class="pill" type="button" data-symptom="status">a status doc or README</button>
+        <button class="pill" type="button" data-symptom="question">a question too big for one pass</button>
+        <button class="pill" type="button" data-symptom="build">a build too big for one pass</button>
+        <button class="pill" type="button" data-symptom="deploy">a deploy that "succeeded"</button>
+        <button class="pill" type="button" data-symptom="handoff">the next session picking this up</button>
+        <button class="pill" type="button" data-symptom="pickup">a handoff brief you've been handed</button>
+      </div>
+
+      <div class="gate reco reveal" id="reco-card" aria-live="polite">
+        <div class="gate-bar">
+          <span>recommendation</span>
+          <button class="copy-btn" type="button" id="reco-copy">copy command</button>
+        </div>
+        <div class="gate-body">
+          <div class="reco-cmd">
+            <code id="reco-cmd">/rigor:verify-claim</code>
+            <span class="reco-move">move: <b id="reco-move">refute</b></span>
+          </div>
+          <p class="reco-what" id="reco-what"></p>
+          <a class="reco-link" id="reco-link" href="#" target="_blank" rel="noopener">source on GitHub ↗</a>
+        </div>
+      </div>
+      <p class="picker-hint" id="picker-hint">↑ pick a symptom to see the exact command and what it actually does.</p>
+
+      <div class="hooks-note reveal">
+        <div class="hook">
+          <h4>git-guard <span class="auto">runs unasked</span></h4>
+          <p>Blocks agent-initiated <code>git commit</code> / <code>push</code> / history rewrites; the agent outputs the command for <em>you</em> to run instead. Per-repo override: <code>RIGOR_GIT_ALLOW=1</code>.</p>
+        </div>
+        <div class="hook">
+          <h4>session-start <span class="auto">runs unasked</span></h4>
+          <p>Injects a one-paragraph toolkit pointer into every session, so the discipline is present before the first claim is made.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CODE VS JUDGMENT -->
+  <section class="section" id="discipline">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">What's code and what's judgment</span>
+        <h2>rigor is not an automated validator for your project.</h2>
+        <p>Worth being precise about, because it kills the most likely misread. Some of rigor executes deterministically; the rest is discipline the agent applies inside <b>your</b> repo, against <b>your</b> gates.</p>
+      </div>
+
+      <div class="split reveal">
+        <div class="half code">
+          <h3>Executes as code</h3>
+          <p class="sub">2 hooks + 6 check scripts, all under <code>node --test</code></p>
+          <ul>
+            <li><code>git-guard</code> &amp; <code>session-start</code> hooks</li>
+            <li><code>check-surface-scrub</code> — no project fingerprints leak into shipped examples</li>
+            <li><code>check-citation-fidelity</code> — every cited identifier/quote exists in its named source</li>
+            <li><code>check-effect-probe</code> — effect credited only if the probe passed <em>and</em> the negative control failed</li>
+            <li><code>check-fanout</code> — a multi-agent workflow carries a contract, integration step, and verify phase</li>
+            <li><code>check-dispatch</code> — every verifier dispatch logged its stakes; floors held; no silent downgrades</li>
+            <li><code>check-tier-sync</code> — agent frontmatter agrees with <code>config/models.json</code></li>
+          </ul>
+        </div>
+        <div class="half judge">
+          <h3>Applied as judgment</h3>
+          <p class="sub">13 skills · 7 commands · 5 agents</p>
+          <ul>
+            <li><code>refute</code> — the core move, specialized per unit</li>
+            <li><code>implemented-vs-planned</code> — built / in-progress / planned, tagged</li>
+            <li><code>fanout-build</code> &amp; <code>fanout-recon-synthesize</code> — multi-agent work with gates</li>
+            <li><code>verify-the-effect</code> — probe the state an action left behind</li>
+            <li><code>judgment-dispatch</code> — which model tier runs each verifier</li>
+            <li><code>gate-discipline</code>, <code>orchestrate</code>, <code>pick-up</code> + the data-engineering four</li>
+            <li>skeptic, prober, integration &amp; cartographer agents</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="adr-note reveal">
+        <b>Deliberately not shipped</b> — a turnkey pipeline validator. A shipped checker that certified pipelines whose schema it can't know would itself be a correct-shaped lie (<a href="https://github.com/hossainpazooki/rigor/blob/main/docs/adr/0002-dataeng-is-judgment-not-a-universal-gate.md" target="_blank" rel="noopener" style="color:var(--gold)">ADR-0002 ↗</a>).
+      </div>
+    </div>
+  </section>
+
+  <!-- DISPATCH -->
+  <section class="section" id="dispatch">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Model-tier dispatch</span>
+        <h2>The expensive model, exactly where it counts.</h2>
+        <p>A check is only as strong as the model running it — and premium tokens are exactly what you don't want to spend on a lint note. Verifiers route across a premium <b>judgment tier</b> and a <b>cheap tier</b> via an explicit stakes rubric the orchestrator must apply <b>and log</b> before every dispatch. Builders never get the judgment tier: it's never spent writing the code it will later have to judge.</p>
+      </div>
+
+      <div class="flow reveal" role="img" aria-label="Flow: a claim to verify enters the stakes rubric. High stakes or floored nodes route to the judgment tier; medium stakes get a judgment-tier primary skeptic plus cheap-tier extra votes; low stakes route to the cheap tier. All paths write a per-run verdict log, which check-dispatch validates fail-closed: clean means verdicts trusted, violation means the run is not trusted.">
+        <div class="fnode">
+          <span class="t">claim to verify</span>
+        </div>
+        <span class="farrow">→</span>
+        <div class="fnode gold">
+          <span class="t">stakes rubric</span>
+          irreversibility · blast radius · downstream decisions · refutation history
+        </div>
+        <span class="farrow">→</span>
+        <div class="fsplit">
+          <div class="fnode gold"><span class="t">high / floored</span>judgment tier — skeptic-verifier · effect-prober</div>
+          <div class="fnode"><span class="t">medium</span>judgment-tier primary + cheap-tier extra votes</div>
+          <div class="fnode"><span class="t">low</span>cheap tier — skeptic-verifier-fast</div>
+        </div>
+        <span class="farrow">→</span>
+        <div class="fsplit">
+          <div class="fnode"><span class="t">verdict log</span>criteria hit · tier · requested vs answered model</div>
+          <div class="fnode ok"><span class="t">check-dispatch · clean</span>verdicts trusted — you still re-run one check yourself</div>
+          <div class="fnode bad"><span class="t">check-dispatch · violation</span>run not trusted</div>
+        </div>
+      </div>
+
+      <div class="section-head reveal" style="margin-top:56px;margin-bottom:0">
+        <p>The hazard is rigor's own self-report problem inside its dispatch: <b>stakes are inferred by the same agent whose claims are being checked</b> — an agent that under-rates stakes buys itself cheap verification exactly where the strong skeptic matters most. Three mechanical answers:</p>
+      </div>
+
+      <div class="answers reveal">
+        <div class="answer">
+          <h4>The inference is itself a logged, refutable claim.</h4>
+          <p>Every dispatch records which rubric criteria fired; <code>check-dispatch</code> fails closed on an unlogged one — and a high-stakes marker paired with a cheap-tier verifier is flagged even when the declared stakes say "low".</p>
+        </div>
+        <div class="answer">
+          <h4>Floors are beyond inference's reach.</h4>
+          <p>Floored nodes — the effect-verdict cross-check, the pre-publish honesty check — always get the judgment tier, listed in <code>config/models.json</code> and enforced by the gate, not by prose.</p>
+        </div>
+        <div class="answer">
+          <h4>Downgrades are never silent.</h4>
+          <p>The verdict logs the requested <em>and</em> the answering model; a substitution without <code>downgraded: true</code> fails the gate. Model churn is a config edit, not a prose hunt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FANOUT WORKED EXAMPLE -->
+  <section class="section" id="fanout">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Worked example</span>
+        <h2>A fan-out build, with rigor loaded.</h2>
+        <p>A feature too big for one pass. Every step exists because a specific failure happens without it.</p>
+      </div>
+
+      <div class="chain reveal">
+        <div class="step halt">
+          <h4><span class="n">00</span>Spike — does the riskiest unknown build?</h4>
+          <p>If no: <b>HALT</b> — fix the base first. No stage advances past a red gate.</p>
+        </div>
+        <div class="step gold">
+          <h4><span class="n">01</span>Contract — one shared source of truth</h4>
+          <p>Exact interfaces plus a file→owner map. The contract is what keeps parallel agents from drifting apart; <b>disjoint file ownership</b> is what keeps them from colliding.</p>
+        </div>
+        <div class="step">
+          <h4><span class="n">02</span>Scaffold — shared files compile as stubs</h4>
+          <p>Then builders fan out in parallel: agent per file, each on the build tier.</p>
+        </div>
+        <div class="step gold">
+          <h4><span class="n">03</span>Integration gate — the real gate, run to green</h4>
+          <p>The integration-runner returns <b>verbatim output, not a self-report</b>. Evidence instead of a summary.</p>
+        </div>
+        <div class="step gold">
+          <h4><span class="n">04</span>Skeptic pass — refute the claim, not the gate</h4>
+          <p>Is the feature wired and reachable, or merely present? Skeptics are dispatched at the tier the stakes rubric earns. This catches the green-gate-but-unwired case.</p>
+        </div>
+        <div class="step">
+          <h4><span class="n">05</span>You re-run the load-bearing gate yourself</h4>
+          <p>A workflow saying "done" is <b>a claim, not a result</b> — exactly the kind this plugin refuses to trust.</p>
+        </div>
+        <div class="step">
+          <h4><span class="n">06</span>git-guard — the agent emits commit commands, the human runs them</h4>
+          <p>Your git history stays yours, by construction.</p>
+        </div>
+        <div class="step">
+          <h4><span class="n">07</span>Shipped irreversibly? verify-the-effect</h4>
+          <p>Probe the state the action left behind, paired with a <b>negative control</b> — never the action's own exit log.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATA ENGINEERING -->
+  <section class="section" id="data">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Data-engineering layer</span>
+        <h2>The same move, aimed at data.</h2>
+        <p>Each skill names a failure that leaves the pipeline green while the data is wrong.</p>
+      </div>
+
+      <div class="dcards reveal">
+        <div class="dcard">
+          <h4>data-quality-fail-closed</h4>
+          <span class="fail">failure: unevaluable coerced into pass</span>
+          <p>A data-quality check has <b>three</b> outcomes: pass, fail, and <b>unevaluable</b> — the check itself couldn't run. Fail-closed means unevaluable <b>halts</b> the pipeline instead of being silently coerced.</p>
+        </div>
+        <div class="dcard">
+          <h4>no-lookahead</h4>
+          <span class="fail">failure: the leak appears only on corrections</span>
+          <p>In point-in-time data, no row may depend on information timestamped after that row's moment. Tested with a <b>restatement</b> — append-only test data can pass while the same code leaks on late corrections.</p>
+        </div>
+        <div class="dcard">
+          <h4>idempotent-restatement</h4>
+          <span class="fail">failure: run twice, count twice</span>
+          <p>Running the pipeline twice must not double-count; same-key records resolve by an explicit, <b>tested</b> tiebreak. Proven by running twice and diffing, not asserted.</p>
+        </div>
+        <div class="dcard">
+          <h4>lineage-replay</h4>
+          <span class="fail">failure: "reproducible" is remembered, not checked</span>
+          <p>"We can reproduce this dataset" is only true if the replay is re-executed and diffed; every published batch carries a <b>content-addressed identity</b> so "same input" is checkable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIT SIMULATOR -->
+  <section class="section" id="audit">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Play with it</span>
+        <h2>Audit a claim before you trust it.</h2>
+        <p>Think of the last "done" an agent handed you. Check what actually happened — the verdict updates live, the way rigor's discipline would call it.</p>
+      </div>
+
+      <div class="sim reveal">
+        <div class="check-list" id="check-list">
+          <label class="check-item"><input type="checkbox" data-w="18" data-sig="recomputed" />
+            <span class="lab"><b>Recomputed from the raw source</b> — the number wasn't restated from memory or a summary.</span><span class="w">+18</span></label>
+          <label class="check-item"><input type="checkbox" data-w="16" data-sig="gate" />
+            <span class="lab"><b>The real gate was re-run</b> — and its output captured verbatim, not paraphrased.</span><span class="w">+16</span></label>
+          <label class="check-item"><input type="checkbox" data-w="14" data-sig="tracepath" />
+            <span class="lab"><b>Test path traced</b> — the executed path is the production path, no bypass fixture.</span><span class="w">+14</span></label>
+          <label class="check-item"><input type="checkbox" data-w="10" data-sig="probe" />
+            <span class="lab"><b>The effect was probed</b> — in the state the action left behind, not its exit log.</span><span class="w">+10</span></label>
+          <label class="check-item"><input type="checkbox" data-w="12" data-sig="negctl" />
+            <span class="lab"><b>A negative control failed</b> — the probe demonstrably fails when the thing is absent.</span><span class="w">+12</span></label>
+          <label class="check-item"><input type="checkbox" data-w="8" data-sig="citations" />
+            <span class="lab"><b>Citations checked</b> — every cited source actually says what's claimed.</span><span class="w">+8</span></label>
+          <label class="check-item"><input type="checkbox" data-w="6" data-sig="ivp" />
+            <span class="lab"><b>Built vs planned labeled</b> — no proposal reads as finished work.</span><span class="w">+6</span></label>
+          <label class="check-item"><input type="checkbox" data-w="10" data-sig="skeptic" />
+            <span class="lab"><b>An independent skeptic attacked it</b> — dispatched at the tier the stakes earn, and logged.</span><span class="w">+10</span></label>
+          <label class="check-item"><input type="checkbox" data-w="6" data-sig="human" />
+            <span class="lab"><b>A human re-ran the load-bearing gate</b> — the agent's green is not the record.</span><span class="w">+6</span></label>
+        </div>
+
+        <div class="gate verdict-panel">
+          <div class="gate-bar">
+            <span>claim.audit</span>
+            <span class="lights"><i></i><i></i><i></i></span>
+          </div>
+          <div class="verdict-body">
+            <div class="v-state" id="v-state" data-v="rejected">REJECTED</div>
+            <div class="v-score">evidence score <b id="v-score">0</b> / 100</div>
+            <div class="v-flag" id="v-flag">⚠ vacuous probe — the probe passed but no negative control failed. A check that passes either way proves nothing; probe credit withheld.</div>
+            <p class="v-assess" id="v-assess">Nothing verified. Whatever this claim looks like, right now it's a correct-shaped lie candidate.</p>
+            <div class="v-next" id="v-next">next → <code>/rigor:verify-claim</code> — recompute from the source and re-run the real gate before believing anything.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATUS -->
+  <section class="section" id="status">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Engineering, not hype</span>
+        <h2>Status: what's proven, what isn't.</h2>
+        <p>rigor applies its own standard to itself. Every component is <b>provisional</b> until the promotion ledger records it surviving ≥2 independent domains. "Settled (scoped)" means settled for the named scope only — unproven reach kept visible.</p>
+      </div>
+
+      <div class="table-scroll reveal">
+        <table>
+          <thead>
+            <tr><th>Component</th><th>Kind</th><th>Status</th><th>The honest caveat</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="comp">refute</span></td><td>skill</td>
+              <td><span class="pill-status scoped">settled · scoped</span></td>
+              <td>2 domains, for numeric provenance + citation fidelity; reach over semantic / design / omission defects unproven.</td>
+            </tr>
+            <tr>
+              <td><span class="comp">skeptic-verifier</span></td><td>agent</td>
+              <td><span class="pill-status settled">settled</span></td>
+              <td><b>1 logged misfire</b> — 2/4 false refutations on its one independent fan-out domain, caught only by the orchestrator's own re-run.</td>
+            </tr>
+            <tr>
+              <td><span class="comp">fanout-build</span></td><td>skill</td>
+              <td><span class="pill-status scoped">settled · scoped</span></td>
+              <td>2 independent domains end-to-end; same operator both times, second domain smaller with an unstressed verify phase.</td>
+            </tr>
+            <tr>
+              <td><span class="comp">effect-prober</span></td><td>agent</td>
+              <td><span class="pill-status scoped">settled · scoped</span></td>
+              <td>3 non-vacuous probes, self-verified; no independent oracle, no genuine live irreversible action yet.</td>
+            </tr>
+            <tr>
+              <td><span class="comp">judgment-dispatch</span></td><td>skill</td>
+              <td><span class="pill-status prov">provisional</span></td>
+              <td>Pin mechanism live-verified with a non-vacuous probe; the rubric hasn't survived an independent domain yet.</td>
+            </tr>
+            <tr>
+              <td><span class="comp">data-eng skills ×4</span></td><td>skills</td>
+              <td><span class="pill-status prov">provisional</span></td>
+              <td>No independent data-eng domain survived yet.</td>
+            </tr>
+            <tr>
+              <td><span class="comp">everything else</span></td><td>commands · hooks · gates</td>
+              <td><span class="pill-status prov">provisional</span></td>
+              <td>Each with its logged limits — e.g. <span class="comp">check-citation-fidelity</span> is insufficient for numeric provenance.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="misfire-note reveal">The misfires stay in the table on purpose — <b>a verification toolkit that hides its own false refutations would be its own counterexample.</b> Full dated entries live in the promotion ledger.</p>
+
+      <div class="deep reveal">
+        <a href="https://github.com/hossainpazooki/rigor/blob/main/docs/specs/2026-06-25-rigor-plugin-design.md" target="_blank" rel="noopener">
+          <h4>Design rationale <span class="arr">↗</span></h4>
+          <p>Why each component exists, and what it deliberately refuses to be.</p>
+        </a>
+        <a href="https://github.com/hossainpazooki/rigor/tree/main/docs/feedback" target="_blank" rel="noopener">
+          <h4>Promotion ledger <span class="arr">↗</span></h4>
+          <p>Dated feedback entries — the source of truth the status table tracks, misfires included.</p>
+        </a>
+        <a href="https://github.com/hossainpazooki/rigor/blob/main/docs/audits/2026-06-25-spine-audit.md" target="_blank" rel="noopener">
+          <h4>Self-audit <span class="arr">↗</span></h4>
+          <p>37 findings against its own spine, fixes independently verified.</p>
+        </a>
+        <a href="https://github.com/hossainpazooki/rigor/blob/main/docs/comparisons/2026-07-03-plugin-landscape-scorecard.md" target="_blank" rel="noopener">
+          <h4>Landscape scorecard <span class="arr">↗</span></h4>
+          <p>Measured comparison vs. superpowers, SuperML, and Anthropic's Data plugin.</p>
+        </a>
+        <a href="https://github.com/hossainpazooki/rigor/tree/main/docs/adr" target="_blank" rel="noopener">
+          <h4>ADRs <span class="arr">↗</span></h4>
+          <p>Including why there is no universal data validator (ADR-0002).</p>
+        </a>
+        <a href="https://github.com/hossainpazooki/rigor/tree/main/tests" target="_blank" rel="noopener">
+          <h4>Tests &amp; gates <span class="arr">↗</span></h4>
+          <p><code>node --test</code> — hooks + all 6 check scripts, auto-discovered.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="wrap reveal">
+      <span class="eyebrow">Install</span>
+      <h2 style="margin-top:18px">Stop believing green checkmarks.</h2>
+      <p>Two commands in a Claude Code session. The discipline loads before the first claim is made.</p>
+      <div class="gate codeblock" style="margin-top:26px">
+        <div class="gate-bar">
+          <span>claude — install</span>
+          <button class="copy-btn" type="button" data-copy="/plugin marketplace add hossainpazooki/rigor
+/plugin install rigor@rigor">copy</button>
+        </div>
+        <pre><span class="p">/plugin</span> marketplace add hossainpazooki/rigor
+<span class="p">/plugin</span> install rigor@rigor</pre>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/hossainpazooki/rigor" target="_blank" rel="noopener">Star on GitHub ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/rigor#readme" target="_blank" rel="noopener">Read the README ↗</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div class="col-thesis">
+      <div class="t"><span class="k">refute</span> → the one move underneath.<br />Verification you can prove, not confidence you have to trust.</div>
+      <div class="copy">© 2026 Hossain Pazooki · New York</div>
+    </div>
+    <div class="foot-links">
+      <a href="https://github.com/hossainpazooki/rigor" target="_blank" rel="noopener">github.com/hossainpazooki/rigor <span class="arr">↗</span></a>
+      <a href="https://hossainpazooki.github.io">hossainpazooki.github.io <span class="arr">←</span></a>
+      <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
+      <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Hero: three claims resolve sequentially — two rejected, one trusted.
+  (function(){
+    var rows = document.querySelectorAll('.refute-demo .rd-row');
+    if(!rows.length) return;
+    var outcomes = [
+      {state:'bad', text:'rejected'},
+      {state:'ok',  text:'trusted'},
+      {state:'bad', text:'rejected — vacuous'}
+    ];
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function settle(i){
+      rows[i].setAttribute('data-state', outcomes[i].state);
+      rows[i].querySelector('.rd-verdict').textContent = outcomes[i].text;
+    }
+    if(reduce){
+      outcomes.forEach(function(_, i){ settle(i); });
+      return;
+    }
+    outcomes.forEach(function(_, i){
+      setTimeout(function(){ settle(i); }, 700 + i * 650);
+    });
+  })();
+
+  // Copy buttons
+  (function(){
+    document.querySelectorAll('.copy-btn[data-copy]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        navigator.clipboard.writeText(btn.getAttribute('data-copy')).then(function(){
+          btn.textContent = 'copied';
+          btn.classList.add('done');
+          setTimeout(function(){ btn.textContent = 'copy'; btn.classList.remove('done'); }, 1300);
+        });
+      });
+    });
+  })();
+
+  // Which-command picker
+  (function(){
+    var BASE = 'https://github.com/hossainpazooki/rigor/blob/main/';
+    var RECO = {
+      claim: {
+        cmd:'/rigor:verify-claim', move:'refute',
+        what:'Recompute the number from the raw source. Re-run the real gate and keep the verbatim output. Dispatch skeptic subagents at the tier the stakes earn. Check that cited sources actually say what’s claimed.',
+        link: BASE + 'commands/verify-claim.md'
+      },
+      status: {
+        cmd:'/rigor:honesty-check', move:'implemented-vs-planned',
+        what:'Every claim in the doc gets tagged built / in-progress / planned, so proposals can’t read as finished work. The pre-publish pass is a floored node — it always gets the judgment tier.',
+        link: BASE + 'commands/honesty-check.md'
+      },
+      question: {
+        cmd:'/rigor:recon', move:'fanout-recon-synthesize',
+        what:'Split the question into disjoint parallel research, refute the findings, and synthesize only the survivors. What no skeptic could break is what gets written down.',
+        link: BASE + 'commands/recon.md'
+      },
+      build: {
+        cmd:'/rigor:fanout', move:'fanout-build',
+        what:'Contract-first multi-agent build: spike the riskiest unknown, fix exact interfaces and a file→owner map, fan out builders on disjoint files, run the real integration gate to green, then send skeptics after the claim — wired and reachable, or merely present?',
+        link: BASE + 'commands/fanout.md'
+      },
+      deploy: {
+        cmd:'/rigor:verify-effect', move:'verify-the-effect',
+        what:'Probe the state the action left behind, paired with a negative control that must fail when the effect is absent — never the action’s own exit log. A probe that passes either way is vacuous and earns nothing.',
+        link: BASE + 'commands/verify-effect.md'
+      },
+      handoff: {
+        cmd:'/rigor:handoff', move:'handoff brief',
+        what:'Emits a fixed “read this first” brief: state, locked decisions, invariants — every built claim carrying a re-verify line for the pick-up at the other end.',
+        link: BASE + 'commands/handoff.md'
+      },
+      pickup: {
+        cmd:'/rigor:pickup', move:'pick-up',
+        what:'Refute the brief’s load-bearing claims against the current repo, detect drift since it was written, re-run the entry gate — and build only on what verified now.',
+        link: BASE + 'commands/pickup.md'
+      }
+    };
+    var pills = document.querySelectorAll('#symptom-pills .pill');
+    var card = document.getElementById('reco-card');
+    var hint = document.getElementById('picker-hint');
+    var elCmd = document.getElementById('reco-cmd');
+    var elMove = document.getElementById('reco-move');
+    var elWhat = document.getElementById('reco-what');
+    var elLink = document.getElementById('reco-link');
+    var copyBtn = document.getElementById('reco-copy');
+    var current = null;
+
+    pills.forEach(function(pill){
+      pill.addEventListener('click', function(){
+        var key = pill.getAttribute('data-symptom');
+        var r = RECO[key];
+        if(!r) return;
+        current = r;
+        pills.forEach(function(p){ p.classList.remove('active'); });
+        pill.classList.add('active');
+        elCmd.textContent = r.cmd;
+        elMove.textContent = r.move;
+        elWhat.textContent = r.what;
+        elLink.href = r.link;
+        card.classList.add('show');
+        hint.style.display = 'none';
+      });
+    });
+
+    copyBtn.addEventListener('click', function(){
+      if(!current) return;
+      navigator.clipboard.writeText(current.cmd).then(function(){
+        copyBtn.textContent = 'copied';
+        copyBtn.classList.add('done');
+        setTimeout(function(){ copyBtn.textContent = 'copy command'; copyBtn.classList.remove('done'); }, 1300);
+      });
+    });
+  })();
+
+  // Claim-audit simulator
+  (function(){
+    var boxes = document.querySelectorAll('#check-list input[type="checkbox"]');
+    var elState = document.getElementById('v-state');
+    var elScore = document.getElementById('v-score');
+    var elAssess = document.getElementById('v-assess');
+    var elNext = document.getElementById('v-next');
+    var elFlag = document.getElementById('v-flag');
+    if(!boxes.length) return;
+
+    function compute(){
+      var score = 0;
+      var sigs = {};
+      boxes.forEach(function(b){
+        sigs[b.getAttribute('data-sig')] = b.checked;
+        if(b.checked) score += parseInt(b.getAttribute('data-w'), 10);
+      });
+
+      // The vacuous-probe rule: a probe with no negative control earns nothing.
+      var vacuous = sigs.probe && !sigs.negctl;
+      if(vacuous) score -= 10;
+      elFlag.classList.toggle('show', vacuous);
+
+      score = Math.max(0, Math.min(100, score));
+
+      var v, assess, next;
+      if(score >= 75){
+        v = 'TRUSTED';
+        assess = 'The claim survived a real attack: recomputation, a traced path, and controls that fail when they should. Safe to write down — as of now.';
+        next = 'next → hand it off honestly: <code>/rigor:handoff</code> emits the brief with a re-verify line, so the next session attacks it again before building on it.';
+      } else if(score >= 40){
+        v = 'PROVISIONAL';
+        assess = 'Partly verified — some evidence is real, but a decision resting on this claim is still resting partly on its shape.';
+        next = 'next → close the biggest gap: <code>/rigor:verify-claim</code> to recompute and re-run the gate, or <code>/rigor:verify-effect</code> if what’s untested is an action’s aftermath.';
+      } else {
+        v = 'REJECTED';
+        assess = 'Nothing here would survive a skeptic. Whatever this claim looks like, right now it’s a correct-shaped lie candidate.';
+        next = 'next → <code>/rigor:verify-claim</code> — recompute from the source and re-run the real gate before believing anything.';
+      }
+      if(vacuous && v === 'TRUSTED'){
+        v = 'PROVISIONAL';
+        assess = 'Strong evidence elsewhere, but the effect probe is vacuous — it would pass with the effect absent. Pair it with a negative control before trusting the aftermath.';
+      }
+
+      elState.textContent = v;
+      elState.setAttribute('data-v', v.toLowerCase());
+      elScore.textContent = String(score);
+      elAssess.textContent = assess;
+      elNext.innerHTML = next;
+    }
+
+    boxes.forEach(function(b){ b.addEventListener('change', compute); });
+    compute();
+  })();
+
+  // Scroll reveal
+  (function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var items = document.querySelectorAll('.reveal');
+    if(reduce || !('IntersectionObserver' in window)){
+      items.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+    items.forEach(function(el){ io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
