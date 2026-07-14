@@ -106,17 +106,125 @@
   .nav-links a.ext:hover{color:#f3c269}
   @media(max-width:760px){.nav-links a.hideable{display:none}}
 
+  /* ---------- intro / the effect ---------- */
+  .intro{padding:76px 0 70px}
+  .intro-grid{
+    display:grid;grid-template-columns:1.05fr .95fr;
+    gap:56px;align-items:center;
+  }
+  .intro .eyebrow{margin-bottom:22px}
+  .intro h1{
+    font-weight:700;
+    font-size:clamp(30px,4.8vw,46px);
+    line-height:1.08;letter-spacing:-.025em;
+    max-width:560px;
+  }
+  .intro h1 .dim{color:var(--text-2)}
+  .intro .lede{margin-top:22px;font-size:clamp(15.5px,2.2vw,17.5px);max-width:540px}
+
+  .fx{margin-top:28px;display:flex;flex-direction:column;gap:10px;max-width:540px}
+  .fx-row{
+    border:1px solid var(--line);border-radius:8px;
+    padding:12px 16px;display:flex;gap:14px;align-items:baseline;
+    background:var(--ink-2);
+  }
+  .fx-row .w{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
+    padding-top:1px;
+  }
+  .fx-row.without .w{color:var(--block)}
+  .fx-row.with{border-color:var(--gold-dim);background:linear-gradient(90deg,rgba(224,164,54,.05),var(--ink-2) 70%)}
+  .fx-row.with .w{color:var(--gold)}
+  .fx-row p{font-size:13.5px;color:var(--text-2);line-height:1.55}
+  .fx-row p b{color:var(--text);font-weight:600}
+
+  /* the loop visual */
+  .loop-visual{
+    position:relative;
+    width:min(400px,100%);
+    aspect-ratio:1/1;
+    margin:0 auto;
+  }
+  .loop-visual .ring{
+    position:absolute;inset:40px;
+    border:1px dashed var(--line);
+    border-radius:50%;
+  }
+  .loop-visual .ring-glow{
+    position:absolute;inset:40px;border-radius:50%;
+    box-shadow:0 0 60px -20px rgba(224,164,54,.15) inset;
+    pointer-events:none;
+  }
+  .loop-visual .orbit{
+    position:absolute;inset:40px;
+    animation:orbit 9s linear infinite;
+  }
+  .loop-visual .orbit .sat{
+    position:absolute;top:-5px;left:50%;margin-left:-5px;
+    width:10px;height:10px;border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 14px rgba(224,164,54,.85), 0 0 3px rgba(224,164,54,1);
+  }
+  @keyframes orbit{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){
+    .loop-visual .orbit{animation:none}
+  }
+  .lnode{
+    position:absolute;z-index:2;
+    font-family:var(--mono);font-size:10.5px;font-weight:500;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:999px;padding:6px 12px;white-space:nowrap;
+  }
+  .lnode b{color:var(--gold);font-weight:600;margin-right:5px}
+  .lnode.n1{top:40px;left:50%;transform:translate(-50%,-50%)}
+  .lnode.n2{top:50%;right:40px;transform:translate(50%,-50%)}
+  .lnode.n3{bottom:40px;left:50%;transform:translate(-50%,50%)}
+  .lnode.n4{top:50%;left:40px;transform:translate(-50%,-50%)}
+
+  .readout{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:8px;text-align:center;padding:0 88px;
+  }
+  .readout .ro-label{
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .readout .ro-val{
+    font-family:var(--mono);font-size:13px;font-weight:600;
+    color:var(--text);letter-spacing:.01em;line-height:1.5;
+    transition:color .25s ease;
+  }
+  .readout .ro-state{
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;
+    padding:4px 12px;border-radius:999px;
+    border:1px solid var(--line);color:var(--muted);
+    transition:color .25s ease,border-color .25s ease,background .25s ease;
+  }
+  .readout[data-state="pass"] .ro-state{color:var(--ok);border-color:var(--ok-dim);background:rgba(91,185,140,.07)}
+  .readout[data-state="fail"] .ro-state{color:var(--block);border-color:var(--block-dim);background:rgba(212,101,74,.07)}
+  .readout[data-state="frontier"] .ro-state{color:var(--gold);border-color:var(--gold-dim);background:rgba(224,164,54,.08)}
+  .readout[data-state="frontier"] .ro-val{color:var(--gold)}
+
+  @media(max-width:860px){
+    .intro-grid{grid-template-columns:1fr;gap:44px}
+    .loop-visual{width:min(340px,100%)}
+  }
+
   /* ---------- hero ---------- */
-  .hero{padding:84px 0 56px}
+  .hero{padding:72px 0 56px;border-top:1px solid var(--line-soft)}
   .hero .eyebrow{margin-bottom:24px}
-  .hero h1{
+  .hero .hero-h{
     font-weight:700;
     font-size:clamp(38px,7.5vw,72px);
     line-height:1.02;
     letter-spacing:-.03em;
     max-width:820px;
   }
-  .hero h1 .dim{color:var(--text-2)}
+  .hero .hero-h .dim{color:var(--text-2)}
   .lede{
     margin-top:26px;max-width:660px;
     font-size:clamp(16px,2.4vw,18.5px);line-height:1.66;color:var(--text-2);
@@ -448,6 +556,7 @@
   <div class="wrap nav">
     <a class="brand" href="/"><span class="up">hp /</span>cldd<span class="dot">.</span></a>
     <nav class="nav-links">
+      <a href="#effect" class="hideable">the effect</a>
       <a href="#loop" class="hideable">the loop</a>
       <a href="#versions" class="hideable">versions</a>
       <a href="#policy" class="hideable">versioning</a>
@@ -459,11 +568,46 @@
 
 <main id="top">
 
+  <!-- INTRO / THE EFFECT -->
+  <section class="intro" id="effect">
+    <div class="wrap intro-grid">
+      <div>
+        <span class="eyebrow">the effect of running cldd</span>
+        <h1>Your blind spot becomes a number.<br /><span class="dim">The loop runs until the model breaks — and reports where.</span></h1>
+        <p class="lede">A PD model is graded only on the loans a past policy <b>approved</b>, yet deployed on everyone. CLDD plants ground truth in a synthetic world, hides it the way your approval policy would, and escalates selection severity until correction fails — turning an unmeasurable blind spot into an <b>operating frontier</b>.</p>
+        <div class="fx">
+          <div class="fx-row without">
+            <span class="w">without</span>
+            <p>Declined-cohort calibration is <b>unmeasurable</b> — no labels exist for the applicants you turned away, exactly where the model must still be right.</p>
+          </div>
+          <div class="fx-row with">
+            <span class="w">with cldd</span>
+            <p><b>Operating frontier = 0.4</b> — the model holds through severity 0.4 and breaks at 0.6; honestly <b>0.2–0.4</b> across the 25-seed sweep, with the failure cause named: an unobserved confounder.</p>
+          </div>
+        </div>
+      </div>
+      <div class="loop-visual" role="img" aria-label="The closed loop: generate, measure, improve, regenerate — cycling at rising selection severity until declined-cohort calibration fails, then reporting the operating frontier of 0.4.">
+        <div class="ring"></div>
+        <div class="ring-glow"></div>
+        <div class="orbit"><span class="sat"></span></div>
+        <span class="lnode n1"><b>01</b>generate</span>
+        <span class="lnode n2"><b>02</b>measure</span>
+        <span class="lnode n3"><b>03</b>improve</span>
+        <span class="lnode n4"><b>04</b>regenerate</span>
+        <div class="readout" id="readout" data-state="pass" aria-hidden="true">
+          <span class="ro-label" id="ro-label">ipw-corrected · scm world</span>
+          <span class="ro-val" id="ro-val">severity 0.0 · ece 0.036</span>
+          <span class="ro-state" id="ro-state">✓ within target</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
       <span class="eyebrow">closed-loop default detection · import name <code style="font-size:11px">cldd</code></span>
-      <h1>Stress-test a PD model under selective labels —<br /><span class="dim">and get the severity at which it breaks.</span></h1>
+      <h2 class="hero-h">Stress-test a PD model under selective labels —<br /><span class="dim">and get the severity at which it breaks.</span></h2>
       <p class="lede">Real lending data only labels the loans a prior underwriter approved, so you cannot measure calibration on the applicants you <b>declined</b> — exactly where a new model must still be right. CLDD builds synthetic lending worlds with planted ground truth, hides labels the way real approval policies do, and grades every correction against that truth.</p>
 
       <div class="hero-meta">
@@ -791,6 +935,41 @@
 </footer>
 
 <script>
+  // The loop readout: cycle severity rounds until the fail, then report the frontier.
+  // Numbers are the committed SCM IPW-corrected run (seed 42).
+  (function(){
+    var ro = document.getElementById('readout');
+    var val = document.getElementById('ro-val');
+    var st = document.getElementById('ro-state');
+    if(!ro || !val || !st) return;
+    var steps = [
+      {v:'severity 0.0 · ece 0.036', s:'✓ within target', state:'pass',     hold:1700},
+      {v:'severity 0.2 · ece 0.038', s:'✓ within target', state:'pass',     hold:1700},
+      {v:'severity 0.4 · ece 0.097', s:'✓ within target', state:'pass',     hold:1700},
+      {v:'severity 0.6 · ece 0.244', s:'✗ correction fails', state:'fail',  hold:1900},
+      {v:'operating frontier = 0.4', s:'reported',        state:'frontier', hold:3600}
+    ];
+    var frontier = steps[steps.length-1];
+    function show(step){
+      val.textContent = step.v;
+      st.textContent = step.s;
+      ro.setAttribute('data-state', step.state);
+    }
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      show(frontier);
+      return;
+    }
+    var i = 0;
+    show(steps[0]);
+    (function next(){
+      setTimeout(function(){
+        i = (i + 1) % steps.length;
+        show(steps[i]);
+        next();
+      }, steps[i].hold);
+    })();
+  })();
+
   // Scroll reveal
   (function(){
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
