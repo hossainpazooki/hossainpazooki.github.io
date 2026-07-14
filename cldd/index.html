@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0B0E13" />
+<title>CLDD — closed-loop default detection · versions</title>
+<meta name="description" content="CLDD stress-tests a probability-of-default model under selective labels and reports the severity at which it breaks. Version history: v0.1.0 (the harness) and v0.2.0 (the EMP measurement layer), outlined in full." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0B0E13;
+    --ink-2:#0E121A;
+    --panel:#11151D;
+    --panel-2:#141925;
+    --line:#1C2330;
+    --line-soft:#161C27;
+    --text:#E7EAF0;
+    --text-2:#B7BFCD;
+    --muted:#828C9D;
+    --gold:#E0A436;
+    --gold-dim:#7a5d22;
+    --ok:#5BB98C;
+    --ok-dim:#2c5a44;
+    --block:#D4654A;
+    --block-dim:#6a3327;
+    --blue:#6CA7E8;
+    --blue-dim:#2c4a6a;
+    --maxw:1080px;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--gold);color:var(--ink)}
+
+  :focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  .section,.release{scroll-margin-top:76px}
+
+  code{font-family:var(--mono)}
+  p code, li code, td code, .note code{
+    font-size:.9em;color:var(--gold);
+    background:rgba(224,164,54,.07);
+    border:1px solid rgba(224,164,54,.14);
+    border-radius:4px;padding:1px 6px;white-space:nowrap;
+  }
+
+  /* ---------- eyebrow ---------- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);
+    display:inline-flex;align-items:center;gap:.6em;
+  }
+  .eyebrow::before{
+    content:"";width:18px;height:1px;background:var(--gold);display:inline-block;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,14,19,.72);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{
+    font-family:var(--mono);font-weight:600;font-size:15px;
+    letter-spacing:.04em;color:var(--text);
+    display:inline-flex;align-items:center;gap:.5em;
+  }
+  .brand .dot{color:var(--gold)}
+  .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
+  .nav-links{display:flex;gap:24px;align-items:center}
+  .nav-links a{
+    font-family:var(--mono);font-size:13px;color:var(--muted);
+    letter-spacing:.02em;transition:color .18s ease;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.ext{color:var(--gold)}
+  .nav-links a.ext:hover{color:#f3c269}
+  @media(max-width:760px){.nav-links a.hideable{display:none}}
+
+  /* ---------- intro / the effect ---------- */
+  .intro{padding:76px 0 70px}
+  .intro-grid{
+    display:grid;grid-template-columns:1.05fr .95fr;
+    gap:56px;align-items:center;
+  }
+  .intro .eyebrow{margin-bottom:22px}
+  .intro h1{
+    font-weight:700;
+    font-size:clamp(30px,4.8vw,46px);
+    line-height:1.08;letter-spacing:-.025em;
+    max-width:560px;
+  }
+  .intro h1 .dim{color:var(--text-2)}
+  .intro .lede{margin-top:22px;font-size:clamp(15.5px,2.2vw,17.5px);max-width:540px}
+
+  .fx{margin-top:28px;display:flex;flex-direction:column;gap:10px;max-width:540px}
+  .fx-row{
+    border:1px solid var(--line);border-radius:8px;
+    padding:12px 16px;display:flex;gap:14px;align-items:baseline;
+    background:var(--ink-2);
+  }
+  .fx-row .w{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
+    padding-top:1px;
+  }
+  .fx-row.without .w{color:var(--block)}
+  .fx-row.with{border-color:var(--gold-dim);background:linear-gradient(90deg,rgba(224,164,54,.05),var(--ink-2) 70%)}
+  .fx-row.with .w{color:var(--gold)}
+  .fx-row p{font-size:13.5px;color:var(--text-2);line-height:1.55}
+  .fx-row p b{color:var(--text);font-weight:600}
+
+  /* the loop visual */
+  .loop-visual{
+    position:relative;
+    width:min(400px,100%);
+    aspect-ratio:1/1;
+    margin:0 auto;
+  }
+  .loop-visual .ring{
+    position:absolute;inset:40px;
+    border:1px dashed var(--line);
+    border-radius:50%;
+  }
+  .loop-visual .ring-glow{
+    position:absolute;inset:40px;border-radius:50%;
+    box-shadow:0 0 60px -20px rgba(224,164,54,.15) inset;
+    pointer-events:none;
+  }
+  .loop-visual .orbit{
+    position:absolute;inset:40px;
+    animation:orbit 9s linear infinite;
+  }
+  .loop-visual .orbit .sat{
+    position:absolute;top:-5px;left:50%;margin-left:-5px;
+    width:10px;height:10px;border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 14px rgba(224,164,54,.85), 0 0 3px rgba(224,164,54,1);
+  }
+  @keyframes orbit{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion:reduce){
+    .loop-visual .orbit{animation:none}
+  }
+  .lnode{
+    position:absolute;z-index:2;
+    font-family:var(--mono);font-size:10.5px;font-weight:500;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:999px;padding:6px 12px;white-space:nowrap;
+  }
+  .lnode b{color:var(--gold);font-weight:600;margin-right:5px}
+  .lnode.n1{top:40px;left:50%;transform:translate(-50%,-50%)}
+  .lnode.n2{top:50%;right:40px;transform:translate(50%,-50%)}
+  .lnode.n3{bottom:40px;left:50%;transform:translate(-50%,50%)}
+  .lnode.n4{top:50%;left:40px;transform:translate(-50%,-50%)}
+
+  .readout{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:8px;text-align:center;padding:0 88px;
+  }
+  .readout .ro-label{
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .readout .ro-val{
+    font-family:var(--mono);font-size:13px;font-weight:600;
+    color:var(--text);letter-spacing:.01em;line-height:1.5;
+    transition:color .25s ease;
+  }
+  .readout .ro-state{
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;
+    padding:4px 12px;border-radius:999px;
+    border:1px solid var(--line);color:var(--muted);
+    transition:color .25s ease,border-color .25s ease,background .25s ease;
+  }
+  .readout[data-state="pass"] .ro-state{color:var(--ok);border-color:var(--ok-dim);background:rgba(91,185,140,.07)}
+  .readout[data-state="fail"] .ro-state{color:var(--block);border-color:var(--block-dim);background:rgba(212,101,74,.07)}
+  .readout[data-state="frontier"] .ro-state{color:var(--gold);border-color:var(--gold-dim);background:rgba(224,164,54,.08)}
+  .readout[data-state="frontier"] .ro-val{color:var(--gold)}
+
+  @media(max-width:860px){
+    .intro-grid{grid-template-columns:1fr;gap:44px}
+    .loop-visual{width:min(340px,100%)}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding:72px 0 56px;border-top:1px solid var(--line-soft)}
+  .hero .eyebrow{margin-bottom:24px}
+  .hero .hero-h{
+    font-weight:700;
+    font-size:clamp(38px,7.5vw,72px);
+    line-height:1.02;
+    letter-spacing:-.03em;
+    max-width:820px;
+  }
+  .hero .hero-h .dim{color:var(--text-2)}
+  .lede{
+    margin-top:26px;max-width:660px;
+    font-size:clamp(16px,2.4vw,18.5px);line-height:1.66;color:var(--text-2);
+  }
+  .lede b{color:var(--text);font-weight:500}
+
+  .hero-meta{
+    margin-top:30px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  }
+  .pill{
+    font-family:var(--mono);font-size:12px;letter-spacing:.05em;
+    border:1px solid var(--line);border-radius:999px;padding:6px 13px;
+    color:var(--text-2);background:rgba(255,255,255,.012);
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .pill .dot-ok{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+  .pill .dot-gold{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+  .pill b{color:var(--text);font-weight:600}
+
+  .install{
+    margin-top:30px;max-width:660px;
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    background:var(--panel);
+  }
+  .install-bar{
+    border-bottom:1px solid var(--line);padding:9px 16px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);
+    background:rgba(255,255,255,.012);
+  }
+  .install-body{
+    padding:16px;font-family:var(--mono);
+    font-size:clamp(13px,2vw,14.5px);line-height:1.8;color:var(--text);
+    overflow-x:auto;
+  }
+  .install-body .p{color:var(--muted)}
+  .install-body .c{color:var(--muted)}
+  .install-body .k{color:var(--gold)}
+
+  .cta-row{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;
+    padding:12px 20px;border-radius:6px;
+    display:inline-flex;align-items:center;gap:9px;
+    transition:transform .15s ease, background .18s ease, border-color .18s ease;
+  }
+  .btn-primary{background:var(--gold);color:#10110d;font-weight:600}
+  .btn-primary:hover{transform:translateY(-1px);background:#edb24a}
+  .btn-ghost{border:1px solid var(--line);color:var(--text-2)}
+  .btn-ghost:hover{border-color:var(--muted);color:var(--text)}
+
+  /* ---------- section frame ---------- */
+  .section{padding:72px 0;border-top:1px solid var(--line-soft)}
+  .section-head{margin-bottom:40px}
+  .section-head h2{
+    margin-top:18px;
+    font-size:clamp(24px,4vw,34px);font-weight:600;
+    letter-spacing:-.02em;line-height:1.15;max-width:720px;
+  }
+  .section-head p{margin-top:14px;max-width:640px;color:var(--muted);font-size:15.5px}
+
+  /* ---------- loop strip ---------- */
+  .loop{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line-soft);border:1px solid var(--line-soft);
+    border-radius:8px;overflow:hidden;
+  }
+  .loop .step{background:var(--ink-2);padding:22px 20px;position:relative}
+  .loop .step .n{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold);
+  }
+  .loop .step h3{font-size:17px;font-weight:600;margin-top:8px;letter-spacing:-.01em}
+  .loop .step p{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+  .loop .step .arr{
+    position:absolute;right:12px;top:20px;color:var(--gold-dim);
+    font-family:var(--mono);font-size:15px;
+  }
+  @media(max-width:860px){.loop{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.loop{grid-template-columns:1fr}}
+  .note{
+    margin-top:18px;font-size:13.5px;color:var(--muted);max-width:720px;line-height:1.6;
+  }
+  .note b{color:var(--text-2);font-weight:500}
+
+  /* ---------- version index ---------- */
+  .vindex{
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--ink-2);
+  }
+  .vindex-bar{
+    border-bottom:1px solid var(--line);padding:10px 18px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);
+    background:rgba(255,255,255,.012);
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  }
+  .vrow{
+    display:grid;grid-template-columns:120px 130px 110px 1fr auto;
+    gap:18px;align-items:center;
+    padding:16px 18px;border-bottom:1px solid var(--line-soft);
+    transition:background .18s ease;position:relative;
+  }
+  .vrow:last-child{border-bottom:0}
+  .vrow::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+    background:var(--gold);transform:scaleY(0);transform-origin:top;
+    transition:transform .22s ease;
+  }
+  .vrow:hover{background:linear-gradient(90deg,rgba(224,164,54,.035),transparent 60%)}
+  .vrow:hover::before{transform:scaleY(1)}
+  .vrow .v{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--text)}
+  .vrow .v .pre{color:var(--muted);font-weight:400}
+  .vrow .d{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .vrow .theme{font-size:14px;color:var(--text-2)}
+  .vrow .go{font-family:var(--mono);font-size:12.5px;color:var(--gold)}
+  .badge{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;
+    padding:4px 10px;border-radius:999px;white-space:nowrap;
+    display:inline-flex;align-items:center;gap:6px;width:fit-content;
+  }
+  .badge-latest{color:var(--gold);border:1px solid var(--gold-dim);background:rgba(224,164,54,.08)}
+  .badge-alpha{color:var(--muted);border:1px solid var(--line)}
+  .badge-initial{color:var(--blue);border:1px solid var(--blue-dim);background:rgba(108,167,232,.07)}
+  @media(max-width:820px){
+    .vrow{grid-template-columns:100px 1fr auto;gap:10px}
+    .vrow .d,.vrow .theme{display:none}
+  }
+
+  /* ---------- release timeline ---------- */
+  .rel-timeline{position:relative;margin-top:8px}
+  .rel-timeline::before{
+    content:"";position:absolute;left:11px;top:8px;bottom:8px;width:1px;
+    background:linear-gradient(180deg,var(--gold-dim),var(--line) 70%);
+  }
+  .release{position:relative;padding:0 0 64px 52px}
+  .release:last-child{padding-bottom:0}
+  .release .node{
+    position:absolute;left:0;top:4px;width:23px;height:23px;border-radius:50%;
+    background:var(--ink);border:1px solid var(--muted);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .release .node i{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+  .release.latest .node{border-color:var(--gold);box-shadow:0 0 0 5px rgba(224,164,54,.12)}
+  .release.latest .node i{background:var(--gold)}
+
+  .rel-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .rel-head .ver{
+    font-family:var(--mono);font-weight:600;letter-spacing:-.01em;
+    font-size:clamp(28px,5vw,40px);color:var(--text);line-height:1;
+  }
+  .rel-head .ver .pre{color:var(--muted);font-weight:400}
+  .rel-head .date{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.04em}
+  .rel-title{
+    font-size:clamp(18px,3vw,23px);font-weight:600;letter-spacing:-.015em;
+    margin-top:10px;max-width:720px;line-height:1.3;
+  }
+  .rel-sub{margin-top:10px;color:var(--text-2);font-size:15px;max-width:720px;line-height:1.62}
+
+  /* semver strip */
+  .semver{
+    margin-top:18px;display:inline-flex;align-items:stretch;
+    border:1px solid var(--line);border-radius:6px;overflow:hidden;
+    font-family:var(--mono);background:var(--panel);
+  }
+  .semver .seg{padding:8px 14px;text-align:center}
+  .semver .seg + .seg{border-left:1px solid var(--line)}
+  .semver .seg .num{font-size:18px;font-weight:600;color:var(--muted);line-height:1.2}
+  .semver .seg .lbl{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);opacity:.7}
+  .semver .seg.hot .num{color:var(--gold)}
+  .semver .seg.hot .lbl{color:var(--gold);opacity:1}
+
+  /* release stats */
+  .rel-stats{
+    margin-top:22px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line-soft);border:1px solid var(--line-soft);
+    border-radius:8px;overflow:hidden;max-width:820px;
+  }
+  .rel-stats .st{background:var(--ink-2);padding:16px 16px}
+  .rel-stats .st .big{
+    font-family:var(--mono);font-size:clamp(17px,2.6vw,22px);font-weight:600;
+    color:var(--text);letter-spacing:-.01em;line-height:1.15;
+  }
+  .rel-stats .st .big .u{color:var(--gold)}
+  .rel-stats .st .cap{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+  @media(max-width:720px){.rel-stats{grid-template-columns:repeat(2,1fr)}}
+
+  /* changelog groups */
+  .chg{margin-top:26px;display:flex;flex-direction:column;gap:14px;max-width:820px}
+  .chg-grp{
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--ink-2);
+  }
+  .chg-grp summary{
+    list-style:none;cursor:pointer;
+    padding:13px 18px;display:flex;align-items:center;gap:12px;
+    font-family:var(--mono);font-size:12px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;
+    color:var(--text-2);background:rgba(255,255,255,.012);
+    transition:background .18s ease;
+  }
+  .chg-grp summary:hover{background:rgba(255,255,255,.03)}
+  .chg-grp summary::-webkit-details-marker{display:none}
+  .chg-grp summary .chev{
+    margin-left:auto;color:var(--muted);font-size:13px;
+    transition:transform .2s ease;font-family:var(--mono);
+  }
+  .chg-grp[open] summary{border-bottom:1px solid var(--line)}
+  .chg-grp[open] summary .chev{transform:rotate(90deg)}
+  .chg-grp summary .count{
+    font-weight:400;color:var(--muted);letter-spacing:.02em;text-transform:none;
+  }
+  .tag{
+    font-size:10px;font-weight:600;letter-spacing:.1em;
+    padding:3px 9px;border-radius:4px;text-transform:uppercase;
+  }
+  .tag-added{color:var(--ok);border:1px solid var(--ok-dim);background:rgba(91,185,140,.07)}
+  .tag-changed{color:var(--gold);border:1px solid var(--gold-dim);background:rgba(224,164,54,.07)}
+  .tag-fixed{color:var(--block);border:1px solid var(--block-dim);background:rgba(212,101,74,.07)}
+  .tag-notable{color:var(--blue);border:1px solid var(--blue-dim);background:rgba(108,167,232,.07)}
+  .tag-limits{color:var(--muted);border:1px solid var(--line)}
+  .chg-grp ul{list-style:none;padding:16px 18px;display:flex;flex-direction:column;gap:11px}
+  .chg-grp li{
+    font-size:14.5px;color:var(--text-2);line-height:1.6;
+    padding-left:18px;position:relative;max-width:760px;
+  }
+  .chg-grp li::before{content:"›";position:absolute;left:0;color:var(--gold);font-family:var(--mono)}
+  .chg-grp li b{color:var(--text);font-weight:600}
+  .chg-grp .sub{color:var(--muted);font-size:13px}
+
+  /* finding panel inside a release */
+  .finding{
+    margin-top:0;border-left:2px solid var(--gold);
+    background:linear-gradient(90deg,rgba(224,164,54,.05),transparent 70%);
+    padding:14px 18px;border-radius:0 6px 6px 0;
+  }
+  .finding .f-label{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold);
+  }
+  .finding p{margin-top:6px;font-size:14px;color:var(--text-2);line-height:1.6;max-width:720px}
+  .finding p b{color:var(--text);font-weight:600}
+  .findings-stack{margin-top:22px;display:flex;flex-direction:column;gap:12px;max-width:820px}
+
+  /* data table */
+  .dtable-wrap{margin-top:14px;overflow-x:auto;max-width:820px;border:1px solid var(--line);border-radius:8px}
+  table.dtable{
+    border-collapse:collapse;width:100%;min-width:520px;
+    font-size:13.5px;background:var(--ink-2);
+  }
+  .dtable caption{
+    caption-side:top;text-align:left;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);
+    padding:11px 16px;border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.012);
+  }
+  .dtable th,.dtable td{
+    padding:10px 16px;text-align:left;border-bottom:1px solid var(--line-soft);
+    white-space:nowrap;
+  }
+  .dtable th{
+    font-family:var(--mono);font-size:11px;font-weight:500;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  }
+  .dtable td{font-family:var(--mono);font-size:13px;color:var(--text-2)}
+  .dtable td:first-child{color:var(--text)}
+  .dtable tr:last-child td{border-bottom:0}
+  .dtable .pass{color:var(--ok);font-weight:600}
+  .dtable .fail{color:var(--block);font-weight:600}
+  .dtable .hi{color:var(--gold);font-weight:600}
+
+  .rel-links{margin-top:24px;display:flex;gap:16px;flex-wrap:wrap}
+  .rel-links a{
+    font-family:var(--mono);font-size:12.5px;color:var(--muted);
+    display:inline-flex;gap:7px;align-items:center;
+    border:1px solid var(--line);border-radius:6px;padding:8px 14px;
+    transition:color .18s ease,border-color .18s ease;
+  }
+  .rel-links a:hover{color:var(--gold);border-color:var(--gold-dim)}
+
+  /* ---------- versioning policy ---------- */
+  .policy{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--line-soft);border:1px solid var(--line-soft);
+    border-radius:8px;overflow:hidden;
+  }
+  .policy .p-cell{background:var(--ink-2);padding:22px 22px}
+  .policy .p-cell h4{
+    font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:10px;
+  }
+  .policy .p-cell p{font-size:14px;color:var(--text-2);line-height:1.6}
+  .policy .p-cell p code{white-space:normal}
+  @media(max-width:760px){.policy{grid-template-columns:1fr}}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:44px 0 60px}
+  .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end}
+  .foot .col-thesis{max-width:420px}
+  .foot .col-thesis .t{font-family:var(--mono);font-size:13px;color:var(--text-2);line-height:1.7}
+  .foot .col-thesis .t .k{color:var(--gold)}
+  .foot .copy{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:18px}
+  .foot-links{display:flex;flex-direction:column;gap:11px;text-align:right}
+  .foot-links a{
+    font-family:var(--mono);font-size:13.5px;color:var(--text-2);
+    display:inline-flex;gap:9px;justify-content:flex-end;align-items:center;
+    transition:color .16s ease;
+  }
+  .foot-links a:hover{color:var(--gold)}
+  .foot-links a .arr{color:var(--muted)}
+  @media(max-width:560px){
+    .foot{flex-direction:column;align-items:flex-start}
+    .foot-links{text-align:left}
+    .foot-links a{justify-content:flex-start}
+  }
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><span class="up">hp /</span>cldd<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="#effect" class="hideable">the effect</a>
+      <a href="#loop" class="hideable">the loop</a>
+      <a href="#versions" class="hideable">versions</a>
+      <a href="#policy" class="hideable">versioning</a>
+      <a href="https://pypi.org/project/closed-loop-default-detection/" target="_blank" rel="noopener" class="hideable">PyPI&nbsp;↗</a>
+      <a href="https://github.com/hossainpazooki/closed-loop-default-detection" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- INTRO / THE EFFECT -->
+  <section class="intro" id="effect">
+    <div class="wrap intro-grid">
+      <div>
+        <span class="eyebrow">the effect of running cldd</span>
+        <h1>Your blind spot becomes a number.<br /><span class="dim">The loop runs until the model breaks — and reports where.</span></h1>
+        <p class="lede">A PD model is graded only on the loans a past policy <b>approved</b>, yet deployed on everyone. CLDD plants ground truth in a synthetic world, hides it the way your approval policy would, and escalates selection severity until correction fails — turning an unmeasurable blind spot into an <b>operating frontier</b>.</p>
+        <div class="fx">
+          <div class="fx-row without">
+            <span class="w">without</span>
+            <p>Declined-cohort calibration is <b>unmeasurable</b> — no labels exist for the applicants you turned away, exactly where the model must still be right.</p>
+          </div>
+          <div class="fx-row with">
+            <span class="w">with cldd</span>
+            <p><b>Operating frontier = 0.4</b> — the model holds through severity 0.4 and breaks at 0.6; honestly <b>0.2–0.4</b> across the 25-seed sweep, with the failure cause named: an unobserved confounder.</p>
+          </div>
+        </div>
+      </div>
+      <div class="loop-visual" role="img" aria-label="The closed loop: generate, measure, improve, regenerate — cycling at rising selection severity until declined-cohort calibration fails, then reporting the operating frontier of 0.4.">
+        <div class="ring"></div>
+        <div class="ring-glow"></div>
+        <div class="orbit"><span class="sat"></span></div>
+        <span class="lnode n1"><b>01</b>generate</span>
+        <span class="lnode n2"><b>02</b>measure</span>
+        <span class="lnode n3"><b>03</b>improve</span>
+        <span class="lnode n4"><b>04</b>regenerate</span>
+        <div class="readout" id="readout" data-state="pass" aria-hidden="true">
+          <span class="ro-label" id="ro-label">ipw-corrected · scm world</span>
+          <span class="ro-val" id="ro-val">severity 0.0 · ece 0.036</span>
+          <span class="ro-state" id="ro-state">✓ within target</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">closed-loop default detection · import name <code style="font-size:11px">cldd</code></span>
+      <h2 class="hero-h">Stress-test a PD model under selective labels —<br /><span class="dim">and get the severity at which it breaks.</span></h2>
+      <p class="lede">Real lending data only labels the loans a prior underwriter approved, so you cannot measure calibration on the applicants you <b>declined</b> — exactly where a new model must still be right. CLDD builds synthetic lending worlds with planted ground truth, hides labels the way real approval policies do, and grades every correction against that truth.</p>
+
+      <div class="hero-meta">
+        <span class="pill"><span class="dot-gold"></span>current&nbsp;<b>v0.2.0</b>&nbsp;· alpha</span>
+        <span class="pill"><span class="dot-ok"></span><b>149</b>&nbsp;tests, all synthetic</span>
+        <span class="pill">deterministic — byte-identical per seed</span>
+        <span class="pill">MIT · Python ≥ 3.10</span>
+      </div>
+
+      <div class="install" role="img" aria-label="Install with: pip install closed-loop-default-detection. Then run the loop and print the operating frontier.">
+        <div class="install-bar"><span>install &amp; 60-second tour</span><span>pypi</span></div>
+        <div class="install-body" aria-hidden="true">
+<span class="p">$</span> pip install closed-loop-default-detection<br />
+<span class="c">&gt;&gt;&gt;</span> <span class="k">from</span> cldd <span class="k">import</span> SelectiveLabelsLoop<br />
+<span class="c">&gt;&gt;&gt;</span> result = SelectiveLabelsLoop(improve_mode=<span style="color:var(--ok)">"both"</span>).run()<br />
+<span class="c">&gt;&gt;&gt;</span> result.frontier_severity&nbsp;&nbsp;<span class="c"># the last severity where declined-cohort calibration holds</span>
+        </div>
+      </div>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#versions">Version history →</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/closed-loop-default-detection" target="_blank" rel="noopener">Source ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE LOOP -->
+  <section class="section" id="loop">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2>One loop, escalated until correction fails.</h2>
+        <p>The loop raises selection severity round by round and reports the <b>operating frontier</b> — the last severity at which declined-cohort calibration still holds (target ECE ≤ 0.10).</p>
+      </div>
+      <div class="loop reveal">
+        <div class="step">
+          <span class="n">01 · generate</span><span class="arr">→</span>
+          <h3>Plant the truth</h3>
+          <p>Build a synthetic cohort at a given selection severity; plant true default, then hide it via the approval policy.</p>
+        </div>
+        <div class="step">
+          <span class="n">02 · measure</span><span class="arr">→</span>
+          <h3>Score the blind spot</h3>
+          <p>Train the PD model on approved rows only; score it against planted truth on the declined subpopulation.</p>
+        </div>
+        <div class="step">
+          <span class="n">03 · improve</span><span class="arr">→</span>
+          <h3>Apply a lever</h3>
+          <p>IPW reweight · disjoint retrain · exploration · reject inference — every corrector graded against planted truth.</p>
+        </div>
+        <div class="step">
+          <span class="n">04 · regenerate</span><span class="arr">⟲</span>
+          <h3>Escalate or stop</h3>
+          <p>Corrected declined-cohort ECE ≤ target? Raise the severity and go again. Otherwise stop and report the frontier.</p>
+        </div>
+      </div>
+      <p class="note"><b>Scope.</b> CLDD is a synthetic <b>validation harness</b>, not a production pipeline: retraining and feedback are seeded simulations inside the harness; it never acts on live data or real lending decisions.</p>
+    </div>
+  </section>
+
+  <!-- VERSION INDEX -->
+  <section class="section" id="versions">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Version history</span>
+        <h2>Two releases. Each one earns its number.</h2>
+        <p>Semantic versioning, Keep-a-Changelog format, and a rule the releases actually follow: committed evidence first, headline second. Every number below recomputes from CSVs committed in the repo.</p>
+      </div>
+
+      <div class="vindex reveal" role="table" aria-label="Version index: v0.2.0 and v0.1.0">
+        <div class="vindex-bar"><span>release index</span><span>changelog.md · semver · pypi</span></div>
+        <a class="vrow" href="#v020">
+          <span class="v"><span class="pre">v</span>0.2.0</span>
+          <span class="d">2026-07-14</span>
+          <span class="badge badge-latest">latest · alpha</span>
+          <span class="theme">The EMP measurement layer — price what being wrong on the declines costs</span>
+          <span class="go">details ↓</span>
+        </a>
+        <a class="vrow" href="#v010">
+          <span class="v"><span class="pre">v</span>0.1.0</span>
+          <span class="d">2026-07-03</span>
+          <span class="badge badge-initial">initial · alpha</span>
+          <span class="theme">The harness — closed loop, two synthetic worlds, pluggable correction levers</span>
+          <span class="go">details ↓</span>
+        </a>
+      </div>
+
+      <!-- RELEASE TIMELINE -->
+      <div class="rel-timeline" style="margin-top:56px">
+
+        <!-- ================= v0.2.0 ================= -->
+        <article class="release latest reveal" id="v020">
+          <span class="node" aria-hidden="true"><i></i></span>
+          <div class="rel-head">
+            <span class="ver"><span class="pre">v</span>0.2.0</span>
+            <span class="badge badge-latest">latest · alpha</span>
+            <span class="date">2026-07-14 · 11 days after v0.1.0</span>
+          </div>
+          <h3 class="rel-title">The expected-maximum-profit (EMP) measurement layer: the loop now reports what being wrong on the declined population <em>costs</em>, not only whether it is miscalibrated.</h3>
+          <p class="rel-sub">Calibration says <em>whether</em> the model is wrong on the declines; v0.2.0 adds the axis that says <em>what it costs</em> — two EMP variants computed from the same in-process scores, strictly as reporting. ECE remains the sole loop-control metric, and every v1 column of the committed frontier CSVs is byte-identical.</p>
+
+          <div class="semver" role="img" aria-label="Semantic version 0.2.0 — the minor segment incremented: new capability, backwards compatible.">
+            <div class="seg"><div class="num">0</div><div class="lbl">major</div></div>
+            <div class="seg hot"><div class="num">2</div><div class="lbl">minor ▲</div></div>
+            <div class="seg"><div class="num">0</div><div class="lbl">patch</div></div>
+          </div>
+
+          <div class="rel-stats">
+            <div class="st"><div class="big"><span class="u">2</span> EMP variants</div><div class="cap">literature EMPC vs. harness-derived economics, side by side</div></div>
+            <div class="st"><div class="big"><span class="u">25</span>-seed sweep</div><div class="cap">the frontier reported as a distribution, not a point</div></div>
+            <div class="st"><div class="big">+26 tests</div><div class="cap">149 total — hull cases, monotone invariance, float determinism</div></div>
+            <div class="st"><div class="big"><span class="u">$2,800</span>/label</div><div class="cap">exploration priced in dollars: 157 labels for $439,578</div></div>
+          </div>
+
+          <div class="findings-stack">
+            <div class="finding">
+              <span class="f-label">Notable result · 01</span>
+              <p><b>The frontier is a distribution, not a point.</b> Across the full 25-seed set, the published single-seed frontier (0.4, seed 42) sits at the <em>optimistic</em> end: in the SCM world the median frontier is <b>0.2</b>, with only 11/25 seeds reaching 0.4 (flat world: median 0.4, 15/25). The boundary is honestly <b>0.2–0.4 depending on the draw</b> — the prior headline was a valid instance, not a center.</p>
+            </div>
+            <div class="finding">
+              <span class="f-label">Notable result · 02</span>
+              <p><b>The two EMP variants disagree — and the disagreement is the finding.</b> The literature's convenience prior assumes <code>ROI = 0.2644</code> where this 60-day daily-ACH loan structure actually returns <code>0.0875</code> — a 3.0× overstatement — and places 55% of defaults at full recovery where the harness plants ~1%. Priced honestly, profit on the declined pool collapses toward zero as severity rises; priced by the standard prior, it appears to <em>grow</em>. Same model, same scores, opposite conclusion.</p>
+            </div>
+          </div>
+
+          <div class="dtable-wrap">
+            <table class="dtable">
+              <caption>frontier distribution — artifacts/frontier_sweep.csv, 25 seeds</caption>
+              <thead><tr><th>world</th><th>min</th><th>median</th><th>max</th><th>seeds at 0.4</th><th>seeds at 0.2</th></tr></thead>
+              <tbody>
+                <tr><td>flat</td><td>0.2</td><td class="hi">0.4</td><td>0.4</td><td>15/25</td><td>10/25</td></tr>
+                <tr><td>SCM</td><td>0.2</td><td class="hi">0.2</td><td>0.4</td><td>11/25</td><td>14/25</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="dtable-wrap">
+            <table class="dtable">
+              <caption>the two EMP variants diverge — SCM world, declined subpopulation, seed 42</caption>
+              <thead><tr><th>selection severity</th><th>0.0</th><th>0.2</th><th>0.4</th><th>0.6</th></tr></thead>
+              <tbody>
+                <tr><td>literature empc (naive)</td><td>0.0217</td><td>0.0331</td><td>0.0416</td><td class="fail">0.0420 ↑</td></tr>
+                <tr><td>harness emp_h (naive)</td><td>0.0387</td><td>0.0297</td><td>0.0139</td><td class="hi">0.0024 ↓</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="chg">
+            <details class="chg-grp" open>
+              <summary><span class="tag tag-added">Added</span> <span class="count">6 entries</span><span class="chev">›</span></summary>
+              <ul>
+                <li><b><code>cldd.emp</code></b> — two EMP variants over the same in-process scores, pure numpy, zero RNG: <code>empc_literature</code> (Verbraken et al. 2014 closed form over the ROC convex hull, with the source-verified prior) and <code>emp_harness</code> (this harness's own loan economics + planted per-row default timing; SCM cohorts only). Both are ranking-only: invariant to any strictly monotone transform of the score.</li>
+                <li><b>EMP columns</b> on <code>SubgroupMetrics</code> / <code>LeverMetrics</code> and in the frontier CSVs, plus an EMP-vs-severity panel on the frontier plot.</li>
+                <li><b><code>RoundResult.exploration_cost</code></b> — the exploration lever's bought labels priced in dollars (new column in <code>artifacts/exploration_frontier.csv</code>).</li>
+                <li><b><code>f1_emp_cutoff</code></b> — F1 at the EMP-optimal cutoff, reported alongside F1 at the arbitrary 0.5 policy threshold (retained for continuity, now documented as diagnostic-only).</li>
+                <li><b><code>scripts/run_frontier_sweep.py</code></b> — the frontier's distribution across the 25-seed set, replacing a single-seed point estimate; one subprocess per run, resumable.</li>
+                <li><b>26 new tests</b> (149 total): hand-computed convex-hull cases, monotone-invariance, degenerate-timing cases, cross-process float determinism.</li>
+              </ul>
+            </details>
+            <details class="chg-grp">
+              <summary><span class="tag tag-changed">Changed</span> <span class="count">3 entries</span><span class="chev">›</span></summary>
+              <ul>
+                <li><b>EMP is a reporting axis only</b> — ECE remains the sole loop-control metric. Loop decisions, the frontier, and every v1 column of the committed frontier CSVs are unchanged (byte-identity verified; EMP columns strictly appended).</li>
+                <li>Renamed the loop driver and artifacts to drop pre-release lineage naming: <code>run_clue.py</code> → <code>run_loop.py</code>, <code>clue_frontier*</code> → <code>loop_frontier*</code> (history-preserving renames; CSV contents byte-identical).</li>
+                <li>Moved the accompanying article <code>FABLE.md</code> → <code>docs/assessment.md</code> (history-preserving; a dated provenance snapshot, excluded from the Sphinx build).</li>
+              </ul>
+            </details>
+            <details class="chg-grp">
+              <summary><span class="tag tag-fixed">Fixed</span> <span class="count">1 entry</span><span class="chev">›</span></summary>
+              <ul>
+                <li><code>ExplorationCorrector</code> raised <code>ZeroDivisionError</code> when constructed with <code>exploration_rate = 0.0</code> (the inverse-propensity weight was evaluated eagerly even though no row can be explored). Unreachable through <code>SelectiveLabelsLoop</code>, so no committed number changes.</li>
+              </ul>
+            </details>
+            <details class="chg-grp">
+              <summary><span class="tag tag-limits">Reading caveats</span> <span class="count">4 boundaries, stated</span><span class="chev">›</span></summary>
+              <ul>
+                <li><b>Raw EMP moves with world hardness.</b> A riskier declined pool changes EMP even for a perfect model — read the two variants against each other at fixed severity, not the trend in isolation.</li>
+                <li><b><code>emp_h</code> rests on unfitted timing.</b> <code>days_to_default</code> is planted but never validated against real recovery data — a <b>verified experiment, not a verified result</b>.</li>
+                <li><b>Post-term defaults are imputed</b> — ~22.5% of planted defaults land past the 60-day term and are priced at the cohort's mean in-term loss fraction (a stated convention, not measured truth).</li>
+                <li><b><code>emp_h</code> is SCM-only</b> — the flat generator plants no timing, so its <code>emp_h</code> columns are empty by design.</li>
+              </ul>
+            </details>
+          </div>
+
+          <div class="rel-links">
+            <a href="https://github.com/hossainpazooki/closed-loop-default-detection/blob/main/CHANGELOG.md" target="_blank" rel="noopener">full changelog ↗</a>
+            <a href="https://pypi.org/project/closed-loop-default-detection/0.2.0/" target="_blank" rel="noopener">pypi · 0.2.0 ↗</a>
+            <a href="https://github.com/hossainpazooki/closed-loop-default-detection/blob/main/docs/assessment.md" target="_blank" rel="noopener">accompanying article ↗</a>
+          </div>
+        </article>
+
+        <!-- ================= v0.1.0 ================= -->
+        <article class="release reveal" id="v010">
+          <span class="node" aria-hidden="true"><i></i></span>
+          <div class="rel-head">
+            <span class="ver"><span class="pre">v</span>0.1.0</span>
+            <span class="badge badge-initial">initial · alpha</span>
+            <span class="date">2026-07-03 · first publish to PyPI</span>
+          </div>
+          <h3 class="rel-title">The selective-labels default-detection harness: the closed loop, two synthetic worlds, pluggable correction levers, and the frontier as the deliverable.</h3>
+          <p class="rel-sub">The initial alpha ships the whole mechanism: generate → measure → improve → regenerate, escalating selection severity until correction fails. Its headline holds inside the frontier and is explicitly <em>not claimed</em> beyond it: across 25 seeds, g-computation cuts counterfactual MAE −13.5% (positive on 24/25 seeds, Wilcoxon p&nbsp;=&nbsp;1.5e-7) — and collapses to a negligible +0.0017 at full severity, where an <b>unobserved confounder</b> defeats both backdoor adjustment and IPW.</p>
+
+          <div class="semver" role="img" aria-label="Semantic version 0.1.0 — the first minor release: the initial public alpha.">
+            <div class="seg"><div class="num">0</div><div class="lbl">major</div></div>
+            <div class="seg hot"><div class="num">1</div><div class="lbl">minor ●</div></div>
+            <div class="seg"><div class="num">0</div><div class="lbl">patch</div></div>
+          </div>
+
+          <div class="rel-stats">
+            <div class="st"><div class="big"><span class="u">8</span> levers</div><div class="cap">naive, IPW, retrain, exploration + four reject-inference correctors</div></div>
+            <div class="st"><div class="big"><span class="u">2</span> worlds</div><div class="cap">flat synthetic generator and the fitted, layered SCM</div></div>
+            <div class="st"><div class="big">123 tests</div><div class="cap">all synthetic, no real data needed; CI on three gates</div></div>
+            <div class="st"><div class="big">−13.5<span class="u">%</span> MAE</div><div class="cap">g-computation vs naive, inside the frontier, 24/25 seeds</div></div>
+          </div>
+
+          <div class="findings-stack">
+            <div class="finding">
+              <span class="f-label">Headline result · seed 42</span>
+              <p><b>Both worlds land the operating frontier at severity 0.4</b> — the last severity at which IPW-corrected declined-cohort ECE stays ≤ 0.10 — and the counterfactual deliverable breaks at the same boundary. One cause explains both failures: selection through an <b>unobserved confounder</b>, which backdoor adjustment and IPW cannot fix. That single measured limit — not an unverifiable score — is the deliverable. (v0.2.0's sweep later shows this seed sits at the optimistic end.)</p>
+            </div>
+          </div>
+
+          <div class="dtable-wrap">
+            <table class="dtable">
+              <caption>declined-cohort ECE vs severity — artifacts/loop_frontier*.csv, seed 42, target ≤ 0.10</caption>
+              <thead><tr><th>selection severity</th><th>0.0</th><th>0.2</th><th>0.4</th><th>0.6</th></tr></thead>
+              <tbody>
+                <tr><td>naive (flat world)</td><td>0.021</td><td>0.045</td><td>0.108</td><td>0.161</td></tr>
+                <tr><td>IPW-corrected (flat)</td><td>0.020</td><td>0.038</td><td class="pass">0.086 ✓</td><td class="fail">0.154 ✗</td></tr>
+                <tr><td>IPW-corrected (SCM)</td><td>0.036</td><td>0.038</td><td class="pass">0.097 ✓</td><td class="fail">0.244 ✗</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="chg">
+            <details class="chg-grp" open>
+              <summary><span class="tag tag-added">Added</span> <span class="count">10 entries</span><span class="chev">›</span></summary>
+              <ul>
+                <li><b>Closed loop</b> (<code>SelectiveLabelsLoop</code>): the generate → measure → improve → regenerate cycle that escalates selection severity to find a PD model's operating frontier.</li>
+                <li><b>Pluggable correction levers</b> (<code>Corrector</code> ABC): naive, IPW reweight, disjoint retrain, and exploration — plus the four classic reject-inference correctors (reclassification, augmentation, fuzzy augmentation, parcelling), graded against planted truth.</li>
+                <li><b>Two synthetic worlds</b>: the flat <code>SyntheticBorrowerGenerator</code> and the fitted, layered <code>StructuralBorrowerGenerator</code> (SCM).</li>
+                <li><b>Marginal-fidelity gate</b> (<code>cldd.fidelity</code>): compares SCM cohorts against real-data <em>univariate marginals</em>.</li>
+                <li><b>Counterfactual validator</b>: a deployable g-computation estimator vs. naive conditioning.</li>
+                <li><b>Feedback / exploration simulation</b> and observable positivity diagnostics — a regime/drift alarm that needs no declined-row labels.</li>
+                <li>Top-level export of the calibrated PD detector, <code>CalibratedPDModel</code>.</li>
+                <li><b><code>CalibratedPDClassifier</code></b>: a scikit-learn estimator face for the calibrated PD detector — the full <code>check_estimator</code> battery passes on scikit-learn 1.7.2–1.9.0, probabilities byte-identical to the research API.</li>
+                <li>Packaging hygiene: <code>cldd.__version__</code>, a PEP 561 <code>py.typed</code> marker, coverage tooling.</li>
+                <li>Dedicated regression tests for <code>model_pd.py</code> and <code>eval_default.py</code>.</li>
+              </ul>
+            </details>
+            <details class="chg-grp">
+              <summary><span class="tag tag-changed">Changed</span> <span class="count">3 entries</span><span class="chev">›</span></summary>
+              <ul>
+                <li>Fidelity gate output and docs relabeled <b>MARGINAL</b> so "fidelity PASSED" no longer reads as joint/causal fidelity.</li>
+                <li><code>DEFAULT_DATA_DIR</code> overridable via <code>CLDD_DATA_DIR</code>; the private dataset is not shipped, and an absent dataset raises a clear, actionable error.</li>
+                <li>Development-status classifier: Beta → <b>Alpha</b> — the number says what the software is.</li>
+              </ul>
+            </details>
+            <details class="chg-grp">
+              <summary><span class="tag tag-fixed">Fixed</span> <span class="count">2 entries</span><span class="chev">›</span></summary>
+              <ul>
+                <li>CI float-determinism: a version-sensitive exploration test marked <code>pinned</code>, frozen-value asserts compare with tolerance — pinning dependency <em>versions</em> does not pin the BLAS/CPU, so boosted-tree output can drift by ~1 ULP across machines.</li>
+                <li>The strict Sphinx (<code>-W</code>) docs build no longer breaks on the internal findings doc.</li>
+              </ul>
+            </details>
+            <details class="chg-grp">
+              <summary><span class="tag tag-limits">Known limitations</span> <span class="count">2 boundaries, stated</span><span class="chev">›</span></summary>
+              <ul>
+                <li>The real-data fidelity gate needs a <b>private</b> dataset and therefore does not run on public CI; coverage of the data-loading path is correspondingly low on CI by design.</li>
+                <li>scikit-learn estimator compatibility is provided <b>through <code>CalibratedPDClassifier</code> only</b> (binary-only; sample-weight equivalence not guaranteed). The loop-internal functional API stays outside the sklearn contract by design.</li>
+              </ul>
+            </details>
+          </div>
+
+          <div class="rel-links">
+            <a href="https://github.com/hossainpazooki/closed-loop-default-detection/blob/main/CHANGELOG.md" target="_blank" rel="noopener">full changelog ↗</a>
+            <a href="https://pypi.org/project/closed-loop-default-detection/0.1.0/" target="_blank" rel="noopener">pypi · 0.1.0 ↗</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VERSIONING POLICY -->
+  <section class="section" id="policy">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Versioning policy</span>
+        <h2>What a version number is allowed to claim.</h2>
+      </div>
+      <div class="policy reveal">
+        <div class="p-cell">
+          <h4>Semantic versioning</h4>
+          <p><code>MAJOR.MINOR.PATCH</code> per <a href="https://semver.org" target="_blank" rel="noopener" style="color:var(--gold)">semver.org</a>. Pre-1.0, minor bumps carry new capability; the <b>alpha</b> label is kept on every release — the development-status classifier was deliberately moved <em>down</em> from Beta to Alpha in 0.1.0.</p>
+        </div>
+        <div class="p-cell">
+          <h4>Keep a Changelog</h4>
+          <p>Every release documents <b>Added / Changed / Fixed</b> — and, beyond the format, its <b>notable results and stated limitations</b>. What didn't hold is recorded next to what did.</p>
+        </div>
+        <div class="p-cell">
+          <h4>Continuity guarantee</h4>
+          <p>New measurement axes are <b>strictly appended</b>: v0.2.0's EMP columns never touch loop control, and byte-identity of every v0.1.0 column in the committed frontier CSVs was verified before release.</p>
+        </div>
+      </div>
+      <p class="note" style="margin-top:26px">Reproduce the headline from committed evidence: <code>python scripts/paired_significance.py</code>. Exact pins for float-exact reproduction live in <code>requirements-dev.txt</code>.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div class="col-thesis">
+      <div class="t"><span class="k">generate</span> → <span class="k">measure</span> → <span class="k">improve</span> → <span class="k">regenerate</span>.<br />Limits are reported, not smoothed over.</div>
+      <div class="copy">© 2026 Hossain Pazooki · MIT license</div>
+    </div>
+    <div class="foot-links">
+      <a href="/">hossainpazooki.github.io <span class="arr">→</span></a>
+      <a href="https://github.com/hossainpazooki/closed-loop-default-detection" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
+      <a href="https://pypi.org/project/closed-loop-default-detection/" target="_blank" rel="noopener">PyPI <span class="arr">↗</span></a>
+      <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // The loop readout: cycle severity rounds until the fail, then report the frontier.
+  // Numbers are the committed SCM IPW-corrected run (seed 42).
+  (function(){
+    var ro = document.getElementById('readout');
+    var val = document.getElementById('ro-val');
+    var st = document.getElementById('ro-state');
+    if(!ro || !val || !st) return;
+    var steps = [
+      {v:'severity 0.0 · ece 0.036', s:'✓ within target', state:'pass',     hold:1700},
+      {v:'severity 0.2 · ece 0.038', s:'✓ within target', state:'pass',     hold:1700},
+      {v:'severity 0.4 · ece 0.097', s:'✓ within target', state:'pass',     hold:1700},
+      {v:'severity 0.6 · ece 0.244', s:'✗ correction fails', state:'fail',  hold:1900},
+      {v:'operating frontier = 0.4', s:'reported',        state:'frontier', hold:3600}
+    ];
+    var frontier = steps[steps.length-1];
+    function show(step){
+      val.textContent = step.v;
+      st.textContent = step.s;
+      ro.setAttribute('data-state', step.state);
+    }
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      show(frontier);
+      return;
+    }
+    var i = 0;
+    show(steps[0]);
+    (function next(){
+      setTimeout(function(){
+        i = (i + 1) % steps.length;
+        show(steps[i]);
+        next();
+      }, steps[i].hold);
+    })();
+  })();
+
+  // Scroll reveal
+  (function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var items = document.querySelectorAll('.reveal');
+    if(reduce || !('IntersectionObserver' in window)){
+      items.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+    items.forEach(function(el){ io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
