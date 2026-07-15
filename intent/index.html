@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#0B0E13" />
 <title>Intent Layer — authorization for irreversible actions · treasury payments</title>
-<meta name="description" content="The intent layer: a deterministic authorization gate for irreversible treasury actions. Tri-state fail-closed scoring, idempotency by construction, one durable ACHIEVED record — no record means no value moved." />
+<meta name="description" content="The intent layer: a domain-agnostic authorization kernel for irreversible actions, shown on its treasury reference implementation. Tri-state fail-closed scoring, idempotency by construction, one durable ACHIEVED record — no record means the action never happened." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -139,91 +139,87 @@
   .fx-row p{font-size:13.5px;color:var(--text-2);line-height:1.55}
   .fx-row p b{color:var(--text);font-weight:600}
 
-  /* the gate visual */
-  .loop-visual{
-    position:relative;
-    width:min(400px,100%);
-    aspect-ratio:1/1;
-    margin:0 auto;
+  /* the gate visual — two runs through the checkpoints, one ledger */
+  .runs{
+    width:min(460px,100%);margin:0 auto;
+    display:flex;flex-direction:column;gap:12px;
   }
-  .loop-visual .ring{
-    position:absolute;inset:40px;
-    border:1px dashed var(--line);
-    border-radius:50%;
-  }
-  .loop-visual .ring-glow{
-    position:absolute;inset:40px;border-radius:50%;
-    box-shadow:0 0 60px -20px rgba(224,164,54,.15) inset;
-    pointer-events:none;
-  }
-  .loop-visual .orbit{
-    position:absolute;inset:40px;
-    animation:orbit 9s linear infinite;
-  }
-  .loop-visual .orbit .sat{
-    position:absolute;top:-5px;left:50%;margin-left:-5px;
-    width:10px;height:10px;border-radius:50%;
-    background:var(--gold);
-    box-shadow:0 0 14px rgba(224,164,54,.85), 0 0 3px rgba(224,164,54,1);
-  }
-  @keyframes orbit{to{transform:rotate(360deg)}}
-  @media (prefers-reduced-motion:reduce){
-    .loop-visual .orbit{animation:none}
-  }
-  .lnode{
-    position:absolute;z-index:2;
-    font-family:var(--mono);font-size:10.5px;font-weight:500;
-    letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);
-    background:var(--panel);border:1px solid var(--line);
-    border-radius:999px;padding:6px 12px;white-space:nowrap;
-  }
-  .lnode b{color:var(--gold);font-weight:600;margin-right:5px}
-  .lnode.n1{top:40px;left:50%;transform:translate(-50%,-50%)}
-  .lnode.n2{top:50%;right:40px;transform:translate(50%,-50%)}
-  .lnode.n3{bottom:40px;left:50%;transform:translate(-50%,50%)}
-  .lnode.n4{top:50%;left:40px;transform:translate(-50%,-50%)}
-
-  /* the two idempotency checkpoints — the system's signature, kept gold */
-  .lnode.chk{
-    font-size:9px;color:var(--gold);
-    border-color:var(--gold-dim);
-    background:rgba(224,164,54,.08);
-    padding:4px 9px;
-  }
-  .lnode.chk::before{content:"◆";margin-right:5px;font-size:8px}
-  .lnode.c1{top:calc(50% - (50% - 40px)*.7071);left:calc(50% + (50% - 40px)*.7071);transform:translate(-50%,-50%)}
-  .lnode.c2{top:calc(50% + (50% - 40px)*.7071);left:calc(50% - (50% - 40px)*.7071);transform:translate(-50%,-50%)}
-
-  .readout{
-    position:absolute;inset:0;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:8px;text-align:center;padding:0 88px;
-  }
-  .readout .ro-label{
+  .runs-cap{
     font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--muted);
+    display:flex;justify-content:space-between;gap:10px;padding:0 2px;
   }
-  .readout .ro-val{
-    font-family:var(--mono);font-size:13px;font-weight:600;
-    color:var(--text);letter-spacing:.01em;line-height:1.5;
-    transition:color .25s ease;
+  .runs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .run{
+    border:1px solid var(--line);border-radius:10px;
+    background:var(--ink-2);overflow:hidden;
   }
-  .readout .ro-state{
-    font-family:var(--mono);font-size:11px;font-weight:600;
-    letter-spacing:.1em;text-transform:uppercase;
-    padding:4px 12px;border-radius:999px;
-    border:1px solid var(--line);color:var(--muted);
-    transition:color .25s ease,border-color .25s ease,background .25s ease;
+  .run-head{
+    padding:10px 12px;border-bottom:1px solid var(--line-soft);
+    font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);line-height:1.6;
+    background:rgba(255,255,255,.012);
   }
-  .readout[data-state="pass"] .ro-state{color:var(--ok);border-color:var(--ok-dim);background:rgba(91,185,140,.07)}
-  .readout[data-state="warn"] .ro-state{color:var(--gold);border-color:var(--gold-dim);background:rgba(224,164,54,.08)}
-  .readout[data-state="fail"] .ro-state{color:var(--block);border-color:var(--block-dim);background:rgba(212,101,74,.07)}
-  .readout[data-state="final"] .ro-state{color:var(--gold);border-color:var(--gold-dim);background:rgba(224,164,54,.08)}
-  .readout[data-state="final"] .ro-val{color:var(--gold)}
+  .run-head b{display:block;font-size:10.5px;color:var(--text);font-weight:600;letter-spacing:.06em}
+  .run-head .key{color:var(--gold)}
+  .gsteps{padding:14px 12px 16px;position:relative}
+  .gsteps::before{
+    content:"";position:absolute;left:17px;top:22px;bottom:24px;width:1px;
+    background:var(--line);
+  }
+  .gstep{
+    position:relative;padding:0 0 18px 24px;
+    font-family:var(--mono);line-height:1.45;
+  }
+  .gstep:last-child{padding-bottom:0}
+  .gstep .d{
+    position:absolute;left:1px;top:2px;width:11px;height:11px;border-radius:50%;
+    background:var(--ink);border:1.5px solid var(--line);
+    transition:border-color .3s ease, background .3s ease, box-shadow .3s ease;
+  }
+  .gstep .t{
+    display:block;font-size:10.5px;font-weight:600;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);
+    transition:color .3s ease;
+  }
+  .gstep .s{
+    display:block;font-size:9.5px;color:var(--muted);opacity:.55;
+    transition:opacity .3s ease, color .3s ease;
+  }
+  .gstep[data-s="on"] .d{border-color:var(--gold);box-shadow:0 0 10px rgba(224,164,54,.55)}
+  .gstep[data-s="on"] .t{color:var(--text)}
+  .gstep[data-s="ok"] .d{border-color:var(--ok-dim);background:rgba(91,185,140,.35)}
+  .gstep[data-s="ok"] .t{color:var(--ok)}
+  .gstep[data-s="ok"] .s{opacity:.8}
+  .gstep[data-s="gold"] .d{border-color:var(--gold);background:var(--gold);box-shadow:0 0 12px rgba(224,164,54,.6)}
+  .gstep[data-s="gold"] .t{color:var(--gold)}
+  .gstep[data-s="gold"] .s{opacity:.9;color:var(--text-2)}
+  .gstep[data-s="bad"] .d{border-color:var(--block);background:rgba(212,101,74,.4)}
+  .gstep[data-s="bad"] .t{color:var(--block)}
+  .gstep[data-s="bad"] .s{opacity:.9;color:var(--text-2)}
+  .run.dup .gsteps::before{bottom:44px}
+  .ledger{
+    border:1px solid var(--line);border-radius:10px;
+    padding:13px 16px;background:var(--ink-2);
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+    font-family:var(--mono);
+    transition:border-color .35s ease, background .35s ease;
+  }
+  .ledger .ll{
+    font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+  .ledger .lv{
+    font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:.03em;
+    transition:color .35s ease;
+  }
+  .ledger[data-s="on"]{
+    border-color:var(--gold-dim);
+    background:linear-gradient(90deg,rgba(224,164,54,.07),var(--ink-2) 70%);
+  }
+  .ledger[data-s="on"] .lv{color:var(--gold)}
 
   @media(max-width:860px){
     .intro-grid{grid-template-columns:1fr;gap:44px}
-    .loop-visual{width:min(340px,100%)}
   }
 
   /* ---------- hero ---------- */
@@ -477,33 +473,45 @@
     <div class="wrap intro-grid">
       <div>
         <span class="eyebrow">the effect of running the intent layer</span>
-        <h1>A duplicate payment doesn't get caught.<br /><span class="dim">It becomes impossible — refused at the dispatch edge, by construction.</span></h1>
-        <p class="lede">An irreversible treasury action is authorized only by a reproducible, measured demonstration that it meets declared criteria. The gate is the <b>sole emitter</b> of a single durable <b>ACHIEVED</b> record, and consumers settle only from that record — so <b>no record ⟹ no value moved</b>.</p>
+        <h1>A duplicate of an irreversible action isn't caught.<br /><span class="dim">It's impossible — refused at the dispatch edge, by construction.</span></h1>
+        <p class="lede">The kernel is <b>domain-agnostic</b>: any irreversible action is authorized only by a reproducible, measured demonstration that it meets declared criteria. The gate is the <b>sole emitter</b> of a single durable <b>ACHIEVED</b> record, and downstream acts only on that record — so <b>no record ⟹ the action never happened</b>. Worked example throughout: a treasury payment, action class&nbsp;1.</p>
         <div class="fx">
           <div class="fx-row without">
             <span class="w">without</span>
-            <p>At-most-once is an <b>assertion</b>: dedup lives in adapter logic and retry queues, audited after the fact. A retried near-duplicate can settle twice before anyone reads the log.</p>
+            <p>At-most-once is an <b>assertion</b>: dedup lives in each adapter's retry logic, audited after the fact. A retried near-duplicate can <b>execute twice</b> before anyone reads the log.</p>
           </div>
           <div class="fx-row with">
             <span class="w">with the gate</span>
-            <p>The idempotency key is a <b>declared, first-class gate criterion</b> — required, and reserved at the dispatch edge. Same key, one changed field ⟹ <b>FAILED_AT_DISPATCH</b>. At-most-once holds on the settlement log <b>by construction</b>.</p>
+            <p>The idempotency key is a <b>declared, first-class gate criterion</b> — required, and reserved at the dispatch edge. Same key, one changed field ⟹ <b>FAILED_AT_DISPATCH</b>. At-most-once holds <b>by construction</b>, whatever the action is.</p>
           </div>
         </div>
       </div>
-      <div class="loop-visual" role="img" aria-label="The gate lifecycle: declare, verify, re-check, emit — with two idempotency checkpoints. A payment runs clean to one durable ACHIEVED record; a replayed near-duplicate with the same key collides at the dispatch edge and is refused. Final readout: settlement log, one record, value moved once.">
-        <div class="ring"></div>
-        <div class="ring-glow"></div>
-        <div class="orbit"><span class="sat"></span></div>
-        <span class="lnode n1"><b>01</b>declare</span>
-        <span class="lnode n2"><b>02</b>verify</span>
-        <span class="lnode n3"><b>03</b>re-check</span>
-        <span class="lnode n4"><b>04</b>emit</span>
-        <span class="lnode chk c1">key required</span>
-        <span class="lnode chk c2">key reserved</span>
-        <div class="readout" id="readout" data-state="pass" aria-hidden="true">
-          <span class="ro-label" id="ro-label">payment · class 1 · irreversible</span>
-          <span class="ro-val" id="ro-val">DECLARED · key pay-2026-07-042</span>
-          <span class="ro-state" id="ro-state">✓ key present</span>
+      <div class="runs" role="img" aria-label="Two runs through the gate, side by side. Run 1, a treasury payment, passes declaration, verification, and the dispatch-edge re-check, reserves its idempotency key, and reaches the single durable ACHIEVED record. Run 2, a near-duplicate with the same key and one changed field, passes verification but collides on the reserved key at the dispatch edge and ends FAILED_AT_DISPATCH. The durable feed below shows one ACHIEVED record: the action ran exactly once.">
+        <div class="runs-cap" aria-hidden="true"><span>worked example · treasury payment · class 1</span><span>same key K</span></div>
+        <div class="runs-grid" aria-hidden="true">
+          <div class="run">
+            <div class="run-head">run 1 · the action<b>intent 7f3a… · <span class="key">key K</span></b></div>
+            <div class="gsteps">
+              <div class="gstep" data-s="idle" id="a1"><span class="d"></span><span class="t">declared</span><span class="s">key present</span></div>
+              <div class="gstep" data-s="idle" id="a2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass · none unevaluable</span></div>
+              <div class="gstep" data-s="idle" id="a3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">volatile re-check holds</span></div>
+              <div class="gstep" data-s="idle" id="a4"><span class="d"></span><span class="t">key K reserved</span><span class="s">first reservation</span></div>
+              <div class="gstep" data-s="idle" id="a5"><span class="d"></span><span class="t">achieved</span><span class="s">one durable record · fsync</span></div>
+            </div>
+          </div>
+          <div class="run dup">
+            <div class="run-head">run 2 · near-duplicate<b>intent 9c1e… · <span class="key">same key K</span></b></div>
+            <div class="gsteps">
+              <div class="gstep" data-s="idle" id="b1"><span class="d"></span><span class="t">declared</span><span class="s">same key · one field changed</span></div>
+              <div class="gstep" data-s="idle" id="b2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass — validity isn't the question</span></div>
+              <div class="gstep" data-s="idle" id="b3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">key K already reserved</span></div>
+              <div class="gstep" data-s="idle" id="b4"><span class="d"></span><span class="t">failed_at_dispatch</span><span class="s">refused · no record written</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="ledger" data-s="idle" id="ledger" aria-hidden="true">
+          <span class="ll">durable feed — what downstream observes</span>
+          <span class="lv" id="ledger-v">awaiting records…</span>
         </div>
       </div>
     </div>
@@ -512,9 +520,9 @@
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">treasury-intent-controller · the authorization plane</span>
+      <span class="eyebrow">the authorization kernel · reference implementation: treasury-intent-controller</span>
       <h2 class="hero-h">Nothing moves until the gate says so —<br /><span class="dim">one durable ACHIEVED record, or nothing at all.</span></h2>
-      <p class="lede">A deterministic Go gate decides whether an irreversible treasury action is authorized. Scoring is <b>tri-state and fail-closed</b>: any <code>Fail</code> or <code>Unevaluable</code> denies, and unevaluable never collapses into a pass. Volatile facts — balance, reachability — are re-checked at the dispatch edge by the <b>same authority</b>, immediately before authorizing. Every run replays <b>byte-identically</b> from a logical-clock event log.</p>
+      <p class="lede">A deterministic Go gate decides whether an irreversible action is authorized — the reference implementation gates treasury payments, but the kernel <b>reads no artifacts and knows no domain</b>: criteria, thresholds, and the idempotency key all arrive as declared params. Scoring is <b>tri-state and fail-closed</b>: any <code>Fail</code> or <code>Unevaluable</code> denies, and unevaluable never collapses into a pass. Volatile facts — balance, reachability — are re-checked at the dispatch edge by the <b>same authority</b>, immediately before authorizing. Every run replays <b>byte-identically</b> from a logical-clock event log.</p>
 
       <div class="hero-meta">
         <span class="pill"><span class="dot-gold"></span>deterministic — <b>byte-identical</b> replay</span>
@@ -581,8 +589,8 @@
             <tr><td>RESOLVING → ACTIVE</td><td>working</td><td class="wraps">criteria resolved and the intent admitted for scoring</td></tr>
             <tr><td>VERIFYING</td><td>working</td><td class="wraps">tri-state scoring over every declared criterion</td></tr>
             <tr><td class="pass">ACHIEVED</td><td>terminal</td><td class="wraps">the one durable record, fsynced before success — consumers settle from it</td></tr>
-            <tr><td class="fail">FAILED</td><td>terminal</td><td class="wraps">a criterion failed or was unevaluable (including an absent key) — no record, no movement</td></tr>
-            <tr><td class="fail">FAILED_AT_DISPATCH</td><td>terminal</td><td class="wraps">a volatile fact drifted, or the key collided with a prior reservation — no record, no movement</td></tr>
+            <tr><td class="fail">FAILED</td><td>terminal</td><td class="wraps">a criterion failed or was unevaluable (including an absent key) — no record, the action never ran</td></tr>
+            <tr><td class="fail">FAILED_AT_DISPATCH</td><td>terminal</td><td class="wraps">a volatile fact drifted, or the key collided with a prior reservation — no record, the action never ran</td></tr>
           </tbody>
         </table>
       </div>
@@ -634,7 +642,7 @@
       <div class="section-head reveal">
         <span class="eyebrow">The loop around the gate</span>
         <h2>Three planes. The gate holds authority; the others declare and observe.</h2>
-        <p>Upstream declares what must be true; the gate decides; downstream settles from what it observes. The same declared key that gates dispatch keys the settlement ledger — so at-most-once holds <b>end to end</b>.</p>
+        <p>Upstream declares what must be true; the gate decides; downstream settles from what it observes. The same declared key that gates dispatch keys the settlement ledger — so at-most-once holds <b>end to end</b>. This is the <b>treasury instantiation</b> of a domain-agnostic pattern: any consequential action class can sit behind the same gate with a different declared spec.</p>
       </div>
       <div class="loop cols3 reveal">
         <div class="step">
@@ -713,7 +721,7 @@
 <footer>
   <div class="wrap foot">
     <div class="col-thesis">
-      <div class="t"><span class="k">declare</span> → <span class="k">verify</span> → <span class="k">re-check</span> → <span class="k">emit</span>.<br />No record ⟹ no value moved.</div>
+      <div class="t"><span class="k">declare</span> → <span class="k">verify</span> → <span class="k">re-check</span> → <span class="k">emit</span>.<br />No record ⟹ the action never happened.</div>
       <div class="copy">© 2026 Hossain Pazooki</div>
     </div>
     <div class="foot-links">
@@ -725,42 +733,48 @@
 </footer>
 
 <script>
-  // The gate readout: one clean payment to ACHIEVED, then the duplicate-payment kill.
+  // The two-run rail: one clean run to ACHIEVED, then the near-duplicate kill.
   // Every state shown is a real lifecycle state from internal/lifecycle.
   (function(){
-    var ro = document.getElementById('readout');
-    var lbl = document.getElementById('ro-label');
-    var val = document.getElementById('ro-val');
-    var st = document.getElementById('ro-state');
-    if(!ro || !lbl || !val || !st) return;
-    var steps = [
-      {l:'payment · class 1 · irreversible', v:'DECLARED · key pay-2026-07-042',        s:'✓ key present',            state:'pass', hold:1700},
-      {l:'payment · class 1 · irreversible', v:'VERIFYING · criteria pass',             s:'✓ none unevaluable',       state:'pass', hold:1700},
-      {l:'payment · class 1 · irreversible', v:'dispatch edge · volatile re-check',     s:'✓ facts hold',             state:'pass', hold:1700},
-      {l:'payment · class 1 · irreversible', v:'key reserved · ACHIEVED',               s:'✓ one durable record',     state:'warn', hold:2100},
-      {l:'replay · same key · amount changed', v:'key pay-2026-07-042 · new hash',      s:'⚠ near-duplicate',         state:'warn', hold:1900},
-      {l:'replay · same key · amount changed', v:'collision at the dispatch edge',      s:'✗ FAILED_AT_DISPATCH',     state:'fail', hold:2100},
-      {l:'settlement log',                   v:'1 record · value moved once',           s:'at-most-once · by construction', state:'final', hold:3800}
+    var ledger = document.getElementById('ledger');
+    var ledgerV = document.getElementById('ledger-v');
+    if(!ledger || !ledgerV) return;
+    function set(id, s){ var el = document.getElementById(id); if(el) el.setAttribute('data-s', s); }
+    // [target, state, holdAfterMs] — ledger handled via 'L'
+    var timeline = [
+      ['a1','ok',   900], ['a2','ok', 900], ['a3','ok', 900], ['a4','gold', 900], ['a5','gold', 1400],
+      ['b1','ok',   900], ['b2','ok', 1100], ['b3','bad', 1100], ['b4','bad', 1400],
+      ['L', 'on',   4200]
     ];
-    var final_ = steps[steps.length-1];
-    function show(step){
-      lbl.textContent = step.l;
-      val.textContent = step.v;
-      st.textContent = step.s;
-      ro.setAttribute('data-state', step.state);
+    var ids = ['a1','a2','a3','a4','a5','b1','b2','b3','b4'];
+    function finish(){
+      timeline.forEach(function(step){ if(step[0] !== 'L') set(step[0], step[1]); });
+      ledger.setAttribute('data-s','on');
+      ledgerV.textContent = 'ACHIEVED × 1 — the action ran exactly once';
     }
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      show(final_);
+      finish();
       return;
     }
+    function reset(){
+      ids.forEach(function(id){ set(id, 'idle'); });
+      ledger.setAttribute('data-s','idle');
+      ledgerV.textContent = 'awaiting records…';
+    }
     var i = 0;
-    show(steps[0]);
     (function next(){
+      var step = timeline[i];
+      if(step[0] === 'L'){
+        ledger.setAttribute('data-s','on');
+        ledgerV.textContent = 'ACHIEVED × 1 — the action ran exactly once';
+      } else {
+        set(step[0], step[1]);
+      }
       setTimeout(function(){
-        i = (i + 1) % steps.length;
-        show(steps[i]);
+        i++;
+        if(i >= timeline.length){ i = 0; reset(); setTimeout(next, 700); return; }
         next();
-      }, steps[i].hold);
+      }, step[2]);
     })();
   })();
 
