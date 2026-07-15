@@ -139,11 +139,49 @@
   .fx-row p{font-size:13.5px;color:var(--text-2);line-height:1.55}
   .fx-row p b{color:var(--text);font-weight:600}
 
-  /* the gate visual — two runs through the checkpoints, one ledger */
+  /* the gate visual — two runs through the checkpoints, one ledger, one loop back */
   .runs{
     width:min(460px,100%);margin:0 auto;
     display:flex;flex-direction:column;gap:12px;
+    position:relative;
   }
+  .spec-chip{
+    border:1px solid var(--line);border-radius:10px;
+    padding:10px 14px;background:var(--ink-2);
+    display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;
+    font-family:var(--mono);
+    transition:border-color .35s ease, background .35s ease;
+  }
+  .spec-chip .sl{
+    font-size:10.5px;font-weight:600;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--text-2);
+    transition:color .35s ease;
+  }
+  .spec-chip .sl .h{color:var(--gold);font-weight:600;text-transform:none;letter-spacing:.02em}
+  .spec-chip .sr{
+    font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+    transition:color .35s ease;
+  }
+  .spec-chip[data-s="on"]{border-color:var(--gold-dim)}
+  .spec-chip[data-s="loop"]{
+    border-color:var(--gold-dim);
+    background:linear-gradient(90deg,rgba(224,164,54,.08),var(--ink-2) 70%);
+  }
+  .spec-chip[data-s="loop"] .sr{color:var(--gold)}
+  .loopback{
+    position:absolute;left:-16px;top:20px;bottom:24px;width:15px;
+    border:1px dashed var(--line);border-right:0;
+    border-radius:10px 0 0 10px;
+    opacity:.3;pointer-events:none;
+    transition:opacity .4s ease, border-color .4s ease;
+  }
+  .loopback::before{
+    content:"▸";position:absolute;top:-9px;right:-5px;
+    font-family:var(--mono);font-size:12px;color:var(--line);
+    transition:color .4s ease;
+  }
+  .loopback[data-s="on"]{opacity:1;border-color:var(--gold-dim)}
+  .loopback[data-s="on"]::before{color:var(--gold)}
   .runs-cap{
     font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--muted);
@@ -486,8 +524,13 @@
           </div>
         </div>
       </div>
-      <div class="runs" role="img" aria-label="Two runs through the gate, side by side. Run 1, a treasury payment, passes declaration, verification, and the dispatch-edge re-check, reserves its idempotency key, and reaches the single durable ACHIEVED record. Run 2, a near-duplicate with the same key and one changed field, passes verification but collides on the reserved key at the dispatch edge and ends FAILED_AT_DISPATCH. The durable feed below shows one ACHIEVED record: the action ran exactly once.">
-        <div class="runs-cap" aria-hidden="true"><span>worked example · treasury payment · class 1</span><span>same key K</span></div>
+      <div class="runs" role="img" aria-label="The intent loop. At the top, the signed policy: IntentSpec c7a36959, published in the ATLAS registry. Two runs pass through the gate under it, side by side. Run 1, a treasury payment, passes declaration, verification, and the dispatch-edge re-check, reserves its idempotency key, and reaches the single durable ACHIEVED record. Run 2, a near-duplicate with the same key and one changed field, passes verification but collides on the reserved key at the dispatch edge and ends FAILED_AT_DISPATCH. The durable feed below shows one ACHIEVED record — the action ran exactly once — and a return rail carries the settlement's trace hashes back up to the signed policy chip: the loop closes on the exact policy that authorized the run.">
+        <div class="spec-chip" data-s="idle" id="spec" aria-hidden="true">
+          <span class="sl">signed intentspec · <span class="h">c7a36959…dc51</span></span>
+          <span class="sr" id="spec-s">atlas registry · published</span>
+        </div>
+        <div class="loopback" data-s="idle" id="loopback" aria-hidden="true"></div>
+        <div class="runs-cap" aria-hidden="true"><span>worked example · treasury payment · class 1</span><span>spec re-verified per run · fail-closed</span></div>
         <div class="runs-grid" aria-hidden="true">
           <div class="run">
             <div class="run-head">run 1 · the action<b>intent 7f3a… · <span class="key">key K</span></b></div>
@@ -754,19 +797,37 @@ ACHIEVED {<br />
   (function(){
     var ledger = document.getElementById('ledger');
     var ledgerV = document.getElementById('ledger-v');
-    if(!ledger || !ledgerV) return;
+    var spec = document.getElementById('spec');
+    var specS = document.getElementById('spec-s');
+    var loopback = document.getElementById('loopback');
+    if(!ledger || !ledgerV || !spec || !specS || !loopback) return;
     function set(id, s){ var el = document.getElementById(id); if(el) el.setAttribute('data-s', s); }
-    // [target, state, holdAfterMs] — ledger handled via 'L'
+    function ledgerOn(){
+      ledger.setAttribute('data-s','on');
+      ledgerV.textContent = 'ACHIEVED × 1 — the action ran exactly once';
+    }
+    function loopOn(){
+      loopback.setAttribute('data-s','on');
+      spec.setAttribute('data-s','loop');
+      specS.textContent = '⟲ settlement joins back to this exact policy';
+    }
+    // [target, state, holdAfterMs] — 'S' = spec chip, 'L' = ledger, 'LOOP' = the closure
     var timeline = [
+      ['S', 'on',   1100],
       ['a1','ok',   900], ['a2','ok', 900], ['a3','ok', 900], ['a4','gold', 900], ['a5','gold', 1400],
       ['b1','ok',   900], ['b2','ok', 1100], ['b3','bad', 1100], ['b4','bad', 1400],
-      ['L', 'on',   4200]
+      ['L', 'on',   1400],
+      ['LOOP','on', 4600]
     ];
     var ids = ['a1','a2','a3','a4','a5','b1','b2','b3','b4'];
     function finish(){
-      timeline.forEach(function(step){ if(step[0] !== 'L') set(step[0], step[1]); });
-      ledger.setAttribute('data-s','on');
-      ledgerV.textContent = 'ACHIEVED × 1 — the action ran exactly once';
+      spec.setAttribute('data-s','on');
+      ids.forEach(function(id, idx){
+        var state = ['ok','ok','ok','gold','gold','ok','ok','bad','bad'][idx];
+        set(id, state);
+      });
+      ledgerOn();
+      loopOn();
     }
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
       finish();
@@ -776,16 +837,17 @@ ACHIEVED {<br />
       ids.forEach(function(id){ set(id, 'idle'); });
       ledger.setAttribute('data-s','idle');
       ledgerV.textContent = 'awaiting records…';
+      loopback.setAttribute('data-s','idle');
+      spec.setAttribute('data-s','idle');
+      specS.textContent = 'atlas registry · published';
     }
     var i = 0;
     (function next(){
       var step = timeline[i];
-      if(step[0] === 'L'){
-        ledger.setAttribute('data-s','on');
-        ledgerV.textContent = 'ACHIEVED × 1 — the action ran exactly once';
-      } else {
-        set(step[0], step[1]);
-      }
+      if(step[0] === 'L'){ ledgerOn(); }
+      else if(step[0] === 'LOOP'){ loopOn(); }
+      else if(step[0] === 'S'){ spec.setAttribute('data-s','on'); }
+      else { set(step[0], step[1]); }
       setTimeout(function(){
         i++;
         if(i >= timeline.length){ i = 0; reset(); setTimeout(next, 700); return; }
