@@ -641,31 +641,45 @@
     <div class="wrap">
       <div class="section-head reveal">
         <span class="eyebrow">The loop around the gate</span>
-        <h2>Three planes. The gate holds authority; the others declare and observe.</h2>
-        <p>Upstream declares what must be true; the gate decides; downstream settles from what it observes. The same declared key that gates dispatch keys the settlement ledger — so at-most-once holds <b>end to end</b>. This is the <b>treasury instantiation</b> of a domain-agnostic pattern: any consequential action class can sit behind the same gate with a different declared spec.</p>
+        <h2>Not a pipeline — a loop, closed over three hashes.</h2>
+        <p>At first sight this reads left to right. It isn't: the policy is signed upstream, <b>re-verified by the gate's scorer at authorization time</b>, and quoted back out in every settlement — <code>rule_artifact_hash</code> · <code>intent_spec_hash</code> · <code>trajectory_hash</code>. Every settlement joins the runtime trace to the <b>exact signed policy it was authorized under</b>. This is the treasury instantiation of a domain-agnostic pattern: any consequential action class can sit behind the same gate with a different declared spec.</p>
       </div>
       <div class="loop cols3 reveal">
         <div class="step">
-          <span class="n">upstream · atlas</span><span class="arr">→</span>
-          <h3>IntentSpec — declared criteria</h3>
-          <p>The criteria this gate enforces are governed as a signed, expert-attested ATLAS artifact pinned by hash. The gate consumes and enforces the spec — it never authors it.</p>
+          <span class="n">policy plane · atlas</span><span class="arr">→</span>
+          <h3>IntentSpec — the signed policy</h3>
+          <p>What authorizes an action — including what counts as a duplicate — is a signed, expert-attested, registry-governed artifact, published by content hash. Not adapter-local config.</p>
         </div>
         <div class="step gate-step">
           <span class="n">this plane · the gate</span><span class="arr">→</span>
           <h3>Authorization</h3>
-          <p>Deterministic, fail-closed, sole ACHIEVED authority. Reads no artifacts at decision time — criteria, thresholds, and the key arrive as params. Stops at the durable record.</p>
+          <p>Before any criterion is scored, the resolver re-verifies the pinned artifact — <code>verify_artifact</code> folded per hash; absent, rejected, or hash-mismatched ⟹ fail closed. Then tri-state scoring, the dispatch edge, one durable record.</p>
         </div>
         <div class="step">
-          <span class="n">downstream · compass</span><span class="arr">■</span>
-          <h3>Settlement consumer</h3>
-          <p>Pulls <code>GET /v2/events?since=cursor</code> and recomputes settlements from observed ACHIEVED records only, into a ledger keyed by the same declared key — at-most-once on the consumer side too.</p>
+          <span class="n">settlement plane · compass</span><span class="arr">⟲</span>
+          <h3>Settlement — and the loop closes</h3>
+          <p>Pulls <code>GET /v2/events?since=cursor</code> and recomputes from observed ACHIEVED records only. Each settlement carries the full trace record — pointing back to the signed policy that started the loop.</p>
+        </div>
+      </div>
+
+      <div class="install reveal" style="max-width:820px;margin-top:26px" role="img" aria-label="The ACHIEVED trace record — the contract's exact field set: intent id, idempotency key, rule artifact hash, intent spec hash, trajectory hash, and the feed sequence number. The intent spec hash points back to the signed policy in the ATLAS registry; the trajectory hash replays the authorization byte-identically; the idempotency key is the reservation that makes a duplicate impossible.">
+        <div class="install-bar"><span>the ACHIEVED trace record — what closes the loop</span><span>field set verbatim · values illustrative</span></div>
+        <div class="install-body" aria-hidden="true">
+ACHIEVED {<br />
+&nbsp;&nbsp;intent_id: <span class="g">"7f3a…"</span>,<br />
+&nbsp;&nbsp;idempotency_key: <span class="g">"pay-2026-07-042"</span>, <span class="c">// the reservation — a duplicate is impossible</span><br />
+&nbsp;&nbsp;rule_artifact_hash: <span class="k">"…"</span>, <span class="c">// the rule pack in force</span><br />
+&nbsp;&nbsp;intent_spec_hash: <span class="k">"c7a36959…dc51"</span>, <span class="c">// ⟲ the signed policy that authorized this run</span><br />
+&nbsp;&nbsp;trajectory_hash: <span class="k">"…"</span>, <span class="c">// byte-identical replay of the decision itself</span><br />
+&nbsp;&nbsp;seq: 41 <span class="c">// global cursor in the durable feed</span><br />
+}
         </div>
       </div>
 
       <div class="findings-stack reveal">
         <div class="finding">
           <span class="f-label">Why this shape</span>
-          <p><b>Authority is never shared.</b> The model and the resolver may propose; only the gate authorizes; only an observer settles. Every hand-off crosses a durable, replayable record — so the audit reading of any duplicate or drifted intent is unambiguous: <b>no value moved</b>.</p>
+          <p><b>Authority is never shared — and provenance is never lost.</b> The agent may propose; only the gate authorizes; only an observer settles. Every hand-off crosses a durable, replayable record, and the record names the signed policy by hash — so any settlement can be audited back to the exact criteria, thresholds, and duplicate-definition it ran under, and any duplicate or drifted intent reads unambiguously: <b>the action never happened</b>.</p>
         </div>
       </div>
 
@@ -673,9 +687,11 @@
         <details class="chg-grp" open>
           <summary><span class="tag tag-notable">Built &amp; verified</span> <span class="count">what the claims above rest on</span><span class="chev">›</span></summary>
           <ul>
+            <li><b>The full loop ran green, live (2026-07-12)</b>: COMPASS declare → Go gate → wheel-verified scorer (a real <code>verify_artifact</code> of the golden signed IntentSpec) → ACHIEVED in the durable feed → cursor reconcile → settlements carrying the full trace record.</li>
+            <li><b>The negatives were probed live, not assumed</b>: an unknown spec hash ⟹ FAILED unevaluable; a cursor-rewind restatement re-observed the feed and left the ledger <b>byte-identical</b> (duplicates counted, zero applied); a real scorer kill made the next declaration FAIL with <b>zero</b> new settlements. Outage means delay — never loss, never invention.</li>
             <li><b>Slice 1 + the durability refactor + the live scoring seam</b> are built and verified: the gate, the fsync-per-append durable feed with a gapless global cursor, and the Python criterion scorer answering <code>POST /ml/evaluate</code> — verified two-process, with a real service kill.</li>
             <li><b>Zero-config refuses everything</b>: with no scorer configured, every intent is unevaluable and therefore denied. The default posture of the system is "no".</li>
-            <li><b>The IntentSpec artifact type is merged upstream</b> (ATLAS, ADR-0021) and a COMPASS-side consumer exists — decision agent plus cron-driven reconcile over the durable feed.</li>
+            <li><b>The IntentSpec artifact type is merged upstream</b> (ATLAS, ADR-0021/0022) — it flows through the same compile · sign · attest · publish lifecycle as rule artifacts, and is consumed strictly by hash.</li>
           </ul>
         </details>
         <details class="chg-grp">
