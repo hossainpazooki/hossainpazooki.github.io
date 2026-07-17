@@ -236,6 +236,56 @@
     margin-top:14px;max-width:600px;color:var(--muted);font-size:15.5px;
   }
 
+  /* ---------- featured pages ---------- */
+  .feat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  .feat-card{
+    display:flex;flex-direction:column;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:8px;
+    overflow:hidden;
+    transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .feat-card:hover{
+    transform:translateY(-3px);
+    border-color:var(--gold-dim);
+    box-shadow:0 24px 60px -34px rgba(0,0,0,.9);
+  }
+  .feat-shot{
+    display:block;
+    border-bottom:1px solid var(--line);
+    background:var(--ink-2);
+    aspect-ratio:16/10;
+    overflow:hidden;
+  }
+  .feat-shot img{
+    display:block;width:100%;height:100%;object-fit:cover;object-position:top;
+    transition:transform .35s ease;
+  }
+  .feat-card:hover .feat-shot img{transform:scale(1.025)}
+  .feat-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .feat-path{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:.08em;
+    color:var(--muted);
+  }
+  .feat-path .hp{color:var(--gold)}
+  .feat-body h3{font-size:18px;font-weight:600;letter-spacing:-.01em}
+  .feat-body p{font-size:13.5px;color:var(--text-2);line-height:1.55}
+  .feat-cta{
+    margin-top:auto;padding-top:12px;
+    font-family:var(--mono);font-size:12.5px;color:var(--gold);
+    letter-spacing:.02em;
+  }
+  @media(max-width:860px){
+    .feat-grid{grid-template-columns:1fr;gap:18px}
+  }
+
   /* ---------- capabilities ---------- */
   .facts{
     display:grid;
@@ -436,6 +486,46 @@
     </div>
   </section>
 
+  <!-- FEATURED PAGES -->
+  <section class="section" id="featured">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Featured pages</span>
+        <h2>Three deep dives, live on this site.</h2>
+        <p>Full write-ups with worked examples — an authorization kernel, a stress-test harness, and a verification plugin.</p>
+      </div>
+      <div class="feat-grid reveal">
+        <a class="feat-card" href="/intent/">
+          <div class="feat-shot"><img src="/assets/thumbs/intent.jpg" alt="Intent Layer page — a duplicate of an irreversible action is refused at the dispatch edge, by construction" loading="lazy" width="1920" height="1200" /></div>
+          <div class="feat-body">
+            <span class="feat-path"><span class="hp">hp</span> / intent</span>
+            <h3>Intent Layer</h3>
+            <p>An authorization kernel for irreversible actions — fail-closed on unevaluable, idempotent by construction, one durable ACHIEVED record.</p>
+            <span class="feat-cta">Read the page →</span>
+          </div>
+        </a>
+        <a class="feat-card" href="/cldd/">
+          <div class="feat-shot"><img src="/assets/thumbs/cldd.jpg" alt="CLDD page — your blind spot becomes a number; the loop runs until the model breaks and reports where" loading="lazy" width="1920" height="1200" /></div>
+          <div class="feat-body">
+            <span class="feat-path"><span class="hp">hp</span> / cldd</span>
+            <h3>CLDD</h3>
+            <p>Closed-loop default detection — stress-tests a PD model under selective labels and reports the severity at which it breaks. v0.2.0 on PyPI.</p>
+            <span class="feat-cta">Read the page →</span>
+          </div>
+        </a>
+        <a class="feat-card" href="/rigor/">
+          <div class="feat-shot"><img src="/assets/thumbs/rigor.jpg" alt="rigor page — don't trust the claim, try to break it" loading="lazy" width="1920" height="1200" /></div>
+          <div class="feat-body">
+            <span class="feat-path"><span class="hp">hp</span> / rigor</span>
+            <h3>rigor</h3>
+            <p>A Claude Code plugin that makes an agent try to break its own claim before "tests pass" or "done" is believed.</p>
+            <span class="feat-cta">Read the page →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- CAPABILITIES -->
   <section class="section" id="proof">
     <div class="wrap">
@@ -501,7 +591,7 @@
         <article class="rec reveal">
           <div class="kind"><span class="tag">open source</span><br />verification toolkit</div>
           <div>
-            <h3>rigor <span class="src">github.com/hossainpazooki</span></h3>
+            <h3><a href="/rigor/">rigor</a> <span class="src">→ /rigor</span></h3>
             <p>A Claude Code plugin that holds agents to their evidence: blocks unverified claims, refuses silent git-history rewrites, and enforces a hard line between what's implemented and what's merely planned.</p>
             <div class="detail">Built under its own rules — the plugin's construction is gated by the same discipline it ships.</div>
             <div class="stack"><span>Node</span><span>hooks</span><span>skills</span><span>git-guard</span></div>
