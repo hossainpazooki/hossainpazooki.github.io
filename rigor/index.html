@@ -495,7 +495,7 @@
         <span class="chip"><b>7</b> commands</span>
         <span class="chip"><b>5</b> agents</span>
         <span class="chip"><b>2</b> hooks</span>
-        <span class="chip"><b>6</b> mechanical gates</span>
+        <span class="chip"><b>8</b> mechanical gates</span>
         <span class="chip">built under its own rules</span>
       </div>
 
@@ -670,7 +670,7 @@
       <div class="split reveal">
         <div class="half code">
           <h3>Executes as code</h3>
-          <p class="sub">2 hooks + 6 check scripts, all under <code>node --test</code></p>
+          <p class="sub">2 hooks + 8 check scripts, all under <code>node --test</code></p>
           <ul>
             <li><code>git-guard</code> &amp; <code>session-start</code> hooks</li>
             <li><code>check-surface-scrub</code> — no project fingerprints leak into shipped examples</li>
@@ -678,7 +678,9 @@
             <li><code>check-effect-probe</code> — effect credited only if the probe passed <em>and</em> the negative control failed</li>
             <li><code>check-fanout</code> — a multi-agent workflow carries a contract, integration step, and verify phase</li>
             <li><code>check-dispatch</code> — every verifier dispatch logged its stakes; floors held; no silent downgrades</li>
+            <li><code>check-tier-placement</code> — every non-verify agent() call carries a real tier pin</li>
             <li><code>check-tier-sync</code> — agent frontmatter agrees with <code>config/models.json</code></li>
+            <li><code>check-learnings</code> — ledger entries anchored, append-only, index↔folder consistent</li>
           </ul>
         </div>
         <div class="half judge">
@@ -962,7 +964,7 @@
         </a>
         <a href="https://github.com/hossainpazooki/rigor/tree/main/tests" target="_blank" rel="noopener">
           <h4>Tests &amp; gates <span class="arr">↗</span></h4>
-          <p><code>node --test</code> — hooks + all 6 check scripts, auto-discovered.</p>
+          <p><code>node --test</code> — hooks + all 8 check scripts, auto-discovered.</p>
         </a>
       </div>
     </div>

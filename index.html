@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#0B0E13" />
-<title>Hossain Pazooki — AI/ML Engineer &amp; Tech Lead</title>
-<meta name="description" content="AI/ML Engineer & Tech Lead building agentic AI for regulated domains. The model interprets, a deterministic engine executes the consequential action, every decision carries an audit trace." />
+<title>Hossain Pazooki — Data Engineer · AI/ML Platforms &amp; Evaluation</title>
+<meta name="description" content="Data Engineer building AI/ML platforms, evaluation research, and reliable agentic & LLM systems for regulated domains. The model interprets, a deterministic engine executes the consequential action, every decision carries an audit trace." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -316,6 +316,35 @@
     .rec .kind{padding-top:0}
   }
 
+  /* ---------- featured systems band ---------- */
+  .band{background:linear-gradient(180deg,rgba(224,164,54,.035),transparent 240px)}
+  .systems{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--line-soft);border:1px solid var(--line-soft);
+    border-radius:10px;overflow:hidden;
+  }
+  .system{
+    background:var(--ink-2);padding:26px 24px;
+    display:flex;flex-direction:column;gap:14px;
+    position:relative;transition:background .18s ease;
+  }
+  .system::before{
+    content:"";position:absolute;left:0;top:0;right:0;height:2px;
+    background:var(--gold);transform:scaleX(0);transform-origin:left;
+    transition:transform .22s ease;
+  }
+  .system:hover{background:var(--panel-2)}
+  .system:hover::before{transform:scaleX(1)}
+  .sys-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .sys-kind{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .sys-arrow{font-family:var(--mono);font-size:12.5px;color:var(--gold);letter-spacing:.02em;white-space:nowrap}
+  .sys-effect{font-size:19px;font-weight:600;letter-spacing:-.01em;line-height:1.3;color:var(--text)}
+  .sys-what{font-size:13.5px;color:var(--text-2);line-height:1.6;margin-top:auto}
+  @media(max-width:820px){.systems{grid-template-columns:1fr}}
+
   /* ---------- skills ---------- */
   .skills{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
   .skill-grp{background:var(--ink-2);padding:22px 22px}
@@ -392,6 +421,7 @@
   <div class="wrap nav">
     <a class="brand" href="#top">HP<span class="dot">.</span></a>
     <nav class="nav-links">
+      <a href="#systems" class="hideable">systems</a>
       <a href="#work" class="hideable">work</a>
       <a href="#skills" class="hideable">skills</a>
       <a href="#career" class="hideable">career</a>
@@ -405,7 +435,7 @@
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">AI/ML Engineer &amp; Tech Lead — New York</span>
+      <span class="eyebrow">Data Engineer · AI/ML Platforms &amp; Evaluation — New York</span>
       <h1 class="name">Hossain<br /><span class="ln2">Pazooki</span></h1>
 
       <div class="gate" role="img" aria-label="Architectural thesis: the model interprets, a deterministic engine executes the consequential action, every decision carries an audit trace. Gate verified.">
@@ -427,11 +457,48 @@
         </div>
       </div>
 
-      <p class="lede">I build agentic AI for regulated domains — healthcare claims, cross-border compliance, financial risk — <b>where a wrong answer has a real cost and "it usually works" isn't good enough.</b></p>
+      <p class="lede">I build data platforms, evaluation harnesses, and reliable agentic &amp; LLM systems for regulated domains — point-in-time financial data, healthcare claims, cross-border compliance — <b>where a wrong answer has a real cost and "it usually works" isn't good enough.</b></p>
 
       <div class="cta-row">
-        <a class="btn btn-primary" href="#work">View selected work →</a>
+        <a class="btn btn-primary" href="#systems">Explore the systems →</a>
         <a class="btn btn-ghost" href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED: THREE SYSTEMS -->
+  <section class="section band" id="systems">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Deep dives</span>
+        <h2>Three systems, one discipline.</h2>
+        <p>Each is a working system with its own page — the effect stated in one line, the mechanism shown in full. The through-line: interpret, execute, attest, and fail closed on the unevaluable.</p>
+      </div>
+      <div class="systems reveal">
+        <a class="system" href="/rigor/">
+          <div class="sys-top">
+            <span class="sys-kind">open-source plugin</span>
+            <span class="sys-arrow">/rigor →</span>
+          </div>
+          <div class="sys-effect">Don't trust the claim. Try to break it.</div>
+          <div class="sys-what">A Claude Code plugin that holds agents to their evidence — refute a claim before you believe it, and never let an agent silently write your git history.</div>
+        </a>
+        <a class="system" href="/cldd/">
+          <div class="sys-top">
+            <span class="sys-kind">risk ML · PyPI</span>
+            <span class="sys-arrow">/cldd →</span>
+          </div>
+          <div class="sys-effect">Your blind spot becomes a number.</div>
+          <div class="sys-what">Closed-loop default detection — escalate selection severity on a synthetic world with planted truth until a PD model breaks, then report the operating frontier.</div>
+        </a>
+        <a class="system" href="/intent/">
+          <div class="sys-top">
+            <span class="sys-kind">authorization kernel</span>
+            <span class="sys-arrow">/intent →</span>
+          </div>
+          <div class="sys-effect">A duplicate of an irreversible action isn't caught — it's impossible.</div>
+          <div class="sys-what">A deterministic gate that authorizes an irreversible action only on a reproducible, measured demonstration — one durable ACHIEVED record, or nothing at all.</div>
+        </a>
       </div>
     </div>
   </section>
@@ -450,9 +517,9 @@
           <div class="trace">trace · orawell · healthcare RCM</div>
         </div>
         <div class="fact">
-          <div class="big">5-tier<br />gate</div>
-          <div class="cap">verification layers (T0 schema → T4 cross-rule) decide what the model is <em>allowed</em> to act on.</div>
-          <div class="trace">trace · atlas · consistency engine</div>
+          <div class="big">five-<span class="u">gate</span></div>
+          <div class="cap">verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what the model is <em>allowed</em> to act on.</div>
+          <div class="trace">trace · atlas · verification stack</div>
         </div>
         <div class="fact">
           <div class="big">fail-<span class="u">closed</span></div>
@@ -460,9 +527,9 @@
           <div class="trace">trace · intent-layer · authorization</div>
         </div>
         <div class="fact">
-          <div class="big"><span class="u">458+</span> tests</div>
-          <div class="cap">strict mypy, CI/CD discipline, content-addressed artifacts. The audit trail is the build.</div>
-          <div class="trace">trace · ci · implemented ≠ asserted</div>
+          <div class="big"><span class="u">86.6M</span><br />gold facts</div>
+          <div class="cap">point-in-time-correct, distilled from 181M bronze rows across 16,667 filers. An as-of date returns only what was already public.</div>
+          <div class="trace">trace · vantage · point-in-time</div>
         </div>
       </div>
     </div>
@@ -474,67 +541,47 @@
       <div class="section-head reveal">
         <span class="eyebrow">Selected work</span>
         <h2>A portfolio of one conviction.</h2>
-        <p>Two planes — policy and runtime — and the verification tooling that keeps them honest. AI interprets; deterministic engines execute; every decision leaves a trace.</p>
+        <p>A point-in-time data platform, a policy plane and its in-browser runtime consumer, and applied ML held to its own evidence. Data and models interpret; deterministic engines execute; every decision leaves a trace.</p>
       </div>
 
       <div class="ledger">
         <article class="rec reveal">
+          <div class="kind"><span class="tag">data platform</span><br />point-in-time lakehouse</div>
+          <div>
+            <h3>VANTAGE <span class="src">pit-fundamentals-lakehouse</span></h3>
+            <p>A point-in-time-correct SEC fundamentals lakehouse. An as-of date D returns only what was filed <em>and accepted</em> by D — holding across restatements, so an as-of query never sees a filing that wasn't yet public.</p>
+            <div class="detail">181,351,169 bronze rows distilled to 86,615,392 gold facts across 16,667 filers; 63 of 69 quarters ingested, 6 refused by a fail-closed data-quality gate with recomputed causes. Deployed and published on Databricks serverless under a write-audit-publish rule: audit green on the candidate, the same audit red on a mutated twin, a post-publish consumer probe against a negative control.</div>
+            <div class="stack"><span>Scala</span><span>Spark</span><span>Delta Lake</span><span>Databricks Connect</span><span>fail-closed DQ gate</span></div>
+          </div>
+        </article>
+
+        <article class="rec reveal">
           <div class="kind"><span class="tag">policy plane</span><br />regulatory engine</div>
           <div>
-            <h3>ATLAS <span class="src">featured</span></h3>
-            <p>A regulatory rule-execution engine. Compiles regulation into content-addressed, dual-signature-verified artifacts; a Rust kernel executes them deterministically and fails closed on a verification miss.</p>
-            <div class="detail">5-tier consistency engine (T0 schema · T1 lexical · T2 embeddings · T3 NLI · T4 cross-rule) — every tier with a heuristic fallback, every verdict reproducible.</div>
-            <div class="stack"><span>Rust</span><span>ke-runtime</span><span>PyO3</span><span>BLAKE3</span><span>Temporal</span></div>
+            <h3>ATLAS <span class="src">regulatory-rule-engine</span></h3>
+            <p>A regulatory rule-execution engine. Compiles regulation into content-addressed, signed, typed-attestation artifacts; a Rust kernel executes them deterministically and fails closed on a verification miss.</p>
+            <div class="detail">A five-gate verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what a rule is allowed to assert; every gate reproducible, every artifact consumed by hash through a WASM verifier.</div>
+            <div class="stack"><span>Rust workspace</span><span>BLAKE3 content-addressed</span><span>ed25519-signed</span><span>typed attestations</span><span>WASM verifier</span></div>
           </div>
         </article>
 
         <article class="rec reveal">
           <div class="kind"><span class="tag">runtime plane</span><br />compliance navigator</div>
           <div>
-            <h3>COMPASS</h3>
-            <p>Cross-border digital-asset compliance, evaluated in real time. Resolves jurisdiction conflicts across MiCA, FCA, and the GENIUS Act, and moves a position through explicit verdict states: compliant → conditional → blocked.</p>
-            <div class="detail">The runtime counterpart to ATLAS — same conviction, opposite plane. Policy is authored once; the runtime decides under it, transparently.</div>
-            <div class="stack"><span>FastAPI</span><span>PydanticAI</span><span>React</span><span>TypeScript</span><span>EKS</span></div>
-          </div>
-        </article>
-
-        <article class="rec reveal">
-          <div class="kind"><span class="tag">open source</span><br />verification toolkit</div>
-          <div>
-            <h3>rigor <span class="src">github.com/hossainpazooki</span></h3>
-            <p>A Claude Code plugin that holds agents to their evidence: blocks unverified claims, refuses silent git-history rewrites, and enforces a hard line between what's implemented and what's merely planned.</p>
-            <div class="detail">Built under its own rules — the plugin's construction is gated by the same discipline it ships.</div>
-            <div class="stack"><span>Node</span><span>hooks</span><span>skills</span><span>git-guard</span></div>
-          </div>
-        </article>
-
-        <article class="rec reveal">
-          <div class="kind"><span class="tag">authorization kernel</span><br />domain-agnostic</div>
-          <div>
-            <h3><a href="/intent/">Intent Layer</a> <span class="src">→ /intent</span></h3>
-            <p>A fitness-gate: an irreversible action is authorized only by a reproducible, measured demonstration that it meets declared criteria. No valid demonstration means denial — by construction.</p>
-            <div class="detail">Two defining properties: fail-closed on unevaluable, and byte-reproducible provenance of the authorization decision itself.</div>
-            <div class="stack"><span>Rust</span><span>content-addressed</span><span>provenance</span></div>
+            <h3>COMPASS <span class="src">cross-border-compliance-navigator</span></h3>
+            <p>Cross-border digital-asset compliance, evaluated in the browser. Resolves jurisdiction conflicts across MiCA, FCA, SEC/CFTC, FINMA, and MAS, and moves a position through explicit verdict states: compliant → conditional → blocked.</p>
+            <div class="detail">The runtime consumer to ATLAS's policy plane: a client-side rule evaluator over versioned decision trees, an in-browser WASM verifier for ATLAS's signed artifacts, and an NLI gate that retracts any drafted rationale it can't entail from the evaluation trace.</div>
+            <div class="stack"><span>Next.js 15</span><span>React 19</span><span>TypeScript</span><span>client-side evaluator</span><span>WASM ATLAS verifier</span></div>
           </div>
         </article>
 
         <article class="rec reveal">
           <div class="kind"><span class="tag">applied ML</span><br />multi-omics QA</div>
           <div>
-            <h3>CLUE</h3>
-            <p>Upstream label correction for multi-omics cohorts. Detects mislabeled samples through cross-omics concordance scoring, before bad labels poison everything downstream.</p>
-            <div class="detail">Run with a strict line between a verified experiment and a verified result — a self-injected score that's arithmetically real but experimentally self-referential is not a result.</div>
-            <div class="stack"><span>Python</span><span>scikit-learn</span><span>CPTAC/TCGA</span></div>
-          </div>
-        </article>
-
-        <article class="rec reveal">
-          <div class="kind"><span class="tag">risk ML</span><br />lending</div>
-          <div>
-            <h3><a href="/cldd/">CLDD</a> <span class="src">→ /cldd</span></h3>
-            <p>Closed-loop default detection — stress-tests a probability-of-default model under selective labels and reports the severity at which it breaks. Synthetic worlds with planted truth; every correction lever graded against it.</p>
-            <div class="detail">v0.2.0 alpha on PyPI — the frontier reported as a distribution across 25 seeds, priced in expected-maximum profit. Limits reported, not smoothed over.</div>
-            <div class="stack"><span>Python</span><span>scikit-learn</span><span>causal inference</span><span>PyPI</span></div>
+            <h3>CLUE <span class="src">upstream-label-correction</span></h3>
+            <p>Upstream label correction for multi-omics cohorts. Generates fidelity-checked synthetic cohorts with planted label corruption, then catches the mislabeled samples through cross-omics concordance scoring — before bad labels poison everything downstream.</p>
+            <div class="detail">Scored against exactly what was planted, with a strict line between a verified experiment and a verified result: a self-injected score that's arithmetically real but experimentally self-referential is not a result.</div>
+            <div class="stack"><span>Python</span><span>scikit-learn</span><span>synthetic multi-omics</span><span>precisionFDA-style</span></div>
           </div>
         </article>
       </div>
@@ -550,39 +597,39 @@
       </div>
       <div class="skills reveal">
         <div class="skill-grp">
-          <h4>Agentic AI &amp; LLMs</h4>
+          <h4>Data platforms &amp; pipelines</h4>
           <ul>
-            <li>Multi-agent orchestration (PydanticAI)</li>
-            <li>Hybrid RAG — BM25 + vector retrieval</li>
-            <li>Evaluation infra: precision / recall / hallucination tracking</li>
-            <li>Confidence calibration &amp; verification gates</li>
+            <li>Scala · Spark · Delta Lake</li>
+            <li>Point-in-time correctness &amp; as-of restatement</li>
+            <li>Databricks — serverless + Connect, write-audit-publish</li>
+            <li>ETL, fail-closed data-quality gates, content-addressed lineage</li>
           </ul>
         </div>
         <div class="skill-grp">
-          <h4>Languages</h4>
+          <h4>Evaluation &amp; correctness infra</h4>
+          <ul>
+            <li>Validation harnesses over planted ground truth</li>
+            <li>Fail-closed gates — unevaluable never passes</li>
+            <li>Precision / recall / hallucination tracking</li>
+            <li>Reproducible, signed, content-addressed artifacts</li>
+          </ul>
+        </div>
+        <div class="skill-grp">
+          <h4>Agentic AI &amp; LLMs</h4>
+          <ul>
+            <li>Multi-agent orchestration &amp; fan-out builds</li>
+            <li>Hybrid RAG — BM25 + vector retrieval</li>
+            <li>Confidence calibration &amp; verification gates</li>
+            <li>NLI / entailment verification</li>
+          </ul>
+        </div>
+        <div class="skill-grp">
+          <h4>Languages &amp; systems</h4>
           <ul>
             <li>Python — FastAPI, async, strict typing</li>
             <li>Rust — deterministic execution kernels</li>
-            <li>Go — services</li>
-            <li>TypeScript / React — frontends</li>
-          </ul>
-        </div>
-        <div class="skill-grp">
-          <h4>ML &amp; quantitative</h4>
-          <ul>
-            <li>Applied ML &amp; model serving / drift monitoring</li>
-            <li>Genomics &amp; multi-omics pipelines</li>
-            <li>Quant risk — VaR / CVaR, stress testing</li>
-            <li>Econometrics &amp; causal inference</li>
-          </ul>
-        </div>
-        <div class="skill-grp">
-          <h4>Infrastructure</h4>
-          <ul>
-            <li>Kubernetes / EKS, Terraform IaC</li>
-            <li>Temporal durable workflows</li>
-            <li>PostgreSQL / TimescaleDB</li>
-            <li>CI/CD, content-addressed artifacts, audit pipelines</li>
+            <li>Scala / Spark · Go gates · TypeScript / React</li>
+            <li>Kubernetes / EKS · PostgreSQL · CI/CD</li>
           </ul>
         </div>
       </div>
@@ -604,9 +651,9 @@
           <div class="where">New York, NY · healthcare revenue-cycle management</div>
           <ul>
             <li>Led a team building agentic compliance pipelines — PydanticAI agents orchestrating claim review, denial prediction, and appeal generation with human-in-the-loop checkpoints.</li>
-            <li>Designed a 5-tier confidence-calibration system after a production failure exposed systematic over-confidence in LLM decisions — reduced claim denial rates by 34%.</li>
+            <li>Designed a multi-layer confidence-calibration and verification-gate system after a production failure exposed systematic over-confidence in LLM decisions — reduced claim denial rates by 34%.</li>
             <li>Built a hybrid retrieval pipeline (BM25 + vector) over regulatory and payer-policy documents, with a structured eval framework tracking precision, recall, and hallucination rate.</li>
-            <li>Owned the infrastructure: FastAPI, PostgreSQL, Kubernetes on EKS, Terraform IaC, CI/CD with strict mypy enforcement and 458+ tests.</li>
+            <li>Owned the infrastructure: FastAPI, PostgreSQL, Kubernetes on EKS, Terraform IaC, CI/CD with strict mypy enforcement and 450+ CI-gated tests.</li>
           </ul>
         </div>
 
