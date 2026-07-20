@@ -4,6 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#0B0E13" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>Hossain Pazooki — Data Engineer · AI/ML Platforms &amp; Evaluation</title>
 <meta name="description" content="Data Engineer building AI/ML platforms, evaluation research, and reliable agentic & LLM systems for regulated domains. The model interprets, a deterministic engine executes the consequential action, every decision carries an audit trace." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -265,6 +269,8 @@
     color:var(--gold-dim);
     padding-top:12px;
   }
+  .fact .trace a{color:var(--gold-dim);text-decoration:underline;text-underline-offset:2px;transition:color .15s ease}
+  .fact .trace a:hover{color:var(--gold)}
   @media(max-width:860px){.facts{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.facts{grid-template-columns:1fr}}
 
@@ -303,6 +309,8 @@
     font-family:var(--mono);font-size:12px;font-weight:400;color:var(--muted);
     letter-spacing:.02em;
   }
+  a.src{text-decoration:none;transition:color .15s ease}
+  a.src:hover{color:var(--gold)}
   .rec p{color:var(--text-2);font-size:15px;max-width:620px;line-height:1.62}
   .rec .detail{color:var(--muted);font-size:13.5px;margin-top:7px;max-width:620px}
   .stack{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
@@ -425,7 +433,7 @@
       <a href="#work" class="hideable">work</a>
       <a href="#skills" class="hideable">skills</a>
       <a href="#career" class="hideable">career</a>
-      <a href="https://hossainpazooki.com" class="ext" target="_blank" rel="noopener">hossainpazooki.com&nbsp;↗</a>
+      <a href="https://hossain.cargo.site" class="ext" target="_blank" rel="noopener">hossainpazooki.com&nbsp;↗</a>
     </nav>
   </div>
 </header>
@@ -491,7 +499,7 @@
           <div class="sys-effect">Your blind spot becomes a number.</div>
           <div class="sys-what">Closed-loop default detection — escalate selection severity on a synthetic world with planted truth until a PD model breaks, then report the operating frontier.</div>
         </a>
-        <a class="system" href="/intent/">
+        <a class="system" href="/intent/" id="sys-intent">
           <div class="sys-top">
             <span class="sys-kind">authorization kernel</span>
             <span class="sys-arrow">/intent →</span>
@@ -514,22 +522,22 @@
         <div class="fact">
           <div class="big"><span class="u">34%</span> fewer</div>
           <div class="cap">claim denials, after a production failure exposed systematic LLM over-confidence and I rebuilt the decision gate.</div>
-          <div class="trace">trace · orawell · healthcare RCM</div>
+          <div class="trace">context · <a href="#job-orawell">Orawell Group — AI/ML Tech Lead</a>, healthcare RCM</div>
         </div>
         <div class="fact">
           <div class="big">five-<span class="u">gate</span></div>
           <div class="cap">verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what the model is <em>allowed</em> to act on.</div>
-          <div class="trace">trace · atlas · verification stack</div>
+          <div class="trace">source · <a href="#rec-atlas">ATLAS</a> — verification stack</div>
         </div>
         <div class="fact">
           <div class="big">fail-<span class="u">closed</span></div>
           <div class="cap">on unevaluable, not just on failure. Absence of valid proof is a denial, never a default-pass.</div>
-          <div class="trace">trace · intent-layer · authorization</div>
+          <div class="trace">concept · <a href="#sys-intent">Intent Layer</a> — authorization</div>
         </div>
         <div class="fact">
           <div class="big"><span class="u">86.6M</span><br />gold facts</div>
           <div class="cap">point-in-time-correct, distilled from 181M bronze rows across 16,667 filers. An as-of date returns only what was already public.</div>
-          <div class="trace">trace · vantage · point-in-time</div>
+          <div class="trace">source · <a href="#rec-vantage">VANTAGE</a> — point-in-time</div>
         </div>
       </div>
     </div>
@@ -545,20 +553,20 @@
       </div>
 
       <div class="ledger">
-        <article class="rec reveal">
+        <article class="rec reveal" id="rec-vantage">
           <div class="kind"><span class="tag">data platform</span><br />point-in-time lakehouse</div>
           <div>
-            <h3>VANTAGE <span class="src">pit-fundamentals-lakehouse</span></h3>
+            <h3>VANTAGE <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="src" target="_blank" rel="noopener">pit-fundamentals-lakehouse</a></h3>
             <p>A point-in-time-correct SEC fundamentals lakehouse. An as-of date D returns only what was filed <em>and accepted</em> by D — holding across restatements, so an as-of query never sees a filing that wasn't yet public.</p>
             <div class="detail">181,351,169 bronze rows distilled to 86,615,392 gold facts across 16,667 filers; 63 of 69 quarters ingested, 6 refused by a fail-closed data-quality gate with recomputed causes. Deployed and published on Databricks serverless under a write-audit-publish rule: audit green on the candidate, the same audit red on a mutated twin, a post-publish consumer probe against a negative control.</div>
             <div class="stack"><span>Scala</span><span>Spark</span><span>Delta Lake</span><span>Databricks Connect</span><span>fail-closed DQ gate</span></div>
           </div>
         </article>
 
-        <article class="rec reveal">
+        <article class="rec reveal" id="rec-atlas">
           <div class="kind"><span class="tag">policy plane</span><br />regulatory engine</div>
           <div>
-            <h3>ATLAS <span class="src">regulatory-rule-engine</span></h3>
+            <h3>ATLAS <a href="https://github.com/hossainpazooki/regulatory-rule-engine" class="src" target="_blank" rel="noopener">regulatory-rule-engine</a></h3>
             <p>A regulatory rule-execution engine. Compiles regulation into content-addressed, signed, typed-attestation artifacts; a Rust kernel executes them deterministically and fails closed on a verification miss.</p>
             <div class="detail">A five-gate verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what a rule is allowed to assert; every gate reproducible, every artifact consumed by hash through a WASM verifier.</div>
             <div class="stack"><span>Rust workspace</span><span>BLAKE3 content-addressed</span><span>ed25519-signed</span><span>typed attestations</span><span>WASM verifier</span></div>
@@ -568,7 +576,7 @@
         <article class="rec reveal">
           <div class="kind"><span class="tag">runtime plane</span><br />compliance navigator</div>
           <div>
-            <h3>COMPASS <span class="src">cross-border-compliance-navigator</span></h3>
+            <h3>COMPASS <a href="https://github.com/hossainpazooki/cross-border-compliance-navigator" class="src" target="_blank" rel="noopener">cross-border-compliance-navigator</a></h3>
             <p>Cross-border digital-asset compliance, evaluated in the browser. Resolves jurisdiction conflicts across MiCA, FCA, SEC/CFTC, FINMA, and MAS, and moves a position through explicit verdict states: compliant → conditional → blocked.</p>
             <div class="detail">The runtime consumer to ATLAS's policy plane: a client-side rule evaluator over versioned decision trees, an in-browser WASM verifier for ATLAS's signed artifacts, and an NLI gate that retracts any drafted rationale it can't entail from the evaluation trace.</div>
             <div class="stack"><span>Next.js 15</span><span>React 19</span><span>TypeScript</span><span>client-side evaluator</span><span>WASM ATLAS verifier</span></div>
@@ -578,7 +586,7 @@
         <article class="rec reveal">
           <div class="kind"><span class="tag">applied ML</span><br />multi-omics QA</div>
           <div>
-            <h3>CLUE <span class="src">upstream-label-correction</span></h3>
+            <h3>CLUE <a href="https://github.com/hossainpazooki/upstream-label-correction" class="src" target="_blank" rel="noopener">upstream-label-correction</a></h3>
             <p>Upstream label correction for multi-omics cohorts. Generates fidelity-checked synthetic cohorts with planted label corruption, then catches the mislabeled samples through cross-omics concordance scoring — before bad labels poison everything downstream.</p>
             <div class="detail">Scored against exactly what was planted, with a strict line between a verified experiment and a verified result: a self-injected score that's arithmetically real but experimentally self-referential is not a result.</div>
             <div class="stack"><span>Python</span><span>scikit-learn</span><span>synthetic multi-omics</span><span>precisionFDA-style</span></div>
@@ -645,8 +653,8 @@
       </div>
 
       <div class="timeline reveal">
-        <div class="job now">
-          <div class="yr">2024 — 2026 · Full-time</div>
+        <div class="job" id="job-orawell">
+          <div class="yr">Nov 2024 — Jan 2026 · Full-time</div>
           <h3>AI/ML Tech Lead — <span class="co">Orawell Group</span></h3>
           <div class="where">New York, NY · healthcare revenue-cycle management</div>
           <ul>
@@ -658,12 +666,13 @@
         </div>
 
         <div class="job">
-          <div class="yr">2022 — 2024 · Full-time</div>
-          <h3>Co-Founder — <span class="co">Engager Inc.</span></h3>
+          <div class="yr">Mar 2022 — Aug 2024 · Full-time</div>
+          <h3>Co-Founder / Lead Engineer — <span class="co">Engager Inc.</span></h3>
           <div class="where">New York, NY</div>
           <ul>
             <li>Built the platform from the first commit to production — establishing architecture, CI/CD, and engineering practice.</li>
             <li>Designed and shipped the core backend and frontend (React, Python).</li>
+            <li>Owned ingestion and analytics pipelines feeding product and growth decisions.</li>
           </ul>
         </div>
 
@@ -710,7 +719,7 @@
       <div class="copy">© 2026 Hossain Pazooki · New York</div>
     </div>
     <div class="foot-links">
-      <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="arr">↗</span></a>
+      <a href="https://hossain.cargo.site" target="_blank" rel="noopener">hossainpazooki.com <span class="arr">↗</span></a>
       <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
       <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
       <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
