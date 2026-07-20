@@ -303,6 +303,8 @@
     font-family:var(--mono);font-size:12px;font-weight:400;color:var(--muted);
     letter-spacing:.02em;
   }
+  a.src{text-decoration:none;transition:color .15s ease}
+  a.src:hover{color:var(--gold)}
   .rec p{color:var(--text-2);font-size:15px;max-width:620px;line-height:1.62}
   .rec .detail{color:var(--muted);font-size:13.5px;margin-top:7px;max-width:620px}
   .stack{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
@@ -548,7 +550,7 @@
         <article class="rec reveal">
           <div class="kind"><span class="tag">data platform</span><br />point-in-time lakehouse</div>
           <div>
-            <h3>VANTAGE <span class="src">pit-fundamentals-lakehouse</span></h3>
+            <h3>VANTAGE <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="src" target="_blank" rel="noopener">pit-fundamentals-lakehouse</a></h3>
             <p>A point-in-time-correct SEC fundamentals lakehouse. An as-of date D returns only what was filed <em>and accepted</em> by D — holding across restatements, so an as-of query never sees a filing that wasn't yet public.</p>
             <div class="detail">181,351,169 bronze rows distilled to 86,615,392 gold facts across 16,667 filers; 63 of 69 quarters ingested, 6 refused by a fail-closed data-quality gate with recomputed causes. Deployed and published on Databricks serverless under a write-audit-publish rule: audit green on the candidate, the same audit red on a mutated twin, a post-publish consumer probe against a negative control.</div>
             <div class="stack"><span>Scala</span><span>Spark</span><span>Delta Lake</span><span>Databricks Connect</span><span>fail-closed DQ gate</span></div>
@@ -558,7 +560,7 @@
         <article class="rec reveal">
           <div class="kind"><span class="tag">policy plane</span><br />regulatory engine</div>
           <div>
-            <h3>ATLAS <span class="src">regulatory-rule-engine</span></h3>
+            <h3>ATLAS <a href="https://github.com/hossainpazooki/regulatory-rule-engine" class="src" target="_blank" rel="noopener">regulatory-rule-engine</a></h3>
             <p>A regulatory rule-execution engine. Compiles regulation into content-addressed, signed, typed-attestation artifacts; a Rust kernel executes them deterministically and fails closed on a verification miss.</p>
             <div class="detail">A five-gate verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what a rule is allowed to assert; every gate reproducible, every artifact consumed by hash through a WASM verifier.</div>
             <div class="stack"><span>Rust workspace</span><span>BLAKE3 content-addressed</span><span>ed25519-signed</span><span>typed attestations</span><span>WASM verifier</span></div>
@@ -568,7 +570,7 @@
         <article class="rec reveal">
           <div class="kind"><span class="tag">runtime plane</span><br />compliance navigator</div>
           <div>
-            <h3>COMPASS <span class="src">cross-border-compliance-navigator</span></h3>
+            <h3>COMPASS <a href="https://github.com/hossainpazooki/cross-border-compliance-navigator" class="src" target="_blank" rel="noopener">cross-border-compliance-navigator</a></h3>
             <p>Cross-border digital-asset compliance, evaluated in the browser. Resolves jurisdiction conflicts across MiCA, FCA, SEC/CFTC, FINMA, and MAS, and moves a position through explicit verdict states: compliant → conditional → blocked.</p>
             <div class="detail">The runtime consumer to ATLAS's policy plane: a client-side rule evaluator over versioned decision trees, an in-browser WASM verifier for ATLAS's signed artifacts, and an NLI gate that retracts any drafted rationale it can't entail from the evaluation trace.</div>
             <div class="stack"><span>Next.js 15</span><span>React 19</span><span>TypeScript</span><span>client-side evaluator</span><span>WASM ATLAS verifier</span></div>
@@ -578,7 +580,7 @@
         <article class="rec reveal">
           <div class="kind"><span class="tag">applied ML</span><br />multi-omics QA</div>
           <div>
-            <h3>CLUE <span class="src">upstream-label-correction</span></h3>
+            <h3>CLUE <a href="https://github.com/hossainpazooki/upstream-label-correction" class="src" target="_blank" rel="noopener">upstream-label-correction</a></h3>
             <p>Upstream label correction for multi-omics cohorts. Generates fidelity-checked synthetic cohorts with planted label corruption, then catches the mislabeled samples through cross-omics concordance scoring — before bad labels poison everything downstream.</p>
             <div class="detail">Scored against exactly what was planted, with a strict line between a verified experiment and a verified result: a self-injected score that's arithmetically real but experimentally self-referential is not a result.</div>
             <div class="stack"><span>Python</span><span>scikit-learn</span><span>synthetic multi-omics</span><span>precisionFDA-style</span></div>
