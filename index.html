@@ -269,6 +269,8 @@
     color:var(--gold-dim);
     padding-top:12px;
   }
+  .fact .trace a{color:var(--gold-dim);text-decoration:underline;text-underline-offset:2px;transition:color .15s ease}
+  .fact .trace a:hover{color:var(--gold)}
   @media(max-width:860px){.facts{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.facts{grid-template-columns:1fr}}
 
@@ -497,7 +499,7 @@
           <div class="sys-effect">Your blind spot becomes a number.</div>
           <div class="sys-what">Closed-loop default detection — escalate selection severity on a synthetic world with planted truth until a PD model breaks, then report the operating frontier.</div>
         </a>
-        <a class="system" href="/intent/">
+        <a class="system" href="/intent/" id="sys-intent">
           <div class="sys-top">
             <span class="sys-kind">authorization kernel</span>
             <span class="sys-arrow">/intent →</span>
@@ -520,22 +522,22 @@
         <div class="fact">
           <div class="big"><span class="u">34%</span> fewer</div>
           <div class="cap">claim denials, after a production failure exposed systematic LLM over-confidence and I rebuilt the decision gate.</div>
-          <div class="trace">trace · orawell · healthcare RCM</div>
+          <div class="trace">context · <a href="#job-orawell">Orawell Group — AI/ML Tech Lead</a>, healthcare RCM</div>
         </div>
         <div class="fact">
           <div class="big">five-<span class="u">gate</span></div>
           <div class="cap">verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what the model is <em>allowed</em> to act on.</div>
-          <div class="trace">trace · atlas · verification stack</div>
+          <div class="trace">source · <a href="#rec-atlas">ATLAS</a> — verification stack</div>
         </div>
         <div class="fact">
           <div class="big">fail-<span class="u">closed</span></div>
           <div class="cap">on unevaluable, not just on failure. Absence of valid proof is a denial, never a default-pass.</div>
-          <div class="trace">trace · intent-layer · authorization</div>
+          <div class="trace">concept · <a href="#sys-intent">Intent Layer</a> — authorization</div>
         </div>
         <div class="fact">
           <div class="big"><span class="u">86.6M</span><br />gold facts</div>
           <div class="cap">point-in-time-correct, distilled from 181M bronze rows across 16,667 filers. An as-of date returns only what was already public.</div>
-          <div class="trace">trace · vantage · point-in-time</div>
+          <div class="trace">source · <a href="#rec-vantage">VANTAGE</a> — point-in-time</div>
         </div>
       </div>
     </div>
@@ -551,7 +553,7 @@
       </div>
 
       <div class="ledger">
-        <article class="rec reveal">
+        <article class="rec reveal" id="rec-vantage">
           <div class="kind"><span class="tag">data platform</span><br />point-in-time lakehouse</div>
           <div>
             <h3>VANTAGE <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="src" target="_blank" rel="noopener">pit-fundamentals-lakehouse</a></h3>
@@ -561,7 +563,7 @@
           </div>
         </article>
 
-        <article class="rec reveal">
+        <article class="rec reveal" id="rec-atlas">
           <div class="kind"><span class="tag">policy plane</span><br />regulatory engine</div>
           <div>
             <h3>ATLAS <a href="https://github.com/hossainpazooki/regulatory-rule-engine" class="src" target="_blank" rel="noopener">regulatory-rule-engine</a></h3>
@@ -651,7 +653,7 @@
       </div>
 
       <div class="timeline reveal">
-        <div class="job now">
+        <div class="job now" id="job-orawell">
           <div class="yr">2024 — 2026 · Full-time</div>
           <h3>AI/ML Tech Lead — <span class="co">Orawell Group</span></h3>
           <div class="where">New York, NY · healthcare revenue-cycle management</div>
