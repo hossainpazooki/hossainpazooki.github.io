@@ -75,6 +75,27 @@ numbers below are only true as of these commits):
   (Confirmed counts: 181,351,169 bronze → 86,615,392 gold across 16,667 CIKs; 63/69
   quarters, 6 DQ-refused. Databricks-serverless publish CREDITED 2026-07-19.)
 
+## Repo nuances a future edit must not "fix" backwards
+
+These are cases where the *repo* contains something that looks like it contradicts
+the shipped site, but doesn't — reverting to it would reintroduce a banned/wrong claim:
+
+- **ATLAS carries both framings.** The five-gate trust pipeline AND a T0–T4
+  `enum Tier` table coexist in-repo as different slicings (source-span folds into T1;
+  expert-attestation is unnumbered). Seeing the tier table is **not** license to
+  reintroduce "5-tier" — that framing is banned for this site.
+- **PyO3 is genuinely in ATLAS** (feature-gated in `ke-artifact`, powers the Python
+  wheel). It was dropped from the card to hold the five verified tags, *not* because
+  it's absent. Temporal, by contrast, is truly refuted (ADR-0015 non-goal). Don't
+  "restore" PyO3 thinking it was an error.
+- **COMPASS's in-browser WASM verify path is real but flag-gated** pending the
+  `@platform/atlas-artifact` publish; default mode is a committed provenance snapshot.
+  The card phrases it architecturally on purpose — do not upgrade it to "live by
+  default."
+- **CLUE's real-data F1 0.914** exists but is on gitignored precisionFDA train data
+  and the repo labels real-matrix runs "robustness, **not** validation." That's why
+  the card claims neither the score nor the dataset names.
+
 ## Structure change
 
 Added a featured **"Three systems, one discipline"** band directly under the hero so
