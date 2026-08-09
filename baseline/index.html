@@ -48,6 +48,8 @@
     --blue:#2D5FA3;
     --blue-border:#B9C9E1;
     --bgline:#C9C3B2;
+    --plate:#EDE9DC;
+    --bgstar:#BDB5A2;
     --nd-fill:#FCFBF7;
     --sel-fg:#FFFDF8;
     --code-border:rgba(176,124,30,.22);
@@ -82,6 +84,8 @@
     --blue:#6CA7E8;
     --blue-border:#2c4a6a;
     --bgline:#1C2330;
+    --plate:#151B29;
+    --bgstar:#394762;
     --nd-fill:#0E121A;
     --sel-fg:#0B0E13;
     --code-border:rgba(224,164,54,.14);
@@ -133,7 +137,8 @@
     display:inline-flex;align-items:center;gap:.6em;
   }
   .eyebrow::before{
-    content:"";width:18px;height:1px;background:var(--gold);display:inline-block;
+    content:"";width:25px;height:5px;display:inline-block;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 1px,transparent 1px 6px);
   }
 
   header{
@@ -207,6 +212,42 @@
   .optic .t-name.bl{fill:var(--blue)}
   .optic .t-sub{font-size:10.5px;fill:var(--muted)}
   .optic .t-mark{font-size:11px;fill:var(--text-2)}
+  .optic .plate{stroke:var(--plate);stroke-width:1}
+  .optic .bgstar{fill:var(--bgstar)}
+  .optic .reticle{stroke:var(--gold);stroke-width:1;opacity:.55}
+  .optic .ln-arc{stroke:var(--text-2);stroke-width:1.1;fill:none}
+
+  /* ---------- shared optical-glyph vocabulary (mapping, bench, failures) ---------- */
+  .g-sight{stroke:var(--blue);stroke-width:1.3;opacity:.75}
+  .g-bg{stroke:var(--bgline);stroke-width:1}
+  .g-tick{stroke:var(--muted);stroke-width:1}
+  .g-shift{stroke:var(--text);stroke-width:1.3}
+  .g-base{stroke:var(--gold);stroke-width:2.4}
+  .g-base.bad{stroke:var(--block);stroke-dasharray:4 4}
+  .g-base.flex{stroke:var(--block)}
+  .g-obj{fill:var(--gold)}
+  .g-ghost{fill:none;stroke:var(--block);stroke-width:1.2;opacity:.7}
+  .g-nd{fill:var(--nd-fill);stroke:var(--blue);stroke-width:1.4}
+  .g-pp{fill:var(--blue)}
+  .g-ok{stroke:var(--ok);stroke-width:1.6;fill:none}
+  .g-ok.dash{stroke-dasharray:3 4}
+  .g-tube{fill:var(--panel-2);stroke:var(--line)}
+  .g-div{stroke:var(--line);stroke-width:1.5}
+  .g-path{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 5;opacity:.7}
+  .g-ray{stroke:var(--blue);stroke-width:1.2;stroke-dasharray:4 4;opacity:.6}
+  .g-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;fill:var(--muted)}
+  .g-tlab{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;fill:var(--text-2)}
+  .g-txt{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
+  .g-au{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;fill:var(--gold-text)}
+  .g-bad-txt{font-family:var(--mono);font-size:11px;font-weight:600;fill:var(--block)}
+  .mapg{width:44px;height:20px;vertical-align:-5px;margin-right:10px}
+  .bench{
+    border:1px solid var(--line);border-radius:12px;background:var(--panel);
+    box-shadow:var(--shadow);padding:20px 18px 10px;overflow-x:auto;margin-bottom:16px;
+  }
+  .bench svg{display:block;width:100%;height:auto;min-width:640px}
+  .fl-fig{padding:14px 18px 2px}
+  .fl-fig svg{display:block;width:100%;height:auto;max-width:280px;margin:0 auto}
   .optic-cap{
     margin-top:16px;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;
     font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--muted);
@@ -399,8 +440,24 @@
   <!-- THE INSTRUMENT -->
   <section class="instrument section" id="instrument">
     <div class="wrap">
-      <figure class="optic reveal" role="img" aria-label="A parallax diagram. At the bottom, two observation points sit on a gold baseline: an as-of read at date D and an as-of read of the latest record — both VANTAGE gold reads. The baseline between them is labeled with the contract: ADR-0001, the Reader protocol, and the gate-green twin-red rule. In the middle, a single gold point: the same filer-quarter. Two blue sight lines run from the observation points through that fact and cross at it, projecting it onto a background line at the top at two different apparent positions — as seen from D, and as seen from the latest record. The bracket between the two projections is the apparent shift: the revision, which PARALLAX measures.">
+      <figure class="optic reveal" role="img" aria-label="A parallax diagram. At the bottom, two observation points sit on a gold baseline: an as-of read at date D and an as-of read of the latest record — both VANTAGE gold reads. The baseline between them is labeled with the contract: ADR-0001, the Reader protocol, and the gate-green twin-red rule. In the middle, a single gold point: the same filer-quarter. Two blue sight lines run from the observation points through that fact and cross at it, projecting it onto a background line at the top at two different apparent positions — as seen from D, and as seen from the latest record. The bracket between the two projections is the apparent shift: the revision, which PARALLAX measures. A faint measurement grid, a reticle on the fact, and the parallax angle theta at the crossing mark the figure as an instrument reading, not an illustration.">
         <svg viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- photographic-plate grid -->
+          <defs>
+            <pattern id="plategrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path class="plate" d="M40 0H0V40" fill="none" />
+            </pattern>
+          </defs>
+          <rect x="80" y="10" width="760" height="446" fill="url(#plategrid)" opacity=".5" />
+
+          <!-- distant stars — they do not move -->
+          <circle class="bgstar" cx="150" cy="48" r="1.8" />
+          <circle class="bgstar" cx="205" cy="60" r="1.4" />
+          <circle class="bgstar" cx="258" cy="44" r="1.6" />
+          <circle class="bgstar" cx="700" cy="62" r="1.5" />
+          <circle class="bgstar" cx="762" cy="63" r="1.8" />
+          <circle class="bgstar" cx="826" cy="60" r="1.3" />
+
           <!-- background line (where the fact appears) -->
           <line class="ln-bg" x1="120" y1="72" x2="800" y2="72" />
           <line class="ln-tick" x1="120" y1="66" x2="120" y2="78" />
@@ -424,11 +481,21 @@
             <text class="t-name" x="468" y="24" text-anchor="middle">PARALLAX — the apparent shift, measured</text>
           </g>
 
-          <!-- the object -->
+          <!-- the object, held in a reticle -->
           <g>
+            <line class="reticle" x1="460" y1="212" x2="460" y2="218" />
+            <line class="reticle" x1="460" y1="254" x2="460" y2="260" />
+            <line class="reticle" x1="440" y1="236" x2="446" y2="236" />
+            <line class="reticle" x1="474" y1="236" x2="480" y2="236" />
             <path class="obj" d="M460 224 l9 12 -9 12 -9 -12 z" />
             <text class="t-mark" x="505" y="236">the same filer-quarter</text>
             <text class="t-sub" x="505" y="252">one fact · as-filed vs. restated</text>
+          </g>
+
+          <!-- the parallax angle at the crossing -->
+          <g class="late">
+            <path class="ln-arc" d="M446.7 251.1 A 24 24 0 0 0 480.9 251.5" />
+            <text class="t-mark" x="464" y="272" text-anchor="middle">θ</text>
           </g>
 
           <!-- observers -->
@@ -439,8 +506,10 @@
           <text class="t-name bl" x="140" y="388">VANTAGE</text>
           <text class="t-sub" x="140" y="404">produces the viewpoint</text>
 
-          <!-- baseline -->
+          <!-- baseline, with surveyor's ticks -->
           <line class="ln-base" x1="312" y1="392" x2="608" y2="392" />
+          <line class="ln-base" x1="312" y1="386" x2="312" y2="398" />
+          <line class="ln-base" x1="608" y1="386" x2="608" y2="398" />
           <text class="t-name au" x="460" y="428" text-anchor="middle">BASELINE — the fixed separation between viewpoints</text>
           <text class="t-sub" x="460" y="446" text-anchor="middle">ADR-0001 · Reader protocol · gate green on live / red on twin</text>
         </svg>
@@ -475,27 +544,27 @@
           </thead>
           <tbody>
             <tr>
-              <td class="k">two observation points</td>
+              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><circle class="g-nd" cx="10" cy="10" r="3.4"/><circle class="g-nd" cx="34" cy="10" r="3.4"/></svg>two observation points</td>
               <td>two as-of reads of published gold — at <b>D</b>, and at the <b>latest record</b> <span class="who v">VANTAGE produces both</span></td>
             </tr>
             <tr>
-              <td class="k">the near star</td>
+              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><path class="g-obj" d="M22 3 l6 7 -6 7 -6 -7 z"/></svg>the near star</td>
               <td>the same <b>filer-quarter</b> — one economic fact, filed and later restated</td>
             </tr>
             <tr>
-              <td class="k">the distant background</td>
+              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><line class="g-bg" x1="4" y1="10" x2="40" y2="10"/><line class="g-tick" x1="4" y1="6" x2="4" y2="14"/><line class="g-tick" x1="40" y1="6" x2="40" y2="14"/></svg>the distant background</td>
               <td>the gold schema and its semantics — the <b>common ruler</b> both reads are read against</td>
             </tr>
             <tr>
-              <td class="k">the apparent shift · θ</td>
+              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><line class="g-shift" x1="6" y1="5" x2="38" y2="5"/><line class="g-shift" x1="6" y1="5" x2="6" y2="10"/><line class="g-shift" x1="38" y1="5" x2="38" y2="10"/><circle class="g-pp" cx="6" cy="15" r="2.6"/><circle class="g-pp" cx="38" cy="15" r="2.6"/></svg>the apparent shift · θ</td>
               <td>the <b>revision</b>: as-filed at D vs. restated at latest <span class="who p">PARALLAX measures it</span></td>
             </tr>
             <tr>
-              <td class="k">the baseline · B</td>
+              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><line class="g-base" x1="6" y1="10" x2="38" y2="10"/><line class="g-base" x1="6" y1="5" x2="6" y2="15"/><line class="g-base" x1="38" y1="5" x2="38" y2="15"/></svg>the baseline · B</td>
               <td>the <b>contract</b>: one surface (ADR-0001) · one <code>Reader</code> protocol · a gate shown able to fail <span class="who b">this page</span></td>
             </tr>
             <tr>
-              <td class="k">the inferred distance · d</td>
+              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><path class="g-ok dash" d="M8 10 H36"/><path class="g-ok" d="M12 5 L7 10 L12 15"/><path class="g-ok" d="M32 5 L37 10 L32 15"/></svg>the inferred distance · d</td>
               <td>the <b>finding</b> — a shift attributable to the data, not to the read path</td>
             </tr>
           </tbody>
@@ -513,6 +582,42 @@
         <h2>A rangefinder is mostly tube. This baseline is mostly refusals.</h2>
         <p>A coincidence rangefinder is two windows at the ends of a rigid tube — the tube's known length <b>is</b> the instrument. The pair's tube has three sections, each load-bearing, each earned by a refusal rather than a promise.</p>
       </div>
+      <figure class="bench reveal" role="img" aria-label="A coincidence rangefinder drawn as a schematic. Light from the same distant fact enters two windows at the ends of a rigid tube and is folded to a central eyepiece, where the two views must coincide — the dial that aligns them reads the distance. The tube is divided into three labeled sections, strut 01 one surface, strut 02 one protocol, strut 03 the twin rule, and a gold dimension line beneath marks B, the tube's known length. The three cards below are the three sections of this tube.">
+        <svg viewBox="0 0 920 152" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <text class="g-tag" x="830" y="18" text-anchor="end">coincidence rangefinder · schematic</text>
+
+          <!-- the same fact, far away -->
+          <path class="g-obj" d="M460 9 l6 8 -6 8 -6 -8 z" />
+          <text class="g-txt" x="444" y="14" text-anchor="end">the same fact, again</text>
+          <line class="g-ray" x1="454" y1="20" x2="106" y2="50" />
+          <line class="g-ray" x1="466" y1="20" x2="814" y2="50" />
+
+          <!-- the rigid tube, in three sections -->
+          <rect class="g-tube" x="90" y="54" width="740" height="36" rx="6" />
+          <line class="g-div" x1="336" y1="54" x2="336" y2="90" />
+          <line class="g-div" x1="583" y1="54" x2="583" y2="90" />
+          <text class="g-tlab" x="213" y="76" text-anchor="middle">strut 01 · one surface</text>
+          <text class="g-tlab" x="460" y="76" text-anchor="middle">strut 02 · one protocol</text>
+          <text class="g-tlab" x="707" y="76" text-anchor="middle">strut 03 · the twin rule</text>
+
+          <!-- end windows, folded light path, eyepiece -->
+          <circle class="g-nd" cx="100" cy="54" r="6" />
+          <circle class="g-nd" cx="820" cy="54" r="6" />
+          <line class="g-div" x1="95" y1="59" x2="107" y2="83" />
+          <line class="g-div" x1="825" y1="59" x2="813" y2="83" />
+          <line class="g-path" x1="107" y1="84" x2="446" y2="84" />
+          <line class="g-path" x1="813" y1="84" x2="474" y2="84" />
+          <rect class="g-tube" x="446" y="90" width="28" height="20" rx="4" />
+          <circle class="g-nd" cx="460" cy="100" r="4.5" />
+          <text class="g-txt" x="484" y="104">eyepiece — the two views must coincide · the dial reads d</text>
+
+          <!-- the tube's known length -->
+          <line class="g-base" x1="90" y1="130" x2="830" y2="130" />
+          <line class="g-base" x1="90" y1="123" x2="90" y2="137" />
+          <line class="g-base" x1="830" y1="123" x2="830" y2="137" />
+          <text class="g-au" x="460" y="148" text-anchor="middle">B — the tube&#8217;s known length · rigid by construction</text>
+        </svg>
+      </figure>
       <div class="struts reveal">
         <article class="strut">
           <div class="st-tag"><span>strut 01</span><span>ADR-0001</span></div>
@@ -558,6 +663,16 @@
       <div class="fails reveal">
         <article class="fail">
           <div class="fl-head"><span class="fl-num">00</span><span class="fl-name">zero baseline</span></div>
+          <div class="fl-fig" aria-hidden="true">
+            <svg viewBox="0 0 220 112">
+              <line class="g-bg" x1="30" y1="20" x2="190" y2="20" />
+              <line class="g-tick" x1="30" y1="15" x2="30" y2="25" />
+              <line class="g-tick" x1="190" y1="15" x2="190" y2="25" />
+              <line class="g-sight" x1="110" y1="92" x2="110" y2="20" />
+              <path class="g-obj" d="M110 48 l7 9 -7 9 -7 -9 z" />
+              <circle class="g-nd" cx="110" cy="92" r="5.5" />
+            </svg>
+          </div>
           <div class="fl-half">
             <span class="fl-cap">in the instrument</span>
             <p>One viewpoint. Nothing shifts; a near star and the far background are indistinguishable. There is no measurement to get wrong.</p>
@@ -569,6 +684,25 @@
         </article>
         <article class="fail">
           <div class="fl-head"><span class="fl-num">01</span><span class="fl-name">unknown baseline</span></div>
+          <div class="fl-fig" aria-hidden="true">
+            <svg viewBox="0 0 220 112">
+              <line class="g-bg" x1="30" y1="20" x2="190" y2="20" />
+              <line class="g-tick" x1="30" y1="15" x2="30" y2="25" />
+              <line class="g-tick" x1="190" y1="15" x2="190" y2="25" />
+              <line class="g-sight" x1="55" y1="92" x2="165" y2="20" />
+              <line class="g-sight" x1="165" y1="92" x2="55" y2="20" />
+              <circle class="g-pp" cx="165" cy="20" r="2.8" />
+              <circle class="g-pp" cx="55" cy="20" r="2.8" />
+              <line class="g-shift" x1="55" y1="9" x2="165" y2="9" />
+              <line class="g-shift" x1="55" y1="5" x2="55" y2="13" />
+              <line class="g-shift" x1="165" y1="5" x2="165" y2="13" />
+              <path class="g-obj" d="M110 48 l7 9 -7 9 -7 -9 z" />
+              <circle class="g-nd" cx="55" cy="92" r="5.5" />
+              <circle class="g-nd" cx="165" cy="92" r="5.5" />
+              <line class="g-base bad" x1="63" y1="92" x2="157" y2="92" />
+              <text class="g-bad-txt" x="110" y="108" text-anchor="middle">B = ?</text>
+            </svg>
+          </div>
           <div class="fl-half">
             <span class="fl-cap">in the instrument</span>
             <p>The shift is right there on the plate, but with no citable separation it never becomes a distance — <b>a number with no meaning</b>.</p>
@@ -580,6 +714,20 @@
         </article>
         <article class="fail">
           <div class="fl-head"><span class="fl-num">02</span><span class="fl-name">flexing baseline</span></div>
+          <div class="fl-fig" aria-hidden="true">
+            <svg viewBox="0 0 220 112">
+              <line class="g-bg" x1="30" y1="20" x2="190" y2="20" />
+              <line class="g-tick" x1="30" y1="15" x2="30" y2="25" />
+              <line class="g-tick" x1="190" y1="15" x2="190" y2="25" />
+              <line class="g-sight" x1="55" y1="86" x2="185" y2="20" />
+              <line class="g-sight" x1="165" y1="96" x2="74" y2="20" />
+              <path class="g-obj" d="M110 48 l7 9 -7 9 -7 -9 z" />
+              <path class="g-ghost" d="M124 50 l7 9 -7 9 -7 -9 z" />
+              <circle class="g-nd" cx="55" cy="86" r="5.5" />
+              <circle class="g-nd" cx="165" cy="96" r="5.5" />
+              <path class="g-base flex" fill="none" d="M62 88 Q 88 78 110 88 T 158 94" />
+            </svg>
+          </div>
           <div class="fl-half">
             <span class="fl-cap">in the instrument</span>
             <p>The separation moves between the two observations and the instrument manufactures shift — <b>false parallax</b>, indistinguishable from signal on a single pair of plates.</p>
