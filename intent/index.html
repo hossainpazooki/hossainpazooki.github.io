@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="ink">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0B0E13" />
+<meta name="theme-color" content="#0B0E13" id="metatheme" />
+<script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
@@ -15,6 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
+    color-scheme:dark;
     --ink:#0B0E13;
     --ink-2:#0E121A;
     --panel:#11151D;
@@ -32,9 +34,42 @@
     --block-dim:#6a3327;
     --blue:#6CA7E8;
     --blue-dim:#2c4a6a;
+    --header-bg:rgba(11,14,19,.72);
+    --gold-hover:#f3c269;
+    --wash-1:rgba(255,255,255,.012);
+    --wash-2:rgba(255,255,255,.03);
+    --lamp-off:#2a3543;
+    --gate-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
     --maxw:1080px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  :root[data-theme="paper"]{
+    color-scheme:light;
+    --ink:#F6F4EE;
+    --ink-2:#EFECE2;
+    --panel:#FCFBF7;
+    --panel-2:#F1EEE5;
+    --line:#D8D3C4;
+    --line-soft:#E5E1D4;
+    --text:#1E232C;
+    --text-2:#454D5C;
+    --muted:#6C7484;
+    --gold:#8A6217;
+    --gold-dim:#D3BE8F;
+    --ok:#1E7A4D;
+    --ok-dim:#A6CDB8;
+    --block:#AE4529;
+    --block-dim:#DFB1A1;
+    --blue:#2D5FA3;
+    --blue-dim:#B9C9E1;
+    --header-bg:rgba(246,244,238,.8);
+    --gold-hover:#B07C1E;
+    --wash-1:rgba(30,35,44,.025);
+    --wash-2:rgba(30,35,44,.05);
+    --lamp-off:#DDD6C6;
+    --gate-shadow:0 1px 2px rgba(30,35,44,.05), 0 18px 50px -30px rgba(30,35,44,.35);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -50,6 +85,7 @@
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
     overflow-x:hidden;
+    transition:background-color .25s ease,color .25s ease;
   }
 
   a{color:inherit;text-decoration:none}
@@ -88,7 +124,7 @@
   /* ---------- header ---------- */
   header{
     position:sticky;top:0;z-index:50;
-    background:rgba(11,14,19,.72);
+    background:var(--header-bg);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line-soft);
   }
@@ -107,7 +143,18 @@
   }
   .nav-links a:hover{color:var(--text)}
   .nav-links a.ext{color:var(--gold)}
-  .nav-links a.ext:hover{color:#f3c269}
+  .nav-links a.ext:hover{color:var(--gold-hover)}
+  .nav-links a{white-space:nowrap}
+  .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
+  .theme-sw button{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    background:transparent;border:0;padding:6px 12px;cursor:pointer;
+    transition:color .18s ease,background .18s ease;
+  }
+  .theme-sw button+button{border-left:1px solid var(--line)}
+  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(224,164,54,.08)}
+  @media(max-width:1160px){.nav-links{gap:14px}}
   @media(max-width:760px){.nav-links a.hideable{display:none}}
 
   /* ---------- intro / the effect ---------- */
@@ -200,7 +247,7 @@
     padding:10px 12px;border-bottom:1px solid var(--line-soft);
     font-family:var(--mono);font-size:9px;letter-spacing:.12em;
     text-transform:uppercase;color:var(--muted);line-height:1.6;
-    background:rgba(255,255,255,.012);
+    background:var(--wash-1);
   }
   .run-head b{display:block;font-size:10.5px;color:var(--text);font-weight:600;letter-spacing:.06em}
   .run-head .key{color:var(--gold)}
@@ -287,7 +334,7 @@
   .pill{
     font-family:var(--mono);font-size:12px;letter-spacing:.05em;
     border:1px solid var(--line);border-radius:999px;padding:6px 13px;
-    color:var(--text-2);background:rgba(255,255,255,.012);
+    color:var(--text-2);background:var(--wash-1);
     display:inline-flex;align-items:center;gap:8px;
   }
   .pill .dot-ok{width:7px;height:7px;border-radius:50%;background:var(--ok)}
@@ -304,7 +351,7 @@
     display:flex;justify-content:space-between;align-items:center;
     font-family:var(--mono);font-size:11px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--muted);
-    background:rgba(255,255,255,.012);
+    background:var(--wash-1);
   }
   .install-body{
     padding:16px;font-family:var(--mono);
@@ -376,7 +423,7 @@
     font-family:var(--mono);font-size:11px;letter-spacing:.12em;
     text-transform:uppercase;color:var(--muted);
     padding:11px 16px;border-bottom:1px solid var(--line);
-    background:rgba(255,255,255,.012);
+    background:var(--wash-1);
   }
   .dtable th,.dtable td{
     padding:10px 16px;text-align:left;border-bottom:1px solid var(--line-soft);
@@ -435,10 +482,10 @@
     padding:13px 18px;display:flex;align-items:center;gap:12px;
     font-family:var(--mono);font-size:12px;font-weight:600;
     letter-spacing:.12em;text-transform:uppercase;
-    color:var(--text-2);background:rgba(255,255,255,.012);
+    color:var(--text-2);background:var(--wash-1);
     transition:background .18s ease;
   }
-  .chg-grp summary:hover{background:rgba(255,255,255,.03)}
+  .chg-grp summary:hover{background:var(--wash-2)}
   .chg-grp summary::-webkit-details-marker{display:none}
   .chg-grp summary .chev{
     margin-left:auto;color:var(--muted);font-size:13px;
@@ -491,6 +538,7 @@
     .reveal{opacity:1;transform:none;transition:none}
   }
 </style>
+<noscript><style>.reveal{opacity:1;transform:none}.theme-sw{display:none}</style></noscript>
 </head>
 <body>
 
@@ -507,6 +555,10 @@
       <a href="/rigor/" class="hideable">/rigor</a>
       <a href="/cldd/" class="hideable">/cldd</a>
       <a href="https://github.com/hossainpazooki/treasury-intent-controller" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+      <div class="theme-sw" role="group" aria-label="Theme">
+        <button type="button" data-set="ink" aria-pressed="true">ink</button>
+        <button type="button" data-set="paper" aria-pressed="false">paper</button>
+      </div>
     </nav>
   </div>
 </header>
@@ -880,5 +932,20 @@ ACHIEVED {<br />
   })();
 </script>
 
+<script>
+(function(){
+  var META = { paper:'#F6F4EE', ink:'#0B0E13' };
+  var meta = document.getElementById('metatheme');
+  var btns = document.querySelectorAll('.theme-sw button');
+  function apply(t){
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('hp-theme', t); } catch(e){}
+    if (meta) meta.setAttribute('content', META[t] || META.ink);
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
+  apply(document.documentElement.dataset.theme === 'paper' ? 'paper' : 'ink');
+})();
+</script>
 </body>
 </html>

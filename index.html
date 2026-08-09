@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="ink">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0B0E13" />
+<meta name="theme-color" content="#0B0E13" id="metatheme" />
+<script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
@@ -15,6 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
+    color-scheme:dark;
     --ink:#0B0E13;
     --ink-2:#0E121A;
     --panel:#11151D;
@@ -29,9 +31,39 @@
     --ok:#5BB98C;
     --warn:#E0A436;
     --block:#D4654A;
+    --header-bg:rgba(11,14,19,.72);
+    --gold-hover:#f3c269;
+    --wash-1:rgba(255,255,255,.012);
+    --wash-2:rgba(255,255,255,.03);
+    --lamp-off:#2a3543;
+    --gate-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
     --maxw:1080px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  :root[data-theme="paper"]{
+    color-scheme:light;
+    --ink:#F6F4EE;
+    --ink-2:#EFECE2;
+    --panel:#FCFBF7;
+    --panel-2:#F1EEE5;
+    --line:#D8D3C4;
+    --line-soft:#E5E1D4;
+    --text:#1E232C;
+    --text-2:#454D5C;
+    --muted:#6C7484;
+    --gold:#8A6217;
+    --gold-dim:#D3BE8F;
+    --ok:#1E7A4D;
+    --warn:#8A6217;
+    --block:#AE4529;
+    --header-bg:rgba(246,244,238,.8);
+    --gold-hover:#B07C1E;
+    --wash-1:rgba(30,35,44,.025);
+    --wash-2:rgba(30,35,44,.05);
+    --lamp-off:#DDD6C6;
+    --gate-shadow:0 1px 2px rgba(30,35,44,.05), 0 18px 50px -30px rgba(30,35,44,.35);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -47,6 +79,7 @@
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
     overflow-x:hidden;
+    transition:background-color .25s ease,color .25s ease;
   }
 
   a{color:inherit;text-decoration:none}
@@ -82,7 +115,7 @@
   /* ---------- header ---------- */
   header{
     position:sticky;top:0;z-index:50;
-    background:rgba(11,14,19,.72);
+    background:var(--header-bg);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line-soft);
   }
@@ -109,7 +142,18 @@
   }
   .nav-links a:hover{color:var(--text)}
   .nav-links a.ext{color:var(--gold)}
-  .nav-links a.ext:hover{color:#f3c269}
+  .nav-links a.ext:hover{color:var(--gold-hover)}
+  .nav-links a{white-space:nowrap}
+  .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
+  .theme-sw button{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    background:transparent;border:0;padding:6px 12px;cursor:pointer;
+    transition:color .18s ease,background .18s ease;
+  }
+  .theme-sw button+button{border-left:1px solid var(--line)}
+  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(224,164,54,.08)}
+  @media(max-width:1160px){.nav-links{gap:14px}}
   @media(max-width:620px){
     .nav-links a.hideable{display:none}
   }
@@ -135,7 +179,7 @@
     border-radius:8px;
     max-width:660px;
     overflow:hidden;
-    box-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
+    box-shadow:var(--gate-shadow);
   }
   .gate-bar{
     border-bottom:1px solid var(--line);
@@ -146,12 +190,12 @@
     letter-spacing:.14em;
     text-transform:uppercase;
     color:var(--muted);
-    background:rgba(255,255,255,.012);
+    background:var(--wash-1);
   }
   .gate-bar .lights{display:inline-flex;gap:6px}
   .gate-bar .lights i{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--line)}
-  .gate-bar .lights i:nth-child(1){background:#2a3543}
-  .gate-bar .lights i:nth-child(2){background:#2a3543}
+  .gate-bar .lights i:nth-child(1){background:var(--lamp-off)}
+  .gate-bar .lights i:nth-child(2){background:var(--lamp-off)}
   .gate-bar .lights i:nth-child(3){background:var(--gold-dim)}
   .gate-body{padding:24px 18px 18px}
   .assert{
@@ -317,7 +361,7 @@
   .stack span{
     font-family:var(--mono);font-size:11.5px;color:var(--text-2);
     border:1px solid var(--line);border-radius:4px;padding:3px 9px;
-    background:rgba(255,255,255,.012);
+    background:var(--wash-1);
   }
   @media(max-width:680px){
     .rec{grid-template-columns:1fr;gap:12px;padding:26px 4px}
@@ -382,7 +426,7 @@
   }
   .pub-companion{margin-top:14px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
   .pub-companion a{color:var(--gold);transition:color .15s ease}
-  .pub-companion a:hover{color:#f3c269}
+  .pub-companion a:hover{color:var(--gold-hover)}
   @media(max-width:880px){.duo{grid-template-columns:1fr;gap:60px}}
 
   /* ---------- skills ---------- */
@@ -454,6 +498,7 @@
     .reveal{opacity:1;transform:none;transition:none}
   }
 </style>
+<noscript><style>.reveal{opacity:1;transform:none}.theme-sw{display:none}</style></noscript>
 </head>
 <body>
 
@@ -467,6 +512,10 @@
       <a href="#skills" class="hideable">skills</a>
       <a href="#career" class="hideable">career</a>
       <a href="https://hossainpazooki.com" class="ext" target="_blank" rel="noopener">hossainpazooki.com&nbsp;↗</a>
+      <div class="theme-sw" role="group" aria-label="Theme">
+        <button type="button" data-set="ink" aria-pressed="true">ink</button>
+        <button type="button" data-set="paper" aria-pressed="false">paper</button>
+      </div>
     </nav>
   </div>
 </header>
@@ -532,7 +581,7 @@
 
         <div class="duo-col reveal" id="systems">
           <span class="eyebrow">Deep dives</span>
-          <h2>Three systems, one discipline.</h2>
+          <h2>Four systems, one discipline.</h2>
           <p class="sub">Each a working system with its own page — the effect stated in one line.</p>
           <div class="systems">
         <a class="system" href="/rigor/">
@@ -558,6 +607,14 @@
           </div>
           <div class="sys-effect">A duplicate of an irreversible action isn't caught — it's impossible.</div>
           <div class="sys-what">A deterministic gate that authorizes an irreversible action only on a reproducible, measured demonstration — one durable ACHIEVED record, or nothing at all.</div>
+        </a>
+        <a class="system" href="/baseline/">
+          <div class="sys-top">
+            <span class="sys-kind">data platform · concept page</span>
+            <span class="sys-arrow">/baseline →</span>
+          </div>
+          <div class="sys-effect">The shift is cheap. The baseline is the instrument.</div>
+          <div class="sys-what">The optics underneath VANTAGE × PARALLAX — an as-of viewpoint, the revision that shifts between viewpoints, and the contract that makes the two comparable: one read surface, one Reader protocol, a gate proven able to fail.</div>
         </a>
           </div>
         </div>
@@ -815,5 +872,20 @@
   })();
 </script>
 
+<script>
+(function(){
+  var META = { paper:'#F6F4EE', ink:'#0B0E13' };
+  var meta = document.getElementById('metatheme');
+  var btns = document.querySelectorAll('.theme-sw button');
+  function apply(t){
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('hp-theme', t); } catch(e){}
+    if (meta) meta.setAttribute('content', META[t] || META.ink);
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
+  apply(document.documentElement.dataset.theme === 'paper' ? 'paper' : 'ink');
+})();
+</script>
 </body>
 </html>
