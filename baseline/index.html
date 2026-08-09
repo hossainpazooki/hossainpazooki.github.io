@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#F6F4EE" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<title>BASELINE — the fixed separation underneath VANTAGE × PARALLAX</title>
+<meta name="description" content="The conceptual underpinning connecting VANTAGE and PARALLAX, taken seriously as optics: a shift becomes a measurement only across a known, rigid baseline. In astronomy that baseline is the surveyed orbit; here it is the contract — one read surface, one Reader protocol, and a gate proven able to fail. Also this site's first light-theme test." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     LIGHT-THEME TEST — the ink token set, re-weighted for paper.
+     Same type, same structure, same semantic roles as /cldd/,
+     /intent/, /rigor/. One asymmetry: gold splits into a line
+     metal (--gold) and a darker text weight (--gold-deep).
+     ============================================================ */
+  :root{
+    --paper:#F6F4EE;
+    --paper-2:#EFECE2;
+    --panel:#FCFBF7;
+    --panel-2:#F1EEE5;
+    --line:#D8D3C4;
+    --line-soft:#E5E1D4;
+    --text:#1E232C;
+    --text-2:#454D5C;
+    --muted:#6C7484;
+    --gold:#B07C1E;
+    --gold-deep:#7E5A10;
+    --gold-wash:rgba(176,124,30,.08);
+    --ok:#1E7A4D;
+    --ok-soft:#AACFBB;
+    --ok-wash:rgba(30,122,77,.07);
+    --block:#AE4529;
+    --block-soft:#DFB1A1;
+    --block-wash:rgba(174,69,41,.06);
+    --blue:#2D5FA3;
+    --blue-soft:#B9C9E1;
+    --shadow:0 1px 2px rgba(30,35,44,.04),0 16px 44px -24px rgba(30,35,44,.22);
+    --maxw:1080px;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    background:var(--paper);
+    color:var(--text);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--gold);color:#FFFDF8}
+
+  :focus-visible{
+    outline:2px solid var(--gold-deep);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .section{scroll-margin-top:76px}
+
+  code{font-family:var(--mono)}
+  p code, li code, td code, .note code{
+    font-size:.9em;color:var(--gold-deep);
+    background:var(--gold-wash);
+    border:1px solid rgba(176,124,30,.22);
+    border-radius:4px;padding:1px 6px;white-space:nowrap;
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);
+    display:inline-flex;align-items:center;gap:.6em;
+  }
+  .eyebrow::before{
+    content:"";width:18px;height:1px;background:var(--gold);display:inline-block;
+  }
+
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(246,244,238,.8);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{
+    font-family:var(--mono);font-weight:600;font-size:15px;
+    letter-spacing:.04em;color:var(--text);
+    display:inline-flex;align-items:center;gap:.5em;
+  }
+  .brand .dot{color:var(--gold-deep)}
+  .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
+  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links a{
+    font-family:var(--mono);font-size:13px;color:var(--muted);
+    letter-spacing:.02em;transition:color .18s ease;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.ext{color:var(--gold-deep)}
+  .nav-links a.ext:hover{color:var(--gold)}
+  @media(max-width:760px){.nav-links a.hideable{display:none}}
+
+  /* ---------- hero / the instrument ---------- */
+  .intro{padding:72px 0 24px}
+  .intro .eyebrow{margin-bottom:22px}
+  .intro h1{
+    font-size:clamp(30px,5.2vw,50px);font-weight:700;
+    letter-spacing:-.025em;line-height:1.1;max-width:880px;
+  }
+  .intro h1 .dim{color:var(--muted);font-weight:600}
+  .lede{
+    margin-top:24px;max-width:800px;
+    font-size:clamp(16px,2.4vw,18.5px);line-height:1.66;color:var(--text-2);
+  }
+  .lede b{color:var(--text);font-weight:600}
+
+  .instrument{padding:34px 0 64px}
+  .optic{
+    border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);box-shadow:var(--shadow);
+    padding:26px 20px 10px;overflow-x:auto;
+  }
+  .optic svg{display:block;width:100%;height:auto;min-width:680px}
+  .optic .ln-sight{stroke:var(--blue);stroke-width:1.4;opacity:.8}
+  .optic .ln-base{stroke:var(--gold);stroke-width:2.4;transition:stroke .25s ease}
+  .optic .ln-base.withheld,
+  .optic .tick-base.withheld{stroke:var(--block);stroke-dasharray:5 5}
+  .optic .tick-base{stroke:var(--gold);stroke-width:2;transition:stroke .25s ease}
+  .optic .ln-bg{stroke:#C9C3B2;stroke-width:1.2}
+  .optic .ln-tick{stroke:var(--muted);stroke-width:1}
+  .optic .ln-shift{stroke:var(--text);stroke-width:1.4}
+  .optic .ln-arc{stroke:var(--text-2);stroke-width:1.2;fill:none}
+  .optic .nd{fill:var(--panel);stroke:var(--blue);stroke-width:1.7}
+  .optic .obj{fill:var(--gold)}
+  .optic .pp{fill:var(--blue)}
+  .optic .bgstar{fill:#B9B2A0}
+  .optic text{font-family:var(--mono)}
+  .optic .t-tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;fill:var(--muted)}
+  .optic .t-name{font-size:13px;font-weight:600;letter-spacing:.06em;fill:var(--text)}
+  .optic .t-name.au{fill:var(--gold-deep)}
+  .optic .t-name.bad{fill:var(--block)}
+  .optic .t-name.bl{fill:var(--blue)}
+  .optic .t-sub{font-size:10.5px;fill:var(--muted)}
+  .optic .t-mark{font-size:11px;fill:var(--text-2)}
+  .optic .halo{paint-order:stroke;stroke:var(--panel);stroke-width:7px;stroke-linejoin:round}
+
+  .ctl{
+    margin-top:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+    border:1px solid var(--line);border-radius:10px;background:var(--panel);
+    padding:14px 18px;
+  }
+  .ctl-slider{display:flex;align-items:center;gap:14px;flex:1;min-width:260px}
+  .ctl-lab{
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+    white-space:nowrap;
+  }
+  .ctl output{
+    font-family:var(--mono);font-size:13px;font-weight:600;color:var(--gold-deep);
+    min-width:72px;text-align:right;
+  }
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:99px;
+    background:linear-gradient(90deg,var(--gold) 100%,var(--line) 100%);
+    outline-offset:4px;cursor:pointer;min-width:140px;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;
+    background:var(--gold-deep);border:2.5px solid var(--panel);
+    box-shadow:0 1px 4px rgba(30,35,44,.35);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:13px;height:13px;border-radius:50%;
+    background:var(--gold-deep);border:2.5px solid var(--panel);
+    box-shadow:0 1px 4px rgba(30,35,44,.35);
+  }
+  input[type=range]::-moz-range-track{height:4px;border-radius:99px;background:var(--line)}
+  input[type=range]::-moz-range-progress{height:4px;border-radius:99px;background:var(--gold)}
+  .ctl-toggle{
+    font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;
+    color:var(--text-2);background:var(--panel);
+    border:1px solid var(--line);border-radius:999px;
+    padding:8px 16px;cursor:pointer;transition:all .2s ease;white-space:nowrap;
+  }
+  .ctl-toggle:hover{border-color:var(--muted)}
+  .ctl-toggle[aria-pressed="true"]{
+    color:var(--block);border-color:var(--block-soft);background:var(--block-wash);
+  }
+
+  .readout{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+  .ro{
+    border:1px solid var(--line);border-radius:10px;background:var(--panel);
+    padding:15px 18px 13px;display:flex;flex-direction:column;gap:4px;
+  }
+  .ro-l{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  }
+  .ro-v{
+    font-family:var(--mono);font-size:clamp(18px,2.6vw,23px);font-weight:600;
+    letter-spacing:-.01em;color:var(--text);transition:color .2s ease;
+  }
+  .ro-v.au{color:var(--gold-deep)}
+  .ro-v.bl{color:var(--blue)}
+  .ro-v.g{color:var(--ok)}
+  .ro-v.r{color:var(--block)}
+  .ro-s{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.5}
+  @media(max-width:760px){.readout{grid-template-columns:1fr}}
+
+  .vline{
+    margin-top:12px;border-radius:8px;padding:11px 16px;
+    font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em;
+    border:1px solid var(--ok-soft);color:var(--ok);background:var(--ok-wash);
+    transition:all .25s ease;
+  }
+  .vline.bad{border-color:var(--block-soft);color:var(--block);background:var(--block-wash)}
+
+  .fig-note{
+    margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--muted);
+    line-height:1.7;display:flex;flex-direction:column;gap:2px;
+  }
+  .fig-note b{color:var(--text-2);font-weight:600}
+
+  .aside-card{
+    margin-top:26px;border:1px solid var(--line);border-radius:10px;
+    background:linear-gradient(90deg,var(--gold-wash),var(--panel) 55%);
+    padding:18px 22px;
+  }
+  .aside-card .ac-tag{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);
+  }
+  .aside-card p{margin-top:8px;font-size:14px;color:var(--text-2);line-height:1.65;max-width:900px}
+  .aside-card p b{color:var(--text);font-weight:600}
+
+  /* ---------- bands ---------- */
+  .band{border-top:1px solid var(--line);padding:72px 0}
+  .section-head{margin-bottom:38px}
+  .section-head h2{
+    margin-top:18px;
+    font-size:clamp(24px,4vw,34px);font-weight:600;
+    letter-spacing:-.02em;line-height:1.15;max-width:820px;
+  }
+  .section-head p{margin-top:14px;max-width:720px;color:var(--text-2);font-size:15.5px}
+  .section-head p b{color:var(--text);font-weight:600}
+
+  .note{
+    margin-top:18px;font-size:13.5px;color:var(--muted);max-width:820px;line-height:1.65;
+  }
+  .note b{color:var(--text-2);font-weight:600}
+
+  /* ---------- mapping table ---------- */
+  .dtable-wrap{margin-top:8px;overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow)}
+  table.dtable{
+    border-collapse:collapse;width:100%;min-width:640px;
+    font-size:13.5px;
+  }
+  .dtable caption{
+    caption-side:top;text-align:left;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);
+    padding:12px 18px;border-bottom:1px solid var(--line);
+    background:var(--panel-2);
+  }
+  .dtable th,.dtable td{
+    padding:12px 18px;text-align:left;border-bottom:1px solid var(--line-soft);
+    vertical-align:top;
+  }
+  .dtable th{
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;
+  }
+  .dtable td{color:var(--text-2);line-height:1.55}
+  .dtable td.k{
+    font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--text);
+    white-space:nowrap;
+  }
+  .dtable td b{color:var(--text);font-weight:600}
+  .dtable tr:last-child td{border-bottom:0}
+  .dtable td .who{
+    display:inline-block;margin-left:8px;
+    font-family:var(--mono);font-size:10px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;
+    border:1px solid var(--line);border-radius:999px;padding:2px 8px;
+  }
+  .dtable td .who.v{color:var(--blue);border-color:var(--blue-soft)}
+  .dtable td .who.p{color:var(--text-2)}
+  .dtable td .who.b{color:var(--gold-deep);border-color:rgba(176,124,30,.35)}
+
+  /* ---------- struts ---------- */
+  .struts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+  .strut{
+    border:1px solid var(--line);border-radius:10px;background:var(--panel);
+    box-shadow:var(--shadow);padding:20px 22px;
+    display:flex;flex-direction:column;
+  }
+  .strut .st-tag{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);
+    display:flex;justify-content:space-between;gap:10px;
+  }
+  .strut h3{margin-top:10px;font-size:17.5px;font-weight:600;letter-spacing:-.01em}
+  .strut p{margin-top:9px;font-size:13.5px;color:var(--text-2);line-height:1.6}
+  .strut p b{color:var(--text);font-weight:600}
+  .strut ul{margin-top:12px;list-style:none;display:flex;flex-direction:column;gap:8px}
+  .strut li{
+    font-size:13px;color:var(--text-2);line-height:1.55;
+    padding-left:16px;position:relative;
+  }
+  .strut li::before{content:"–";position:absolute;left:0;color:var(--gold-deep)}
+  .strut li b{color:var(--text);font-weight:600}
+  @media(max-width:900px){.struts{grid-template-columns:1fr}}
+
+  /* ---------- failure modes ---------- */
+  .fails{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+  .fail{
+    border:1px solid var(--line);border-radius:10px;background:var(--panel);
+    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
+  }
+  .fail .fl-head{
+    padding:13px 20px;border-bottom:1px solid var(--line);
+    background:var(--panel-2);
+    display:flex;align-items:baseline;gap:10px;
+  }
+  .fail .fl-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--block)}
+  .fail .fl-name{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text);letter-spacing:.02em}
+  .fail .fl-half{padding:15px 20px}
+  .fail .fl-half + .fl-half{border-top:1px dashed var(--line)}
+  .fail .fl-cap{
+    font-family:var(--mono);font-size:10px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+  .fail .fl-cap.sys{color:var(--blue)}
+  .fail p{margin-top:7px;font-size:13px;color:var(--text-2);line-height:1.6}
+  .fail p b{color:var(--text);font-weight:600}
+  @media(max-width:900px){.fails{grid-template-columns:1fr}}
+
+  /* ---------- token ledger ---------- */
+  .sw{
+    display:inline-block;width:13px;height:13px;border-radius:4px;
+    border:1px solid var(--line);vertical-align:-2px;margin-right:7px;
+  }
+  .tok td{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+  .tok td.k{font-size:12.5px}
+  .tok td.wide{white-space:normal;font-family:var(--sans);font-size:13px}
+  .arrow{color:var(--muted);padding:0 4px}
+
+  footer{border-top:1px solid var(--line);padding:44px 0 60px}
+  .foot{
+    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:12.5px;color:var(--muted);
+  }
+  .foot a{color:var(--gold-deep)}
+  .foot a:hover{color:var(--gold)}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+  }
+</style>
+<noscript><style>.reveal{opacity:1;transform:none}.ctl{display:none}</style></noscript>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><span class="up">hp /</span>baseline<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="/" class="hideable">home</a>
+      <a href="#instrument" class="hideable">instrument</a>
+      <a href="#mapping" class="hideable">mapping</a>
+      <a href="#struts" class="hideable">struts</a>
+      <a href="#failures" class="hideable">failures</a>
+      <a href="#light" class="hideable">light test</a>
+      <a href="/intent/" class="hideable">/intent</a>
+      <a href="/rigor/" class="hideable">/rigor</a>
+      <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="ext" target="_blank" rel="noopener">VANTAGE&nbsp;↗</a>
+      <a href="https://github.com/hossainpazooki/pit-revision-examiner" class="ext" target="_blank" rel="noopener">PARALLAX&nbsp;↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO — optics first -->
+  <section class="intro section" id="effect">
+    <div class="wrap">
+      <span class="eyebrow">the underpinning of vantage × parallax</span>
+      <h1>The shift is cheap.<br /><span class="dim">The baseline is the instrument.</span></h1>
+      <p class="lede"><b>VANTAGE</b> is the viewpoint: it fixes where you stand when you read — as-of date&nbsp;D, nothing accepted after&nbsp;D. <b>PARALLAX</b> is the shift: what the same fact appears to do when the viewpoint changes. This page is the third term, the one the other two stand on — the <b>baseline</b>, the known, rigid separation between viewpoints. Optics settled this first: <b>a shift becomes a measurement only across a baseline you can cite.</b></p>
+    </div>
+  </section>
+
+  <!-- THE INSTRUMENT -->
+  <section class="instrument section" id="instrument">
+    <div class="wrap">
+      <figure class="optic" role="img" aria-label="An interactive parallax diagram. At the bottom, Earth in January and Earth in July sit at the two ends of a gold baseline — the orbit used as a ruler, two astronomical units tip to tip. In the middle, a single gold star: 61 Cygni, the near star, which never moves. Two blue sight lines run from the two Earths through the star and project it onto a distant background line at the top at two different apparent positions — seen in January, seen in July. The bracket between the projections is the apparent shift, theta. A slider shrinks the baseline: half the separation gives half the shift, and at zero separation nothing shifts at all. A withhold-the-baseline button leaves the geometry intact but removes the baseline from the record, and the inferred distance becomes UNEVALUABLE — refused, not passed.">
+        <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- distant background -->
+          <line class="ln-bg" x1="110" y1="86" x2="850" y2="86" />
+          <line class="ln-tick" x1="110" y1="80" x2="110" y2="92" />
+          <line class="ln-tick" x1="850" y1="80" x2="850" y2="92" />
+          <circle class="bgstar" cx="168" cy="70" r="1.8" />
+          <circle class="bgstar" cx="262" cy="78" r="1.4" />
+          <circle class="bgstar" cx="418" cy="66" r="1.6" />
+          <circle class="bgstar" cx="561" cy="76" r="1.4" />
+          <circle class="bgstar" cx="702" cy="68" r="1.8" />
+          <circle class="bgstar" cx="806" cy="77" r="1.4" />
+          <text class="t-tag" x="850" y="58" text-anchor="end">distant background · treated as fixed</text>
+
+          <!-- sight lines -->
+          <line class="ln-sight" id="sl1" x1="320" y1="436" x2="635" y2="86" />
+          <line class="ln-sight" id="sl2" x1="640" y1="436" x2="325" y2="86" />
+
+          <!-- apparent positions + shift bracket -->
+          <g id="projgrp">
+            <circle class="pp" id="pd1" cx="635" cy="86" r="4.5" />
+            <circle class="pp" id="pd2" cx="325" cy="86" r="4.5" />
+            <text class="t-sub halo" id="pl1" x="635" y="110" text-anchor="middle">seen in January</text>
+            <text class="t-sub halo" id="pl2" x="325" y="110" text-anchor="middle">seen in July</text>
+          </g>
+          <g id="bracketgrp">
+            <line class="ln-shift" id="brline" x1="325" y1="40" x2="635" y2="40" />
+            <line class="ln-shift" id="brt1" x1="325" y1="34" x2="325" y2="46" />
+            <line class="ln-shift" id="brt2" x1="635" y1="34" x2="635" y2="46" />
+            <text class="t-name" id="brlab" x="480" y="28" text-anchor="middle">THE APPARENT SHIFT — θ · what PARALLAX is named for</text>
+          </g>
+
+          <!-- the near star -->
+          <g>
+            <path class="obj" d="M480 245 l10 13 -10 13 -10 -13 z" />
+            <text class="t-mark" x="506" y="253">61 Cygni · the near star</text>
+            <text class="t-sub" x="506" y="269">one fact · it never moves</text>
+          </g>
+
+          <!-- parallax angle -->
+          <g id="arcgrp">
+            <path class="ln-arc" id="arcpath" d="M459.9 280.3 A 30 30 0 0 0 500.1 280.3" />
+            <text class="t-mark halo" id="arclab" x="480" y="306" text-anchor="middle">θ</text>
+          </g>
+
+          <!-- degenerate-state note -->
+          <text class="t-sub halo" id="degnote" x="480" y="356" text-anchor="middle" opacity="0">one viewpoint · nothing shifts · near and far indistinguishable</text>
+
+          <!-- observers -->
+          <g id="obsgrp">
+            <text class="t-sub halo" id="ol1" x="320" y="414" text-anchor="middle">Earth · January</text>
+            <text class="t-sub halo" id="ol2" x="640" y="414" text-anchor="middle">Earth · July</text>
+          </g>
+          <circle class="nd" id="ob1" cx="320" cy="436" r="8" />
+          <circle class="nd" id="ob2" cx="640" cy="436" r="8" />
+
+          <!-- the baseline -->
+          <g id="basegrp">
+            <line class="ln-base" id="baseline" x1="332" y1="436" x2="628" y2="436" />
+            <line class="tick-base" id="bt1" x1="332" y1="430" x2="332" y2="442" />
+            <line class="tick-base" id="bt2" x1="628" y1="430" x2="628" y2="442" />
+          </g>
+          <text class="t-name au" id="baselab" x="480" y="482" text-anchor="middle">BASELINE — the known, rigid separation</text>
+          <text class="t-sub" id="basesub" x="480" y="500" text-anchor="middle">the orbit used as a ruler · 2 au tip to tip</text>
+        </svg>
+      </figure>
+
+      <div class="ctl">
+        <div class="ctl-slider">
+          <label class="ctl-lab" for="bslider">baseline&nbsp;B</label>
+          <input type="range" id="bslider" min="0" max="2" step="0.01" value="2" aria-describedby="vline" />
+          <output id="bout" for="bslider">2.00 au</output>
+        </div>
+        <button type="button" class="ctl-toggle" id="withhold" aria-pressed="false">withhold the baseline</button>
+      </div>
+
+      <div class="readout">
+        <div class="ro">
+          <span class="ro-l">baseline · B</span>
+          <span class="ro-v au" id="rv-b">2.00 au</span>
+          <span class="ro-s" id="rs-b">known · rigid · citable</span>
+        </div>
+        <div class="ro">
+          <span class="ro-l">apparent shift · θ</span>
+          <span class="ro-v bl" id="rv-t">0.572″</span>
+          <span class="ro-s">what the consumer measures</span>
+        </div>
+        <div class="ro">
+          <span class="ro-l">inferred distance · d = B ÷ θ</span>
+          <span class="ro-v g" id="rv-d">3.50 pc ≈ 11.4 ly</span>
+          <span class="ro-s" id="rs-d">the claim — attributable to the star</span>
+        </div>
+      </div>
+
+      <p class="vline" id="vline" aria-live="polite">measurement · CLAIMABLE — B and θ both on the record · d = B ÷ θ = 3.50 parsecs</p>
+
+      <div class="fig-note">
+        <span>drag the baseline: <b>half the separation, half the shift</b> — the star never moves, and d = B ÷ θ holds still. that invariance is what "the baseline is the instrument" means.</span>
+        <span>withhold it and θ survives while the claim dies — <b>a shift with no baseline is a number with no meaning.</b> angles exaggerated ≈ 10⁵×; the real θ ≈ 0.57″ is a sixth of a millimetre read from sixty metres.</span>
+      </div>
+
+      <div class="aside-card reveal">
+        <span class="ac-tag">1838 · the first baseline that held</span>
+        <p>Friedrich Bessel picked <b>61 Cygni</b> for its restless proper motion, took Earth's orbit as his ruler, and read the shift: <b>0.3136″ ± 0.0202″</b> — about 10.4 light-years, the first measured distance to a star. The value on record today, two centuries of instruments later: <b>0.286″ — 11.4 light-years</b>. The first parallax ever taken carries its own as-filed → restated history, and it embarrasses nothing: the viewpoint was recorded beside the value, so the revision is data rather than an error. That bookkeeping — <b>the viewpoint stored next to the fact</b> — is exactly what VANTAGE's gold model is.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE MAPPING -->
+  <section class="band section" id="mapping">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">the argument</span>
+        <h2>The pun is load-bearing — and it stands on its invisible third term.</h2>
+        <p>Naming the two visible terms was the easy part: <b>VANTAGE</b> produces viewpoints, <b>PARALLAX</b> measures what shifts between them. But nothing about two viewpoints makes them comparable. What does is the separation between them being <b>known before the measurement and rigid during it</b> — in astronomy the surveyed orbit, here the contract. Every claim either repo makes routes through it.</p>
+      </div>
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>the mapping · optics → the pair</caption>
+          <thead>
+            <tr><th>in the instrument</th><th>in the pair</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="k">two observation points</td>
+              <td>two as-of reads of published gold — at <b>D</b>, and at the <b>latest record</b> <span class="who v">VANTAGE produces both</span></td>
+            </tr>
+            <tr>
+              <td class="k">the near star</td>
+              <td>the same <b>filer-quarter</b> — one economic fact, filed and later restated</td>
+            </tr>
+            <tr>
+              <td class="k">the distant background</td>
+              <td>the gold schema and its semantics — the <b>common ruler</b> both reads are read against</td>
+            </tr>
+            <tr>
+              <td class="k">the apparent shift · θ</td>
+              <td>the <b>revision</b>: as-filed at D vs. restated at latest <span class="who p">PARALLAX measures it</span></td>
+            </tr>
+            <tr>
+              <td class="k">the baseline · B</td>
+              <td>the <b>contract</b>: one surface (ADR-0001) · one <code>Reader</code> protocol · a gate shown able to fail <span class="who b">this page</span></td>
+            </tr>
+            <tr>
+              <td class="k">the inferred distance · d</td>
+              <td>the <b>finding</b> — a shift attributable to the data, not to the read path</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note reveal">Withhold the baseline and the shift is still visible — it just stops meaning anything. A consumer without the contract measures <b>its own read path</b> and files the artifact as a revision. That is why the consumer gate runs before any study does, and why an unevaluable read <b>refuses instead of passing</b>.</p>
+    </div>
+  </section>
+
+  <!-- THE STRUTS -->
+  <section class="band section" id="struts">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">what the baseline is made of</span>
+        <h2>A rangefinder is mostly tube. This baseline is mostly refusals.</h2>
+        <p>A coincidence rangefinder is two windows at the ends of a rigid tube — the tube's known length <b>is</b> the instrument. The pair's tube has three sections, each load-bearing, each earned by a refusal rather than a promise.</p>
+      </div>
+      <div class="struts reveal">
+        <article class="strut">
+          <div class="st-tag"><span>strut 01</span><span>ADR-0001</span></div>
+          <h3>One surface</h3>
+          <p>Published gold is the only thing PARALLAX may read — never bronze, never silver, never a path around the boundary. <b>Sibling, not fork</b>; the consumer never writes upstream.</p>
+          <ul>
+            <li>one end of the baseline is welded to the boundary: <b>no read below the published surface</b></li>
+            <li>the producer's guarantee is scoped to the gold model — deliberately not end-to-end through the ingest seam, which is <b>why an independent consumer gate exists at all</b></li>
+          </ul>
+        </article>
+        <article class="strut">
+          <div class="st-tag"><span>strut 02</span><span>Reader protocol</span></div>
+          <h3>One protocol</h3>
+          <p>Gate checks and study queries are written against a <code>Reader</code> protocol — never a path, never a connection string — so every surface answers the same question with the same semantics.</p>
+          <ul>
+            <li><b>naive datetimes rejected</b> at the protocol boundary; a zoneless timestamp moves the PIT boundary between machines</li>
+            <li>the reader <b>refuses to glob</b> a Delta table — the bare-glob double-count after an overwrite is a pinned test, not a war story</li>
+          </ul>
+        </article>
+        <article class="strut">
+          <div class="st-tag"><span>strut 03</span><span>the twin rule</span></div>
+          <h3>Proof it can fail</h3>
+          <p>A gate that has never been red holds nothing up. Every surface earns two cells: <b>green on the live gold, red on a planted twin</b> staged the same way.</p>
+          <ul>
+            <li>live: three checks over <b>440,661 as-of rows</b> — zero violations (2026-08-07, replayable)</li>
+            <li>twin: the same subset, one row mutated — caught as <b>exactly one violation</b> per affected check; the good copy of the staging gated PASS first</li>
+            <li>fixture twins for the other two mutation families run <b>red in CI</b> on every push</li>
+          </ul>
+        </article>
+      </div>
+      <p class="note reveal">Lane 1 (local Parquet) holds both cells today. Lanes 2–3 — Unity Catalog, then Snowflake over Iceberg — are <b>empty on purpose</b>: the sentence isn't claimable there yet, and the page that bounds those claims is <code>STATUS.md</code>, not this one. Each lane re-earns both cells against a twin <b>staged in that catalog</b>; vendor read paths differ, the invariants don't get to.</p>
+    </div>
+  </section>
+
+  <!-- FAILURE MODES -->
+  <section class="band section" id="failures">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">how baselines fail</span>
+        <h2>Zero, unknown, flexing — three failures, three different lost claims.</h2>
+        <p>Each strut exists because its failure mode is real. Every optics failure has a system twin — and each twin has either been caught in this build already or is pinned so it stays caught.</p>
+      </div>
+      <div class="fails reveal">
+        <article class="fail">
+          <div class="fl-head"><span class="fl-num">00</span><span class="fl-name">zero baseline</span></div>
+          <div class="fl-half">
+            <span class="fl-cap">in the instrument</span>
+            <p>One viewpoint. Nothing shifts; a near star and the far background are indistinguishable. There is no measurement to get wrong.</p>
+          </div>
+          <div class="fl-half">
+            <span class="fl-cap sys">in the pair</span>
+            <p>Latest-only reads — no as-of discipline, so lookahead has nowhere to show up and quietly becomes the dataset. A backtest built on it isn't wrong about the edge; <b>it isn't about an edge at all</b>.</p>
+          </div>
+        </article>
+        <article class="fail">
+          <div class="fl-head"><span class="fl-num">01</span><span class="fl-name">unknown baseline</span></div>
+          <div class="fl-half">
+            <span class="fl-cap">in the instrument</span>
+            <p>The shift is right there on the plate, but with no citable separation it never becomes a distance — <b>a number with no meaning</b>.</p>
+          </div>
+          <div class="fl-half">
+            <span class="fl-cap sys">in the pair</span>
+            <p>An unproven contract. A divergence between two reads can't be attributed: data revision, or read-path artifact? An always-green gate lives here too — green that has <b>never been shown able to go red</b> cites nothing.</p>
+          </div>
+        </article>
+        <article class="fail">
+          <div class="fl-head"><span class="fl-num">02</span><span class="fl-name">flexing baseline</span></div>
+          <div class="fl-half">
+            <span class="fl-cap">in the instrument</span>
+            <p>The separation moves between the two observations and the instrument manufactures shift — <b>false parallax</b>, indistinguishable from signal on a single pair of plates.</p>
+          </div>
+          <div class="fl-half">
+            <span class="fl-cap sys">in the pair</span>
+            <p>Read semantics drifting between reads: the Delta <b>bare-glob double-count</b> after an overwrite; zoneless SEC timestamps parsed in local zone, <b>moving the PIT boundary between machines</b>. Both real, both caught, both pinned as tests.</p>
+          </div>
+        </article>
+      </div>
+      <p class="note reveal">The struts and the failures are the same list with the sign flipped — which is exactly what it means for the baseline to be the instrument.</p>
+    </div>
+  </section>
+
+  <!-- THE LIGHT TEST -->
+  <section class="band section" id="light">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">this page is also a test bench</span>
+        <h2>Parallax is observed at night. A rangefinder is read in daylight.</h2>
+        <p>Every other page on this site runs the ink theme. This one inverts the ground on purpose: <b>same type, same structure, same semantic roles</b>, re-weighted for paper. If the system's tokens survive daylight, the theme can propagate. If they don't, this page is where that fails — visibly, cheaply, before anything else changes.</p>
+      </div>
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>token ledger · ink → paper · what each carries</caption>
+          <thead>
+            <tr><th>role</th><th>ink theme</th><th>paper theme</th><th>carries</th></tr>
+          </thead>
+          <tbody>
+            <tr class="tok">
+              <td class="k">ground</td>
+              <td><span class="sw" style="background:#0B0E13"></span>#0B0E13</td>
+              <td><span class="sw" style="background:#F6F4EE"></span>#F6F4EE</td>
+              <td class="wide">the page itself</td>
+            </tr>
+            <tr class="tok">
+              <td class="k">text</td>
+              <td><span class="sw" style="background:#E7EAF0"></span>#E7EAF0</td>
+              <td><span class="sw" style="background:#1E232C"></span>#1E232C</td>
+              <td class="wide">prose</td>
+            </tr>
+            <tr class="tok">
+              <td class="k">gold</td>
+              <td><span class="sw" style="background:#E0A436"></span>#E0A436</td>
+              <td><span class="sw" style="background:#B07C1E"></span>#B07C1E line · <span class="sw" style="background:#7E5A10"></span>#7E5A10 text</td>
+              <td class="wide">authority marks — the baseline, eyebrows, the brand dot</td>
+            </tr>
+            <tr class="tok">
+              <td class="k">ok</td>
+              <td><span class="sw" style="background:#5BB98C"></span>#5BB98C</td>
+              <td><span class="sw" style="background:#1E7A4D"></span>#1E7A4D</td>
+              <td class="wide">pass · claimable</td>
+            </tr>
+            <tr class="tok">
+              <td class="k">block</td>
+              <td><span class="sw" style="background:#D4654A"></span>#D4654A</td>
+              <td><span class="sw" style="background:#AE4529"></span>#AE4529</td>
+              <td class="wide">fail · refusal · UNEVALUABLE</td>
+            </tr>
+            <tr class="tok">
+              <td class="k">blue</td>
+              <td><span class="sw" style="background:#6CA7E8"></span>#6CA7E8</td>
+              <td><span class="sw" style="background:#2D5FA3"></span>#2D5FA3</td>
+              <td class="wide">sight lines · measured values</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note reveal">One gold at night becomes two in daylight — the line keeps its metal, the type drops darker to hold contrast. That asymmetry is the only concession the port needed. State of the test: <b>this page only</b> — no ink page changes until this one has been read in daylight for a while.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>hp / baseline — the separation that turns a shift into a measurement.</span>
+    <span>
+      <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">VANTAGE ↗</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/hossainpazooki/pit-revision-examiner" target="_blank" rel="noopener">PARALLAX ↗</a>
+      &nbsp;·&nbsp;
+      <a href="/">hossainpazooki.github.io</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* reveal on scroll */
+  var revealed = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    revealed.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold:.15 });
+    revealed.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---------- the instrument ---------- */
+  var PI_PER_AU = 0.286;           /* arcsec of shift per au of baseline, 61 Cyg */
+  var PX_PER_AU = 160;
+  var CX = 480, Y_OBS = 436, Y_STAR = 258, Y_BG = 86, ARC_R = 30;
+  var T = (Y_OBS - Y_BG) / (Y_OBS - Y_STAR);
+
+  var $ = function(id){ return document.getElementById(id); };
+  var els = {
+    slider:$('bslider'), bout:$('bout'), btn:$('withhold'),
+    sl1:$('sl1'), sl2:$('sl2'), ob1:$('ob1'), ob2:$('ob2'),
+    ol1:$('ol1'), ol2:$('ol2'), obsgrp:$('obsgrp'),
+    pd1:$('pd1'), pd2:$('pd2'), pl1:$('pl1'), pl2:$('pl2'), projgrp:$('projgrp'),
+    brline:$('brline'), brt1:$('brt1'), brt2:$('brt2'), bracketgrp:$('bracketgrp'),
+    arcpath:$('arcpath'), arcgrp:$('arcgrp'), degnote:$('degnote'),
+    baseline:$('baseline'), bt1:$('bt1'), bt2:$('bt2'), basegrp:$('basegrp'),
+    baselab:$('baselab'), basesub:$('basesub'),
+    rvB:$('rv-b'), rsB:$('rs-b'), rvT:$('rv-t'), rvD:$('rv-d'), rsD:$('rs-d'),
+    vline:$('vline')
+  };
+  if (!els.slider) return;
+
+  var state = { B: 2, withheld: false };
+
+  function fade(B, from, span){ return Math.max(0, Math.min(1, (B - from) / span)); }
+
+  function render(){
+    var B = state.B, w = state.withheld;
+    var half = B * PX_PER_AU / 2;
+    var v1 = CX - half, v2 = CX + half;
+    var p1 = v1 + (CX - v1) * T;   /* seen from January (left) → appears right */
+    var p2 = v2 + (CX - v2) * T;
+
+    els.sl1.setAttribute('x1', v1); els.sl1.setAttribute('x2', p1);
+    els.sl2.setAttribute('x1', v2); els.sl2.setAttribute('x2', p2);
+    els.ob1.setAttribute('cx', v1); els.ob2.setAttribute('cx', v2);
+    els.ol1.setAttribute('x', v1);  els.ol2.setAttribute('x', v2);
+    els.pd1.setAttribute('cx', p1); els.pd2.setAttribute('cx', p2);
+    els.pl1.setAttribute('x', p1);  els.pl2.setAttribute('x', p2);
+
+    var lo = Math.min(p1, p2), hi = Math.max(p1, p2);
+    els.brline.setAttribute('x1', lo); els.brline.setAttribute('x2', hi);
+    els.brt1.setAttribute('x1', lo); els.brt1.setAttribute('x2', lo);
+    els.brt2.setAttribute('x1', hi); els.brt2.setAttribute('x2', hi);
+
+    els.obsgrp.setAttribute('opacity', fade(B, .2, .5));
+    els.projgrp.setAttribute('opacity', fade(B, .2, .5));
+    els.bracketgrp.setAttribute('opacity', fade(B, .25, .5));
+    els.degnote.setAttribute('opacity', 1 - Math.min(1, B / .14));
+
+    /* baseline segment between node edges */
+    if (v2 - v1 < 30) {
+      els.basegrp.setAttribute('opacity', 0);
+    } else {
+      els.basegrp.setAttribute('opacity', 1);
+      els.baseline.setAttribute('x1', v1 + 12); els.baseline.setAttribute('x2', v2 - 12);
+      els.bt1.setAttribute('x1', v1 + 12); els.bt1.setAttribute('x2', v1 + 12);
+      els.bt2.setAttribute('x1', v2 - 12); els.bt2.setAttribute('x2', v2 - 12);
+    }
+
+    /* parallax-angle arc at the star */
+    var dx = v1 - CX, dy = Y_OBS - Y_STAR, len = Math.sqrt(dx*dx + dy*dy);
+    if (len > 1 && B > 0.12) {
+      var u1x = dx/len, u1y = dy/len, u2x = -dx/len, u2y = dy/len;
+      var e1x = CX + ARC_R*u1x, e1y = Y_STAR + ARC_R*u1y;
+      var e2x = CX + ARC_R*u2x, e2y = Y_STAR + ARC_R*u2y;
+      els.arcpath.setAttribute('d',
+        'M' + e1x.toFixed(1) + ' ' + e1y.toFixed(1) +
+        ' A ' + ARC_R + ' ' + ARC_R + ' 0 0 0 ' + e2x.toFixed(1) + ' ' + e2y.toFixed(1));
+      els.arcgrp.setAttribute('opacity', fade(B, .12, .5));
+    } else {
+      els.arcgrp.setAttribute('opacity', 0);
+    }
+
+    /* baseline state — withheld leaves geometry intact, removes the record */
+    els.baseline.setAttribute('class', w ? 'ln-base withheld' : 'ln-base');
+    els.bt1.setAttribute('class', w ? 'tick-base withheld' : 'tick-base');
+    els.bt2.setAttribute('class', w ? 'tick-base withheld' : 'tick-base');
+    els.baselab.setAttribute('class', w ? 't-name bad' : 't-name au');
+    if (w) {
+      els.baselab.textContent = 'BASELINE — withheld from the record';
+      els.basesub.textContent = 'the separation exists — the observer can’t cite it';
+    } else if (B < 0.15) {
+      els.baselab.textContent = 'BASELINE — collapsed to a point';
+      els.basesub.textContent = 'no separation · no ruler · no instrument';
+    } else {
+      els.baselab.textContent = 'BASELINE — the known, rigid separation';
+      els.basesub.textContent = 'the orbit used as a ruler · 2 au tip to tip';
+    }
+
+    /* the record */
+    var theta = B * PI_PER_AU;
+    els.bout.value = B.toFixed(2) + ' au';
+    els.rvT.textContent = theta.toFixed(3) + '″';
+
+    if (w) {
+      els.rvB.textContent = '?';
+      els.rvB.className = 'ro-v r';
+      els.rsB.textContent = 'withheld — it exists; you can’t cite it';
+    } else {
+      els.rvB.textContent = B.toFixed(2) + ' au';
+      els.rvB.className = 'ro-v au';
+      els.rsB.textContent = 'known · rigid · citable';
+    }
+
+    if (w) {
+      els.rvD.textContent = 'UNEVALUABLE';
+      els.rvD.className = 'ro-v r';
+      els.rsD.textContent = 'refused, not passed';
+      els.vline.className = 'vline bad';
+      els.vline.textContent = 'measurement · UNEVALUABLE — θ is on the record, B is not · refused, not passed';
+    } else if (B < 0.05) {
+      els.rvD.textContent = 'UNEVALUABLE';
+      els.rvD.className = 'ro-v r';
+      els.rsD.textContent = 'refused, not passed';
+      els.vline.className = 'vline bad';
+      els.vline.textContent = 'measurement · UNEVALUABLE — one viewpoint, nothing shifted · refused, not passed';
+    } else {
+      els.rvD.textContent = '3.50 pc ≈ 11.4 ly';
+      els.rvD.className = 'ro-v g';
+      els.rsD.textContent = 'the claim — attributable to the star';
+      els.vline.className = 'vline';
+      els.vline.textContent = 'measurement · CLAIMABLE — B and θ both on the record · d = B ÷ θ = 3.50 parsecs';
+    }
+
+    /* slider fill */
+    var pct = (B / 2) * 100;
+    els.slider.style.background =
+      'linear-gradient(90deg, var(--gold) ' + pct + '%, var(--line) ' + pct + '%)';
+  }
+
+  els.slider.addEventListener('input', function(e){
+    state.B = parseFloat(e.target.value);
+    render();
+  });
+  els.btn.addEventListener('click', function(){
+    state.withheld = !state.withheld;
+    els.btn.setAttribute('aria-pressed', String(state.withheld));
+    els.btn.textContent = state.withheld ? 'restore the baseline' : 'withhold the baseline';
+    render();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
