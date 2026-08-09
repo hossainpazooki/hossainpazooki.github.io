@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="ink">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0B0E13" />
+<meta name="theme-color" content="#0B0E13" id="metatheme" />
+<script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
@@ -15,6 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
+    color-scheme:dark;
     --ink:#0B0E13;
     --ink-2:#0E121A;
     --panel:#11151D;
@@ -30,9 +32,40 @@
     --ok-dim:#2c5a44;
     --block:#D4654A;
     --block-dim:#6a3327;
+    --header-bg:rgba(11,14,19,.72);
+    --gold-hover:#f3c269;
+    --wash-1:rgba(255,255,255,.012);
+    --wash-2:rgba(255,255,255,.03);
+    --lamp-off:#2a3543;
+    --gate-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
     --maxw:1080px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  :root[data-theme="paper"]{
+    color-scheme:light;
+    --ink:#F6F4EE;
+    --ink-2:#EFECE2;
+    --panel:#FCFBF7;
+    --panel-2:#F1EEE5;
+    --line:#D8D3C4;
+    --line-soft:#E5E1D4;
+    --text:#1E232C;
+    --text-2:#454D5C;
+    --muted:#6C7484;
+    --gold:#8A6217;
+    --gold-dim:#D3BE8F;
+    --ok:#1E7A4D;
+    --ok-dim:#A6CDB8;
+    --block:#AE4529;
+    --block-dim:#DFB1A1;
+    --header-bg:rgba(246,244,238,.8);
+    --gold-hover:#B07C1E;
+    --wash-1:rgba(30,35,44,.025);
+    --wash-2:rgba(30,35,44,.05);
+    --lamp-off:#DDD6C6;
+    --gate-shadow:0 1px 2px rgba(30,35,44,.05), 0 18px 50px -30px rgba(30,35,44,.35);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -48,6 +81,7 @@
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
     overflow-x:hidden;
+    transition:background-color .25s ease,color .25s ease;
   }
 
   a{color:inherit;text-decoration:none}
@@ -84,7 +118,7 @@
   /* ---------- header ---------- */
   header{
     position:sticky;top:0;z-index:50;
-    background:rgba(11,14,19,.72);
+    background:var(--header-bg);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line-soft);
   }
@@ -103,7 +137,18 @@
   }
   .nav-links a:hover{color:var(--text)}
   .nav-links a.ext{color:var(--gold)}
-  .nav-links a.ext:hover{color:#f3c269}
+  .nav-links a.ext:hover{color:var(--gold-hover)}
+  .nav-links a{white-space:nowrap}
+  .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
+  .theme-sw button{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    background:transparent;border:0;padding:6px 12px;cursor:pointer;
+    transition:color .18s ease,background .18s ease;
+  }
+  .theme-sw button+button{border-left:1px solid var(--line)}
+  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(224,164,54,.08)}
+  @media(max-width:1160px){.nav-links{gap:14px}}
   @media(max-width:760px){.nav-links a.hideable{display:none}}
 
   /* ---------- hero ---------- */
@@ -120,7 +165,7 @@
   .chip{
     font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
     color:var(--text-2);border:1px solid var(--line);border-radius:999px;
-    padding:5px 12px;background:rgba(255,255,255,.012);
+    padding:5px 12px;background:var(--wash-1);
   }
   .chip b{color:var(--gold);font-weight:600}
   .lede{
@@ -147,7 +192,7 @@
       linear-gradient(180deg,rgba(224,164,54,.05),rgba(224,164,54,0) 90px),
       var(--panel);
     border-radius:8px;overflow:hidden;
-    box-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
+    box-shadow:var(--gate-shadow);
   }
   .gate-bar{
     border-bottom:1px solid var(--line);
@@ -155,10 +200,10 @@
     display:flex;align-items:center;justify-content:space-between;gap:12px;
     font-family:var(--mono);font-size:11.5px;
     letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-    background:rgba(255,255,255,.012);
+    background:var(--wash-1);
   }
   .gate-bar .lights{display:inline-flex;gap:6px}
-  .gate-bar .lights i{width:8px;height:8px;border-radius:50%;display:inline-block;background:#2a3543}
+  .gate-bar .lights i{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--lamp-off)}
   .gate-bar .lights i:nth-child(3){background:var(--gold-dim)}
   .gate-body{padding:20px 18px 18px}
 
@@ -284,7 +329,7 @@
   .pill{
     font-family:var(--mono);font-size:12.5px;letter-spacing:.01em;
     color:var(--text-2);border:1px solid var(--line);border-radius:999px;
-    background:rgba(255,255,255,.012);padding:8px 15px;cursor:pointer;
+    background:var(--wash-1);padding:8px 15px;cursor:pointer;
     transition:color .15s ease,border-color .15s ease,background .15s ease;
   }
   .pill:hover{color:var(--text);border-color:var(--muted)}
@@ -302,7 +347,7 @@
   .reco-move b{color:var(--text-2);font-weight:500}
   .reco-what{font-size:14.5px;color:var(--text-2);line-height:1.65;max-width:640px}
   .reco-link{font-family:var(--mono);font-size:12.5px;color:var(--gold)}
-  .reco-link:hover{color:#f3c269}
+  .reco-link:hover{color:var(--gold-hover)}
   .picker-hint{font-family:var(--mono);font-size:12.5px;color:var(--muted);padding:14px 2px}
 
   .hooks-note{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;margin-top:26px}
@@ -372,7 +417,7 @@
     padding:11px 12px;border-radius:6px;cursor:pointer;
     transition:background .15s ease;
   }
-  .check-item:hover{background:rgba(255,255,255,.02)}
+  .check-item:hover{background:var(--wash-2)}
   .check-item input{
     accent-color:var(--gold);width:15px;height:15px;flex:0 0 auto;
     transform:translateY(2px);cursor:pointer;
@@ -410,7 +455,7 @@
   }
   th{
     font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--muted);font-weight:500;background:rgba(255,255,255,.012);
+    color:var(--muted);font-weight:500;background:var(--wash-1);
   }
   tr:last-child td{border-bottom:0}
   td .comp{font-family:var(--mono);font-size:12.5px;color:var(--text)}
@@ -468,6 +513,7 @@
     .reveal{opacity:1;transform:none;transition:none}
   }
 </style>
+<noscript><style>.reveal{opacity:1;transform:none}.theme-sw{display:none}</style></noscript>
 </head>
 <body>
 
@@ -484,6 +530,10 @@
       <a href="/cldd/" class="hideable">/cldd</a>
       <a href="/intent/" class="hideable">/intent</a>
       <a href="https://github.com/hossainpazooki/rigor" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+      <div class="theme-sw" role="group" aria-label="Theme">
+        <button type="button" data-set="ink" aria-pressed="true">ink</button>
+        <button type="button" data-set="paper" aria-pressed="false">paper</button>
+      </div>
     </nav>
   </div>
 </header>
@@ -1202,5 +1252,20 @@
   })();
 </script>
 
+<script>
+(function(){
+  var META = { paper:'#F6F4EE', ink:'#0B0E13' };
+  var meta = document.getElementById('metatheme');
+  var btns = document.querySelectorAll('.theme-sw button');
+  function apply(t){
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('hp-theme', t); } catch(e){}
+    if (meta) meta.setAttribute('content', META[t] || META.ink);
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
+  apply(document.documentElement.dataset.theme === 'paper' ? 'paper' : 'ink');
+})();
+</script>
 </body>
 </html>

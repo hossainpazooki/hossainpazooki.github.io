@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="paper">
+<html lang="en" data-theme="ink">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#F6F4EE" id="metatheme" />
+<meta name="theme-color" content="#0B0E13" id="metatheme" />
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>BASELINE — the fixed separation underneath VANTAGE × PARALLAX</title>
 <meta name="description" content="The conceptual underpinning connecting VANTAGE and PARALLAX, taken seriously as optics: a shift becomes a measurement only across a known, rigid baseline. In astronomy that baseline is the surveyed orbit; here it is the contract — one read surface, one Reader protocol, and a gate proven able to fail. Also this site's first light-theme test." />
-<script>(function(){var t='paper';try{t=localStorage.getItem('baseline-theme')==='ink'?'ink':'paper'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
+<script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -18,8 +18,8 @@
   /* ============================================================
      ONE TOKEN SET, TWO GROUNDS — the ink theme the rest of the
      site runs, and a paper theme derived from it, role for role.
-     The header toggle flips html[data-theme]; paper is the
-     default because this page is still the light-theme test.
+     The header toggle flips html[data-theme]; ink is the site
+     default and one remembered choice (hp-theme) rides all pages.
      One asymmetry: in daylight gold splits into a line metal
      (--gold) and a darker text weight (--gold-text).
      ============================================================ */
@@ -419,8 +419,8 @@
       <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="ext" target="_blank" rel="noopener">VANTAGE&nbsp;↗</a>
       <a href="https://github.com/hossainpazooki/pit-revision-examiner" class="ext" target="_blank" rel="noopener">PARALLAX&nbsp;↗</a>
       <div class="theme-sw" role="group" aria-label="Theme">
-        <button type="button" data-set="ink" aria-pressed="false">ink</button>
-        <button type="button" data-set="paper" aria-pressed="true">paper</button>
+        <button type="button" data-set="ink" aria-pressed="true">ink</button>
+        <button type="button" data-set="paper" aria-pressed="false">paper</button>
       </div>
     </nav>
   </div>
@@ -746,9 +746,9 @@
   <section class="band section" id="light">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">this page is also a test bench</span>
+        <span class="eyebrow">this page was the test bench</span>
         <h2>Parallax is observed at night. A rangefinder is read in daylight.</h2>
-        <p>Every other page on this site runs the ink theme. This one carries <b>both</b> — the site’s ink set and a paper set derived from it, role for role — switchable from the header, defaulting to paper: it is still the test. If the system's tokens survive daylight, the theme can propagate. If they don't, this page is where that fails — visibly, cheaply, before anything else changes.</p>
+        <p>The whole site now carries both grounds — the ink set it launched with, and the paper set that was earned here token by token. The same header toggle rides every page, one remembered choice governs them all, and <b>ink stays the site default</b>. The ledger below is the mapping the rest of the site inherited.</p>
       </div>
       <div class="dtable-wrap reveal">
         <table class="dtable">
@@ -796,7 +796,7 @@
           </tbody>
         </table>
       </div>
-      <p class="note reveal">One gold at night becomes two in daylight — the line keeps its metal, the type drops darker to hold contrast. That asymmetry is the only concession the port needed. State of the test: <b>this page only</b> — the header toggle governs nothing beyond it, and no ink page changes until this one has been read in daylight for a while.</p>
+      <p class="note reveal">One gold at night becomes two in daylight — the line keeps its metal, the type drops darker to hold contrast. That asymmetry is the only concession the port needed. State of the test: <b>passed and propagated</b> — the toggle now rides every page of the site.</p>
     </div>
   </section>
 
@@ -838,14 +838,14 @@
   var swBtns = document.querySelectorAll('.theme-sw button');
   function applyTheme(t){
     document.documentElement.dataset.theme = t;
-    try { localStorage.setItem('baseline-theme', t); } catch(e){}
+    try { localStorage.setItem('hp-theme', t); } catch(e){}
     if (meta) meta.setAttribute('content', META_COLORS[t] || META_COLORS.paper);
     swBtns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
   }
   swBtns.forEach(function(b){
     b.addEventListener('click', function(){ applyTheme(b.dataset.set); });
   });
-  applyTheme(document.documentElement.dataset.theme === 'ink' ? 'ink' : 'paper');
+  applyTheme(document.documentElement.dataset.theme === 'paper' ? 'paper' : 'ink');
 })();
 </script>
 
