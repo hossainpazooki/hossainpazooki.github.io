@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>CLDD — closed-loop default detection · versions</title>
-<meta name="description" content="CLDD stress-tests a probability-of-default model under selective labels and reports the severity at which it breaks. Version history: v0.1.0 (the harness) and v0.2.0 (the EMP measurement layer), outlined in full." />
+<meta name="description" content="The code &amp; data companion to 'When You Can't Measure What Matters' (Towards AI). CLDD stress-tests a probability-of-default model under selective labels and reports the severity at which it breaks. Version history: v0.1.0 (the harness) and v0.2.0 (the EMP measurement layer), outlined in full." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
@@ -156,6 +156,21 @@
   .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(224,164,54,.08)}
   @media(max-width:1160px){.nav-links{gap:14px}}
   @media(max-width:760px){.nav-links a.hideable{display:none}}
+
+  /* ---------- companion strip — this page is the essay's code & data ---------- */
+  .companion-strip{
+    border-bottom:1px solid var(--line-soft);
+    background:linear-gradient(90deg,rgba(224,164,54,.06),transparent 70%);
+  }
+  .companion-strip .cs{
+    display:flex;gap:8px 18px;flex-wrap:wrap;align-items:baseline;
+    padding:10px 0;
+    font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.03em;
+  }
+  .companion-strip .cs .k{color:var(--gold);font-weight:600}
+  .companion-strip .cs a{color:var(--text-2);transition:color .15s ease}
+  .companion-strip .cs a:hover{color:var(--gold)}
+  .companion-strip .cs a b{color:var(--gold);font-weight:600}
 
   /* ---------- intro / the effect ---------- */
   .intro{padding:88px 0 64px}
@@ -611,12 +626,11 @@
     <a class="brand" href="/"><span class="up">hp /</span>cldd<span class="dot">.</span></a>
     <nav class="nav-links">
       <a href="/" class="hideable">home</a>
+      <a href="/blog/when-you-cant-measure-what-matters/" class="hideable">the essay</a>
       <a href="#effect" class="hideable">the effect</a>
       <a href="#loop" class="hideable">the loop</a>
       <a href="#versions" class="hideable">versions</a>
       <a href="#policy" class="hideable">versioning</a>
-      <a href="/rigor/" class="hideable">/rigor</a>
-      <a href="/intent/" class="hideable">/intent</a>
       <a href="https://pypi.org/project/closed-loop-default-detection/" target="_blank" rel="noopener" class="hideable">PyPI&nbsp;↗</a>
       <a href="https://github.com/hossainpazooki/closed-loop-default-detection" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
       <div class="theme-sw" role="group" aria-label="Theme">
@@ -626,6 +640,14 @@
     </nav>
   </div>
 </header>
+
+<div class="companion-strip">
+  <div class="wrap cs">
+    <span><span class="k">code &amp; data</span> — this page is the companion to the essay</span>
+    <a href="/blog/when-you-cant-measure-what-matters/"><b>When You Can't Measure What Matters</b> — read the entry →</a>
+    <a href="https://medium.com/towards-artificial-intelligence/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">Towards AI ↗</a>
+  </div>
+</div>
 
 <main id="top">
 
@@ -988,6 +1010,7 @@
     </div>
     <div class="foot-links">
       <a href="/">hossainpazooki.github.io <span class="arr">→</span></a>
+      <a href="/blog/when-you-cant-measure-what-matters/">the essay — read the entry <span class="arr">→</span></a>
       <a href="https://github.com/hossainpazooki/closed-loop-default-detection" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
       <a href="https://pypi.org/project/closed-loop-default-detection/" target="_blank" rel="noopener">PyPI <span class="arr">↗</span></a>
       <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
