@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0B0E13" id="metatheme" />
+<meta name="theme-color" content="#0A1424" id="metatheme" />
 <script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -13,30 +13,30 @@
 <meta name="description" content="rigor is a Claude Code plugin that stops you from trusting an agent's self-reported success. Before 'tests pass', 'deployed', or 'done' is believed, rigor makes the agent try to break the claim." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
 <style>
   :root{
     color-scheme:dark;
-    --ink:#0B0E13;
-    --ink-2:#0E121A;
-    --panel:#11151D;
-    --panel-2:#141925;
-    --line:#1C2330;
-    --line-soft:#161C27;
-    --text:#E7EAF0;
-    --text-2:#B7BFCD;
-    --muted:#828C9D;
+    --ink:#0A1424;
+    --ink-2:#0D1930;
+    --panel:#101E38;
+    --panel-2:#142440;
+    --line:#1D3050;
+    --line-soft:#172942;
+    --text:#E9EEF8;
+    --text-2:#B8C5DB;
+    --muted:#7F92B0;
     --gold:#E0A436;
     --gold-dim:#7a5d22;
     --ok:#5BB98C;
     --ok-dim:#2c5a44;
     --block:#D4654A;
     --block-dim:#6a3327;
-    --header-bg:rgba(11,14,19,.72);
+    --header-bg:rgba(10,20,36,.72);
     --gold-hover:#f3c269;
     --wash-1:rgba(255,255,255,.012);
     --wash-2:rgba(255,255,255,.03);
-    --lamp-off:#2a3543;
+    --lamp-off:#2C3E5E;
     --gate-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
     --maxw:1080px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
@@ -130,7 +130,7 @@
   }
   .brand .dot{color:var(--gold)}
   .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
-  .nav-links{display:flex;gap:24px;align-items:center}
+  .nav-links{display:flex;gap:26px;align-items:center}
   .nav-links a{
     font-family:var(--mono);font-size:13px;color:var(--muted);
     letter-spacing:.02em;transition:color .18s ease;
@@ -152,13 +152,14 @@
   @media(max-width:760px){.nav-links a.hideable{display:none}}
 
   /* ---------- hero ---------- */
-  .hero{padding:84px 0 64px}
-  .hero .eyebrow{margin-bottom:24px}
+  .hero{padding:88px 0 64px}
+  .hero .eyebrow{margin-bottom:26px}
   .title{
-    font-weight:700;
-    font-size:clamp(40px,7.6vw,84px);
-    line-height:1.02;letter-spacing:-.03em;
-    margin-bottom:26px;max-width:900px;
+    font-family:'Space Grotesk',var(--sans);
+    font-weight:600;
+    font-size:clamp(38px,6.2vw,68px);
+    line-height:1.04;letter-spacing:-.02em;
+    margin-bottom:28px;max-width:900px;
   }
   .title .ln2{color:var(--text-2)}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}
@@ -173,7 +174,7 @@
     line-height:1.65;color:var(--text-2);
   }
   .lede b{color:var(--text);font-weight:500}
-  .cta-row{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
   .btn{
     font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;
     padding:12px 20px;border-radius:6px;
@@ -252,7 +253,7 @@
 
   /* ---------- sections ---------- */
   .section{padding:74px 0;border-top:1px solid var(--line-soft)}
-  .section-head{margin-bottom:40px}
+  .section-head{margin-bottom:42px}
   .section-head h2{
     margin-top:18px;
     font-size:clamp(24px,4vw,34px);
@@ -1254,7 +1255,7 @@
 
 <script>
 (function(){
-  var META = { paper:'#F6F4EE', ink:'#0B0E13' };
+  var META = { paper:'#F6F4EE', ink:'#0A1424' };
   var meta = document.getElementById('metatheme');
   var btns = document.querySelectorAll('.theme-sw button');
   function apply(t){

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0B0E13" id="metatheme" />
+<meta name="theme-color" content="#0A1424" id="metatheme" />
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
@@ -13,7 +13,7 @@
 <script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
 <style>
   /* ============================================================
      ONE TOKEN SET, TWO GROUNDS — the ink theme the rest of the
@@ -61,15 +61,15 @@
   }
   :root[data-theme="ink"]{
     color-scheme:dark;
-    --bg:#0B0E13;
-    --bg-2:#0E121A;
-    --panel:#11151D;
-    --panel-2:#141925;
-    --line:#1C2330;
-    --line-soft:#161C27;
-    --text:#E7EAF0;
-    --text-2:#B7BFCD;
-    --muted:#828C9D;
+    --bg:#0A1424;
+    --bg-2:#0D1930;
+    --panel:#101E38;
+    --panel-2:#142440;
+    --line:#1D3050;
+    --line-soft:#172942;
+    --text:#E9EEF8;
+    --text-2:#B8C5DB;
+    --muted:#7F92B0;
     --gold:#E0A436;
     --gold-text:#E0A436;
     --gold-hover:#f3c269;
@@ -83,13 +83,13 @@
     --block-wash:rgba(212,101,74,.06);
     --blue:#6CA7E8;
     --blue-border:#2c4a6a;
-    --bgline:#1C2330;
-    --plate:#151B29;
-    --bgstar:#394762;
-    --nd-fill:#0E121A;
-    --sel-fg:#0B0E13;
+    --bgline:#1D3050;
+    --plate:#12203A;
+    --bgstar:#3E5480;
+    --nd-fill:#0D1930;
+    --sel-fg:#0A1424;
     --code-border:rgba(224,164,54,.14);
-    --header-bg:rgba(11,14,19,.72);
+    --header-bg:rgba(10,20,36,.72);
     --shadow:none;
   }
 
@@ -156,7 +156,7 @@
   }
   .brand .dot{color:var(--gold-text)}
   .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
-  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links{display:flex;gap:26px;align-items:center}
   .nav-links a{
     font-family:var(--mono);font-size:13px;color:var(--muted);
     letter-spacing:.02em;transition:color .18s ease;white-space:nowrap;
@@ -177,11 +177,12 @@
   .theme-sw button[aria-pressed="true"]{color:var(--gold-text);background:var(--gold-wash)}
 
   /* ---------- hero / the instrument ---------- */
-  .intro{padding:72px 0 24px}
-  .intro .eyebrow{margin-bottom:22px}
+  .intro{padding:88px 0 24px}
+  .intro .eyebrow{margin-bottom:26px}
   .intro h1{
-    font-size:clamp(30px,5.2vw,50px);font-weight:700;
-    letter-spacing:-.025em;line-height:1.1;max-width:880px;
+    font-family:'Space Grotesk',var(--sans);
+    font-size:clamp(34px,5.6vw,58px);font-weight:600;
+    letter-spacing:-.02em;line-height:1.04;max-width:880px;
   }
   .intro h1 .dim{color:var(--muted);font-weight:600}
   .lede{
@@ -277,7 +278,7 @@
 
   /* ---------- bands ---------- */
   .band{border-top:1px solid var(--line);padding:72px 0}
-  .section-head{margin-bottom:38px}
+  .section-head{margin-bottom:42px}
   .section-head h2{
     margin-top:18px;
     font-size:clamp(24px,4vw,34px);font-weight:600;
@@ -759,13 +760,13 @@
           <tbody>
             <tr class="tok">
               <td class="k">ground</td>
-              <td><span class="sw" style="background:#0B0E13"></span>#0B0E13</td>
+              <td><span class="sw" style="background:#0A1424"></span>#0A1424</td>
               <td><span class="sw" style="background:#F6F4EE"></span>#F6F4EE</td>
               <td class="wide">the page itself</td>
             </tr>
             <tr class="tok">
               <td class="k">text</td>
-              <td><span class="sw" style="background:#E7EAF0"></span>#E7EAF0</td>
+              <td><span class="sw" style="background:#E9EEF8"></span>#E9EEF8</td>
               <td><span class="sw" style="background:#1E232C"></span>#1E232C</td>
               <td class="wide">prose</td>
             </tr>
@@ -833,7 +834,7 @@
   }
 
   /* ---------- theme toggle ---------- */
-  var META_COLORS = { paper:'#F6F4EE', ink:'#0B0E13' };
+  var META_COLORS = { paper:'#F6F4EE', ink:'#0A1424' };
   var meta = document.getElementById('metatheme');
   var swBtns = document.querySelectorAll('.theme-sw button');
   function applyTheme(t){

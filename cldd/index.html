@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0B0E13" id="metatheme" />
+<meta name="theme-color" content="#0A1424" id="metatheme" />
 <script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
@@ -13,19 +13,19 @@
 <meta name="description" content="CLDD stress-tests a probability-of-default model under selective labels and reports the severity at which it breaks. Version history: v0.1.0 (the harness) and v0.2.0 (the EMP measurement layer), outlined in full." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
 <style>
   :root{
     color-scheme:dark;
-    --ink:#0B0E13;
-    --ink-2:#0E121A;
-    --panel:#11151D;
-    --panel-2:#141925;
-    --line:#1C2330;
-    --line-soft:#161C27;
-    --text:#E7EAF0;
-    --text-2:#B7BFCD;
-    --muted:#828C9D;
+    --ink:#0A1424;
+    --ink-2:#0D1930;
+    --panel:#101E38;
+    --panel-2:#142440;
+    --line:#1D3050;
+    --line-soft:#172942;
+    --text:#E9EEF8;
+    --text-2:#B8C5DB;
+    --muted:#7F92B0;
     --gold:#E0A436;
     --gold-dim:#7a5d22;
     --ok:#5BB98C;
@@ -34,11 +34,11 @@
     --block-dim:#6a3327;
     --blue:#6CA7E8;
     --blue-dim:#2c4a6a;
-    --header-bg:rgba(11,14,19,.72);
+    --header-bg:rgba(10,20,36,.72);
     --gold-hover:#f3c269;
     --wash-1:rgba(255,255,255,.012);
     --wash-2:rgba(255,255,255,.03);
-    --lamp-off:#2a3543;
+    --lamp-off:#2C3E5E;
     --gate-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
     --maxw:1080px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
@@ -136,7 +136,7 @@
   }
   .brand .dot{color:var(--gold)}
   .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
-  .nav-links{display:flex;gap:24px;align-items:center}
+  .nav-links{display:flex;gap:26px;align-items:center}
   .nav-links a{
     font-family:var(--mono);font-size:13px;color:var(--muted);
     letter-spacing:.02em;transition:color .18s ease;
@@ -158,16 +158,17 @@
   @media(max-width:760px){.nav-links a.hideable{display:none}}
 
   /* ---------- intro / the effect ---------- */
-  .intro{padding:76px 0 70px}
+  .intro{padding:88px 0 64px}
   .intro-grid{
     display:grid;grid-template-columns:1.05fr .95fr;
     gap:56px;align-items:center;
   }
-  .intro .eyebrow{margin-bottom:22px}
+  .intro .eyebrow{margin-bottom:26px}
   .intro h1{
-    font-weight:700;
+    font-family:'Space Grotesk',var(--sans);
+    font-weight:600;
     font-size:clamp(30px,4.8vw,46px);
-    line-height:1.08;letter-spacing:-.025em;
+    line-height:1.05;letter-spacing:-.02em;
     max-width:560px;
   }
   .intro h1 .dim{color:var(--text-2)}
@@ -266,13 +267,14 @@
   }
 
   /* ---------- hero ---------- */
-  .hero{padding:72px 0 56px;border-top:1px solid var(--line-soft)}
-  .hero .eyebrow{margin-bottom:24px}
+  .hero{padding:74px 0 64px;border-top:1px solid var(--line-soft)}
+  .hero .eyebrow{margin-bottom:26px}
   .hero .hero-h{
-    font-weight:700;
-    font-size:clamp(38px,7.5vw,72px);
-    line-height:1.02;
-    letter-spacing:-.03em;
+    font-family:'Space Grotesk',var(--sans);
+    font-weight:600;
+    font-size:clamp(38px,6.2vw,68px);
+    line-height:1.04;
+    letter-spacing:-.02em;
     max-width:820px;
   }
   .hero .hero-h .dim{color:var(--text-2)}
@@ -316,7 +318,7 @@
   .install-body .c{color:var(--muted)}
   .install-body .k{color:var(--gold)}
 
-  .cta-row{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
   .btn{
     font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;
     padding:12px 20px;border-radius:6px;
@@ -329,8 +331,8 @@
   .btn-ghost:hover{border-color:var(--muted);color:var(--text)}
 
   /* ---------- section frame ---------- */
-  .section{padding:72px 0;border-top:1px solid var(--line-soft)}
-  .section-head{margin-bottom:40px}
+  .section{padding:74px 0;border-top:1px solid var(--line-soft)}
+  .section-head{margin-bottom:42px}
   .section-head h2{
     margin-top:18px;
     font-size:clamp(24px,4vw,34px);font-weight:600;
@@ -1048,7 +1050,7 @@
 
 <script>
 (function(){
-  var META = { paper:'#F6F4EE', ink:'#0B0E13' };
+  var META = { paper:'#F6F4EE', ink:'#0A1424' };
   var meta = document.getElementById('metatheme');
   var btns = document.querySelectorAll('.theme-sw button');
   function apply(t){
