@@ -3,29 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0B0E13" id="metatheme" />
+<meta name="theme-color" content="#0A1424" id="metatheme" />
 <script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<title>Intent Layer — authorization for irreversible actions · treasury payments</title>
-<meta name="description" content="The intent layer: a domain-agnostic authorization kernel for irreversible actions, shown on its treasury reference implementation. Tri-state fail-closed scoring, idempotency by construction, one durable ACHIEVED record — no record means the action never happened." />
+<title>Intent Plane — fail-closed authorization for AI agents · re-verifiable records</title>
+<meta name="description" content="The intent plane: a fail-closed authorization gate for AI agents that take irreversible actions — with an audit record third parties can re-verify without trusting the gate. One signed object, authority as key possession, fail-closed twice, exactly one durable record per decision. Reference application: treasury payments." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
 <style>
   :root{
     color-scheme:dark;
-    --ink:#0B0E13;
-    --ink-2:#0E121A;
-    --panel:#11151D;
-    --panel-2:#141925;
-    --line:#1C2330;
-    --line-soft:#161C27;
-    --text:#E7EAF0;
-    --text-2:#B7BFCD;
-    --muted:#828C9D;
+    --ink:#0A1424;
+    --ink-2:#0D1930;
+    --panel:#101E38;
+    --panel-2:#142440;
+    --line:#1D3050;
+    --line-soft:#172942;
+    --text:#E9EEF8;
+    --text-2:#B8C5DB;
+    --muted:#7F92B0;
     --gold:#E0A436;
     --gold-dim:#7a5d22;
     --ok:#5BB98C;
@@ -34,11 +34,11 @@
     --block-dim:#6a3327;
     --blue:#6CA7E8;
     --blue-dim:#2c4a6a;
-    --header-bg:rgba(11,14,19,.72);
+    --header-bg:rgba(10,20,36,.72);
     --gold-hover:#f3c269;
     --wash-1:rgba(255,255,255,.012);
     --wash-2:rgba(255,255,255,.03);
-    --lamp-off:#2a3543;
+    --lamp-off:#2C3E5E;
     --gate-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
     --maxw:1080px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
@@ -136,7 +136,7 @@
   }
   .brand .dot{color:var(--gold)}
   .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
-  .nav-links{display:flex;gap:24px;align-items:center}
+  .nav-links{display:flex;gap:26px;align-items:center}
   .nav-links a{
     font-family:var(--mono);font-size:13px;color:var(--muted);
     letter-spacing:.02em;transition:color .18s ease;
@@ -157,17 +157,18 @@
   @media(max-width:1160px){.nav-links{gap:14px}}
   @media(max-width:760px){.nav-links a.hideable{display:none}}
 
-  /* ---------- intro / the effect ---------- */
-  .intro{padding:76px 0 70px}
+  /* ---------- intro / the plane ---------- */
+  .intro{padding:88px 0 64px}
   .intro-grid{
     display:grid;grid-template-columns:1.05fr .95fr;
     gap:56px;align-items:center;
   }
-  .intro .eyebrow{margin-bottom:22px}
+  .intro .eyebrow{margin-bottom:26px}
   .intro h1{
-    font-weight:700;
+    font-family:'Space Grotesk',var(--sans);
+    font-weight:600;
     font-size:clamp(30px,4.8vw,46px);
-    line-height:1.08;letter-spacing:-.025em;
+    line-height:1.05;letter-spacing:-.02em;
     max-width:560px;
   }
   .intro h1 .dim{color:var(--text-2)}
@@ -190,7 +191,10 @@
   .fx-row p{font-size:13.5px;color:var(--text-2);line-height:1.55}
   .fx-row p b{color:var(--text);font-weight:600}
 
-  /* the gate visual — two runs through the checkpoints, one ledger, one loop back */
+  .refuses{margin-top:16px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
+  .refuses b{color:var(--text-2);font-weight:600}
+
+  /* the gate console — one gate, three declarations, one feed, one verifier */
   .runs{
     width:min(460px,100%);margin:0 auto;
     display:flex;flex-direction:column;gap:12px;
@@ -219,6 +223,8 @@
     background:linear-gradient(90deg,rgba(224,164,54,.08),var(--ink-2) 70%);
   }
   .spec-chip[data-s="loop"] .sr{color:var(--gold)}
+  .spec-chip[data-s="bad"]{border-color:var(--block-dim)}
+  .spec-chip[data-s="bad"] .sr{color:var(--block)}
   .loopback{
     position:absolute;left:-16px;top:20px;bottom:24px;width:15px;
     border:1px dashed var(--line);border-right:0;
@@ -286,6 +292,7 @@
   .gstep[data-s="bad"] .d{border-color:var(--block);background:rgba(212,101,74,.4)}
   .gstep[data-s="bad"] .t{color:var(--block)}
   .gstep[data-s="bad"] .s{opacity:.9;color:var(--text-2)}
+  .gstep[data-s="void"]{opacity:.28}
   .run.dup .gsteps::before{bottom:44px}
   .ledger{
     border:1px solid var(--line);border-radius:10px;
@@ -306,41 +313,117 @@
     background:linear-gradient(90deg,rgba(224,164,54,.07),var(--ink-2) 70%);
   }
   .ledger[data-s="on"] .lv{color:var(--gold)}
+  .vchip{
+    border:1px solid var(--line);border-radius:10px;
+    padding:11px 16px;background:var(--ink-2);
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;
+    font-family:var(--mono);
+    transition:border-color .35s ease, background .35s ease;
+  }
+  .vchip .vl{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .vchip .vv{
+    font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.03em;
+    transition:color .35s ease;
+  }
+  .vchip[data-s="on"]{
+    border-color:var(--ok-dim);
+    background:linear-gradient(90deg,rgba(91,185,140,.07),var(--ink-2) 70%);
+  }
+  .vchip[data-s="on"] .vv{color:var(--ok)}
 
   @media(max-width:860px){
     .intro-grid{grid-template-columns:1fr;gap:44px}
   }
 
-  /* ---------- hero ---------- */
-  .hero{padding:72px 0 56px;border-top:1px solid var(--line-soft)}
-  .hero .eyebrow{margin-bottom:24px}
-  .hero .hero-h{
-    font-weight:700;
-    font-size:clamp(38px,7.5vw,72px);
-    line-height:1.02;
-    letter-spacing:-.03em;
-    max-width:820px;
+  /* ---------- section frame ---------- */
+  .section{padding:74px 0;border-top:1px solid var(--line-soft)}
+  .section-head{margin-bottom:42px}
+  .section-head h2{
+    margin-top:18px;
+    font-size:clamp(24px,4vw,34px);font-weight:600;
+    letter-spacing:-.02em;line-height:1.15;max-width:720px;
   }
-  .hero .hero-h .dim{color:var(--text-2)}
+  .section-head p{margin-top:14px;max-width:640px;color:var(--muted);font-size:15.5px}
   .lede{
-    margin-top:26px;max-width:660px;
+    max-width:660px;
     font-size:clamp(16px,2.4vw,18.5px);line-height:1.66;color:var(--text-2);
   }
   .lede b{color:var(--text);font-weight:500}
 
-  .hero-meta{
-    margin-top:30px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  /* ---------- two sides, one record ---------- */
+  .sides{
+    display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:14px;align-items:stretch;
   }
-  .pill{
-    font-family:var(--mono);font-size:12px;letter-spacing:.05em;
-    border:1px solid var(--line);border-radius:999px;padding:6px 13px;
-    color:var(--text-2);background:var(--wash-1);
-    display:inline-flex;align-items:center;gap:8px;
+  .s-card{
+    border:1px solid var(--line);border-radius:10px;background:var(--ink-2);
+    padding:18px;display:flex;flex-direction:column;gap:12px;
   }
-  .pill .dot-ok{width:7px;height:7px;border-radius:50%;background:var(--ok)}
-  .pill .dot-gold{width:7px;height:7px;border-radius:50%;background:var(--gold)}
-  .pill b{color:var(--text);font-weight:600}
+  .s-card.mid{background:linear-gradient(180deg,rgba(224,164,54,.05),var(--ink-2) 75%)}
+  .s-kicker{
+    font-family:var(--mono);font-size:10px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+  .s-kicker b{color:var(--text);display:block;font-size:11.5px;margin-top:3px;letter-spacing:.08em}
+  .s-q{font-size:13.5px;color:var(--text-2);line-height:1.55;font-style:italic}
+  .s-q::before{content:"“";color:var(--gold)}
+  .s-q::after{content:"”";color:var(--gold)}
+  .pkg{
+    font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--gold);
+    border:1px solid var(--gold-dim);border-radius:6px;padding:9px 11px;
+    background:rgba(224,164,54,.06);
+  }
+  .pkg small,.feedchip small,.gatechip small{
+    display:block;font-weight:400;font-size:10.5px;color:var(--text-2);
+    margin-top:4px;letter-spacing:0;line-height:1.55;text-transform:none;
+  }
+  .feedchip{
+    font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--blue);
+    border:1px solid var(--blue-dim);border-radius:6px;padding:9px 11px;
+    background:rgba(108,167,232,.06);
+  }
+  .gatechip{
+    font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--text);
+    border:1px solid var(--line);border-radius:6px;padding:9px 11px;
+    background:var(--wash-1);
+  }
+  .s-mid-arr{
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--gold);text-align:center;
+  }
+  .s-flow{
+    margin-top:auto;padding-top:4px;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .s-flow .g{color:var(--gold)}
+  @media(max-width:860px){.sides{grid-template-columns:1fr}}
 
+  /* ---------- authority chain ---------- */
+  .chain{display:flex;gap:10px;align-items:stretch;margin-top:30px}
+  .ch-node{
+    flex:1;border:1px solid var(--line);border-radius:10px;
+    background:var(--ink-2);padding:15px 15px;
+  }
+  .ch-node .cn-t{
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--text);
+  }
+  .ch-node .cn-s{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.55}
+  .ch-node.art{border-color:var(--gold-dim);background:linear-gradient(180deg,rgba(224,164,54,.06),var(--ink-2) 80%)}
+  .ch-node.art .cn-t{color:var(--gold)}
+  .ch-arr{align-self:center;color:var(--gold-dim);font-family:var(--mono);font-size:16px;flex:none}
+  .chain-note{
+    margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.03em;
+    color:var(--muted);padding-left:14px;border-left:2px dashed var(--block-dim);
+    line-height:1.7;max-width:720px;
+  }
+  .chain-note .r{color:var(--block)}
+  @media(max-width:860px){
+    .chain{flex-direction:column}
+    .ch-arr{transform:rotate(90deg);align-self:flex-start;margin-left:18px}
+  }
+
+  /* ---------- install / code panels ---------- */
   .install{
     margin-top:30px;max-width:660px;
     border:1px solid var(--line);border-radius:8px;overflow:hidden;
@@ -363,8 +446,9 @@
   .install-body .k{color:var(--gold)}
   .install-body .g{color:var(--ok)}
   .install-body .r{color:var(--block)}
+  .install-body .b{color:var(--blue)}
 
-  .cta-row{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
   .btn{
     font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;
     padding:12px 20px;border-radius:6px;
@@ -375,16 +459,6 @@
   .btn-primary:hover{transform:translateY(-1px);background:#edb24a}
   .btn-ghost{border:1px solid var(--line);color:var(--text-2)}
   .btn-ghost:hover{border-color:var(--muted);color:var(--text)}
-
-  /* ---------- section frame ---------- */
-  .section{padding:72px 0;border-top:1px solid var(--line-soft)}
-  .section-head{margin-bottom:40px}
-  .section-head h2{
-    margin-top:18px;
-    font-size:clamp(24px,4vw,34px);font-weight:600;
-    letter-spacing:-.02em;line-height:1.15;max-width:720px;
-  }
-  .section-head p{margin-top:14px;max-width:640px;color:var(--muted);font-size:15.5px}
 
   /* ---------- loop strip ---------- */
   .loop{
@@ -440,6 +514,7 @@
   .dtable .pass{color:var(--ok);font-weight:600}
   .dtable .fail{color:var(--block);font-weight:600}
   .dtable .hi{color:var(--gold);font-weight:600}
+  .dtable .shadow{color:var(--blue);font-weight:600}
 
   /* ---------- invariants / policy grid ---------- */
   .policy{
@@ -447,16 +522,21 @@
     background:var(--line-soft);border:1px solid var(--line-soft);
     border-radius:8px;overflow:hidden;
   }
+  .policy.cols4{grid-template-columns:repeat(4,1fr)}
   .policy .p-cell{background:var(--ink-2);padding:22px 22px}
+  .policy.cols4 .p-cell{padding:18px 18px}
   .policy .p-cell h4{
     font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;
     text-transform:uppercase;color:var(--gold);margin-bottom:10px;
   }
   .policy .p-cell h4 .num{color:var(--muted);font-weight:400;margin-right:8px}
   .policy .p-cell p{font-size:14px;color:var(--text-2);line-height:1.6}
+  .policy.cols4 .p-cell p{font-size:13px}
   .policy .p-cell p code{white-space:normal}
   .policy .p-cell p b{color:var(--text);font-weight:600}
+  @media(max-width:1000px){.policy.cols4{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:760px){.policy{grid-template-columns:1fr}}
+  @media(max-width:560px){.policy.cols4{grid-template-columns:1fr}}
 
   /* ---------- finding panel ---------- */
   .finding{
@@ -510,6 +590,21 @@
   .chg-grp li::before{content:"›";position:absolute;left:0;color:var(--gold);font-family:var(--mono)}
   .chg-grp li b{color:var(--text);font-weight:600}
 
+  /* ---------- treasury grid ---------- */
+  .tgrid{
+    display:grid;grid-template-columns:1.05fr .95fr;
+    gap:56px;align-items:center;margin-bottom:44px;
+  }
+  .tgrid h3{
+    font-family:'Space Grotesk',var(--sans);
+    font-weight:600;font-size:clamp(24px,3.6vw,34px);
+    line-height:1.06;letter-spacing:-.02em;max-width:560px;
+  }
+  .tgrid h3 .dim{color:var(--text-2)}
+  .tgrid .tp{margin-top:18px;font-size:15px;color:var(--text-2);max-width:540px;line-height:1.65}
+  .tgrid .tp b{color:var(--text);font-weight:600}
+  @media(max-width:860px){.tgrid{grid-template-columns:1fr;gap:44px}}
+
   /* ---------- footer ---------- */
   footer{border-top:1px solid var(--line);padding:44px 0 60px}
   .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end}
@@ -547,14 +642,14 @@
     <a class="brand" href="/"><span class="up">hp /</span>intent<span class="dot">.</span></a>
     <nav class="nav-links">
       <a href="/" class="hideable">home</a>
-      <a href="#effect" class="hideable">the effect</a>
+      <a href="#sides" class="hideable">two sides</a>
       <a href="#lifecycle" class="hideable">lifecycle</a>
-      <a href="#invariants" class="hideable">invariants</a>
-      <a href="#loop" class="hideable">the loop</a>
-      <a href="#contracts" class="hideable">contracts</a>
+      <a href="#verifier" class="hideable">verifier</a>
+      <a href="#treasury" class="hideable">treasury</a>
+      <a href="/baseline/" class="hideable">/baseline</a>
       <a href="/rigor/" class="hideable">/rigor</a>
-      <a href="/cldd/" class="hideable">/cldd</a>
-      <a href="https://github.com/hossainpazooki/treasury-intent-controller" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+      <a href="/blog/" class="hideable">/blog</a>
+      <a href="https://github.com/hossainpazooki/intent-plane" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
       <div class="theme-sw" role="group" aria-label="Theme">
         <button type="button" data-set="ink" aria-pressed="true">ink</button>
         <button type="button" data-set="paper" aria-pressed="false">paper</button>
@@ -565,89 +660,157 @@
 
 <main id="top">
 
-  <!-- INTRO / THE EFFECT -->
-  <section class="intro section" id="effect">
+  <!-- INTRO / THE PLANE -->
+  <section class="intro section" id="plane">
     <div class="wrap intro-grid">
       <div>
-        <span class="eyebrow">the effect of running the intent layer</span>
-        <h1>A duplicate of an irreversible action isn't caught.<br /><span class="dim">It's impossible — refused at the dispatch edge, by construction.</span></h1>
-        <p class="lede">The kernel is <b>domain-agnostic</b>: any irreversible action is authorized only by a reproducible, measured demonstration that it meets declared criteria. The gate is the <b>sole emitter</b> of a single durable <b>ACHIEVED</b> record, and downstream acts only on that record — so <b>no record ⟹ the action never happened</b>. Worked example throughout: a treasury payment, action class&nbsp;1.</p>
+        <span class="eyebrow">the intent plane — fail-closed authorization</span>
+        <h1>Agents propose.<br />The gate disposes.<br /><span class="dim">The record re&#8209;verifies — without trusting the gate.</span></h1>
+        <p class="lede">Before an AI agent moves money, files a report, or triggers a workflow, it must <b>declare the intent</b>. A deterministic gate authorizes it against a policy specification a human <b>signed</b> — or refuses. Every decision lands as <b>exactly one durable record</b>, built to be independently recomputed later. The worst case is an action that <b>wrongly waits</b>, never one that wrongly executes.</p>
         <div class="fx">
           <div class="fx-row without">
             <span class="w">without</span>
-            <p>At-most-once is an <b>assertion</b>: dedup lives in each adapter's retry logic, audited after the fact. A retried near-duplicate can <b>execute twice</b> before anyone reads the log.</p>
+            <p>Authorization lives <b>inside</b> the agent's runtime — per-adapter checks, config nobody signed. Audit reads the logs after the fact, and has to <b>trust the code that wrote them</b>.</p>
           </div>
           <div class="fx-row with">
-            <span class="w">with the gate</span>
-            <p>The idempotency key is a <b>declared, first-class gate criterion</b> — required, and reserved at the dispatch edge. Same key, one changed field ⟹ <b>FAILED_AT_DISPATCH</b>. At-most-once holds <b>by construction</b>, whatever the action is.</p>
+            <span class="w">with the plane</span>
+            <p>Authorization sits <b>outside the agent</b>: criteria arrive only through a <b>signed, content-addressed spec</b>; scoring is <b>tri-state and fail-closed</b>; the record <b>re-derives from the feed alone</b> — by someone who trusts nothing.</p>
           </div>
+        </div>
+        <p class="refuses"><b>What it refuses: anything unevaluable.</b> Missing data, an unsigned or revoked spec, an empty criteria set, a duplicate action — all deny.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#sides">Two sides, one record →</a>
+          <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane ↗</a>
         </div>
       </div>
-      <div class="runs" role="img" aria-label="The intent loop. At the top, the signed policy: IntentSpec c7a36959, published in the ATLAS registry. Two runs pass through the gate under it, side by side. Run 1, a treasury payment, passes declaration, verification, and the dispatch-edge re-check, reserves its idempotency key, and reaches the single durable ACHIEVED record. Run 2, a near-duplicate with the same key and one changed field, passes verification but collides on the reserved key at the dispatch edge and ends FAILED_AT_DISPATCH. The durable feed below shows one ACHIEVED record — the action ran exactly once — and a return rail carries the settlement's trace hashes back up to the signed policy chip: the loop closes on the exact policy that authorized the run.">
-        <div class="spec-chip" data-s="idle" id="spec" aria-hidden="true">
-          <span class="sl">signed intentspec · <span class="h">c7a36959…dc51</span></span>
-          <span class="sr" id="spec-s">atlas registry · published</span>
+      <div class="runs" role="img" aria-label="The gate console: three declarations against the same signed policy. Scenario one, a clean grant — an intent declares with key K1, citing the spec by content address; the spec resolves because its signature verifies and its bytes hash to the claimed address; every criterion passes; the dispatch-edge re-check holds and key K1 is reserved; the terminal is ACHIEVED, exactly one durable fsynced record, sequence 41. Scenario two, an unattested spec — the declaration cites a hash with no attestation; resolution refuses before any scoring and the terminal is FAILED, unevaluable colon unattested-spec; the scorer is never consulted and nothing settles. Scenario three, revoked at the edge — an attested spec passes verification, but a signed tombstone lands mid-flight; the dispatch-edge re-check finds it and the terminal is FAILED_AT_DISPATCH, revoked; the key is not reserved and nothing settles. The durable feed below holds exactly one ACHIEVED record throughout, and the verifier chip confirms the whole feed re-derives from the records alone — grant or refusal, every terminal recomputes without trusting the gate.">
+        <div class="spec-chip" data-s="idle" id="cspec" aria-hidden="true">
+          <span class="sl">signed intentspec · <span class="h" id="cspec-h">c7a36959…dc51</span></span>
+          <span class="sr" id="cspec-s">attested · published in the store</span>
         </div>
-        <div class="loopback" data-s="idle" id="loopback" aria-hidden="true"></div>
-        <div class="runs-cap" aria-hidden="true"><span>worked example · treasury payment · class 1</span><span>spec re-verified per run · fail-closed</span></div>
-        <div class="runs-grid" aria-hidden="true">
-          <div class="run">
-            <div class="run-head">run 1 · the action<b>intent 7f3a… · <span class="key">key K</span></b></div>
-            <div class="gsteps">
-              <div class="gstep" data-s="idle" id="a1"><span class="d"></span><span class="t">declared</span><span class="s">key present</span></div>
-              <div class="gstep" data-s="idle" id="a2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass · none unevaluable</span></div>
-              <div class="gstep" data-s="idle" id="a3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">volatile re-check holds</span></div>
-              <div class="gstep" data-s="idle" id="a4"><span class="d"></span><span class="t">key K reserved</span><span class="s">first reservation</span></div>
-              <div class="gstep" data-s="idle" id="a5"><span class="d"></span><span class="t">achieved</span><span class="s">one durable record · fsync</span></div>
-            </div>
-          </div>
-          <div class="run dup">
-            <div class="run-head">run 2 · near-duplicate<b>intent 9c1e… · <span class="key">same key K</span></b></div>
-            <div class="gsteps">
-              <div class="gstep" data-s="idle" id="b1"><span class="d"></span><span class="t">declared</span><span class="s">same key · one field changed</span></div>
-              <div class="gstep" data-s="idle" id="b2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass — validity isn't the question</span></div>
-              <div class="gstep" data-s="idle" id="b3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">key K already reserved</span></div>
-              <div class="gstep" data-s="idle" id="b4"><span class="d"></span><span class="t">failed_at_dispatch</span><span class="s">refused · no record written</span></div>
-            </div>
+        <div class="runs-cap" aria-hidden="true"><span id="cscn">scenario 1 of 3 · a clean grant</span><span>fail-closed · every branch</span></div>
+        <div class="run" aria-hidden="true">
+          <div class="run-head" id="chead">intent 7f3a…<b>cites spec c7a36959… · <span class="key">key K1</span></b></div>
+          <div class="gsteps">
+            <div class="gstep" data-s="idle" id="c1"><span class="d"></span><span class="t">declared</span><span class="s">key K1 present · spec cited by content address</span></div>
+            <div class="gstep" data-s="idle" id="c2"><span class="d"></span><span class="t">spec resolved</span><span class="s">signature verifies · bytes hash to the address</span></div>
+            <div class="gstep" data-s="idle" id="c3"><span class="d"></span><span class="t">verifying</span><span class="s">every criterion pass · none unevaluable</span></div>
+            <div class="gstep" data-s="idle" id="c4"><span class="d"></span><span class="t">dispatch edge</span><span class="s">volatile + revocation re-check holds · key K1 reserved</span></div>
+            <div class="gstep" data-s="idle" id="c5"><span class="d"></span><span class="t">achieved</span><span class="s">exactly one durable record · fsynced · seq 41</span></div>
           </div>
         </div>
-        <div class="ledger" data-s="idle" id="ledger" aria-hidden="true">
+        <div class="ledger" data-s="idle" id="cledger" aria-hidden="true">
           <span class="ll">durable feed — what downstream observes</span>
-          <span class="lv" id="ledger-v">awaiting records…</span>
+          <span class="lv" id="cledger-v">awaiting records…</span>
+        </div>
+        <div class="vchip" data-s="idle" id="cver" aria-hidden="true">
+          <span class="vl">the verifier — recomputes from the feed alone</span>
+          <span class="vv" id="cver-v">standing by…</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- HERO -->
-  <section class="hero">
+  <!-- TWO SIDES, ONE RECORD -->
+  <section class="section" id="sides">
     <div class="wrap">
-      <span class="eyebrow">the authorization kernel · reference implementation: treasury-intent-controller</span>
-      <h2 class="hero-h">Nothing moves until the gate says so —<br /><span class="dim">one durable ACHIEVED record, or nothing at all.</span></h2>
-      <p class="lede">A deterministic Go gate decides whether an irreversible action is authorized — the reference implementation gates treasury payments, but the kernel <b>reads no artifacts and knows no domain</b>: criteria, thresholds, and the idempotency key all arrive as declared params. Scoring is <b>tri-state and fail-closed</b>: any <code>Fail</code> or <code>Unevaluable</code> denies, and unevaluable never collapses into a pass. Volatile facts — balance, reachability — are re-checked at the dispatch edge by the <b>same authority</b>, immediately before authorizing. Every run replays <b>byte-identically</b> from a logical-clock event log.</p>
-
-      <div class="hero-meta">
-        <span class="pill"><span class="dot-gold"></span>deterministic — <b>byte-identical</b> replay</span>
-        <span class="pill"><span class="dot-ok"></span>fail-closed on <b>unevaluable</b></span>
-        <span class="pill">kill/restart proven — feed &amp; reservations recover</span>
-        <span class="pill">Go gate · Python scorer</span>
+      <div class="section-head reveal">
+        <span class="eyebrow">two sides, one record</span>
+        <h2>Bought by one function. Installed by another.</h2>
+        <p>The accountability function requires examinable records; the platform team satisfies the requirement by embedding once at the framework layer. What connects them is not a report either side writes — it is <b>the record itself, examinable by construction</b>. The repo ships one package per side.</p>
       </div>
 
-      <div class="install" role="img" aria-label="Wire transcript: POST /v2/intents declares a payment; the gate verifies, re-checks, and appends one durable ACHIEVED record; consumers poll GET /v2/events by cursor and settle from the observed record — the gate never calls out.">
-        <div class="install-bar"><span>one payment, on the wire</span><span>emit-and-observe</span></div>
-        <div class="install-body" aria-hidden="true">
-<span class="p">$</span> curl -s -X POST :8080/v2/intents -d @payment.json<br />
-<span class="c">→</span> { <span class="k">"state"</span>: <span class="g">"DECLARED"</span>, <span class="k">"idempotency_key"</span>: <span class="g">"pay-2026-07-042"</span> }<br />
-<span class="c">→</span> RESOLVING → ACTIVE → VERIFYING <span class="c">· criteria pass · volatile re-check holds · key reserved</span><br />
-<span class="c">→</span> { <span class="k">"state"</span>: <span class="g">"ACHIEVED"</span> } <span class="c"># the one durable record — fsynced before success</span><br />
-<span class="p">$</span> curl -s ':8080/v2/events?since=<span class="k">cursor</span>' <span class="c"># consumers settle from this; the gate never calls out</span>
+      <div class="sides reveal" role="img" aria-label="Three columns. Supply side, the integrator: the platform team that owns how agents call tools embeds the declarant package once — exact wire marshal, derived idempotency keys, a total terminal classification — and declares intents to the gate, awaiting the synchronous terminal. Center, the intent plane, this repo: the gate — agents propose, it disposes — writes fail-closed into an append-only feed holding one durable record per decision. Demand side, the buyer: audit, compliance, model risk, and diligence run the verifier package, which re-derives every record from the feed alone without trusting the gate.">
+        <div class="s-card">
+          <div class="s-kicker">supply side — the integrator<b>the platform team — how agents call tools</b></div>
+          <p class="s-q">one integration point — every agent inherits it</p>
+          <div class="pkg">declarant/<small>exact wire marshal · idempotency keys derived from action identity · a total terminal classification · the 500-edge feed consult</small></div>
+          <div class="s-flow">declare · await the terminal <span class="g">→</span></div>
+        </div>
+        <div class="s-card mid">
+          <div class="s-kicker">the intent plane<b>this repo — gate · scorer · contracts</b></div>
+          <div class="gatechip">the gate<small>agents propose — it disposes. Deterministic, fail-closed, sole ACHIEVED authority; consults the scorer, re-checks at the edge.</small></div>
+          <div class="s-mid-arr">↓ fail-closed · one record per decision</div>
+          <div class="feedchip">append-only feed<small>fsync per append · global cursor · grant, shadow, or refusal — each terminal carries its trajectory hash</small></div>
+          <div class="s-flow" style="text-align:center">emit-and-observe — the gate never calls out</div>
+        </div>
+        <div class="s-card">
+          <div class="s-kicker">demand side — the buyer<b>audit · compliance · model risk · diligence</b></div>
+          <p class="s-q">prove what your agents did — without asking us to trust your code</p>
+          <div class="pkg">verifier/<small>a Go package + CLI and a stdlib-only Python twin that re-derive every record from the feed alone — import-pinned to run none of the gate's code</small></div>
+          <div class="s-flow"><span class="g">←</span> recompute — no trust in the gate</div>
         </div>
       </div>
 
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#lifecycle">How the gate decides →</a>
-        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">Source ↗</a>
+      <p class="note reveal"><b>The two amber packages are what the repo ships</b> — one per side of the sale; the blue feed is the record they meet at. Plane internals — the gate, the scorer, the signed-artifact plumbing — are experimented on in the testing monorepo and ported here once they settle.</p>
+
+      <div class="install reveal" style="max-width:820px" role="img" aria-label="Repository layout. CONTRACT.md is the single current-state contract and source of truth. core holds the Go gate, the Python criterion scorer, and the wire and feed fixtures. plane holds the signed artifact: envelope, spec store, resolver — verification only, no signing seat in this repo. verifier is the demand side's package: Go package plus intent-verify CLI plus a stdlib-only Python twin. declarant is the supply side's package: Go package plus intent-declare CLI. docs holds architecture, assurance, and integration.">
+        <div class="install-bar"><span>layout — the published SDK</span><span>ownership runs per tree</span></div>
+        <div class="install-body" aria-hidden="true">
+intent-plane/<br />
+├── CONTRACT.md &nbsp;&nbsp;<span class="c"># the single current-state contract — the source of truth</span><br />
+├── core/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># the gate (Go) · the criterion scorer (Python) · wire + feed fixtures</span><br />
+├── plane/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># the signed artifact: envelope, spec store, resolver — verification only</span><br />
+├── <span class="k">verifier/</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># ← demand side: Go pkg + intent-verify CLI + stdlib-only Python twin</span><br />
+├── <span class="k">declarant/</span> &nbsp;&nbsp;&nbsp;<span class="c"># ← supply side: Go pkg + intent-declare CLI — embed once, inherit everywhere</span><br />
+└── docs/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># architecture · assurance · integration</span>
+        </div>
       </div>
+
+      <div class="findings-stack reveal">
+        <div class="finding">
+          <span class="f-label">the supply side, in one rule</span>
+          <p><b>Declare once at the framework layer — every agent inherits it.</b> The declarant derives idempotency keys deterministically from action identity (never a fresh UUID per attempt), classifies every terminal totally over the closed cause vocabulary — anything outside it fails closed as <code>Unknown</code> — and on an HTTP 500 consults the per-intent feed <b>before</b> deciding anything. <code>force_scores</code>, the guarded test affordance, exists in no declarant type.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE COMMITMENTS -->
+  <section class="section" id="commitments">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">three commitments</span>
+        <h2>One signed object. Authority is key possession. Fail-closed, twice.</h2>
+        <p>Not aspirations — load-bearing claims, each with a named mechanism and a test that refutes it. The claim-by-claim standing lives in <code>docs/assurance.md</code>; nothing asks to be believed.</p>
+      </div>
+      <div class="policy reveal">
+        <div class="p-cell">
+          <h4><span class="num">01</span>One signed object</h4>
+          <p>The bytes the attester signs are the bytes the gate executes — a <b>hash equality</b>, not an alignment of documents. Criteria cannot ride the wire at all (the field does not exist; the old shape gets a loud 400) — they reach the gate only through <b>signature verification plus content-address equality</b>.</p>
+        </div>
+        <div class="p-cell">
+          <h4><span class="num">02</span>Authority is key possession</h4>
+          <p>The AI-facing drafting side — the <b>author</b> — holds no keys and structurally cannot sign. Nothing is enforceable until a human <b>attester</b> signs it, and a <b>signed tombstone</b> revokes it: maker-checker, applied to what agents act on. No signing seat exists anywhere in this repo.</p>
+        </div>
+        <div class="p-cell">
+          <h4><span class="num">03</span>Fail-closed, twice, with one record</h4>
+          <p>Verdicts are <b>pass / fail / unevaluable</b> — which never passes. Volatile facts <b>and the authority itself</b> are re-verified at the last moment before the consequence fires, and the decision and its audit record are <b>one byte-exact event</b>.</p>
+        </div>
+      </div>
+
+      <div class="chain reveal" role="img" aria-label="The authority chain. The author drafts the spec and holds no keys — it cannot sign, publish, or activate. The attester, a human officer and the author of record, signs: what they sign is what the gate executes. The signed artifact is sealed, content-addressed, and revocable — a DSSE-shaped envelope over ed25519. The gate resolves the spec by hash equality and executes exactly the signed bytes. A signed tombstone revokes; a tombstone signed by any other key does not.">
+        <div class="ch-node">
+          <div class="cn-t">author</div>
+          <div class="cn-s">drafts the spec · holds no keys — cannot sign, publish, or activate</div>
+        </div>
+        <span class="ch-arr" aria-hidden="true">→</span>
+        <div class="ch-node">
+          <div class="cn-t">attester</div>
+          <div class="cn-s">a human officer — the author of record; what they sign is what the gate executes</div>
+        </div>
+        <span class="ch-arr" aria-hidden="true">→</span>
+        <div class="ch-node art">
+          <div class="cn-t">signed artifact</div>
+          <div class="cn-s">sealed · content-addressed · revocable — a DSSE-shaped envelope, ed25519</div>
+        </div>
+        <span class="ch-arr" aria-hidden="true">→</span>
+        <div class="ch-node">
+          <div class="cn-t">the gate</div>
+          <div class="cn-s">resolves the spec by hash equality · executes exactly the signed bytes</div>
+        </div>
+      </div>
+      <p class="chain-note reveal"><span class="r">⤷ a signed tombstone revokes</span> — a tombstone signed by any other key does not. Revocation is checked at declaration and <b>re-checked at the dispatch edge</b>: a spec pulled mid-flight stops at the edge, and the withdrawal is itself part of the record.</p>
     </div>
   </section>
 
@@ -655,49 +818,61 @@
   <section class="section" id="lifecycle">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">How it works</span>
-        <h2>Four moves, seven states, two terminal failures — all of them safe.</h2>
-        <p>Every intent walks <code>DECLARED → RESOLVING → ACTIVE → VERIFYING</code> toward exactly one terminal state. Both failure states carry the same guarantee: <b>no ACHIEVED record exists, so no consumer ever settles</b>.</p>
+        <span class="eyebrow">the decision flow</span>
+        <h2>Four moves, four terminals — and every branch fails closed.</h2>
+        <p>Every declared intent walks <code>DECLARED → RESOLVING → ACTIVE → VERIFYING</code> toward exactly one terminal. No <code>FAILED</code> or <code>FAILED_AT_DISPATCH</code> intent ever leaves an <code>ACHIEVED</code> record in the feed — a refused or duplicate intent means <b>no value moved</b>.</p>
       </div>
       <div class="loop reveal">
         <div class="step">
           <span class="n">01 · declare</span><span class="arr">→</span>
-          <h3>Key required</h3>
-          <p>Criteria, thresholds, and the idempotency key arrive as params. An absent key is unevaluable — the intent fails closed before anything runs.</p>
+          <h3>Key required, spec by hash</h3>
+          <p>The declarant supplies the idempotency key, scope, and the spec's content address — criteria cannot ride the wire. An absent key, or an unattested, revoked, or thin spec, refuses at the door: the scorer is never consulted.</p>
         </div>
         <div class="step">
           <span class="n">02 · verify</span><span class="arr">→</span>
           <h3>Score tri-state</h3>
-          <p>Every declared criterion scores Pass, Fail, or Unevaluable. Any Fail or Unevaluable denies authorization — unevaluable never collapses into a pass.</p>
+          <p>The gate consults the scorer: every declared criterion lands Pass, Fail, or Unevaluable. Any Fail or Unevaluable denies authorization — unevaluable never collapses into a pass.</p>
         </div>
         <div class="step">
           <span class="n">03 · re-check</span><span class="arr">→</span>
           <h3>The dispatch edge</h3>
-          <p>Volatile facts are re-verified by the same authority immediately before authorizing, and the declared key is reserved. A drifted fact or a key collision ⟹ FAILED_AT_DISPATCH.</p>
+          <p>Volatile facts and the authority itself are re-verified immediately before the consequence fires, and the declared key is reserved. Drift, a tombstone, or a key collision ⟹ FAILED_AT_DISPATCH.</p>
         </div>
         <div class="step">
-          <span class="n">04 · emit</span><span class="arr">■</span>
-          <h3>One durable record</h3>
-          <p>The gate appends the single ACHIEVED record — fsynced to the durable feed before success — and stops. Settlement belongs to whoever observes it.</p>
+          <span class="n">04 · record</span><span class="arr">■</span>
+          <h3>One durable answer</h3>
+          <p>One synchronous terminal, one durable record — grant, shadow, or refusal — fsynced before success and carrying its trajectory hash. Consumers settle only from observed ACHIEVED.</p>
+        </div>
+      </div>
+
+      <div class="install reveal" style="max-width:820px" role="img" aria-label="Wire transcript: POST /v2/intents declares an intent citing the spec by hash; the gate answers synchronously with the terminal ACHIEVED, a trajectory hash, and achieved_seq 41. GET /v2/events?since=0 returns the durable records with a next_since cursor — consumers settle from observed records; the gate never calls out.">
+        <div class="install-bar"><span>one declaration, on the wire</span><span>synchronous terminal · emit-and-observe</span></div>
+        <div class="install-body" aria-hidden="true">
+<span class="p">$</span> curl -s -X POST :8080/v2/intents -d @declaration.json &nbsp;<span class="c"># criteria never ride the wire</span><br />
+<span class="c">→</span> { <span class="k">"terminal"</span>: <span class="g">"ACHIEVED"</span>, <span class="k">"trajectory_hash"</span>: <span class="g">"9d0c…"</span>, <span class="k">"achieved_seq"</span>: 41 }<br />
+&nbsp;&nbsp;<span class="c">↳ one synchronous answer — grant, shadow, or a closed refusal set</span><br />
+<span class="p">$</span> curl -s ':8080/v2/events?since=<span class="k">0</span>' &nbsp;<span class="c"># the feed is pull-only — the gate never calls out</span><br />
+<span class="c">→</span> { <span class="k">"events"</span>: [ …, { <span class="k">"type"</span>: <span class="g">"ACHIEVED"</span>, <span class="k">"intent_spec_hash"</span>: <span class="g">"c7a3…"</span> } ], <span class="k">"next_since"</span>: 41 }
         </div>
       </div>
 
       <div class="dtable-wrap reveal">
         <table class="dtable">
-          <caption>the state machine — internal/lifecycle, terminal states in bold</caption>
+          <caption>the state machine — terminal states in bold, none of them unsafe</caption>
           <thead><tr><th>state</th><th>kind</th><th>meaning</th></tr></thead>
           <tbody>
-            <tr><td>DECLARED</td><td>working</td><td class="wraps">intent received; criteria, thresholds, idempotency key bound as params</td></tr>
-            <tr><td>RESOLVING → ACTIVE</td><td>working</td><td class="wraps">criteria resolved and the intent admitted for scoring</td></tr>
-            <tr><td>VERIFYING</td><td>working</td><td class="wraps">tri-state scoring over every declared criterion</td></tr>
+            <tr><td>DECLARED</td><td>working</td><td class="wraps">declaration received; the idempotency key and the spec's content address bind. Door refusals — absent key, unattested / revoked / thin spec — answer FAILED synchronously</td></tr>
+            <tr><td>RESOLVING → ACTIVE</td><td>working</td><td class="wraps">the signed spec resolves — signature verified, bytes hashing to the claimed address — and the intent is admitted for scoring</td></tr>
+            <tr><td>VERIFYING</td><td>working</td><td class="wraps">tri-state scoring over every declared criterion, via the plane's scorer</td></tr>
             <tr><td class="pass">ACHIEVED</td><td>terminal</td><td class="wraps">the one durable record, fsynced before success — consumers settle from it</td></tr>
-            <tr><td class="fail">FAILED</td><td>terminal</td><td class="wraps">a criterion failed or was unevaluable (including an absent key) — no record, the action never ran</td></tr>
-            <tr><td class="fail">FAILED_AT_DISPATCH</td><td>terminal</td><td class="wraps">a volatile fact drifted, or the key collided with a prior reservation — no record, the action never ran</td></tr>
+            <tr><td class="shadow">SHADOW_RECORDED</td><td>terminal</td><td class="wraps">fully scored, durably recorded, <b>not</b> authorized — staged rollout, itself signed; promotion to enforce is a fresh attestation, never a config toggle</td></tr>
+            <tr><td class="fail">FAILED</td><td>terminal</td><td class="wraps">anything unevaluable, at any step — missing key, unattested or revoked or thin spec, unreachable scorer, failed criterion. No record settles</td></tr>
+            <tr><td class="fail">FAILED_AT_DISPATCH</td><td>terminal</td><td class="wraps">a drifted fact, a pulled spec, or a duplicate key at the last moment before the consequence fires. The key is not reserved; nothing settles</td></tr>
           </tbody>
         </table>
       </div>
 
-      <p class="note reveal"><b>Scope — emit-and-observe.</b> The gate's job ends at the durable <code>ACHIEVED</code> record. It settles nothing and never calls out; a settlement consumer <b>pulls</b> the feed by cursor and recomputes. A crash on either side loses nothing.</p>
+      <p class="note reveal"><b>Scope — emit-and-observe.</b> The gate's job ends at the durable record. It settles nothing and never calls out; a consumer <b>pulls</b> the feed by cursor and recomputes. A crash on either side loses nothing. And the terminal-position record of <b>every</b> completed authorization — grant, shadow, or refusal — carries its trajectory hash, so a trimmed or edited log is detectable by recomputation.</p>
     </div>
   </section>
 
@@ -705,66 +880,174 @@
   <section class="section" id="invariants">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Invariants</span>
-        <h2>Six properties, enforced by construction and pinned by tests.</h2>
-        <p>None of these is a convention the code tries to follow. Each is a structural property — violating it means failing an acceptance test, not missing a guideline.</p>
+        <span class="eyebrow">invariants</span>
+        <h2>Eight properties, enforced by construction and pinned by tests.</h2>
+        <p>None of these is a convention the code tries to follow. Each is structural — violating it fails an acceptance test, not a guideline. Amendments run <code>CONTRACT.md</code> first, then the pinned tables — never the reverse.</p>
       </div>
-      <div class="policy reveal">
+      <div class="policy cols4 reveal">
         <div class="p-cell">
           <h4><span class="num">01</span>Sole emitter</h4>
           <p>The gate alone emits the single <code>ACHIEVED</code> record, fsynced to the durable feed <b>before</b> success is reported. Consumers act only after observing it.</p>
         </div>
         <div class="p-cell">
           <h4><span class="num">02</span>Tri-state, fail-closed</h4>
-          <p>Criteria score <code>Pass</code> / <code>Fail</code> / <code>Unevaluable</code>. Any <code>Fail</code> or <code>Unevaluable</code> ⟹ not authorized. Absence of valid proof is a denial, never a default-pass.</p>
+          <p><code>Pass</code> / <code>Fail</code> / <code>Unevaluable</code> — any <code>Fail</code> or <code>Unevaluable</code> ⟹ not authorized. Absence of valid proof is a denial, never a default-pass.</p>
         </div>
         <div class="p-cell">
           <h4><span class="num">03</span>Stable vs volatile</h4>
-          <p>Stable criteria are scored once, at declaration. Volatile facts are scored at declaration <b>and re-verified at the dispatch edge</b> by the same authority, immediately before authorizing.</p>
+          <p>Stable criteria score once, at declaration. Volatile facts score again at the dispatch edge — same authority, immediately before authorizing.</p>
         </div>
         <div class="p-cell">
           <h4><span class="num">04</span>Idempotency by construction</h4>
-          <p>The key is required and reserved at the dispatch edge. A near-duplicate — same key, different intent hash — collides and is refused. At-most-once holds on the settlement log structurally.</p>
+          <p>The key is required and reserved at the edge. Same key, different intent hash — a near-duplicate — collides and is refused. At-most-once holds structurally.</p>
         </div>
         <div class="p-cell">
           <h4><span class="num">05</span>Determinism &amp; replay</h4>
-          <p>Per-intent logical clock, IDs derived from the episode seed, no wallclock. Replay drives a <b>recompute</b>, not a re-read — and reproduces the trajectory byte-identically.</p>
+          <p>Per-intent logical clock, IDs from the episode seed, no wallclock. Replay drives a <b>recompute</b>, byte-identical — and the global cursor never enters the trajectory hash.</p>
         </div>
         <div class="p-cell">
           <h4><span class="num">06</span>Durability</h4>
-          <p>The event feed and the key reservations survive process restart over the same <code>TIC_DATA_DIR</code> — kill/restart proven: byte-identical events, same-key re-dispatch still refused, cursor gapless.</p>
+          <p>The feed and the key reservations survive restart over the same <code>INTENT_DATA_DIR</code> — kill/restart proven: byte-identical events, same-key re-dispatch still refused.</p>
+        </div>
+        <div class="p-cell">
+          <h4><span class="num">07</span>Thin-spec defense</h4>
+          <p>Zero criteria or unknown volatility refuse <b>before any scoring</b>. "No criterion failed" is never satisfied by "no criterion existed" — attestation does not launder vacuity.</p>
+        </div>
+        <div class="p-cell">
+          <h4><span class="num">08</span>Core neutrality</h4>
+          <p><code>core/</code> carries no domain vocabulary, pinned mechanically. The kernel knows no domain — the treasury application below is one instantiation, not the design.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- THE LOOP AROUND THE GATE -->
-  <section class="section" id="loop">
+  <!-- THE VERIFIER -->
+  <section class="section" id="verifier">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">The loop around the gate</span>
-        <h2>Not a pipeline — a loop, closed over three hashes.</h2>
-        <p>At first sight this reads left to right. It isn't: the policy is signed upstream, <b>re-verified by the gate's scorer at authorization time</b>, and quoted back out in every settlement — <code>rule_artifact_hash</code> · <code>intent_spec_hash</code> · <code>trajectory_hash</code>. Every settlement joins the runtime trace to the <b>exact signed policy it was authorized under</b>. This is the treasury instantiation of a domain-agnostic pattern: any consequential action class can sit behind the same gate with a different declared spec.</p>
+        <span class="eyebrow">the record, re-verified</span>
+        <h2>Hand the feed to someone who doesn't trust you.<br />They can re-derive all of it.</h2>
+        <p>The plane's cost structure is a revealed preference: logical clocks with no wallclock, a JSON-free length-prefixed hash encoding, byte-frozen cross-language fixtures, an fsync before every success. None of it buys anything at decision time — it pays off when someone who does <b>not</b> trust the gate recomputes the record afterward.</p>
       </div>
+
+      <div class="install reveal" style="max-width:820px" role="img" aria-label="The verifier CLI over the frozen feed fixtures: run against events-good.jsonl the result is VERIFIED with exit code 0 — every hash recomputes, the lifecycle replays, at-most-once holds. Run against events-tampered.jsonl, which differs by one flipped byte, the result is REFUTED with exit code 1.">
+        <div class="install-bar"><span>the demand side's seat · verifier/cmd/intent-verify</span><span>exit codes are the interface</span></div>
+        <div class="install-body" aria-hidden="true">
+<span class="p">$</span> go run ./verifier/cmd/intent-verify core/contract/feed/events-good.jsonl<br />
+<span class="c">→</span> RESULT: <span class="g">VERIFIED</span> · exit 0 &nbsp;<span class="c"># hashes recompute · lifecycle replays · at-most-once holds</span><br />
+<span class="p">$</span> go run ./verifier/cmd/intent-verify core/contract/feed/events-tampered.jsonl<br />
+<span class="c">→</span> RESULT: <span class="r">REFUTED</span> · exit 1 &nbsp;&nbsp;<span class="c"># one flipped byte — the standing mutant, refuted forever</span>
+        </div>
+      </div>
+
+      <p class="note reveal"><b>Two implementations, one report.</b> A Go package and a <b>stdlib-only Python twin</b> produce canonical reports that are byte-compared, and an import pin proves the verifier tree runs <b>none of the gate's code</b>. Verdicts are tri-state like the gate itself — verified · refuted · unverifiable — and unverifiable never passes.</p>
+
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>what the record proves, by stage — nothing asks to be believed</caption>
+          <thead><tr><th>stage</th><th>standing</th><th>what it proves</th></tr></thead>
+          <tbody>
+            <tr><td>from the feed alone</td><td class="pass">available now</td><td class="wraps">the record is self-consistent and every hash recomputes — in your language, not ours. Refusals carry trajectory hashes too, so a trimmed log is detectable</td></tr>
+            <tr><td>+ signed specifications</td><td class="hi">enforced · test keys</td><td class="wraps">the gate executed the signed spec: criteria arrive only through signature verification + content-address equality</td></tr>
+            <tr><td>+ record signing</td><td>staged · R1</td><td class="wraps">the record was never rewritten — the feed itself becomes tamper-evident</td></tr>
+            <tr><td>+ workload identity</td><td>staged · R2</td><td class="wraps">this gate, and only this gate, produced it — sole writer as a deployment fact</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chg reveal">
+        <details class="chg-grp" open>
+          <summary><span class="tag tag-limits">Status, honestly</span> <span class="count">5 stated</span><span class="chev">›</span></summary>
+          <ul>
+            <li><b>Key authority is test-grade until ADR-0009</b> — and every signature says so (<code>key_authority: "test"</code>).</li>
+            <li><b>Record signing (R1) and workload identity (R2) are staged, not built</b> — so today the verifier proves the record self-consistent, not never-rewritten.</li>
+            <li><b><code>force_scores</code> is guarded and witnessed</b>: refused unless the server booted with <code>INTENT_UNSAFE_FORCE_SCORES=1</code>, and every scored record carries a <code>scorer_id</code> witness — a forced decision is never byte-indistinguishable from a live one. Wherever the flag <b>is</b> set the bypass is total; it must never reach production.</li>
+            <li><b>The feed read surface is unauthenticated by design</b> — network isolation is a deployment decision the platform owns.</li>
+            <li><b>The declarant ships in Go</b>; a Python declarant twin is recorded future work.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE REFERENCE APPLICATION — TREASURY -->
+  <section class="section" id="treasury">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">the reference application · one step from concept to consequence</span>
+        <h2>The same gate, pointed at a real consequence: treasury payments.</h2>
+        <p>The kernel reads no artifacts and knows no domain — criteria, thresholds, and what counts as a duplicate arrive only through the signed spec. Instantiated on treasury payments (action class 1) in the testing monorepo, the loop closes over three hashes: every settlement carries <code>rule_artifact_hash</code> · <code>intent_spec_hash</code> · <code>trajectory_hash</code> — joining the runtime trace back to the exact signed policy that authorized it.</p>
+      </div>
+
+      <div class="tgrid">
+        <div class="reveal">
+          <h3>A duplicate of an irreversible payment isn't caught.<br /><span class="dim">It's impossible — refused at the dispatch edge, by construction.</span></h3>
+          <p class="tp">The worked example the monorepo runs end to end: the idempotency key is a <b>declared, first-class gate criterion</b> — required, and reserved at the dispatch edge. The same declared key then keys the settlement ledger, so at-most-once holds end to end.</p>
+          <div class="fx">
+            <div class="fx-row without">
+              <span class="w">without</span>
+              <p>At-most-once is an <b>assertion</b>: dedup lives in each adapter's retry logic, audited after the fact. A retried near-duplicate can <b>execute twice</b> before anyone reads the log.</p>
+            </div>
+            <div class="fx-row with">
+              <span class="w">with the gate</span>
+              <p>Same key, one changed field ⟹ <b>FAILED_AT_DISPATCH</b>. At-most-once holds <b>by construction</b>, whatever the action is.</p>
+            </div>
+          </div>
+        </div>
+        <div class="runs reveal" role="img" aria-label="The treasury worked example. At the top, the signed policy: IntentSpec c7a36959, published in the ATLAS registry. Two runs pass through the gate under it, side by side. Run 1, a treasury payment, passes declaration, verification, and the dispatch-edge re-check, reserves its idempotency key, and reaches the single durable ACHIEVED record. Run 2, a near-duplicate with the same key and one changed field, passes verification but collides on the reserved key at the dispatch edge and ends FAILED_AT_DISPATCH. The durable feed below shows one ACHIEVED record — the payment ran exactly once — and a return rail carries the settlement's trace hashes back up to the signed policy chip: the loop closes on the exact policy that authorized the run.">
+          <div class="spec-chip" data-s="idle" id="spec" aria-hidden="true">
+            <span class="sl">signed intentspec · <span class="h">c7a36959…dc51</span></span>
+            <span class="sr" id="spec-s">atlas registry · published</span>
+          </div>
+          <div class="loopback" data-s="idle" id="loopback" aria-hidden="true"></div>
+          <div class="runs-cap" aria-hidden="true"><span>worked example · treasury payment · class 1</span><span>spec re-verified per run · fail-closed</span></div>
+          <div class="runs-grid" aria-hidden="true">
+            <div class="run">
+              <div class="run-head">run 1 · the payment<b>intent 7f3a… · <span class="key">key K</span></b></div>
+              <div class="gsteps">
+                <div class="gstep" data-s="idle" id="a1"><span class="d"></span><span class="t">declared</span><span class="s">key present</span></div>
+                <div class="gstep" data-s="idle" id="a2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass · none unevaluable</span></div>
+                <div class="gstep" data-s="idle" id="a3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">volatile re-check holds</span></div>
+                <div class="gstep" data-s="idle" id="a4"><span class="d"></span><span class="t">key K reserved</span><span class="s">first reservation</span></div>
+                <div class="gstep" data-s="idle" id="a5"><span class="d"></span><span class="t">achieved</span><span class="s">one durable record · fsync</span></div>
+              </div>
+            </div>
+            <div class="run dup">
+              <div class="run-head">run 2 · near-duplicate<b>intent 9c1e… · <span class="key">same key K</span></b></div>
+              <div class="gsteps">
+                <div class="gstep" data-s="idle" id="b1"><span class="d"></span><span class="t">declared</span><span class="s">same key · one field changed</span></div>
+                <div class="gstep" data-s="idle" id="b2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass — validity isn't the question</span></div>
+                <div class="gstep" data-s="idle" id="b3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">key K already reserved</span></div>
+                <div class="gstep" data-s="idle" id="b4"><span class="d"></span><span class="t">failed_at_dispatch</span><span class="s">refused · no record written</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="ledger" data-s="idle" id="ledger" aria-hidden="true">
+            <span class="ll">durable feed — what downstream observes</span>
+            <span class="lv" id="ledger-v">awaiting records…</span>
+          </div>
+        </div>
+      </div>
+
       <div class="loop cols3 reveal">
         <div class="step">
           <span class="n">policy plane · atlas</span><span class="arr">→</span>
           <h3>IntentSpec — the signed policy</h3>
-          <p>What authorizes an action — including what counts as a duplicate — is a signed, expert-attested, registry-governed artifact, published by content hash. Not adapter-local config.</p>
+          <p>What authorizes a payment — including what counts as a duplicate — is a signed, expert-attested, registry-governed artifact, published by content hash. Not adapter-local config.</p>
         </div>
         <div class="step gate-step">
           <span class="n">this plane · the gate</span><span class="arr">→</span>
           <h3>Authorization</h3>
-          <p>Before any criterion is scored, the resolver re-verifies the pinned artifact — <code>verify_artifact</code> folded per hash; absent, rejected, or hash-mismatched ⟹ fail closed. Then tri-state scoring, the dispatch edge, one durable record.</p>
+          <p>The resolver re-verifies the pinned artifact before any criterion is scored — absent, revoked, or hash-mismatched ⟹ fail closed. Then tri-state scoring, the dispatch edge, one durable record.</p>
         </div>
         <div class="step">
           <span class="n">settlement plane · compass</span><span class="arr">⟲</span>
-          <h3>Settlement — and the loop closes</h3>
+          <h3>Settlement — the loop closes</h3>
           <p>Pulls <code>GET /v2/events?since=cursor</code> and recomputes from observed ACHIEVED records only. Each settlement carries the full trace record — pointing back to the signed policy that started the loop.</p>
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px;margin-top:26px" role="img" aria-label="The ACHIEVED trace record — the contract's exact field set: intent id, idempotency key, rule artifact hash, intent spec hash, trajectory hash, and the feed sequence number. The intent spec hash points back to the signed policy in the ATLAS registry; the trajectory hash replays the authorization byte-identically; the idempotency key is the reservation that makes a duplicate impossible.">
+      <div class="install reveal" style="max-width:820px;margin-top:26px" role="img" aria-label="The ACHIEVED trace record — the contract's exact field set: intent id, idempotency key, rule artifact hash, intent spec hash, trajectory hash, and the feed sequence number. The intent spec hash points back to the signed policy; the trajectory hash replays the authorization byte-identically; the idempotency key is the reservation that makes a duplicate impossible.">
         <div class="install-bar"><span>the ACHIEVED trace record — what closes the loop</span><span>field set verbatim · values illustrative</span></div>
         <div class="install-body" aria-hidden="true">
 ACHIEVED {<br />
@@ -778,59 +1061,23 @@ ACHIEVED {<br />
         </div>
       </div>
 
-      <div class="findings-stack reveal">
-        <div class="finding">
-          <span class="f-label">Why this shape</span>
-          <p><b>Authority is never shared — and provenance is never lost.</b> The agent may propose; only the gate authorizes; only an observer settles. Every hand-off crosses a durable, replayable record, and the record names the signed policy by hash — so any settlement can be audited back to the exact criteria, thresholds, and duplicate-definition it ran under, and any duplicate or drifted intent reads unambiguously: <b>the action never happened</b>.</p>
+      <div class="install reveal" style="max-width:820px;margin-top:26px" role="img" aria-label="The live demonstration, one command: the monorepo's quickstart runs keygen, attestation, publish, an authorization against the signed spec, an idempotency collision, a refusal of an unattested hash, a revocation whose reason surfaces, a declaration through the declarant SDK, a scorer outage that makes the plane deny, and a final recompute of the whole live feed by both verifier twins — expected final line: RESULT: 10 of 10 probes passed.">
+        <div class="install-bar"><span>the whole plane, live — one command in the monorepo</span><span>self-asserting</span></div>
+        <div class="install-body" aria-hidden="true">
+<span class="p">$</span> treasury/quickstart.sh <span class="c"># or quickstart.ps1 — real gate, real scorer, live feed</span><br />
+<span class="c">→</span> keygen → attest → publish → <span class="k">authorize</span> → <span class="r">collide on the key</span> → <span class="r">refuse an unattested hash</span><br />
+<span class="c">→</span> <span class="r">revoke — the reason surfaces</span> → <span class="k">declare through the SDK</span> <span class="c">(probe 6: PROCEED · ALREADY_RESERVED)</span><br />
+<span class="c">→</span> <span class="r">kill the scorer — the plane denies</span> → <span class="b">verifier twins re-derive the live feed, byte-compared</span><br />
+<span class="c">→</span> RESULT: <span class="g">10/10 probes passed</span>
         </div>
       </div>
 
-      <div class="chg reveal">
-        <details class="chg-grp" open>
-          <summary><span class="tag tag-notable">Built &amp; verified</span> <span class="count">what the claims above rest on</span><span class="chev">›</span></summary>
-          <ul>
-            <li><b>The full loop ran green, live (2026-07-12)</b>: COMPASS declare → Go gate → wheel-verified scorer (a real <code>verify_artifact</code> of the golden signed IntentSpec) → ACHIEVED in the durable feed → cursor reconcile → settlements carrying the full trace record.</li>
-            <li><b>The negatives were probed live, not assumed</b>: an unknown spec hash ⟹ FAILED unevaluable; a cursor-rewind restatement re-observed the feed and left the ledger <b>byte-identical</b> (duplicates counted, zero applied); a real scorer kill made the next declaration FAIL with <b>zero</b> new settlements. Outage means delay — never loss, never invention.</li>
-            <li><b>Slice 1 + the durability refactor + the live scoring seam</b> are built and verified: the gate, the fsync-per-append durable feed with a gapless global cursor, and the Python criterion scorer answering <code>POST /ml/evaluate</code> — verified two-process, with a real service kill.</li>
-            <li><b>Zero-config refuses everything</b>: with no scorer configured, every intent is unevaluable and therefore denied. The default posture of the system is "no".</li>
-            <li><b>The IntentSpec artifact type is merged upstream</b> (ATLAS, ADR-0021/0022) — it flows through the same compile · sign · attest · publish lifecycle as rule artifacts, and is consumed strictly by hash.</li>
-          </ul>
-        </details>
-        <details class="chg-grp">
-          <summary><span class="tag tag-limits">Honesty boundaries</span> <span class="count">3 stated</span><span class="chev">›</span></summary>
-          <ul>
-            <li><b>The wheel-backed artifact reader inside the scorer is Linux/CI-only</b> for now — its test lane skips visibly rather than silently until it lands everywhere.</li>
-            <li><b>The consumer's criteria/threshold config is app config bound to the pinned spec hash</b>, not yet extracted from the IntentSpec payload itself — recorded parity debt, not a hidden gap.</li>
-            <li><b>No production claim.</b> This is a working authorization plane with proven invariants, not a deployed payment system; the settlement consumer's durable ledger adapter for serverless hosting is planned, and the cron makes no durability claim until it exists.</li>
-          </ul>
-        </details>
-      </div>
-    </div>
-  </section>
+      <p class="note reveal"><b>No production claim.</b> A working authorization plane with proven invariants, not a deployed payment system. The application seats — authority, control, authoring — and the live demonstration stay in the monorepo; the consumer-facing packages are born in <code>intent-plane</code> and consumed back for the probes. Everything above this section is a fact of the <code>intent-plane</code> repo — roles, terminals, invariants, standings — reproducible from <code>go test ./... -count=1</code>, the scorer's pytest gate, and the verifier lanes; the treasury facts reproduce from the monorepo's quickstart. No metric here is invented for the page.</p>
 
-  <!-- CONTRACTS -->
-  <section class="section" id="contracts">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Contracts</span>
-        <h2>What a contract is allowed to claim.</h2>
-        <p>Three authoritative type/signature contracts, amended in order — where they name the same symbol, <b>the most recent contract wins</b>. Golden wire fixtures are the byte-level seam both sides test against.</p>
+      <div class="cta-row reveal">
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane — the SDK ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">treasury-intent-controller — the reference application ↗</a>
       </div>
-      <div class="policy reveal">
-        <div class="p-cell">
-          <h4>CONTRACT.md</h4>
-          <p>Slice 1 — the gate itself: lifecycle states and the valid-transitions graph, intent and criterion types, tri-state scoring, the append-only audit log and trajectory hash.</p>
-        </div>
-        <div class="p-cell">
-          <h4>CONTRACT-DURABILITY.md</h4>
-          <p>The durability and emit-and-observe deltas: the durable JSONL feed, <code>GlobalSeq</code>, fsync-per-append, restart recovery — and the rule that the global cursor never enters the per-intent trajectory hash.</p>
-        </div>
-        <div class="p-cell">
-          <h4>CONTRACT-SCORER.md</h4>
-          <p>The <code>/ml/evaluate</code> wire seam between the Go gate and the Python resolver+scorer, pinned by golden fixtures in <code>contract/scorer/</code> that both processes test against, byte for byte.</p>
-        </div>
-      </div>
-      <p class="note reveal" style="margin-top:26px">Everything on this page is a repo fact — states, invariants, contracts, checkpoints — reproducible from <code>go test ./... -count=1</code> and the scorer's pytest gate. No metric here is invented for the page.</p>
     </div>
   </section>
 
@@ -839,20 +1086,150 @@ ACHIEVED {<br />
 <footer>
   <div class="wrap foot">
     <div class="col-thesis">
-      <div class="t"><span class="k">declare</span> → <span class="k">verify</span> → <span class="k">re-check</span> → <span class="k">emit</span>.<br />No record ⟹ the action never happened.</div>
+      <div class="t"><span class="k">declare</span> → <span class="k">verify</span> → <span class="k">re-check</span> → <span class="k">record</span>.<br />No ACHIEVED record ⟹ the action never happened.</div>
       <div class="copy">© 2026 Hossain Pazooki</div>
     </div>
     <div class="foot-links">
       <a href="/">hossainpazooki.github.io <span class="arr">→</span></a>
-      <a href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
+      <a href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane <span class="arr">↗</span></a>
+      <a href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">treasury-intent-controller <span class="arr">↗</span></a>
       <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
     </div>
   </div>
 </footer>
 
 <script>
-  // The two-run rail: one clean run to ACHIEVED, then the near-duplicate kill.
-  // Every state shown is a real lifecycle state from internal/lifecycle.
+  // The gate console: three declarations against the same signed authority.
+  // Every state and refusal cause shown is contract vocabulary (CONTRACT.md §3).
+  (function(){
+    var $ = function(id){ return document.getElementById(id); };
+    var cspec = $('cspec'), cspecH = $('cspec-h'), cspecS = $('cspec-s'),
+        cscn = $('cscn'), chead = $('chead'),
+        cledger = $('cledger'), cledgerV = $('cledger-v'),
+        cver = $('cver'), cverV = $('cver-v');
+    if(!cspec || !chead || !cledger || !cver) return;
+    var stepIds = ['c1','c2','c3','c4','c5'];
+
+    var SCN = [
+      {
+        label:'scenario 1 of 3 · a clean grant',
+        head:'intent 7f3a…<b>cites spec c7a36959… · <span class="key">key K1</span></b>',
+        hash:'c7a36959…dc51', chip:'attested · published in the store', chipS:'on',
+        rows:[
+          ['declared','key K1 present · spec cited by content address','ok'],
+          ['spec resolved','signature verifies · bytes hash to the address','ok'],
+          ['verifying','every criterion pass · none unevaluable','ok'],
+          ['dispatch edge','volatile + revocation re-check holds · key K1 reserved','gold'],
+          ['achieved','exactly one durable record · fsynced · seq 41','gold']
+        ],
+        ledger:'ACHIEVED × 1 · seq 41 · trajectory hash committed',
+        ver:'VERIFIED — every hash recomputes'
+      },
+      {
+        label:'scenario 2 of 3 · an unattested spec',
+        head:'intent 9c1e…<b>cites spec 41be03c7… · <span class="key">key K2</span></b>',
+        hash:'41be03c7…a112', chip:'no attestation for this hash', chipS:'idle',
+        rows:[
+          ['declared','key K2 present · spec cited by content address','ok'],
+          ['spec resolution','unattested — no verified spec for this hash','bad',{chip:['no attestation — refuses at the door','bad']}],
+          ['failed','unevaluable:unattested-spec · scorer never consulted','bad'],
+          ['—','not reached','void'],
+          ['—','no record — nothing settles','void']
+        ],
+        ledger:'ACHIEVED × 1 — unchanged · nothing unevaluable settles',
+        ver:'VERIFIED — no record ⟹ it never happened'
+      },
+      {
+        label:'scenario 3 of 3 · revoked at the edge',
+        head:'intent e410…<b>cites spec c7a36959… · <span class="key">key K3</span></b>',
+        hash:'c7a36959…dc51', chip:'attested · published in the store', chipS:'on',
+        rows:[
+          ['declared','key K3 present · spec cited by content address','ok'],
+          ['spec resolved','attested at declaration · signature verifies','ok'],
+          ['verifying','every criterion pass · none unevaluable','ok'],
+          ['dispatch edge','re-check finds a verified tombstone','bad',{chip:['revoked — a signed tombstone landed','bad']}],
+          ['failed_at_dispatch','revoked:<ref> · key not reserved · no record','bad']
+        ],
+        ledger:'ACHIEVED × 1 · the refusal durably recorded',
+        ver:'VERIFIED — refusals recompute too'
+      }
+    ];
+
+    function setStep(i, t, s, state){
+      var el = $(stepIds[i]);
+      if(!el) return;
+      el.querySelector('.t').textContent = t;
+      el.querySelector('.s').textContent = s;
+      el.setAttribute('data-s', state);
+    }
+    function loadScenario(sc){
+      cscn.textContent = sc.label;
+      chead.innerHTML = sc.head;
+      cspecH.textContent = sc.hash;
+      cspecS.textContent = sc.chip;
+      cspec.setAttribute('data-s', sc.chipS);
+      sc.rows.forEach(function(row, i){ setStep(i, row[0], row[1], 'idle'); });
+    }
+    function playRow(sc, i){
+      var row = sc.rows[i];
+      setStep(i, row[0], row[1], row[2]);
+      if(row[3] && row[3].chip){
+        cspecS.textContent = row[3].chip[0];
+        cspec.setAttribute('data-s', row[3].chip[1]);
+      }
+    }
+    function ledgerOn(text){
+      cledger.setAttribute('data-s','on');
+      cledgerV.textContent = text;
+    }
+    function verOn(text){
+      cver.setAttribute('data-s','on');
+      cverV.textContent = text;
+    }
+    function resetAll(){
+      loadScenario(SCN[0]);
+      cledger.setAttribute('data-s','idle');
+      cledgerV.textContent = 'awaiting records…';
+      cver.setAttribute('data-s','idle');
+      cverV.textContent = 'standing by…';
+    }
+    function finish(){
+      loadScenario(SCN[0]);
+      SCN[0].rows.forEach(function(row, i){ setStep(i, row[0], row[1], row[2]); });
+      ledgerOn(SCN[0].ledger);
+      verOn(SCN[0].ver);
+    }
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      finish();
+      return;
+    }
+    // Build the op list: [fn, delayAfterMs]
+    var ops = [];
+    ops.push([resetAll, 900]);
+    SCN.forEach(function(sc, si){
+      if(si > 0) ops.push([function(){ loadScenario(sc); }, 850]);
+      sc.rows.forEach(function(row, i){
+        var d = (row[2] === 'gold' || row[2] === 'bad') ? 1150 : 850;
+        if(row[2] === 'void') d = 350;
+        ops.push([function(){ playRow(sc, i); }, d]);
+      });
+      ops.push([function(){ ledgerOn(sc.ledger); }, 1250]);
+      ops.push([function(){ verOn(sc.ver); }, si === SCN.length - 1 ? 4200 : 2300]);
+    });
+    var i = 0;
+    (function next(){
+      var op = ops[i];
+      op[0]();
+      setTimeout(function(){
+        i++;
+        if(i >= ops.length){ i = 0; }
+        next();
+      }, op[1]);
+    })();
+  })();
+
+  // The treasury two-run rail: one clean run to ACHIEVED, then the near-duplicate kill.
+  // Every state shown is a real lifecycle state from the contract.
   (function(){
     var ledger = document.getElementById('ledger');
     var ledgerV = document.getElementById('ledger-v');
@@ -863,7 +1240,7 @@ ACHIEVED {<br />
     function set(id, s){ var el = document.getElementById(id); if(el) el.setAttribute('data-s', s); }
     function ledgerOn(){
       ledger.setAttribute('data-s','on');
-      ledgerV.textContent = 'ACHIEVED × 1 — the action ran exactly once';
+      ledgerV.textContent = 'ACHIEVED × 1 — the payment ran exactly once';
     }
     function loopOn(){
       loopback.setAttribute('data-s','on');
@@ -934,7 +1311,7 @@ ACHIEVED {<br />
 
 <script>
 (function(){
-  var META = { paper:'#F6F4EE', ink:'#0B0E13' };
+  var META = { paper:'#F6F4EE', ink:'#0A1424' };
   var meta = document.getElementById('metatheme');
   var btns = document.querySelectorAll('.theme-sw button');
   function apply(t){

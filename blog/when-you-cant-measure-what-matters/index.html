@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ink">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0A1424" id="metatheme" />
+<script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<title>When You Can't Measure What Matters — A Closed-Loop Harness for Probability-of-Default Estimation</title>
+<meta name="description" content="The expanded, visual companion to the Towards AI essay: lending data only labels the loans a past policy approved, so a PD model can't be graded exactly where it must be right. Plant the truth in a synthetic causal world, hide it the way approval policies do, escalate selection severity until correction fails — and report the operating frontier as a distribution, not a point." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    color-scheme:dark;
+    --ink:#0A1424;
+    --ink-2:#0D1930;
+    --panel:#101E38;
+    --panel-2:#142440;
+    --line:#1D3050;
+    --line-soft:#172942;
+    --text:#E9EEF8;
+    --text-2:#B8C5DB;
+    --muted:#7F92B0;
+    --gold:#E0A436;
+    --gold-dim:#7a5d22;
+    --ok:#5BB98C;
+    --ok-dim:#2c5a44;
+    --block:#D4654A;
+    --block-dim:#6a3327;
+    --blue:#6CA7E8;
+    --blue-dim:#2c4a6a;
+    --header-bg:rgba(10,20,36,.72);
+    --gold-hover:#f3c269;
+    --wash-1:rgba(255,255,255,.012);
+    --wash-2:rgba(255,255,255,.03);
+    --maxw:1080px;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+    /* chart series — validated against the ink figure surface (#0D1930) */
+    --ch-gold:#BD842B;
+    --ch-blue:#4E88CC;
+    --ch-ref:#7F92B0;
+    --ch-grid:#1D3050;
+  }
+
+  :root[data-theme="paper"]{
+    color-scheme:light;
+    --ink:#F6F4EE;
+    --ink-2:#EFECE2;
+    --panel:#FCFBF7;
+    --panel-2:#F1EEE5;
+    --line:#D8D3C4;
+    --line-soft:#E5E1D4;
+    --text:#1E232C;
+    --text-2:#454D5C;
+    --muted:#6C7484;
+    --gold:#8A6217;
+    --gold-dim:#D3BE8F;
+    --ok:#1E7A4D;
+    --ok-dim:#A6CDB8;
+    --block:#AE4529;
+    --block-dim:#DFB1A1;
+    --blue:#2D5FA3;
+    --blue-dim:#B9C9E1;
+    --header-bg:rgba(246,244,238,.8);
+    --gold-hover:#B07C1E;
+    --wash-1:rgba(30,35,44,.025);
+    --wash-2:rgba(30,35,44,.05);
+    /* chart series — validated against the paper figure surface (#FCFBF7) */
+    --ch-gold:#8A6217;
+    --ch-blue:#2D5FA3;
+    --ch-ref:#6C7484;
+    --ch-grid:#D8D3C4;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+    transition:background-color .25s ease,color .25s ease;
+  }
+
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--gold);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  code{font-family:var(--mono)}
+  p code, li code, td code, .note code, .cap code{
+    font-size:.9em;color:var(--gold);
+    background:rgba(224,164,54,.07);
+    border:1px solid rgba(224,164,54,.14);
+    border-radius:4px;padding:1px 6px;white-space:nowrap;
+  }
+
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+    display:inline-flex;align-items:center;gap:.6em;
+  }
+  .eyebrow::before{content:"";width:18px;height:1px;background:var(--gold);display:inline-block}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--header-bg);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{
+    font-family:var(--mono);font-weight:600;font-size:15px;
+    letter-spacing:.04em;color:var(--text);
+    display:inline-flex;align-items:center;gap:.5em;
+  }
+  .brand .dot{color:var(--gold)}
+  .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
+  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links a{
+    font-family:var(--mono);font-size:13px;color:var(--muted);
+    letter-spacing:.02em;transition:color .18s ease;white-space:nowrap;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.ext{color:var(--gold)}
+  .nav-links a.ext:hover{color:var(--gold-hover)}
+  .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
+  .theme-sw button{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    background:transparent;border:0;padding:6px 12px;cursor:pointer;
+    transition:color .18s ease,background .18s ease;
+  }
+  .theme-sw button+button{border-left:1px solid var(--line)}
+  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(224,164,54,.08)}
+  @media(max-width:1160px){.nav-links{gap:14px}}
+  @media(max-width:760px){.nav-links a.hideable{display:none}}
+
+  /* ---------- article shell: sticky contents + reading column ---------- */
+  .shell{
+    display:grid;grid-template-columns:230px minmax(0,1fr);
+    gap:56px;align-items:start;
+    padding:64px 0 40px;
+  }
+  @media(max-width:1020px){.shell{grid-template-columns:minmax(0,1fr);gap:0;padding-top:44px}}
+  .shell > *{min-width:0}
+
+  .toc{
+    position:sticky;top:88px;
+    font-family:var(--mono);
+  }
+  .toc .toc-label{
+    font-size:11px;font-weight:600;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:16px;
+  }
+  .toc ol{list-style:none;display:flex;flex-direction:column;gap:2px}
+  .toc a{
+    display:flex;gap:10px;align-items:baseline;
+    font-size:12.5px;line-height:1.5;color:var(--muted);
+    padding:5px 10px;border-left:2px solid transparent;
+    transition:color .15s ease,border-color .15s ease,background .15s ease;
+  }
+  .toc a .n{flex:none;font-size:11px;color:var(--muted);opacity:.7;width:12px}
+  .toc a:hover{color:var(--text)}
+  .toc a.active{
+    color:var(--gold);border-left-color:var(--gold);
+    background:linear-gradient(90deg,rgba(224,164,54,.07),transparent 80%);
+  }
+  .toc a.sub{padding-left:32px;font-size:11.5px;opacity:.9}
+  @media(max-width:1020px){
+    .toc{position:static;margin-bottom:40px;border:1px solid var(--line);border-radius:8px;padding:16px 14px;background:var(--ink-2)}
+  }
+
+  .article{max-width:720px}
+  .article > * + *{margin-top:22px}
+
+  /* ---------- article header ---------- */
+  .kicker{
+    font-family:var(--mono);font-size:12px;font-weight:600;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  }
+  .kicker a{color:var(--gold)}
+  h1.title{
+    font-family:'Space Grotesk',var(--sans);
+    font-weight:600;
+    font-size:clamp(28px,4.4vw,42px);
+    line-height:1.08;letter-spacing:-.02em;
+    margin-top:14px;
+  }
+  h1.title .dim{color:var(--text-2)}
+
+  .tldr{
+    display:flex;gap:16px;align-items:flex-start;
+    border-left:3px solid var(--gold);
+    padding:4px 0 4px 18px;
+    margin-top:26px;
+  }
+  .tldr .tag{
+    flex:none;font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
+    padding-top:4px;
+  }
+  .tldr p{font-size:15.5px;color:var(--text-2);line-height:1.65}
+  .tldr p b{color:var(--text);font-weight:600}
+  .tldr .pillbtn{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.04em;
+    color:var(--gold);border:1px solid var(--gold-dim);border-radius:999px;
+    padding:3px 12px;margin-left:6px;white-space:nowrap;
+    background:rgba(224,164,54,.07);
+    transition:background .15s ease,color .15s ease;
+    vertical-align:2px;
+  }
+  .tldr .pillbtn:hover{background:rgba(224,164,54,.15)}
+
+  .byline{
+    border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+    padding:14px 0;margin-top:26px;
+    display:flex;gap:10px 22px;flex-wrap:wrap;align-items:baseline;
+    font-family:var(--mono);font-size:12.5px;color:var(--muted);letter-spacing:.02em;
+  }
+  .byline .who{color:var(--text);font-weight:600;font-size:13.5px}
+  .byline a{color:var(--gold)}
+  .byline a:hover{color:var(--gold-hover)}
+
+  .companion-note{
+    font-size:13px;color:var(--muted);line-height:1.6;font-style:italic;
+  }
+  .companion-note a{color:var(--gold);font-style:normal}
+
+  /* ---------- sections ---------- */
+  .sec{margin-top:64px;scroll-margin-top:84px}
+  .sec-eyebrow{
+    font-family:var(--mono);font-size:11px;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .sec h2{
+    margin-top:10px;
+    font-size:clamp(22px,3.2vw,30px);font-weight:600;
+    letter-spacing:-.02em;line-height:1.15;
+  }
+  .sec h3{
+    margin-top:40px;font-size:18.5px;font-weight:600;letter-spacing:-.01em;
+    scroll-margin-top:84px;
+  }
+  .article p.body{font-size:16px;color:var(--text-2);line-height:1.72}
+  .article p.body b{color:var(--text);font-weight:600}
+  .article p.body i{color:var(--text-2)}
+  sup.cite{font-size:.72em;line-height:0}
+  sup.cite a{color:var(--blue);font-family:var(--mono);letter-spacing:0}
+  sup.cite a:hover{color:var(--gold)}
+
+  /* ---------- figure frame ---------- */
+  .fig{margin-top:30px}
+  .fig .cap{
+    font-size:14px;font-weight:600;color:var(--text);letter-spacing:-.005em;
+  }
+  .fig .cap .fno{color:var(--gold);font-family:var(--mono);font-weight:600;font-size:12.5px;margin-right:8px}
+  .fig .legend{
+    display:flex;gap:8px 14px;flex-wrap:wrap;margin-top:10px;
+  }
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:var(--mono);font-size:11.5px;color:var(--text-2);letter-spacing:.02em;
+  }
+  .chip .b{
+    width:17px;height:17px;border-radius:5px;flex:none;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:10px;font-weight:600;color:var(--ink);
+  }
+  .chip .b.gold{background:var(--ch-gold)}
+  .chip .b.blue{background:var(--ch-blue)}
+  .chip .b.ref{background:transparent;color:var(--ch-ref);border:1.5px dashed var(--ch-ref)}
+  .chip .b.okc{background:var(--ok)}
+  .chip .b.badc{background:var(--block)}
+  .chip .b.neutral{background:transparent;color:var(--muted);border:1px solid var(--line)}
+  .fig-body{
+    margin-top:12px;border:1px solid var(--line);border-radius:10px;
+    background:var(--ink-2);padding:18px 14px 12px;overflow-x:auto;
+  }
+  .fig-body svg{display:block;width:100%;height:auto;min-width:540px}
+  .fig .foot{
+    margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--muted);
+    letter-spacing:.03em;line-height:1.6;
+  }
+  .fig .foot a{color:var(--gold)}
+  /* svg text + marks inherit theme */
+  .svg-t{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
+  .svg-t2{font-family:var(--mono);font-size:10.5px;fill:var(--text-2)}
+  .svg-tt{font-family:var(--mono);font-size:11px;font-weight:600;fill:var(--text)}
+  .svg-gold{fill:var(--ch-gold)}
+  .svg-blue{fill:var(--ch-blue)}
+  .svg-ref{fill:var(--ch-ref)}
+  .svg-lgold{stroke:var(--ch-gold)}
+  .svg-lblue{stroke:var(--ch-blue)}
+  .svg-lref{stroke:var(--ch-ref)}
+  .svg-grid{stroke:var(--ch-grid);stroke-width:1}
+  .svg-axis{stroke:var(--line);stroke-width:1}
+  .svg-panel{fill:var(--panel)}
+  .svg-wash{fill:var(--wash-2)}
+  .svg-badline{stroke:var(--block)}
+  .svg-badfill{fill:var(--block)}
+  .svg-okfill{fill:var(--ok)}
+  .svg-goldline{stroke:var(--gold)}
+  .svg-goldfill{fill:var(--gold)}
+  .svg-mutedfill{fill:var(--muted)}
+  .svg-surface{fill:var(--ink-2)}
+
+  /* ---------- three-across callout cards ---------- */
+  .cards3{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px;
+  }
+  .card{
+    border:1px solid var(--line);border-radius:10px;background:var(--ink-2);
+    padding:16px 16px;
+  }
+  .card .ic{
+    width:22px;height:22px;border-radius:6px;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink);
+    background:var(--gold);margin-bottom:10px;
+  }
+  .card .ic.blue{background:var(--blue)}
+  .card .ic.okc{background:var(--ok)}
+  .card .ic.badc{background:var(--block)}
+  .card h4{font-size:14.5px;font-weight:600;letter-spacing:-.005em}
+  .card p{margin-top:6px;font-size:13px;color:var(--muted);line-height:1.55}
+  .card p b{color:var(--text-2);font-weight:600}
+  @media(max-width:720px){.cards3{grid-template-columns:1fr}}
+
+  /* ---------- data table ---------- */
+  .dtable-wrap{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+  table.dtable{
+    border-collapse:collapse;width:100%;min-width:520px;
+    font-size:13.5px;background:var(--ink-2);
+  }
+  .dtable caption{
+    caption-side:top;text-align:left;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);
+    padding:11px 16px;border-bottom:1px solid var(--line);
+    background:var(--wash-1);
+  }
+  .dtable th,.dtable td{
+    padding:10px 16px;text-align:left;border-bottom:1px solid var(--line-soft);
+    white-space:nowrap;
+  }
+  .dtable th{
+    font-family:var(--mono);font-size:11px;font-weight:500;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  }
+  .dtable td{font-family:var(--mono);font-size:13px;color:var(--text-2)}
+  .dtable td:first-child{color:var(--text)}
+  .dtable tr:last-child td{border-bottom:0}
+  .dtable .pass{color:var(--ok);font-weight:600}
+  .dtable .fail{color:var(--block);font-weight:600}
+  .dtable .hi{color:var(--gold);font-weight:600}
+
+  /* ---------- install / code panel ---------- */
+  .install{
+    margin-top:22px;
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    background:var(--panel);
+  }
+  .install-bar{
+    border-bottom:1px solid var(--line);padding:9px 16px;
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);
+    background:var(--wash-1);
+  }
+  .install-body{
+    padding:16px;font-family:var(--mono);
+    font-size:clamp(12px,1.9vw,13px);line-height:1.8;color:var(--text);
+    overflow-x:auto;white-space:pre;
+  }
+  .install-body .p{color:var(--muted)}
+  .install-body .c{color:var(--muted)}
+  .install-body .k{color:var(--gold)}
+  .install-body .g{color:var(--ok)}
+  .copybtn{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:5px;background:transparent;
+    padding:4px 10px;cursor:pointer;
+    transition:color .15s ease,border-color .15s ease;
+  }
+  .copybtn:hover{color:var(--gold);border-color:var(--gold-dim)}
+
+  /* ---------- author-note placeholder ---------- */
+  .todo{
+    margin-top:26px;border:1.5px dashed var(--line);border-radius:10px;
+    padding:14px 18px;background:var(--wash-1);
+  }
+  .todo .t-label{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+  .todo p{margin-top:6px;font-size:13.5px;color:var(--muted);line-height:1.6;font-style:italic}
+
+  /* ---------- quote / cite-as ---------- */
+  .citeq{
+    margin-top:22px;border-left:3px solid var(--line);
+    padding:6px 0 6px 18px;
+    font-size:14.5px;color:var(--text-2);line-height:1.7;
+  }
+  .citeq i{color:var(--text-2)}
+  .citeq a{color:var(--gold);word-break:break-all}
+
+  /* ---------- references ---------- */
+  .refs{margin-top:22px;counter-reset:ref}
+  .refs li{
+    list-style:none;position:relative;
+    padding:0 0 14px 40px;
+    font-size:14px;color:var(--text-2);line-height:1.65;
+    scroll-margin-top:96px;
+  }
+  .refs li::before{
+    counter-increment:ref;content:"[" counter(ref) "]";
+    position:absolute;left:0;top:1px;
+    font-family:var(--mono);font-size:12px;color:var(--gold);
+  }
+  .refs li i{color:var(--text-2)}
+  .refs li a{color:var(--gold);font-family:var(--mono);font-size:12.5px}
+  .refs li a:hover{color:var(--gold-hover)}
+
+  /* ---------- links row ---------- */
+  .linkrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .linkrow a{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;
+    border:1px solid var(--line);border-radius:999px;padding:7px 15px;
+    color:var(--text-2);background:var(--wash-1);
+    display:inline-flex;align-items:center;gap:8px;
+    transition:color .15s ease,border-color .15s ease;
+  }
+  .linkrow a:hover{color:var(--gold);border-color:var(--gold-dim)}
+  .linkrow a b{color:var(--gold);font-weight:600}
+
+  .note{margin-top:18px;font-size:13.5px;color:var(--muted);line-height:1.6}
+  .note b{color:var(--text-2);font-weight:500}
+
+  /* ---------- to-top ---------- */
+  .totop{
+    position:fixed;right:22px;bottom:22px;z-index:40;
+    width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--line);background:var(--panel);color:var(--muted);
+    font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .25s ease,color .15s ease;
+  }
+  .totop.show{opacity:1;pointer-events:auto}
+  .totop:hover{color:var(--gold)}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:44px 0 60px;margin-top:72px}
+  .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end}
+  .foot .col-thesis{max-width:420px}
+  .foot .col-thesis .t{font-family:var(--mono);font-size:13px;color:var(--text-2);line-height:1.7}
+  .foot .col-thesis .t .k{color:var(--gold)}
+  .foot .copy{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:18px}
+  .foot-links{display:flex;flex-direction:column;gap:11px;text-align:right}
+  .foot-links a{
+    font-family:var(--mono);font-size:13.5px;color:var(--text-2);
+    display:inline-flex;gap:9px;justify-content:flex-end;align-items:center;
+    transition:color .16s ease;
+  }
+  .foot-links a:hover{color:var(--gold)}
+  .foot-links a .arr{color:var(--muted)}
+  @media(max-width:560px){
+    .foot{flex-direction:column;align-items:flex-start}
+    .foot-links{text-align:left}
+    .foot-links a{justify-content:flex-start}
+  }
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+<noscript><style>.reveal{opacity:1;transform:none}.theme-sw{display:none}.copybtn{display:none}</style></noscript>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/blog/"><span class="up">hp /</span>blog<span class="dot">.</span></a>
+    <nav class="nav-links">
+      <a href="/" class="hideable">home</a>
+      <a href="/baseline/" class="hideable">/baseline</a>
+      <a href="/intent/" class="hideable">/intent</a>
+      <a href="/rigor/" class="hideable">/rigor</a>
+      <a href="/cldd/" class="hideable">code &amp; data</a>
+      <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" class="ext" target="_blank" rel="noopener">Towards&nbsp;AI&nbsp;↗</a>
+      <div class="theme-sw" role="group" aria-label="Theme">
+        <button type="button" data-set="ink" aria-pressed="true">ink</button>
+        <button type="button" data-set="paper" aria-pressed="false">paper</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap shell">
+
+  <!-- CONTENTS -->
+  <aside class="toc" aria-label="Contents">
+    <div class="toc-label">Contents</div>
+    <ol>
+      <li><a href="#s1" data-spy="s1"><span class="n">1</span>The selective-labels problem</a></li>
+      <li><a href="#s2" data-spy="s2"><span class="n">2</span>The harness: plant the truth, hide it honestly</a></li>
+      <li><a href="#s2-worlds" class="sub" data-spy="s2-worlds">Two synthetic worlds, eight levers</a></li>
+      <li><a href="#s3" data-spy="s3"><span class="n">3</span>Results</a></li>
+      <li><a href="#s3-frontier" class="sub" data-spy="s3-frontier">Correction holds to 0.4 — and breaks at 0.6</a></li>
+      <li><a href="#s3-dist" class="sub" data-spy="s3-dist">The frontier is a distribution, not a point</a></li>
+      <li><a href="#s3-wall" class="sub" data-spy="s3-wall">Both deliverables break at the same wall</a></li>
+      <li><a href="#s3-emp" class="sub" data-spy="s3-emp">Two EMPs disagree — that's the finding</a></li>
+      <li><a href="#s4" data-spy="s4"><span class="n">4</span>What this claims — and refuses to</a></li>
+      <li><a href="#code-data" data-spy="code-data"><span class="n">§</span>Code &amp; Data</a></li>
+      <li><a href="#citation" data-spy="citation"><span class="n">§</span>Citation</a></li>
+      <li><a href="#references" data-spy="references"><span class="n">§</span>References</a></li>
+    </ol>
+  </aside>
+
+  <!-- ARTICLE -->
+  <article class="article">
+
+    <div class="kicker">closed-loop default detection · <a href="/blog/">the blog</a></div>
+    <h1 class="title">When You Can't Measure What Matters<br /><span class="dim">A closed-loop harness for probability-of-default estimation.</span></h1>
+
+    <div class="tldr">
+      <span class="tag">TL;DR</span>
+      <p>Lending data only labels the loans a past policy <b>approved</b> — so the declined cohort, exactly where a new PD model must be right, is the one it can't be graded on. The harness closes the loop: <b>plant the truth</b> in a synthetic causal world, <b>hide it</b> the way real approval policies do, <b>escalate selection severity until correction fails</b>, and report the operating frontier as a distribution, not a point. The finding staked highest: the counterfactual advantage and the calibration correction break at the <b>same wall</b> — selection through a confounder no feature set contained. <a class="pillbtn" href="#code-data">Code &amp; Data →</a></p>
+    </div>
+
+    <div class="byline">
+      <span class="who">Hossain Pazooki</span>
+      <span>New York</span>
+      <span>published in <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">Towards AI ↗</a></span>
+      <span>July 2026</span>
+      <span>9 min read</span>
+    </div>
+
+    <p class="companion-note">This page is the expanded, visual companion to the published essay — same argument, with the figures drawn out and every number traceable to committed evidence in the <a href="/cldd/">code &amp; data</a>. The essay's prose is being ported in; sections marked as author's notes are still to be written.</p>
+
+    <!-- SECTION 1 -->
+    <section class="sec" id="s1">
+      <div class="sec-eyebrow">Section 1</div>
+      <h2>The selective-labels problem</h2>
+
+      <p class="body">A probability-of-default model is graded on the loans a past policy <b>approved</b> — yet deployed on <b>everyone</b>. For every applicant the old policy declined, no repayment outcome ever forms: not delayed, not expensive, <b>structurally absent</b>. This is the selective-labels problem<sup class="cite"><a href="#references">[1]</a></sup>, and it puts the one cohort where a new model most needs to be right — the applicants the old policy turned away — exactly where no ground truth exists.</p>
+
+      <div class="fig reveal" id="fig1">
+        <div class="cap"><span class="fno">Figure 1</span>Where the labels end and the deployment doesn't</div>
+        <div class="legend">
+          <span class="chip"><span class="b okc" aria-hidden="true">L</span>labels form — repayment observed</span>
+          <span class="chip"><span class="b badc" aria-hidden="true">∅</span>no label ever forms</span>
+          <span class="chip"><span class="b neutral" aria-hidden="true">→</span>the new model prices both</span>
+        </div>
+        <div class="fig-body">
+          <svg viewBox="0 0 640 230" role="img" aria-label="Flow diagram. Applicants flow into the incumbent approval policy. The approved branch produces repayment labels. The declined branch produces no labels ever. A new PD model is deployed across both branches — including the unlabeled one.">
+            <rect x="10" y="88" width="120" height="54" rx="8" class="svg-panel" stroke="var(--line)" />
+            <text x="70" y="110" text-anchor="middle" class="svg-tt">applicants</text>
+            <text x="70" y="126" text-anchor="middle" class="svg-t">everyone who applies</text>
+            <path d="M130 115 L172 115" class="svg-axis" fill="none" marker-end="url(#arr)" />
+            <g>
+              <rect x="176" y="84" width="118" height="62" rx="8" fill="var(--wash-2)" stroke="var(--gold-dim)" />
+              <text x="235" y="108" text-anchor="middle" class="svg-tt">incumbent policy</text>
+              <text x="235" y="124" text-anchor="middle" class="svg-t">approve / decline</text>
+              <text x="235" y="138" text-anchor="middle" class="svg-t">selection severity s</text>
+            </g>
+            <path d="M294 100 C330 84, 344 70, 372 62" class="svg-axis" fill="none" marker-end="url(#arr)" />
+            <path d="M294 130 C330 146, 344 160, 372 168" class="svg-axis" fill="none" marker-end="url(#arr)" />
+            <g>
+              <rect x="376" y="34" width="150" height="56" rx="8" fill="rgba(91,185,140,.08)" stroke="var(--ok-dim)" />
+              <text x="451" y="56" text-anchor="middle" class="svg-tt" fill="var(--ok)">approved</text>
+              <text x="451" y="72" text-anchor="middle" class="svg-t">repayment observed —</text>
+              <text x="451" y="84" text-anchor="middle" class="svg-t">labels exist here only</text>
+            </g>
+            <g>
+              <rect x="376" y="140" width="150" height="56" rx="8" fill="rgba(212,101,74,.07)" stroke="var(--block-dim)" />
+              <text x="451" y="162" text-anchor="middle" class="svg-tt" fill="var(--block)">declined</text>
+              <text x="451" y="178" text-anchor="middle" class="svg-t">no outcome ever forms —</text>
+              <text x="451" y="190" text-anchor="middle" class="svg-t">the structural blind spot</text>
+            </g>
+            <path d="M526 62 C566 62, 576 100, 596 112" class="svg-goldline" stroke-dasharray="4 4" fill="none" />
+            <path d="M526 168 C566 168, 576 130, 596 118" class="svg-goldline" stroke-dasharray="4 4" fill="none" />
+            <g>
+              <circle cx="602" cy="115" r="5" class="svg-goldfill" />
+              <text x="602" y="96" text-anchor="middle" class="svg-tt" fill="var(--gold)">new model</text>
+              <text x="602" y="138" text-anchor="middle" class="svg-t">deployed on</text>
+              <text x="602" y="150" text-anchor="middle" class="svg-t">both branches</text>
+            </g>
+            <defs>
+              <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)" /></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="foot">the harness's generators reproduce exactly this censoring: truth is planted for every row, then hidden through the approval mechanism — see <a href="#code-data">code &amp; data</a>.</div>
+      </div>
+
+      <p class="body">The standard escapes each concede the problem they set out to solve:</p>
+
+      <div class="cards3 reveal">
+        <div class="card">
+          <div class="ic badc">1</div>
+          <h4>Grade on the approved</h4>
+          <p>Measures the model where the incumbent already said yes — a <b>selection-biased</b> sample that systematically excludes the riskiest region of the score.</p>
+        </div>
+        <div class="card">
+          <div class="ic badc">2</div>
+          <h4>Reject inference</h4>
+          <p>Imputes the missing labels from the approved region<sup class="cite"><a href="#references">[2]</a></sup> — assuming the very extrapolation the evaluation was supposed to test.</p>
+        </div>
+        <div class="card">
+          <div class="ic badc">3</div>
+          <h4>Wait for outcomes</h4>
+          <p>Time doesn't help: an applicant who was never issued a loan can never default on it. The label isn't late — it's <b>undefined</b>.</p>
+        </div>
+      </div>
+
+      <div class="todo">
+        <div class="t-label">author's note · to be written</div>
+        <p>The essay's opening narrative for this section — the concrete lending vignette and the framing of "deployed on everyone, graded on the approved" — lands here.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="sec" id="s2">
+      <div class="sec-eyebrow">Section 2</div>
+      <h2>The harness: plant the truth, hide it honestly</h2>
+
+      <p class="body">If no real dataset can contain the declined cohort's labels, then <b>build a world where you planted them</b>. The harness generates synthetic lending cohorts with the true default outcome planted for <i>every</i> row, hides labels through the same mechanism a real approval policy would, and grades every correction technique against the truth it planted — not against a proxy. The loop then <b>escalates selection severity</b> round by round until the correction fails, and reports the last severity at which declined-cohort calibration still held: the <b>operating frontier</b>.</p>
+
+      <div class="fig reveal" id="fig2">
+        <div class="cap"><span class="fno">Figure 2</span>The closed loop — escalated until correction fails</div>
+        <div class="legend">
+          <span class="chip"><span class="b gold" aria-hidden="true">G</span>generate</span>
+          <span class="chip"><span class="b gold" aria-hidden="true">M</span>measure</span>
+          <span class="chip"><span class="b gold" aria-hidden="true">I</span>improve</span>
+          <span class="chip"><span class="b gold" aria-hidden="true">R</span>regenerate ⟲ severity + 0.2</span>
+        </div>
+        <div class="fig-body">
+          <svg viewBox="0 0 640 190" role="img" aria-label="Four stages in a loop: generate plants the truth at severity s and hides it via the approval policy; measure trains on approved rows only and scores against planted truth on the declined subpopulation; improve applies a correction lever such as IPW reweighting, retraining, or exploration; regenerate raises severity and repeats. When corrected declined-cohort ECE exceeds the 0.10 target, the loop stops and reports the operating frontier.">
+            <g>
+              <rect x="14" y="46" width="136" height="70" rx="8" class="svg-panel" stroke="var(--line)" />
+              <text x="82" y="68" text-anchor="middle" class="svg-tt">01 · generate</text>
+              <text x="82" y="84" text-anchor="middle" class="svg-t">plant true default at</text>
+              <text x="82" y="96" text-anchor="middle" class="svg-t">severity s · hide via</text>
+              <text x="82" y="108" text-anchor="middle" class="svg-t">the approval policy</text>
+            </g>
+            <path d="M150 81 L172 81" class="svg-axis" fill="none" marker-end="url(#arr2)" />
+            <g>
+              <rect x="176" y="46" width="136" height="70" rx="8" class="svg-panel" stroke="var(--line)" />
+              <text x="244" y="68" text-anchor="middle" class="svg-tt">02 · measure</text>
+              <text x="244" y="84" text-anchor="middle" class="svg-t">train on approved only ·</text>
+              <text x="244" y="96" text-anchor="middle" class="svg-t">score declined rows</text>
+              <text x="244" y="108" text-anchor="middle" class="svg-t">against planted truth</text>
+            </g>
+            <path d="M312 81 L334 81" class="svg-axis" fill="none" marker-end="url(#arr2)" />
+            <g>
+              <rect x="338" y="46" width="136" height="70" rx="8" class="svg-panel" stroke="var(--line)" />
+              <text x="406" y="68" text-anchor="middle" class="svg-tt">03 · improve</text>
+              <text x="406" y="84" text-anchor="middle" class="svg-t">apply a lever — IPW ·</text>
+              <text x="406" y="96" text-anchor="middle" class="svg-t">retrain · exploration ·</text>
+              <text x="406" y="108" text-anchor="middle" class="svg-t">reject inference</text>
+            </g>
+            <path d="M474 81 L496 81" class="svg-axis" fill="none" marker-end="url(#arr2)" />
+            <g>
+              <rect x="500" y="46" width="126" height="70" rx="8" fill="var(--wash-2)" stroke="var(--gold-dim)" />
+              <text x="563" y="68" text-anchor="middle" class="svg-tt" fill="var(--gold)">04 · regenerate</text>
+              <text x="563" y="84" text-anchor="middle" class="svg-t">ECE ≤ 0.10? raise s</text>
+              <text x="563" y="96" text-anchor="middle" class="svg-t">and go again — else</text>
+              <text x="563" y="108" text-anchor="middle" class="svg-t">stop, report frontier</text>
+            </g>
+            <path d="M563 116 C563 158, 120 158, 84 120" class="svg-goldline" fill="none" stroke-dasharray="5 4" marker-end="url(#arrg)" />
+            <text x="322" y="170" text-anchor="middle" class="svg-t" fill="var(--gold)">⟲ severity 0.0 → 0.2 → 0.4 → 0.6 — until correction fails</text>
+            <defs>
+              <marker id="arr2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--muted)" /></marker>
+              <marker id="arrg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--gold)" /></marker>
+            </defs>
+          </svg>
+        </div>
+        <div class="foot">the loop's control metric is declined-cohort expected calibration error<sup class="cite"><a href="#references">[7]</a></sup> with target ≤ 0.10; everything else is reporting.</div>
+      </div>
+
+      <p class="body">Three commitments separate this from a simulation that flatters its subject:</p>
+
+      <div class="cards3 reveal">
+        <div class="card">
+          <div class="ic">1</div>
+          <h4>Planted truth</h4>
+          <p>Every corrector is graded against outcomes the world <b>actually contains</b> — never against imputed labels or a held-out slice of the same biased sample.</p>
+        </div>
+        <div class="card">
+          <div class="ic">2</div>
+          <h4>Honest hiding</h4>
+          <p>Labels are censored through the <b>same mechanism</b> a real policy uses — including, at high severity, selection through a variable the feature set doesn't contain.</p>
+        </div>
+        <div class="card">
+          <div class="ic">3</div>
+          <h4>Escalation to failure</h4>
+          <p>The loop's deliverable is the <b>severity at which correction fails</b> — a measured limit, not a score. What breaks, and where, is the result.</p>
+        </div>
+      </div>
+
+      <h3 id="s3-worlds-anchor"><span id="s2-worlds"></span>Two synthetic worlds, eight levers</h3>
+
+      <p class="body">Cohorts come from two generators: a <b>flat synthetic world</b> (independent features) and a fitted, layered <b>structural causal model</b><sup class="cite"><a href="#references">[6]</a></sup> whose marginals are checked against real data by a fidelity gate — labeled <i>marginal</i> fidelity precisely so it never reads as joint or causal fidelity. Against them, eight correction levers: naive conditioning, inverse-propensity weighting<sup class="cite"><a href="#references">[5]</a></sup>, disjoint retraining, bought-label exploration, and the four classic reject-inference correctors — reclassification, augmentation, fuzzy augmentation, parcelling<sup class="cite"><a href="#references">[2]</a></sup>. A counterfactual validator runs g-computation<sup class="cite"><a href="#references">[4]</a></sup> against naive conditioning over the same planted worlds.</p>
+
+      <div class="install reveal">
+        <div class="install-bar"><span>install &amp; 60-second tour</span><span>pypi · MIT · Python ≥ 3.10</span></div>
+        <div class="install-body"><span class="p">$</span> pip install closed-loop-default-detection
+<span class="c">&gt;&gt;&gt;</span> <span class="k">from</span> cldd <span class="k">import</span> SelectiveLabelsLoop
+<span class="c">&gt;&gt;&gt;</span> result = SelectiveLabelsLoop(improve_mode=<span class="g">"both"</span>).run()
+<span class="c">&gt;&gt;&gt;</span> result.frontier_severity  <span class="c"># the last severity where declined-cohort calibration holds</span></div>
+      </div>
+
+      <div class="todo">
+        <div class="t-label">author's note · to be written</div>
+        <p>The essay's walkthrough of one loop round — what a cohort looks like, what the approval policy censors at severity 0.4, and how a lever earns or loses its keep — lands here.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="sec" id="s3">
+      <div class="sec-eyebrow">Section 3</div>
+      <h2>Results</h2>
+
+      <h3 id="s3-frontier">Correction holds to 0.4 — and breaks at 0.6</h3>
+
+      <p class="body">At seed 42, both worlds land the operating frontier at severity <b>0.4</b>: IPW-corrected declined-cohort ECE stays within the 0.10 target through 0.4 and fails at 0.6. The naive model — trained on approved rows, no correction — leaves the target zone a full severity step earlier. The frontier, not a headline accuracy, is the deliverable.</p>
+
+      <div class="fig reveal" id="fig3">
+        <div class="cap"><span class="fno">Figure 3</span>Declined-cohort ECE vs. selection severity — the operating frontier</div>
+        <div class="legend">
+          <span class="chip"><span class="b gold" aria-hidden="true">F</span>IPW-corrected · flat world</span>
+          <span class="chip"><span class="b blue" aria-hidden="true">S</span>IPW-corrected · SCM world</span>
+          <span class="chip"><span class="b ref" aria-hidden="true">N</span>naive · flat (reference)</span>
+        </div>
+        <div class="fig-body">
+          <svg viewBox="0 0 640 320" role="img" aria-label="Line chart of declined-cohort expected calibration error against selection severity 0.0 to 0.6, seed 42. The dashed target line sits at ECE 0.10. IPW-corrected flat world runs 0.020, 0.038, 0.086, 0.154; IPW-corrected SCM world runs 0.036, 0.038, 0.097, 0.244; the naive flat reference runs 0.021, 0.045, 0.108, 0.161. Both corrected series stay under target through severity 0.4 — the operating frontier — and break at 0.6.">
+            <line x1="70" y1="235" x2="600" y2="235" class="svg-grid" /><text x="62" y="239" text-anchor="end" class="svg-t">0.05</text>
+            <line x1="70" y1="190" x2="600" y2="190" class="svg-grid" /><text x="62" y="194" text-anchor="end" class="svg-t">0.10</text>
+            <line x1="70" y1="145" x2="600" y2="145" class="svg-grid" /><text x="62" y="149" text-anchor="end" class="svg-t">0.15</text>
+            <line x1="70" y1="100" x2="600" y2="100" class="svg-grid" /><text x="62" y="104" text-anchor="end" class="svg-t">0.20</text>
+            <line x1="70" y1="55" x2="600" y2="55" class="svg-grid" /><text x="62" y="59" text-anchor="end" class="svg-t">0.25</text>
+            <line x1="70" y1="280" x2="600" y2="280" class="svg-axis" />
+            <text x="100" y="298" text-anchor="middle" class="svg-t">0.0</text>
+            <text x="260" y="298" text-anchor="middle" class="svg-t">0.2</text>
+            <text x="420" y="298" text-anchor="middle" class="svg-t">0.4</text>
+            <text x="580" y="298" text-anchor="middle" class="svg-t">0.6</text>
+            <text x="335" y="316" text-anchor="middle" class="svg-t">selection severity</text>
+            <text x="70" y="24" class="svg-t">declined-cohort ECE · seed 42 · target ≤ 0.10</text>
+
+            <rect x="420" y="32" width="160" height="248" fill="rgba(212,101,74,.05)" />
+            <line x1="70" y1="190" x2="600" y2="190" class="svg-badline" stroke-dasharray="6 5" stroke-width="1.4" opacity=".8" />
+            <text x="597" y="182" text-anchor="end" class="svg-t" fill="var(--block)">target ECE ≤ 0.10</text>
+
+            <line x1="420" y1="36" x2="420" y2="280" class="svg-goldline" stroke-dasharray="3 4" stroke-width="1.4" />
+            <text x="410" y="46" text-anchor="end" class="svg-tt" fill="var(--gold)">operating frontier = 0.4</text>
+
+            <path d="M100 261 L260 240 L420 183 L580 135" fill="none" class="svg-lref" stroke-width="2" stroke-dasharray="6 5" />
+            <path d="M100 262 L260 246 L420 203 L580 141" fill="none" class="svg-lgold" stroke-width="2.4" />
+            <path d="M100 248 L260 246 L420 193 L580 60" fill="none" class="svg-lblue" stroke-width="2.4" />
+
+            <g class="svg-ref">
+              <circle cx="100" cy="261" r="4"><title>naive · flat — severity 0.0 · ECE 0.021</title></circle>
+              <circle cx="260" cy="240" r="4"><title>naive · flat — severity 0.2 · ECE 0.045</title></circle>
+              <circle cx="420" cy="183" r="4"><title>naive · flat — severity 0.4 · ECE 0.108 — over target</title></circle>
+              <circle cx="580" cy="135" r="4"><title>naive · flat — severity 0.6 · ECE 0.161 — over target</title></circle>
+            </g>
+            <g class="svg-gold">
+              <circle cx="100" cy="262" r="4.5"><title>IPW · flat — severity 0.0 · ECE 0.020</title></circle>
+              <circle cx="260" cy="246" r="4.5"><title>IPW · flat — severity 0.2 · ECE 0.038</title></circle>
+              <circle cx="420" cy="203" r="4.5"><title>IPW · flat — severity 0.4 · ECE 0.086 ✓ within target</title></circle>
+              <circle cx="580" cy="141" r="4.5"><title>IPW · flat — severity 0.6 · ECE 0.154 ✗ correction fails</title></circle>
+            </g>
+            <g class="svg-blue">
+              <circle cx="100" cy="248" r="4.5"><title>IPW · SCM — severity 0.0 · ECE 0.036</title></circle>
+              <circle cx="260" cy="246" r="4.5"><title>IPW · SCM — severity 0.2 · ECE 0.038</title></circle>
+              <circle cx="420" cy="193" r="4.5"><title>IPW · SCM — severity 0.4 · ECE 0.097 ✓ within target</title></circle>
+              <circle cx="580" cy="60" r="4.5"><title>IPW · SCM — severity 0.6 · ECE 0.244 ✗ correction fails</title></circle>
+            </g>
+
+            <text x="588" y="52" text-anchor="end" class="svg-t2" fill="var(--ch-blue)">ipw · scm 0.244 ✗</text>
+            <text x="588" y="133" text-anchor="end" class="svg-t2" fill="var(--ch-gold)">ipw · flat 0.154 ✗</text>
+            <text x="588" y="168" text-anchor="end" class="svg-t2" fill="var(--ch-ref)">naive 0.161</text>
+            <text x="426" y="215" class="svg-t2" fill="var(--ch-gold)">0.086 ✓</text>
+            <text x="426" y="188" class="svg-t2" fill="var(--ch-blue)">0.097 ✓</text>
+          </svg>
+        </div>
+        <div class="foot">data: <code>artifacts/loop_frontier*.csv</code>, seed 42, committed in the repo — the table below is the same numbers.</div>
+      </div>
+
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>declined-cohort ECE vs severity — seed 42 · target ≤ 0.10</caption>
+          <thead><tr><th>selection severity</th><th>0.0</th><th>0.2</th><th>0.4</th><th>0.6</th></tr></thead>
+          <tbody>
+            <tr><td>naive (flat world)</td><td>0.021</td><td>0.045</td><td>0.108</td><td>0.161</td></tr>
+            <tr><td>IPW-corrected (flat)</td><td>0.020</td><td>0.038</td><td class="pass">0.086 ✓</td><td class="fail">0.154 ✗</td></tr>
+            <tr><td>IPW-corrected (SCM)</td><td>0.036</td><td>0.038</td><td class="pass">0.097 ✓</td><td class="fail">0.244 ✗</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="s3-dist">The frontier is a distribution, not a point</h3>
+
+      <p class="body">A single seed is an anecdote. Across the full <b>25-seed sweep</b>, the published single-seed frontier (0.4, seed 42) sits at the <i>optimistic</i> end: in the SCM world the median frontier is <b>0.2</b>, with only 11 of 25 seeds reaching 0.4; the flat world's median holds at 0.4 (15/25). The honest boundary is <b>0.2–0.4 depending on the draw</b> — the prior headline was a valid instance, not a center.</p>
+
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>frontier distribution — artifacts/frontier_sweep.csv · 25 seeds</caption>
+          <thead><tr><th>world</th><th>min</th><th>median</th><th>max</th><th>seeds at 0.4</th><th>seeds at 0.2</th></tr></thead>
+          <tbody>
+            <tr><td>flat</td><td>0.2</td><td class="hi">0.4</td><td>0.4</td><td>15/25</td><td>10/25</td></tr>
+            <tr><td>SCM</td><td>0.2</td><td class="hi">0.2</td><td>0.4</td><td>11/25</td><td>14/25</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="s3-wall">Both deliverables break at the same wall</h3>
+
+      <p class="body">The counterfactual deliverable tells the same story from the other side. Inside the frontier, g-computation<sup class="cite"><a href="#references">[4]</a></sup> earns its keep: <b>−13.5% counterfactual MAE</b> against naive conditioning, positive on 24 of 25 seeds (Wilcoxon p = 1.5e-7). At full severity the advantage collapses to a negligible +0.0017 — because the highest severity selects through an <b>unobserved confounder</b>, which defeats backdoor adjustment<sup class="cite"><a href="#references">[6]</a></sup> and IPW<sup class="cite"><a href="#references">[5]</a></sup> alike. One cause explains both failures: the calibration correction and the counterfactual advantage break at the <b>same wall</b> — selection through a variable no feature set contained. That is the essay's central claim, and it is a <i>measured</i> limit, not an argued one.</p>
+
+      <h3 id="s3-emp">Two EMPs disagree — that's the finding</h3>
+
+      <p class="body">Calibration says <i>whether</i> the model is wrong on the declines; the expected-maximum-profit layer<sup class="cite"><a href="#references">[3]</a></sup> asks what being wrong <i>costs</i>. Two variants are computed from the same in-process scores: the literature's closed form over the ROC convex hull with its published convenience prior, and a harness-derived variant priced by the world's own loan economics and planted default timing. They disagree — and the disagreement is the result. The standard prior assumes <code>ROI = 0.2644</code> where this 60-day loan structure actually returns <code>0.0875</code> (a 3.0× overstatement), and places 55% of defaults at full recovery where the harness plants ~1%. Priced honestly, profit on the declined pool <b>collapses toward zero</b> as severity rises; priced by the convenience prior, it appears to <b>grow</b>. Same model, same scores, opposite conclusion.</p>
+
+      <div class="fig reveal" id="fig4">
+        <div class="cap"><span class="fno">Figure 4</span>Two EMP variants, same scores, opposite trend — SCM world, declined pool</div>
+        <div class="legend">
+          <span class="chip"><span class="b gold" aria-hidden="true">L</span>empc — literature prior (naive lever)</span>
+          <span class="chip"><span class="b blue" aria-hidden="true">H</span>emp_h — harness economics (naive lever)</span>
+        </div>
+        <div class="fig-body">
+          <svg viewBox="0 0 640 320" role="img" aria-label="Line chart of expected maximum profit against selection severity 0.0 to 0.6 on the declined subpopulation, SCM world, seed 42. The literature-prior EMPC rises from 0.0217 to 0.0420 as severity increases, while the harness-economics EMP falls from 0.0387 to 0.0024. The two variants move in opposite directions from the same scores.">
+            <line x1="70" y1="228" x2="600" y2="228" class="svg-grid" /><text x="62" y="232" text-anchor="end" class="svg-t">0.01</text>
+            <line x1="70" y1="176" x2="600" y2="176" class="svg-grid" /><text x="62" y="180" text-anchor="end" class="svg-t">0.02</text>
+            <line x1="70" y1="124" x2="600" y2="124" class="svg-grid" /><text x="62" y="128" text-anchor="end" class="svg-t">0.03</text>
+            <line x1="70" y1="72" x2="600" y2="72" class="svg-grid" /><text x="62" y="76" text-anchor="end" class="svg-t">0.04</text>
+            <line x1="70" y1="280" x2="600" y2="280" class="svg-axis" />
+            <text x="100" y="298" text-anchor="middle" class="svg-t">0.0</text>
+            <text x="260" y="298" text-anchor="middle" class="svg-t">0.2</text>
+            <text x="420" y="298" text-anchor="middle" class="svg-t">0.4</text>
+            <text x="580" y="298" text-anchor="middle" class="svg-t">0.6</text>
+            <text x="335" y="316" text-anchor="middle" class="svg-t">selection severity</text>
+            <text x="70" y="24" class="svg-t">EMP on the declined subpopulation · SCM world · seed 42</text>
+
+            <path d="M100 167 L260 108 L420 64 L580 62" fill="none" class="svg-lgold" stroke-width="2.4" />
+            <path d="M100 79 L260 126 L420 208 L580 268" fill="none" class="svg-lblue" stroke-width="2.4" />
+            <g class="svg-gold">
+              <circle cx="100" cy="167" r="4.5"><title>empc literature — severity 0.0 · 0.0217</title></circle>
+              <circle cx="260" cy="108" r="4.5"><title>empc literature — severity 0.2 · 0.0331</title></circle>
+              <circle cx="420" cy="64" r="4.5"><title>empc literature — severity 0.4 · 0.0416</title></circle>
+              <circle cx="580" cy="62" r="4.5"><title>empc literature — severity 0.6 · 0.0420 — appears to grow</title></circle>
+            </g>
+            <g class="svg-blue">
+              <circle cx="100" cy="79" r="4.5"><title>emp_h harness — severity 0.0 · 0.0387</title></circle>
+              <circle cx="260" cy="126" r="4.5"><title>emp_h harness — severity 0.2 · 0.0297</title></circle>
+              <circle cx="420" cy="208" r="4.5"><title>emp_h harness — severity 0.4 · 0.0139</title></circle>
+              <circle cx="580" cy="268" r="4.5"><title>emp_h harness — severity 0.6 · 0.0024 — collapses toward zero</title></circle>
+            </g>
+            <text x="588" y="48" text-anchor="end" class="svg-t2" fill="var(--ch-gold)">literature prior — appears to grow ↑ 0.0420</text>
+            <text x="588" y="258" text-anchor="end" class="svg-t2" fill="var(--ch-blue)">harness economics — collapses ↓ 0.0024</text>
+          </svg>
+        </div>
+        <div class="foot">data: EMP columns of the committed frontier CSVs · naive lever · exploration priced at <code>$2,800/label</code> (157 bought labels, $439,578) — see the <a href="/cldd/#v020">v0.2.0 release notes</a> for the reading caveats.</div>
+      </div>
+
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>the two EMP variants diverge — SCM world · declined subpopulation · seed 42</caption>
+          <thead><tr><th>selection severity</th><th>0.0</th><th>0.2</th><th>0.4</th><th>0.6</th></tr></thead>
+          <tbody>
+            <tr><td>literature empc (naive)</td><td>0.0217</td><td>0.0331</td><td>0.0416</td><td class="fail">0.0420 ↑</td></tr>
+            <tr><td>harness emp_h (naive)</td><td>0.0387</td><td>0.0297</td><td>0.0139</td><td class="hi">0.0024 ↓</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section class="sec" id="s4">
+      <div class="sec-eyebrow">Section 4</div>
+      <h2>What this claims — and refuses to</h2>
+
+      <p class="body">The harness is a synthetic <b>validation harness</b>, not a production pipeline: retraining and feedback are seeded simulations inside the loop; it never acts on live data or real lending decisions. Its numbers hold inside their stated boundaries, and the boundaries ship with the results: the harness-economics EMP rests on planted-but-unfitted default timing — a <b>verified experiment, not a verified result</b>; ~22.5% of planted defaults land past the 60-day term and are priced at a stated convention; the frontier is a property of <i>this</i> model family in <i>these</i> worlds, reported as a distribution precisely so a lucky seed can't become a headline. Limits are reported, not smoothed over — that is the discipline the harness exists to enforce.</p>
+
+      <div class="todo">
+        <div class="t-label">author's note · to be written</div>
+        <p>The essay's closing argument — what an operating frontier changes about how PD models are governed, and where the loop goes next — lands here.</p>
+      </div>
+    </section>
+
+    <!-- CODE & DATA -->
+    <section class="sec" id="code-data">
+      <div class="sec-eyebrow">§ Companion</div>
+      <h2>Code &amp; Data</h2>
+
+      <p class="body">The code and data section of this entry is <b><a href="/cldd/" style="color:var(--gold)">/cldd</a></b> — closed-loop default detection, the published harness behind every number above: version history with committed evidence, notable results recorded next to stated limitations, and frontier CSVs that recompute the headline.</p>
+
+      <div class="linkrow reveal">
+        <a href="/cldd/"><b>/cldd</b> — the code &amp; data page →</a>
+        <a href="https://github.com/hossainpazooki/closed-loop-default-detection" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://pypi.org/project/closed-loop-default-detection/" target="_blank" rel="noopener">PyPI · closed-loop-default-detection ↗</a>
+        <a href="https://github.com/hossainpazooki/closed-loop-default-detection/blob/main/CHANGELOG.md" target="_blank" rel="noopener">changelog ↗</a>
+      </div>
+
+      <div class="install reveal">
+        <div class="install-bar"><span>reproduce the numbers from committed evidence</span><span>MIT · deterministic per seed</span></div>
+        <div class="install-body"><span class="p">$</span> pip install closed-loop-default-detection
+<span class="p">$</span> python scripts/paired_significance.py   <span class="c"># the −13.5% MAE headline, 25 seeds, Wilcoxon p = 1.5e-7</span>
+<span class="p">$</span> python scripts/run_frontier_sweep.py    <span class="c"># the frontier distribution — one subprocess per run, resumable</span>
+<span class="c">#</span> artifacts/loop_frontier*.csv · artifacts/frontier_sweep.csv · artifacts/exploration_frontier.csv
+<span class="c">#</span> exact pins for float-exact reproduction: requirements-dev.txt</div>
+      </div>
+
+      <p class="note"><b>Versions.</b> v0.1.0 (2026-07-03) ships the harness — the loop, two worlds, eight levers, 123 tests. v0.2.0 (2026-07-14) adds the EMP measurement layer and the 25-seed sweep — 149 tests, every v0.1.0 column of the committed CSVs verified byte-identical. Full release notes, semver policy, and reading caveats live on <a href="/cldd/" style="color:var(--gold)">/cldd</a>.</p>
+    </section>
+
+    <!-- CITATION -->
+    <section class="sec" id="citation">
+      <div class="sec-eyebrow">§ Cite</div>
+      <h2>Citation</h2>
+
+      <p class="body">Please cite this work as:</p>
+      <div class="citeq reveal">
+        Pazooki, Hossain. “When You Can’t Measure What Matters: A Closed-Loop Harness for Probability-of-Default Estimation.” <i>Towards AI</i>, July 2026.<br />
+        <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3">https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3</a>
+      </div>
+
+      <p class="body" style="margin-top:26px">Or use the BibTeX citation:</p>
+      <div class="install reveal">
+        <div class="install-bar"><span>bibtex · essay</span><button type="button" class="copybtn" data-copy="bib1">copy</button></div>
+        <div class="install-body" id="bib1">@article{pazooki2026measure,
+  title   = {When You Can't Measure What Matters: A Closed-Loop
+             Harness for Probability-of-Default Estimation},
+  author  = {Pazooki, Hossain},
+  journal = {Towards AI},
+  year    = {2026},
+  month   = {July},
+  url     = {https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3}
+}</div>
+      </div>
+
+      <div class="install reveal">
+        <div class="install-bar"><span>bibtex · software</span><button type="button" class="copybtn" data-copy="bib2">copy</button></div>
+        <div class="install-body" id="bib2">@software{pazooki2026cldd,
+  title   = {closed-loop-default-detection},
+  author  = {Pazooki, Hossain},
+  year    = {2026},
+  version = {0.2.0},
+  license = {MIT},
+  url     = {https://github.com/hossainpazooki/closed-loop-default-detection}
+}</div>
+      </div>
+    </section>
+
+    <!-- REFERENCES -->
+    <section class="sec" id="references">
+      <div class="sec-eyebrow">§ Bibliography</div>
+      <h2>References</h2>
+      <ol class="refs reveal">
+        <li id="ref-1">Lakkaraju, H., Kleinberg, J., Leskovec, J., Ludwig, J., &amp; Mullainathan, S. (2017). The Selective Labels Problem: Evaluating Algorithmic Predictions in the Presence of Unobservables. <i>KDD ’17</i>. <a href="https://cs.stanford.edu/~jure/pubs/contraction-kdd17.pdf" target="_blank" rel="noopener">pdf ↗</a></li>
+        <li id="ref-2">Hand, D. J., &amp; Henley, W. E. (1993). Can reject inference ever work? <i>IMA Journal of Mathematics Applied in Business and Industry</i>, 5(1), 45–55.</li>
+        <li id="ref-3">Verbraken, T., Bravo, C., Weber, R., &amp; Baesens, B. (2014). Development and application of consumer credit scoring models using profit-based classification measures. <i>European Journal of Operational Research</i>, 238(2), 505–513.</li>
+        <li id="ref-4">Robins, J. (1986). A new approach to causal inference in mortality studies with a sustained exposure period. <i>Mathematical Modelling</i>, 7(9–12), 1393–1512.</li>
+        <li id="ref-5">Horvitz, D. G., &amp; Thompson, D. J. (1952). A generalization of sampling without replacement from a finite universe. <i>Journal of the American Statistical Association</i>, 47(260), 663–685.</li>
+        <li id="ref-6">Pearl, J. (2009). <i>Causality: Models, Reasoning and Inference</i> (2nd ed.). Cambridge University Press.</li>
+        <li id="ref-7">Pakdaman Naeini, M., Cooper, G. F., &amp; Hauskrecht, M. (2015). Obtaining Well Calibrated Probabilities Using Bayesian Binning. <i>AAAI ’15</i>.</li>
+      </ol>
+    </section>
+
+  </article>
+</div>
+</main>
+
+<button type="button" class="totop" id="totop" aria-label="Back to top">↑</button>
+
+<footer>
+  <div class="wrap foot">
+    <div class="col-thesis">
+      <div class="t"><span class="k">generate</span> → <span class="k">measure</span> → <span class="k">improve</span> → <span class="k">regenerate</span>.<br />Limits are reported, not smoothed over.</div>
+      <div class="copy">© 2026 Hossain Pazooki</div>
+    </div>
+    <div class="foot-links">
+      <a href="/blog/">all posts <span class="arr">→</span></a>
+      <a href="/cldd/">code &amp; data — /cldd <span class="arr">→</span></a>
+      <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">read on Towards AI <span class="arr">↗</span></a>
+      <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Contents scroll-spy
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc a[data-spy]'));
+    if(!links.length || !('IntersectionObserver' in window)) return;
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('data-spy')] = a; });
+    var current = null;
+    function activate(id){
+      if(current === id) return;
+      current = id;
+      links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-spy') === id); });
+    }
+    var targets = links.map(function(a){ return document.getElementById(a.getAttribute('data-spy')); }).filter(Boolean);
+    var io = new IntersectionObserver(function(entries){
+      var visible = entries.filter(function(e){ return e.isIntersecting; });
+      if(visible.length){
+        activate(visible[0].target.id);
+      }
+    }, {rootMargin:'-20% 0px -70% 0px', threshold:0});
+    targets.forEach(function(t){ io.observe(t); });
+    activate(targets[0] && targets[0].id);
+  })();
+
+  // Copy buttons
+  (function(){
+    document.querySelectorAll('.copybtn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var el = document.getElementById(btn.getAttribute('data-copy'));
+        if(!el) return;
+        var text = el.textContent;
+        function done(){ btn.textContent = 'copied ✓'; setTimeout(function(){ btn.textContent = 'copy'; }, 1600); }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(done, function(){});
+        } else {
+          var r = document.createRange(); r.selectNodeContents(el);
+          var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+          try { document.execCommand('copy'); done(); } catch(e){}
+          s.removeAllRanges();
+        }
+      });
+    });
+  })();
+
+  // Back to top
+  (function(){
+    var b = document.getElementById('totop');
+    if(!b) return;
+    window.addEventListener('scroll', function(){
+      b.classList.toggle('show', window.scrollY > 900);
+    }, {passive:true});
+    b.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+  })();
+
+  // Scroll reveal
+  (function(){
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var items = document.querySelectorAll('.reveal');
+    if(reduce || !('IntersectionObserver' in window)){
+      items.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+    items.forEach(function(el){ io.observe(el); });
+  })();
+</script>
+
+<script>
+(function(){
+  var META = { paper:'#F6F4EE', ink:'#0A1424' };
+  var meta = document.getElementById('metatheme');
+  var btns = document.querySelectorAll('.theme-sw button');
+  function apply(t){
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('hp-theme', t); } catch(e){}
+    if (meta) meta.setAttribute('content', META[t] || META.ink);
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
+  apply(document.documentElement.dataset.theme === 'paper' ? 'paper' : 'ink');
+})();
+</script>
+</body>
+</html>
