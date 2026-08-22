@@ -191,6 +191,16 @@
   .fx-row p{font-size:13.5px;color:var(--text-2);line-height:1.55}
   .fx-row p b{color:var(--text);font-weight:600}
 
+  .fwpills{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;max-width:560px}
+  .fwp{
+    border:1px solid var(--gold-dim);border-radius:999px;
+    background:rgba(224,164,54,.06);padding:6px 14px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--gold);
+    display:inline-flex;gap:9px;align-items:baseline;
+  }
+  .fwp .d{color:var(--muted);letter-spacing:.03em;text-transform:none}
+
   .refuses{margin-top:16px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
   .refuses b{color:var(--text-2);font-weight:600}
 
@@ -718,7 +728,11 @@
           </div>
         </div>
         <p class="refuses"><b>What it refuses: anything unevaluable.</b> Missing data, an unsigned or revoked spec, an empty criteria set, a duplicate action — all deny.</p>
-        <p class="attach"><b>Where it attaches: the tool-call seam, not the prompt.</b> A <b>LangChain</b> tool wrapped in one call — <code>gate_tool</code>; an <b>MCP</b> server you own — <code>IntentGateMiddleware</code>; an <b>MCP</b> server you don't — <code>gated_proxy</code>, which fronts it unchanged.</p>
+        <div class="fwpills" role="list" aria-label="Framework adapters that ship pre-wired: LangChain, on langchain-core, and MCP, on fastmcp, probed against version 3.4.7.">
+          <span class="fwp" role="listitem">langchain<span class="d">langchain-core</span></span>
+          <span class="fwp" role="listitem">mcp<span class="d">fastmcp 3.4.7</span></span>
+        </div>
+        <p class="attach"><b>Where it attaches: the tool-call seam, not the prompt.</b> A <b>LangChain</b> tool wrapped in one call — <code>gate_tool</code>; an <b>MCP</b> server you own — <code>IntentGateMiddleware</code>; an <b>MCP</b> server you don't — <code>gated_proxy</code>, which fronts it unchanged. Both adapters are <b>optional</b>; the MCP pair is probed against <code>fastmcp 3.4.7</code>.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#adapters">Gate the call, three ways →</a>
           <a class="btn btn-ghost" href="#sides">Two sides, one record →</a>
@@ -759,10 +773,10 @@
       <div class="section-head reveal">
         <span class="eyebrow">the attach point — langchain · mcp</span>
         <h2>Gate the call, three ways.<br />The tool body runs only on a fresh <span class="pr">Proceed</span>.</h2>
-        <p>The gate sits at the <b>tool-call seam</b>, not in the prompt — so it is not an instruction an agent can be talked out of. The platform team embeds it once at the framework layer and every agent inherits it. Two adapters ship pre-wired in <code>declarant/pydeclarant/</code>: a LangChain tool wrapper, and an MCP middleware with a proxy front end.</p>
+        <p>The gate sits at the <b>tool-call seam</b>, not in the prompt — so it is not an instruction an agent can be talked out of. The platform team embeds it once at the framework layer and every agent inherits it. Two adapters ship pre-wired in <code>declarant/pydeclarant/</code>: a LangChain tool wrapper on <code>langchain-core</code>, and an MCP middleware with a proxy front end on <code>fastmcp</code> — the version everything below was measured against is <code>3.4.7</code>.</p>
       </div>
 
-      <div class="adapters reveal" role="img" aria-label="Three attach points, side by side. (a) LangChain, one call: gate_tool wraps any LangChain tool, and the returned tool declares an intent before every invocation; schema-validated arguments canonicalize by a fixed recipe so omit-versus-explicit defaults derive the same idempotency key, and string or positional input is refused before anything is declared. Optional dependency: langchain-core. (b) MCP, a server you own: attach IntentGateMiddleware with add_middleware; every tool is gated by default and a tools filter narrows it explicitly. Optional dependency: fastmcp. (c) MCP, a server you do not own: gated_proxy fronts the backend with the same middleware on a proxy front end — the fronted server never learns the gate exists, and a refused call never reaches it at all. This is the capability the framework adapter does not have.">
+      <div class="adapters reveal" role="img" aria-label="Three attach points, side by side. (a) LangChain, one call: gate_tool wraps any LangChain tool, and the returned tool declares an intent before every invocation; schema-validated arguments canonicalize by a fixed recipe so omit-versus-explicit defaults derive the same idempotency key, and string or positional input is refused before anything is declared. Optional dependency: langchain-core. (b) MCP, a server you own: attach IntentGateMiddleware with add_middleware; every tool is gated by default and a tools filter narrows it explicitly. Optional dependency: fastmcp, measured on 3.4.7. (c) MCP, a server you do not own: gated_proxy fronts the backend with the same middleware on a proxy front end — the fronted server never learns the gate exists, and a refused call never reaches it at all. This is the capability the framework adapter does not have.">
         <div class="ad">
           <div class="fw">langchain<span class="lbl">(a) · one call</span></div>
           <h3>Wrap any tool</h3>
@@ -775,14 +789,14 @@
           <h3>Attach the middleware</h3>
           <div class="sig">server.add_middleware(<br />&nbsp;&nbsp;<span class="fn">IntentGateMiddleware</span>(client, …))</div>
           <p>Every tool on the server is gated by default; <code>tools={…}</code> narrows that — an explicit operator choice, because an unlisted tool passes <b>ungated</b>. The middleware holds nothing between calls, so a retry landing on a different replica derives the same key and is refused just as correctly: <b>replicas need no shared state</b>.</p>
-          <div class="dep">optional · needs fastmcp</div>
+          <div class="dep">optional · needs fastmcp · measured on 3.4.7</div>
         </div>
         <div class="ad key">
           <div class="fw">mcp — not yours<span class="lbl">(c) · gated proxy</span></div>
           <h3>Front a server you don't own</h3>
           <div class="sig">gated = <span class="fn">gated_proxy</span>(backend, client, …)</div>
           <p>The same middleware, attached to a proxy front end. The fronted server <b>never learns the gate exists</b>, and a refused call <b>never reaches it at all</b> — the gate declares and refuses before the pass-through fires. Governance imposed by the operator, with <b>no cooperation from the tool's owner</b>: the capability the framework adapter does not have.</p>
-          <div class="dep">optional · needs fastmcp</div>
+          <div class="dep">optional · needs fastmcp · measured on 3.4.7</div>
         </div>
       </div>
 
