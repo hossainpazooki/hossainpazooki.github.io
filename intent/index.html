@@ -716,26 +716,25 @@
       <div>
         <span class="eyebrow">the intent plane — fail-closed authorization</span>
         <h1>Agents propose.<br />The gate disposes.<br /><span class="dim">The record re&#8209;verifies — without trusting the gate.</span></h1>
-        <p class="lede">Before an AI agent moves money, files a report, or triggers a workflow, it must <b>declare the intent</b>. A deterministic gate authorizes it against a policy specification a human <b>signed</b> — or refuses. Every decision lands as <b>exactly one durable record</b>, built to be independently recomputed later. The worst case is an action that <b>wrongly waits</b>, never one that wrongly executes.</p>
+        <p class="lede">Before an AI agent moves money, files a report, or triggers a workflow, it must <b>declare the intent</b>. A deterministic gate authorizes it against a policy a human <b>signed</b> — or refuses. Every decision leaves <b>exactly one durable record</b> that a third party can re-check. The worst case is an action that <b>wrongly waits</b>, never one that wrongly executes.</p>
         <div class="fx">
           <div class="fx-row without">
             <span class="w">without</span>
-            <p>Authorization lives <b>inside</b> the agent's runtime — per-adapter checks, config nobody signed. Audit reads the logs after the fact, and has to <b>trust the code that wrote them</b>.</p>
+            <p>Authorization lives <b>inside</b> the agent's code — ad-hoc checks, config nobody signed. Audit reads the logs afterward and has to <b>trust the code that wrote them</b>.</p>
           </div>
           <div class="fx-row with">
             <span class="w">with the plane</span>
-            <p>Authorization sits <b>outside the agent</b>: criteria arrive only through a <b>signed, content-addressed spec</b>; scoring is <b>tri-state and fail-closed</b>; the record <b>re-derives from the feed alone</b> — by someone who trusts nothing.</p>
+            <p>Authorization sits <b>outside the agent</b>: the rules arrive only in a <b>spec a human signed</b>, anything the gate <b>cannot evaluate is a no</b>, and the record can be <b>re-checked by someone who trusts nothing</b>.</p>
           </div>
         </div>
-        <p class="refuses"><b>What it refuses: anything unevaluable.</b> Missing data, an unsigned or revoked spec, an empty criteria set, a duplicate action — all deny.</p>
+        <p class="refuses"><b>What it refuses: anything it cannot evaluate.</b> Missing data, an unsigned or revoked spec, an empty rule set, a duplicate action — all deny.</p>
         <div class="fwpills" role="list" aria-label="Framework adapters that ship pre-wired: LangChain, on langchain-core, and MCP, on fastmcp, probed against version 3.4.7.">
           <span class="fwp" role="listitem">langchain<span class="d">langchain-core</span></span>
           <span class="fwp" role="listitem">mcp<span class="d">fastmcp 3.4.7</span></span>
         </div>
-        <p class="attach"><b>Where it attaches: the tool-call seam, not the prompt.</b> A <b>LangChain</b> tool wrapped in one call — <code>gate_tool</code>; an <b>MCP</b> server you own — <code>IntentGateMiddleware</code>; an <b>MCP</b> server you don't — <code>gated_proxy</code>, which fronts it unchanged. Both adapters are <b>optional</b>; the MCP pair is probed against <code>fastmcp 3.4.7</code>.</p>
+        <p class="attach"><b>It attaches at the tool-call seam, not in the prompt</b> — a LangChain tool wrapped in one call, an MCP server you own, or an MCP server you don't, fronted unchanged.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="#adapters">Gate the call, three ways →</a>
-          <a class="btn btn-ghost" href="#sides">Two sides, one record →</a>
           <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane ↗</a>
         </div>
       </div>
@@ -773,30 +772,30 @@
       <div class="section-head reveal">
         <span class="eyebrow">the attach point — langchain · mcp</span>
         <h2>Gate the call, three ways.<br />The tool body runs only on a fresh <span class="pr">Proceed</span>.</h2>
-        <p>The gate sits at the <b>tool-call seam</b>, not in the prompt — so it is not an instruction an agent can be talked out of. The platform team embeds it once at the framework layer and every agent inherits it. Two adapters ship pre-wired in <code>declarant/pydeclarant/</code>: a LangChain tool wrapper on <code>langchain-core</code>, and an MCP middleware with a proxy front end on <code>fastmcp</code> — the version everything below was measured against is <code>3.4.7</code>.</p>
+        <p>The gate sits at the <b>tool-call seam</b>, not in the prompt — it is not an instruction an agent can be talked out of. Embed it once at the framework layer and every agent inherits it. Two adapters ship pre-wired: a LangChain tool wrapper (<code>langchain-core</code>) and an MCP middleware with a proxy front end (<code>fastmcp</code>, probed on 3.4.7).</p>
       </div>
 
-      <div class="adapters reveal" role="img" aria-label="Three attach points, side by side. (a) LangChain, one call: gate_tool wraps any LangChain tool, and the returned tool declares an intent before every invocation; schema-validated arguments canonicalize by a fixed recipe so omit-versus-explicit defaults derive the same idempotency key, and string or positional input is refused before anything is declared. Optional dependency: langchain-core. (b) MCP, a server you own: attach IntentGateMiddleware with add_middleware; every tool is gated by default and a tools filter narrows it explicitly. Optional dependency: fastmcp, measured on 3.4.7. (c) MCP, a server you do not own: gated_proxy fronts the backend with the same middleware on a proxy front end — the fronted server never learns the gate exists, and a refused call never reaches it at all. This is the capability the framework adapter does not have.">
+      <div class="adapters reveal" role="img" aria-label="Three attach points, side by side. (a) LangChain, one call: gate_tool wraps any tool; every invocation declares an intent and runs only on a grant, and two spellings of one action count as the same action, so a retry can never slip past as new. Optional dependency: langchain-core. (b) MCP, a server you own: attach IntentGateMiddleware; every tool is gated by default, naming a subset is an explicit choice to leave the rest ungoverned, and the middleware keeps nothing between calls, so it scales with no shared state. Optional dependency: fastmcp, probed on 3.4.7. (c) MCP, a server you do not own: gated_proxy fronts the backend with the same middleware — the backend never learns the gate exists, and a refused call never reaches it at all. The one thing the other two paths cannot do.">
         <div class="ad">
           <div class="fw">langchain<span class="lbl">(a) · one call</span></div>
           <h3>Wrap any tool</h3>
           <div class="sig">gated = <span class="fn">gate_tool</span>(my_tool, client, …)</div>
-          <p>Any LangChain tool comes back gated, declaring its own fresh intent per invocation. Schema-validated arguments canonicalize by a fixed recipe, so omit-vs-explicit defaults and dict-vs-model inputs derive <b>the same idempotency key</b>; string or positional input is refused before anything is declared — it would fork the key. <code>ainvoke</code> delegates to the same gated path.</p>
+          <p>One call returns the same tool, gated: every invocation declares an intent and runs <b>only on a grant</b>. Two spellings of one action — defaults omitted or spelled out — count as <b>the same action</b>, so a retry can never slip past as new. Async is gated by the same path.</p>
           <div class="dep">optional · needs langchain-core</div>
         </div>
         <div class="ad">
           <div class="fw">mcp — yours<span class="lbl">(b) · middleware</span></div>
           <h3>Attach the middleware</h3>
           <div class="sig">server.add_middleware(<br />&nbsp;&nbsp;<span class="fn">IntentGateMiddleware</span>(client, …))</div>
-          <p>Every tool on the server is gated by default; <code>tools={…}</code> narrows that — an explicit operator choice, because an unlisted tool passes <b>ungated</b>. The middleware holds nothing between calls, so a retry landing on a different replica derives the same key and is refused just as correctly: <b>replicas need no shared state</b>.</p>
-          <div class="dep">optional · needs fastmcp · measured on 3.4.7</div>
+          <p>Every tool on the server is gated by default; naming a subset with <code>tools={…}</code> is an explicit choice to leave the rest <b>ungoverned</b>. The middleware keeps nothing between calls — a retry landing on another replica is refused just as correctly, so it <b>scales with no shared state</b>.</p>
+          <div class="dep">optional · needs fastmcp · probed on 3.4.7</div>
         </div>
         <div class="ad key">
           <div class="fw">mcp — not yours<span class="lbl">(c) · gated proxy</span></div>
           <h3>Front a server you don't own</h3>
           <div class="sig">gated = <span class="fn">gated_proxy</span>(backend, client, …)</div>
-          <p>The same middleware, attached to a proxy front end. The fronted server <b>never learns the gate exists</b>, and a refused call <b>never reaches it at all</b> — the gate declares and refuses before the pass-through fires. Governance imposed by the operator, with <b>no cooperation from the tool's owner</b>: the capability the framework adapter does not have.</p>
-          <div class="dep">optional · needs fastmcp · measured on 3.4.7</div>
+          <p>The same middleware on a proxy front end. The backend <b>never learns the gate exists</b>, and a refused call <b>never reaches it at all</b>. Governance imposed by the operator, with <b>no cooperation from the tool's owner</b> — the one thing the other two paths cannot do.</p>
+          <div class="dep">optional · needs fastmcp · probed on 3.4.7</div>
         </div>
       </div>
 
@@ -826,15 +825,15 @@ gated = <span class="g">gated_proxy</span>(backend, client,<br />
       <div class="findings-stack reveal">
         <div class="finding">
           <span class="f-label">what happens on anything that isn't a grant</span>
-          <p><b>The tool body runs only on a fresh synchronous <code>Proceed</code>.</b> A failed criterion, an unsigned or revoked spec, a duplicate action, a scorer outage, an outcome outside the closed vocabulary — each surfaces as a <b>classified refusal with the body never called</b>. On the LangChain path that is an <code>IntentRefused</code> carrying the class, terminal, and reason, the machine-readable <code>same_key_retry_safe</code> position, and prose retry guidance. MCP offers no structured error channel, so the same classification rides the <code>ToolError</code> message as literal substrings — <code>class=</code>, <code>terminal=</code>, <code>reason=</code>, <code>retry_safe=</code>. Match on those, not on prose.</p>
+          <p><b>Everything that is not a fresh <code>Proceed</code> is a classified refusal with the body never called</b> — a failed criterion, a revoked spec, a duplicate, an outage. LangChain raises <code>IntentRefused</code>, carrying the class, the terminal, the reason, and a machine-readable retry position. MCP has no structured error channel, so the same classification rides the <code>ToolError</code> message as literal <code>class=</code> / <code>terminal=</code> / <code>reason=</code> / <code>retry_safe=</code> substrings. Match on those, not on prose.</p>
         </div>
         <div class="finding">
           <span class="f-label">the failure these adapters are engineered against</span>
-          <p><b>A key <i>fork</i> — one logical action canonicalizing to two keys — is the fail-open direction.</b> The gate deduplicates by key, so a second, never-seen key has no reservation to collide with: it is authorized, and the body <b>executes a second time</b>. Measured against a live <code>fastmcp 3.4.7</code> server, an earlier recipe double-executed on four argument shapes — a nested object left empty vs spelled out, one spelled only partly, an omitted <code>default_factory</code> value, and <code>500</code> vs <code>500.0</code>. The two-tier canonicalization exists to close that, and on the proxy path a call whose effective value <b>no schema can reveal</b> is refused before anything is declared. A <i>collision</i> — two actions, one key — fails closed, which is why it is the safe direction to err in.</p>
+          <p><b>The gate refuses duplicates by key, so the dangerous failure is a <i>fork</i>: one action, spelled two ways, deriving two keys.</b> The second key has no reservation to collide with — it is authorized, and the action <b>executes twice</b>. An earlier recipe did exactly that on four argument shapes against a live <code>fastmcp 3.4.7</code> server (a nested object left empty vs spelled out, one spelled partly, an omitted <code>default_factory</code>, <code>500</code> vs <code>500.0</code>). The shipped canonicalization closes all four, and on the proxy path a call whose effective value <b>no schema can reveal</b> is refused before anything is declared. The reverse mistake — two actions, one key — merely fails closed.</p>
         </div>
       </div>
 
-      <p class="note reveal"><b>Optional by construction, and honest about it.</b> These two modules are the only sanctioned exceptions to <code>pydeclarant</code>'s stdlib-only rule — <code>declare.py</code>, <code>client.py</code>, and <code>gating.py</code> import nothing outside the standard library, nothing else in the tree imports either framework, and each adapter's tests <b>skip visibly</b> where its framework is absent. There is no PyPI package: the Python tree is <b>vendored — copy it</b>. Or skip the adapters entirely and speak the wire — the Go and Python declarant SDKs are the same discipline as plain libraries.</p>
+      <p class="note reveal"><b>Optional by construction.</b> These two modules are the only exceptions to <code>pydeclarant</code>'s stdlib-only rule; nothing else in the tree imports either framework, and each adapter's tests <b>skip visibly</b> without it. There is no PyPI package — the Python tree is <b>vendored: copy it</b>. Or skip the adapters and speak the wire directly; the Go and Python SDKs are the same discipline as plain libraries.</p>
 
       <div class="cta-row reveal">
         <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/blob/main/docs/integration.md" target="_blank" rel="noopener">docs/integration.md — the embedding guide ↗</a>
@@ -849,32 +848,32 @@ gated = <span class="g">gated_proxy</span>(backend, client,<br />
       <div class="section-head reveal">
         <span class="eyebrow">two sides, one record</span>
         <h2>Bought by one function. Installed by another.</h2>
-        <p>The accountability function requires examinable records; the platform team satisfies the requirement by embedding once at the framework layer. What connects them is not a report either side writes — it is <b>the record itself, examinable by construction</b>. The repo ships one package per side.</p>
+        <p>One function buys this — audit, compliance, model risk. Another installs it — the platform team that owns how agents call tools. What connects them is not a report either side writes; it is <b>the record itself, examinable by construction</b>. The repo ships one package per side.</p>
       </div>
 
-      <div class="sides reveal" role="img" aria-label="Three columns. Supply side, the integrator: the platform team that owns how agents call tools embeds the declarant package once — exact wire marshal, derived idempotency keys, a total terminal classification, plus the LangChain and MCP adapters — and declares intents to the gate, awaiting the synchronous terminal. Center, the intent plane, this repo: the gate — agents propose, it disposes — writes fail-closed into an append-only feed holding one durable record per decision. Demand side, the buyer: audit, compliance, model risk, and diligence run the verifier package, which re-derives every record from the feed alone without trusting the gate.">
+      <div class="sides reveal" role="img" aria-label="Three columns. Supply side, the integrator: the platform team that owns how agents call tools embeds the declarant package once — one embed at the framework layer, keys derived from the action itself, plus the LangChain and MCP adapters — and declares intents to the gate, awaiting the synchronous answer. Center, the intent plane, this repo: the gate — agents propose, it disposes — writes fail-closed into an append-only feed holding one durable record per decision. Demand side, the buyer: audit, compliance, model risk, and diligence run the verifier package, which re-derives every record from the feed alone without trusting the gate.">
         <div class="s-card">
           <div class="s-kicker">supply side — the integrator<b>the platform team — how agents call tools</b></div>
           <p class="s-q">one integration point — every agent inherits it</p>
-          <div class="pkg">declarant/<small>exact wire marshal · idempotency keys derived from action identity · a total terminal classification · the 500-edge feed consult — plus the <b>LangChain and MCP adapters</b></small></div>
+          <div class="pkg">declarant/<small>one embed at the framework layer · keys derived from the action itself · every outcome classified, unknowns fail closed · the <b>LangChain and MCP adapters</b></small></div>
           <div class="s-flow">declare · await the terminal <span class="g">→</span></div>
         </div>
         <div class="s-card mid">
           <div class="s-kicker">the intent plane<b>this repo — gate · scorer · contracts</b></div>
-          <div class="gatechip">the gate<small>agents propose — it disposes. Deterministic, fail-closed, sole ACHIEVED authority; consults the scorer, re-checks at the edge.</small></div>
+          <div class="gatechip">the gate<small>agents propose — it disposes. Deterministic, fail-closed, and the only thing that can write <b>ACHIEVED</b>.</small></div>
           <div class="s-mid-arr">↓ fail-closed · one record per decision</div>
-          <div class="feedchip">append-only feed<small>fsync per append · global cursor · grant, shadow, or refusal — each terminal carries its trajectory hash</small></div>
+          <div class="feedchip">append-only feed<small>one durable record per decision — grant, shadow, or refusal — each carrying the hash that replays it</small></div>
           <div class="s-flow" style="text-align:center">emit-and-observe — the gate never calls out</div>
         </div>
         <div class="s-card">
           <div class="s-kicker">demand side — the buyer<b>audit · compliance · model risk · diligence</b></div>
           <p class="s-q">prove what your agents did — without asking us to trust your code</p>
-          <div class="pkg">verifier/<small>a Go package + CLI and a stdlib-only Python twin that re-derive every record from the feed alone — import-pinned to run none of the gate's code</small></div>
+          <div class="pkg">verifier/<small>a Go CLI and a stdlib-only Python twin re-derive every record from the feed alone — pinned to run none of the gate's code</small></div>
           <div class="s-flow"><span class="g">←</span> recompute — no trust in the gate</div>
         </div>
       </div>
 
-      <p class="note reveal"><b>The two amber packages are what the repo ships</b> — one per side of the sale; the blue feed is the record they meet at. Plane internals — the gate, the scorer, the signed-artifact plumbing — are experimented on in the testing monorepo and ported here once they settle.</p>
+      <p class="note reveal"><b>The two amber packages are what the repo ships</b> — one per side of the sale; the blue feed is the record they meet at. Plane internals mature in a private testing monorepo and are ported here once they settle.</p>
 
       <div class="install reveal" style="max-width:820px" role="img" aria-label="Repository layout. CONTRACT.md is the single current-state contract and source of truth. core holds the Go gate, the Python criterion scorer, and the wire and feed fixtures. plane holds the signed artifact: envelope, spec store, resolver — verification only, no signing seat in this repo. verifier is the demand side's package: Go package plus intent-verify CLI plus a stdlib-only Python twin. declarant is the supply side's package: Go package plus intent-declare CLI, and pydeclarant, the Python twin carrying the optional LangChain and MCP adapters. docs holds architecture, assurance, and integration.">
         <div class="install-bar"><span>layout — the published SDK</span><span>ownership runs per tree</span></div>
@@ -893,7 +892,7 @@ intent-plane/<br />
       <div class="findings-stack reveal">
         <div class="finding">
           <span class="f-label">the supply side, in one rule</span>
-          <p><b>Declare once at the framework layer — every agent inherits it.</b> The declarant derives idempotency keys deterministically from action identity (never a fresh UUID per attempt), classifies every terminal totally over the closed cause vocabulary — anything outside it fails closed as <code>Unknown</code> — and on an HTTP 500 consults the per-intent feed <b>before</b> deciding anything. <code>force_scores</code>, the guarded test affordance, exists in no declarant type.</p>
+          <p><b>Declare once at the framework layer — every agent inherits it.</b> The declarant derives each key from the action itself, never a fresh UUID per attempt — so a retry <i>is</i> the same action, by construction. Any answer it cannot classify fails closed as <code>Unknown</code>, and on a server error it consults the intent's own record <b>before</b> deciding anything.</p>
         </div>
       </div>
     </div>
@@ -905,12 +904,12 @@ intent-plane/<br />
       <div class="section-head reveal">
         <span class="eyebrow">three commitments</span>
         <h2>One signed object. Authority is key possession. Fail-closed, twice.</h2>
-        <p>Not aspirations — load-bearing claims, each with a named mechanism and a test that refutes it. The claim-by-claim standing lives in <code>docs/assurance.md</code>; nothing asks to be believed.</p>
+        <p>Not aspirations — load-bearing claims, each with a named mechanism and a test built to refute it. The claim-by-claim standing lives in <code>docs/assurance.md</code>.</p>
       </div>
       <div class="policy reveal">
         <div class="p-cell">
           <h4><span class="num">01</span>One signed object</h4>
-          <p>The bytes the attester signs are the bytes the gate executes — a <b>hash equality</b>, not an alignment of documents. Criteria cannot ride the wire at all (the field does not exist; the old shape gets a loud 400) — they reach the gate only through <b>signature verification plus content-address equality</b>.</p>
+          <p>The bytes the attester signs are the bytes the gate executes — a <b>hash equality</b>, not an alignment of documents. Criteria cannot ride the wire at all; they reach the gate only through <b>signature verification plus content-address equality</b>.</p>
         </div>
         <div class="p-cell">
           <h4><span class="num">02</span>Authority is key possession</h4>
@@ -953,7 +952,7 @@ intent-plane/<br />
       <div class="section-head reveal">
         <span class="eyebrow">the decision flow</span>
         <h2>Four moves, four terminals — and every branch fails closed.</h2>
-        <p>Every declared intent walks <code>DECLARED → RESOLVING → ACTIVE → VERIFYING</code> toward exactly one terminal. No <code>FAILED</code> or <code>FAILED_AT_DISPATCH</code> intent ever leaves an <code>ACHIEVED</code> record in the feed — a refused or duplicate intent means <b>no value moved</b>.</p>
+        <p>Every declared intent walks toward exactly one terminal — and a refused or duplicate intent leaves no <code>ACHIEVED</code> record, which means <b>no value moved</b>. The full state machine is in the table below.</p>
       </div>
       <div class="loop reveal">
         <div class="step">
@@ -1060,7 +1059,7 @@ intent-plane/<br />
       <div class="section-head reveal">
         <span class="eyebrow">the record, re-verified</span>
         <h2>Hand the feed to someone who doesn't trust you.<br />They can re-derive all of it.</h2>
-        <p>The plane's cost structure is a revealed preference: logical clocks with no wallclock, a JSON-free length-prefixed hash encoding, byte-frozen cross-language fixtures, an fsync before every success. None of it buys anything at decision time — it pays off when someone who does <b>not</b> trust the gate recomputes the record afterward.</p>
+        <p>Everything expensive about the plane — logical clocks instead of wallclock, byte-frozen cross-language fixtures, an fsync before every success — buys nothing at decision time. It pays off afterward, when someone who does <b>not</b> trust the gate recomputes the record.</p>
       </div>
 
       <div class="install reveal" style="max-width:820px" role="img" aria-label="The verifier CLI over the frozen feed fixtures: run against events-good.jsonl the result is VERIFIED with exit code 0 — every hash recomputes, the lifecycle replays, at-most-once holds. Run against events-tampered.jsonl, which differs by one flipped byte, the result is REFUTED with exit code 1.">
@@ -1109,7 +1108,7 @@ intent-plane/<br />
       <div class="section-head reveal">
         <span class="eyebrow">the reference application · one step from concept to consequence</span>
         <h2>The same gate, pointed at a real consequence: treasury payments.</h2>
-        <p>The kernel reads no artifacts and knows no domain — criteria, thresholds, and what counts as a duplicate arrive only through the signed spec. Instantiated on treasury payments (action class 1) in the testing monorepo, the loop closes over three hashes: every settlement carries <code>rule_artifact_hash</code> · <code>intent_spec_hash</code> · <code>trajectory_hash</code> — joining the runtime trace back to the exact signed policy that authorized it.</p>
+        <p>The kernel knows no domain — criteria, thresholds, and what counts as a duplicate arrive only through the signed spec. Instantiated on treasury payments in the testing monorepo, the loop closes over three hashes: every settlement carries <code>rule_artifact_hash</code> · <code>intent_spec_hash</code> · <code>trajectory_hash</code>, joining the runtime trace back to the exact signed policy that authorized it.</p>
       </div>
 
       <div class="tgrid">
