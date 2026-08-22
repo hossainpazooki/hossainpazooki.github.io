@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>Intent Plane — fail-closed authorization for AI agents · LangChain + MCP adapters</title>
-<meta name="description" content="The intent plane: a fail-closed authorization gate for AI agents that take irreversible actions — with an audit record third parties can re-verify without trusting the gate. Gate the call four ways: a LangChain tool in one call, MCP middleware for a server you own, a gated MCP proxy for one you don't, and a regulatory-report submission the plane never sees. One signed object, authority as key possession, fail-closed twice, exactly one durable record per decision." />
+<meta name="description" content="The intent plane: a fail-closed authorization gate for AI agents that take irreversible actions — with an audit record third parties can re-verify without trusting the gate. Gate the call four ways: a LangChain tool in one call, MCP middleware for a server you own, a gated MCP proxy for one you don't, and a regulatory-report submission the plane never sees. One signed object, authority as key possession, fail-closed twice, exactly one durable record per decision. For regulatory compliance teams: report submissions keyed by regulatory identity, with a FINOS CDM WorkflowStep bridge." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
@@ -728,6 +728,7 @@
       <a href="#lifecycle" class="hideable">lifecycle</a>
       <a href="#verifier" class="hideable">verifier</a>
       <a href="#treasury" class="hideable">treasury</a>
+      <a href="#cdm" class="hideable">cdm</a>
       <a href="/baseline/" class="hideable">/baseline</a>
       <a href="/rigor/" class="hideable">/rigor</a>
       <a href="/blog/" class="hideable">/blog</a>
@@ -1331,7 +1332,7 @@ intent-plane/<br />
             <li><b>Record signing (R1) and workload identity (R2) are staged, not built</b> — so today the verifier proves the record self-consistent, not never-rewritten.</li>
             <li><b><code>force_scores</code> is guarded and witnessed</b>: refused unless the server booted with <code>INTENT_UNSAFE_FORCE_SCORES=1</code>, and every scored record carries a <code>scorer_id</code> witness — a forced decision is never byte-indistinguishable from a live one. Wherever the flag <b>is</b> set the bypass is total; it must never reach production.</li>
             <li><b>The feed read surface is unauthenticated by design</b> — network isolation is a deployment decision the platform owns.</li>
-            <li><b>The declarant ships in Go</b>; a Python declarant twin is recorded future work.</li>
+            <li><b>The declarant ships as twins — Go and Python</b>, held to the same golden wire bytes; the LangChain, MCP, and reporting/CDM adapters ride the Python twin and are Python-only by precedent.</li>
           </ul>
         </details>
       </div>
@@ -1446,7 +1447,101 @@ ACHIEVED {<br />
 
       <div class="cta-row reveal">
         <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane — the SDK ↗</a>
-        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">treasury-intent-controller — the reference application ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/blob/main/docs/assurance.md" target="_blank" rel="noopener">docs/assurance.md — the claim-by-claim standing ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGULATORY COMPLIANCE — REPORTING THROUGH CDM -->
+  <section class="section" id="cdm">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">for regulatory compliance teams · reporting through cdm</span>
+        <h2>Your reporting runs on CDM.<br />The gate refuses the duplicate a trade repository won't.</h2>
+        <p>Path (d) of the attach points above is the platform team's view; this is the compliance seat. The reporting adapter keys a report's <b>regulatory identity</b> — entity, UTI, action type, rule set — never its content, and the CDM bridge runs the loop in the vocabulary your desk already speaks: FINOS Common Domain Model <code>WorkflowStep</code> in, gated submission, <code>WorkflowStep</code> out.</p>
+      </div>
+
+      <div class="viz reveal" role="img" aria-label="The CDM loop, drawn. A CDM WorkflowStep dict from your desk is read into an identity in CDM vocabulary — the UTI, the action, the event references. The gate derives the idempotency key from that identity and decides. Two outcomes return, each as a WorkflowStep: granted, carrying a businessEvent; or refused, carrying rejected true with the class and reason. Both carry the idempotency key as their eventIdentifier, so a CDM consumer can recompute the plane's record by it. An unkeyable step — no UTI, two different UTIs, a correction with no previousWorkflowStep — is refused before anything is declared, with the message naming the missing CDM field.">
+        <div class="viz-bar"><span>the loop, in your vocabulary</span><span>gate_cdm_event · workflowstep in · workflowstep out</span></div>
+        <div class="viz-body" aria-hidden="true">
+          <svg viewBox="0 0 880 244" xmlns="http://www.w3.org/2000/svg">
+            <rect class="vz-blue" x="16" y="92" width="190" height="56" rx="8"/>
+            <text class="vz-t vz-tb" x="30" y="115">a CDM WorkflowStep</text>
+            <text class="vz-s" x="30" y="133">your desk's dict · 7.1.0</text>
+
+            <path class="vz-arr" d="M206,120 L236,120"/>
+            <polyline class="vz-arr" points="228,116 236,120 228,124"/>
+
+            <rect class="vz-node" x="240" y="92" width="200" height="56" rx="8"/>
+            <text class="vz-t" x="254" y="115">identity, read in CDM</text>
+            <text class="vz-s" x="254" y="133">UTI · action · event refs</text>
+
+            <path class="vz-arr" d="M440,120 L470,120"/>
+            <polyline class="vz-arr" points="462,116 470,120 462,124"/>
+
+            <rect class="vz-gold" x="474" y="92" width="146" height="56" rx="8"/>
+            <text class="vz-t vz-tg" x="488" y="115">the gate</text>
+            <text class="vz-s" x="488" y="133">key = f(identity)</text>
+
+            <path class="vz-ag" d="M620,112 C650,112 650,78 684,78"/>
+            <polyline class="vz-ag" points="676,74 684,78 676,82"/>
+            <path class="vz-ar" d="M620,128 C650,128 650,162 684,162"/>
+            <polyline class="vz-ar" points="676,158 684,162 676,166"/>
+
+            <rect class="vz-gold" x="688" y="52" width="176" height="52" rx="8"/>
+            <text class="vz-t vz-tg" x="702" y="74">granted</text>
+            <text class="vz-s" x="702" y="92">businessEvent present</text>
+
+            <rect class="vz-red" x="688" y="136" width="176" height="52" rx="8"/>
+            <text class="vz-t vz-tr" x="702" y="158">refused</text>
+            <text class="vz-s" x="702" y="176">rejected: true · class</text>
+
+            <text class="vz-lab" x="16" y="216">unkeyable — no UTI, two UTIs, no previousWorkflowStep ⟹ refused before declaring, named in CDM terms</text>
+            <text class="vz-lab vz-lg" x="16" y="234">both outcome steps carry eventIdentifier = the idempotency key — recompute the plane's record by it</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>the closed action-type table — five base fields always keyed · verify meanings against the current ESMA validation rules before any production claim</caption>
+          <thead><tr><th>action_type</th><th>keys on (beyond the base fields)</th><th>meaning — EMIR-Refit-shaped</th></tr></thead>
+          <tbody>
+            <tr><td>NEWT</td><td>—</td><td class="wraps">new trade: one per UTI</td></tr>
+            <tr><td>MODI</td><td>event_ref</td><td class="wraps">modification, by the firm's stable lifecycle-event id</td></tr>
+            <tr><td>CORR</td><td>event_ref · prior_ref</td><td class="wraps">correction of a prior submission</td></tr>
+            <tr><td>EROR</td><td>prior_ref</td><td class="wraps">erasure of a prior submission</td></tr>
+            <tr><td>REVI</td><td>event_ref</td><td class="wraps">revival</td></tr>
+            <tr><td>TERM</td><td>event_ref</td><td class="wraps">early termination</td></tr>
+            <tr><td>VALU · COLU · POSC · MARU</td><td>as_of</td><td class="wraps">daily valuation / collateral / position / margin updates: one per UTI per day</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note reveal"><b>Refused in your vocabulary, before anything declares.</b> No UTI, two different UTIs, no <code>eventIdentifier</code>, a <code>Correct</code> or <code>Cancel</code> with no <code>previousWorkflowStep</code>, a daily type with no <code>eventDate</code> — each refusal names the missing <b>CDM field</b>, never the adapter's internals. The default action mapping (<code>New→NEWT</code> · <code>Correct→CORR</code> · <code>Cancel→EROR</code>) is a convenience the caller overrides — CDM's <code>ActionEnum</code> is not the regulatory vocabulary. And map <code>EROR</code> to a spec whose <code>human_judgment</code> list is non-empty and the gate refuses every erasure — <code>unevaluable:human-judgment</code> — while the obligation is unresolved: <b>approval is the plane's attestation mechanism, not adapter code</b>.</p>
+
+      <div class="findings-stack reveal">
+        <div class="finding">
+          <span class="f-label">the compliance seat, in one rule</span>
+          <p><b>Reconcile by recomputation, never by parsing prose.</b> <code>reconcile()</code> re-derives every logged submission's key from its identity alone and checks the bijection against the feed's ACHIEVED records, reporting defects by class: a key with two log entries is the duplicate this adapter exists to prevent; a key with two ACHIEVED records is the gate's invariant broken — verifier territory. What was inside the report stays evidenced by the firm's own log, bound to the feed by key: <b>the plane never saw it, so the plane cannot leak it</b>.</p>
+        </div>
+      </div>
+
+      <div class="chg reveal">
+        <details class="chg-grp">
+          <summary><span class="tag tag-limits">Stated limits</span> <span class="count">4 stated</span><span class="chev">›</span></summary>
+          <ul>
+            <li><b>Letter case is keyed as given — a recorded residual, open on purpose.</b> Case-folding could merge two identifiers a scheme legitimately treats as distinct, and reservations never expire — a false merge bricks a legitimate report forever. Normalize case upstream, or two casings of one identifier are two reports. Whitespace and non-NFC Unicode, by contrast, are refused outright.</li>
+            <li><b>The <code>finos-cdm</code> oracle lane skips visibly today.</b> CDM 7.1.0's own <code>WorkflowStep.model_validate</code> refuses a populated <code>eventIdentifier</code>, so the emitted shape is asserted against <code>CONTRACT.md</code> §2.7, never against CDM's own types — a skipped oracle is never a green one.</li>
+            <li><b>The action-type table is EMIR-Refit-shaped, not ESMA-verified.</b> The meanings are the author's reading; verifying them against the current validation rules precedes any production claim.</li>
+            <li><b>Adapters are Python-only by precedent</b> — the reporting adapter and CDM bridge are stdlib-only and ride the Python declarant twin. <code>gate_batch</code> promises no batch atomicity (a file with per-record ACK/NACK is neither ACHIEVED nor REFUSED as a whole), and each declaration carries one reporting entity.</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="cta-row reveal">
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/tree/main/declarant/pydeclarant" target="_blank" rel="noopener">declarant/pydeclarant — the reporting adapter + CDM bridge ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/blob/main/CONTRACT.md" target="_blank" rel="noopener">CONTRACT.md §2.7 — the reporting contract ↗</a>
       </div>
     </div>
   </section>
@@ -1462,7 +1557,7 @@ ACHIEVED {<br />
     <div class="foot-links">
       <a href="/">hossainpazooki.github.io <span class="arr">→</span></a>
       <a href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane <span class="arr">↗</span></a>
-      <a href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">treasury-intent-controller <span class="arr">↗</span></a>
+      <a href="https://github.com/hossainpazooki/intent-plane/blob/main/CONTRACT.md" target="_blank" rel="noopener">CONTRACT.md <span class="arr">↗</span></a>
       <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
     </div>
   </div>
