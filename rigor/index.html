@@ -597,7 +597,7 @@
 
       <p class="lede">rigor applies change-enablement discipline to work done by agents. An agent's output is often well-formed and wrong at the same time — a green test run that exercised a stub, a figure restated instead of recomputed, a feature that compiles but was never wired in. Before <b>"tests pass"</b>, <b>"deployed"</b>, or <b>"done"</b> is accepted, the agent re-runs the real gate, recomputes from the raw source, and shows a negative control — and <b>every irreversible step stays with a human</b>.</p>
 
-      <div class="gate refute-demo" role="img" aria-label="Demo: three agent claims run through refute. 'Tests pass' is rejected because the test exercised a bypass fixture. 'Recomputed from raw source' is trusted. 'Deploy succeeded' is rejected because the probe was vacuous.">
+      <div class="gate refute-demo" role="img" aria-label="Three kinds of report an agent hands you, each checked before it is accepted. A tests-pass report is rejected: the green run exercised a stub the product never takes. A figure is accepted: it was recomputed from the raw source and it holds. A deployed report is rejected: the probe passes with the change absent, so it proves nothing.">
         <div class="gate-bar">
           <span>verification — three reports, checked</span>
           <span class="lights"><i></i><i></i><i></i></span>
@@ -605,18 +605,18 @@
         <div class="gate-body" aria-hidden="true">
           <div class="rd-row" data-state="eval">
             <span class="rd-claim cmd"><span class="q">"tests pass"</span></span>
-            <span class="rd-why">traced: the green run exercised a bypass fixture</span>
-            <span class="rd-verdict">refuting…</span>
+            <span class="rd-why">the green run exercised a stub the product never takes</span>
+            <span class="rd-verdict">checking…</span>
           </div>
           <div class="rd-row" data-state="eval">
-            <span class="rd-claim cmd"><span class="q">"34% fewer"</span></span>
-            <span class="rd-why">recomputed from the raw source — survives</span>
-            <span class="rd-verdict">refuting…</span>
+            <span class="rd-claim cmd"><span class="q">"the figure holds"</span></span>
+            <span class="rd-why">recomputed from the raw source — it holds</span>
+            <span class="rd-verdict">checking…</span>
           </div>
           <div class="rd-row" data-state="eval">
-            <span class="rd-claim cmd"><span class="q">"deploy succeeded"</span></span>
-            <span class="rd-why">probe passes with the deploy absent — vacuous</span>
-            <span class="rd-verdict">refuting…</span>
+            <span class="rd-claim cmd"><span class="q">"deployed"</span></span>
+            <span class="rd-why">the probe passes with the change absent — vacuous</span>
+            <span class="rd-verdict">checking…</span>
           </div>
         </div>
       </div>
@@ -1362,13 +1362,13 @@
 </footer>
 
 <script>
-  // Hero: three claims resolve sequentially — two rejected, one trusted.
+  // Hero: three reports resolve sequentially — two rejected, one accepted.
   (function(){
     var rows = document.querySelectorAll('.refute-demo .rd-row');
     if(!rows.length) return;
     var outcomes = [
       {state:'bad', text:'rejected'},
-      {state:'ok',  text:'trusted'},
+      {state:'ok',  text:'accepted'},
       {state:'bad', text:'rejected — vacuous'}
     ];
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
