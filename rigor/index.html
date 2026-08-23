@@ -9,8 +9,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<title>rigor — verification &amp; discipline for Claude Code</title>
-<meta name="description" content="rigor is a Claude Code plugin that stops you from trusting an agent's self-reported success. Before 'tests pass', 'deployed', or 'done' is believed, rigor makes the agent try to break the claim." />
+<title>rigor — verification controls for agentic software delivery</title>
+<meta name="description" content="rigor is a Claude Code plugin that applies change-enablement discipline to work done by agents: a report of success is a claim, not evidence, and no claim is accepted until it has been independently verified." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
@@ -32,6 +32,8 @@
     --ok-dim:#2c5a44;
     --block:#D4654A;
     --block-dim:#6a3327;
+    --blue:#6CA7E8;
+    --blue-dim:#2c4a6a;
     --header-bg:rgba(10,20,36,.72);
     --gold-hover:#f3c269;
     --wash-1:rgba(255,255,255,.012);
@@ -60,6 +62,8 @@
     --ok-dim:#A6CDB8;
     --block:#AE4529;
     --block-dim:#DFB1A1;
+    --blue:#2D5FA3;
+    --blue-dim:#B9C9E1;
     --header-bg:rgba(246,244,238,.8);
     --gold-hover:#B07C1E;
     --wash-1:rgba(30,35,44,.025);
@@ -277,6 +281,39 @@
   .def h4{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
   .def p{font-size:14.5px;color:var(--text-2);line-height:1.6}
   @media(max-width:680px){.defs{grid-template-columns:1fr}}
+
+  /* ---------- section diagrams (inline SVG, ported from the README) ---------- */
+  .viz{
+    margin-top:26px;max-width:900px;
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    background:var(--panel);
+  }
+  .viz .viz-bar{
+    border-bottom:1px solid var(--line);padding:9px 16px;
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);
+    background:var(--wash-1);
+  }
+  .viz .viz-bar span:last-child{text-align:right}
+  .viz .viz-body{padding:16px;overflow-x:auto}
+  .viz svg{display:block;width:100%;height:auto;min-width:680px}
+  .viz text{font-family:var(--mono)}
+  .vz-node{fill:var(--ink-2);stroke:var(--line);stroke-width:1.25}
+  .vz-gold{fill:rgba(224,164,54,.07);stroke:var(--gold-dim);stroke-width:1.25}
+  .vz-ok{fill:rgba(91,185,140,.06);stroke:var(--ok-dim);stroke-width:1.25}
+  .vz-red{fill:rgba(212,101,74,.06);stroke:var(--block-dim);stroke-width:1.25}
+  .vz-t{fill:var(--text);font-size:13px;font-weight:600}
+  .vz-tg{fill:var(--gold)} .vz-tr{fill:var(--block)} .vz-tk{fill:var(--ok)}
+  .vz-s{fill:var(--muted);font-size:10.5px}
+  .vz-lab{fill:var(--muted);font-size:10.5px;letter-spacing:.04em}
+  .vz-lg{fill:var(--gold)} .vz-lr{fill:var(--block)} .vz-lk{fill:var(--ok)}
+  .vz-arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+  .vz-ak{stroke:var(--ok-dim);stroke-width:1.5;fill:none}
+  .vz-ar{stroke:var(--block-dim);stroke-width:1.5;fill:none}
+  .vz-dash{stroke:var(--line);stroke-width:1.25;fill:none;stroke-dasharray:4 4}
+  .vz-tick{stroke:var(--line);stroke-width:1.25;fill:none}
+  .vz-plate{fill:var(--wash-1);stroke:var(--line-soft);stroke-width:1.25}
 
   /* ---------- flow diagrams ---------- */
   .flow{
@@ -526,6 +563,7 @@
       <a href="#problem" class="hideable">problem</a>
       <a href="#commands" class="hideable">commands</a>
       <a href="#dispatch" class="hideable">dispatch</a>
+      <a href="#change" class="hideable">change</a>
       <a href="#audit" class="hideable">audit</a>
       <a href="#status" class="hideable">status</a>
       <a href="/baseline/" class="hideable">/baseline</a>
@@ -544,41 +582,41 @@
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">A Claude Code plugin — verification &amp; discipline</span>
-      <h1 class="title">Don't trust the claim.<br /><span class="ln2">Try to break it.</span></h1>
+      <span class="eyebrow">A Claude Code plugin — verification controls for agentic delivery</span>
+      <h1 class="title">A report of success<br /><span class="ln2">is not evidence.</span></h1>
 
       <div class="chips" aria-label="At a glance">
         <span class="chip">open source</span>
-        <span class="chip"><b>13</b> skills</span>
-        <span class="chip"><b>7</b> commands</span>
+        <span class="chip"><b>20</b> skills</span>
+        <span class="chip"><b>8</b> commands</span>
         <span class="chip"><b>5</b> agents</span>
-        <span class="chip"><b>2</b> hooks</span>
-        <span class="chip"><b>8</b> mechanical gates</span>
+        <span class="chip"><b>3</b> hooks</span>
+        <span class="chip"><b>11</b> check gates</span>
         <span class="chip">built under its own rules</span>
       </div>
 
-      <p class="lede">rigor stops you from trusting an agent's self-reported success. Before <b>"tests pass"</b>, <b>"deployed"</b>, or <b>"done"</b> is believed, it makes the agent try to break the claim — and blocks it from writing your git history while it's at it.</p>
+      <p class="lede">rigor applies change-enablement discipline to work done by agents. An agent's output is often well-formed and wrong at the same time — a green test run that exercised a stub, a figure restated instead of recomputed, a feature that compiles but was never wired in. Before <b>"tests pass"</b>, <b>"deployed"</b>, or <b>"done"</b> is accepted, the agent re-runs the real gate, recomputes from the raw source, and shows a negative control — and <b>every irreversible step stays with a human</b>.</p>
 
-      <div class="gate refute-demo" role="img" aria-label="Demo: three agent claims run through refute. 'Tests pass' is rejected because the test exercised a bypass fixture. 'Recomputed from raw source' is trusted. 'Deploy succeeded' is rejected because the probe was vacuous.">
+      <div class="gate refute-demo" role="img" aria-label="Three kinds of report an agent hands you, each checked before it is accepted. A tests-pass report is rejected: the green run exercised a stub the product never takes. A figure is accepted: it was recomputed from the raw source and it holds. A deployed report is rejected: the probe passes with the change absent, so it proves nothing.">
         <div class="gate-bar">
-          <span>refute.run — three claims, attacked</span>
+          <span>verification — three reports, checked</span>
           <span class="lights"><i></i><i></i><i></i></span>
         </div>
         <div class="gate-body" aria-hidden="true">
           <div class="rd-row" data-state="eval">
             <span class="rd-claim cmd"><span class="q">"tests pass"</span></span>
-            <span class="rd-why">traced: the green run exercised a bypass fixture</span>
-            <span class="rd-verdict">refuting…</span>
+            <span class="rd-why">the green run exercised a stub the product never takes</span>
+            <span class="rd-verdict">checking…</span>
           </div>
           <div class="rd-row" data-state="eval">
-            <span class="rd-claim cmd"><span class="q">"34% fewer"</span></span>
-            <span class="rd-why">recomputed from the raw source — survives</span>
-            <span class="rd-verdict">refuting…</span>
+            <span class="rd-claim cmd"><span class="q">"the figure holds"</span></span>
+            <span class="rd-why">recomputed from the raw source — it holds</span>
+            <span class="rd-verdict">checking…</span>
           </div>
           <div class="rd-row" data-state="eval">
-            <span class="rd-claim cmd"><span class="q">"deploy succeeded"</span></span>
-            <span class="rd-why">probe passes with the deploy absent — vacuous</span>
-            <span class="rd-verdict">refuting…</span>
+            <span class="rd-claim cmd"><span class="q">"deployed"</span></span>
+            <span class="rd-why">the probe passes with the change absent — vacuous</span>
+            <span class="rd-verdict">checking…</span>
           </div>
         </div>
       </div>
@@ -606,52 +644,66 @@
   <section class="section" id="problem">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">The problem it exists for</span>
-        <h2>The correct-shaped lie.</h2>
-        <p>Agent output often <b>looks</b> finished: a green test run, a confident summary, an exit code 0. Output with the form of correctness but not the evidence — every component of rigor is one defense against it.</p>
+        <span class="eyebrow">Why the premise holds</span>
+        <h2>Well-formed and wrong at the same time.</h2>
+        <p>Not a hypothetical. Three findings from applying the toolkit to <b>its own repository</b> — kept on the record rather than cleaned up.</p>
       </div>
 
       <div class="lies reveal">
         <div class="lie">
-          <div class="sig">tests pass — 42 passed, 0 failed</div>
-          <div class="truth">The test exercised a <b>bypass fixture</b> — a stub path the production flow never takes. The green run validated nothing.</div>
+          <div class="sig">handoff doc: 39 tests passing</div>
+          <div class="truth">Re-running the suite at that same commit gave <b>46</b>. Every required field was present and the schema check was green — a schema check is a floor, never a verdict.</div>
         </div>
         <div class="lie">
-          <div class="sig">metric confirmed: 34% improvement</div>
-          <div class="truth">The number was <b>restated from memory</b>, not recomputed from the source. It's arithmetic-shaped, not arithmetic.</div>
+          <div class="sig">adversarial reviewer: 4 verdicts returned</div>
+          <div class="truth"><b>2 of the 4 were incorrect rejections</b>, caught only because the orchestrator re-ran the gates independently. A reviewer's verdict is a claim like any other.</div>
         </div>
         <div class="lie">
-          <div class="sig">feature implemented, build green</div>
-          <div class="truth">It compiles — but it was <b>never wired in</b>. Present in the codebase, unreachable from the product.</div>
+          <div class="sig">multi-agent build: workers on cheap models</div>
+          <div class="truth"><b>505 of 505</b> turns answered on the expensive orchestrating model — every call unpinned, silently inheriting the session's. Invisible in the run's own artifacts; now enforced by a gate.</div>
         </div>
       </div>
 
       <div class="section-head reveal" style="margin-top:64px;margin-bottom:28px">
-        <span class="eyebrow">The core move</span>
-        <h2>refute — don't accept a claim, attack it.</h2>
-        <p>Everything else in the plugin is this one move specialized onto a bigger unit: a question, a build, a deploy's aftermath, a dataset.</p>
+        <span class="eyebrow">The control under everything</span>
+        <h2>Verification before acceptance.</h2>
+        <p>Every other component is this one control applied to a bigger unit of delivery: a question, a build, a release's aftermath, a dataset.</p>
       </div>
 
-      <div class="flow reveal" role="img" aria-label="Flow: a load-bearing claim goes into refute, which tries to break it. If it survives it is trusted and safe to write down; if it breaks it is rejected and must be fixed first.">
-        <div class="fnode">
-          <span class="t">a load-bearing claim</span>
-          a number · a "tests pass" · a "done"
-        </div>
-        <span class="farrow">→</span>
-        <div class="fnode gold">
-          <span class="t">refute</span>
-          try to break it
-        </div>
-        <span class="farrow">→</span>
-        <div class="fsplit">
-          <div class="fnode ok">
-            <span class="t">survives → trusted</span>
-            safe to write down
-          </div>
-          <div class="fnode bad">
-            <span class="t">breaks → rejected</span>
-            fix first
-          </div>
+      <div class="viz reveal" role="img" aria-label="Flowchart. An agent reports done — tests pass, deployed. The question is whether to accept the report. Accepted as reported, the change is merged and the defect is found downstream. Accepted with rigor, it is verified first: re-run the real gate, recompute from the raw source, show a negative control. If verification holds the claim is accepted with its evidence attached; if it fails the change is rejected before release.">
+        <div class="viz-bar"><span>a report of success is a claim</span><span>the only question is whether it was checked</span></div>
+        <div class="viz-body" aria-hidden="true">
+          <svg viewBox="0 0 880 232" xmlns="http://www.w3.org/2000/svg">
+            <rect class="vz-node" x="8" y="92" width="176" height="52" rx="8"/>
+            <text class="vz-t" x="24" y="112" data-box="10,182" style="font-size:11px">agent reports</text>
+            <text class="vz-s" x="24" y="128" data-box="10,182" style="font-size:9px">“done — tests pass,</text>
+            <text class="vz-s" x="24" y="142" data-box="10,182" style="font-size:9px">deployed”</text>
+            <line class="vz-arr" x1="184" y1="118" x2="208" y2="118"/>
+            <polyline class="vz-arr" points="201,114 208,118 201,122"/>
+            <rect class="vz-gold" x="216" y="92" width="156" height="52" rx="8"/>
+            <text class="vz-t vz-tg" x="232" y="112" data-box="218,370" style="font-size:11px">accept the</text>
+            <text class="vz-s" x="232" y="128" data-box="218,370" style="font-size:9px">report?</text>
+            <path class="vz-arr" d="M372 118 H392 M392 118 V44 H408 M392 118 V162 H408"/>
+            <polyline class="vz-ar" points="401,40 408,44 401,48"/>
+            <polyline class="vz-arr" points="401,158 408,162 401,166"/>
+            <rect class="vz-red" x="412" y="20" width="236" height="48" rx="8"/>
+            <text class="vz-t vz-tr" x="428" y="40" data-box="414,646" style="font-size:11px">accepted as reported</text>
+            <text class="vz-s" x="428" y="56" data-box="414,646" style="font-size:8.5px">merged — the defect is found later</text>
+            <rect class="vz-gold" x="412" y="132" width="236" height="76" rx="8"/>
+            <text class="vz-t vz-tg" x="428" y="152" data-box="414,646" style="font-size:11px">verified first</text>
+            <text class="vz-s" x="428" y="168" data-box="414,646" style="font-size:9px">re-run the real gate</text>
+            <text class="vz-s" x="428" y="182" data-box="414,646" style="font-size:9px">recompute from the raw source</text>
+            <text class="vz-s" x="428" y="196" data-box="414,646" style="font-size:9px">show a negative control</text>
+            <path class="vz-arr" d="M648 170 H664 M664 170 V116 H680 M664 170 V212 H680"/>
+            <polyline class="vz-ak" points="673,112 680,116 673,120"/>
+            <polyline class="vz-ar" points="673,208 680,212 673,216"/>
+            <rect class="vz-ok" x="684" y="92" width="188" height="48" rx="8"/>
+            <text class="vz-t vz-tk" x="700" y="112" data-box="686,870" style="font-size:11px">holds → accepted</text>
+            <text class="vz-s" x="700" y="128" data-box="686,870" style="font-size:9px">evidence attached</text>
+            <rect class="vz-red" x="684" y="188" width="188" height="44" rx="8"/>
+            <text class="vz-t vz-tr" x="700" y="208" data-box="686,870" style="font-size:11px">fails → rejected</text>
+            <text class="vz-s" x="700" y="224" data-box="686,870" style="font-size:9px">before release</text>
+          </svg>
         </div>
       </div>
 
@@ -673,8 +725,59 @@
     <div class="wrap">
       <div class="section-head reveal">
         <span class="eyebrow">Which command, when</span>
-        <h2>What are you about to trust?</h2>
-        <p>Pick the thing you're about to believe. rigor has one command for it — and a specific way of attacking it.</p>
+        <h2>What are you about to accept?</h2>
+        <p>Pick the thing you're about to accept as done. rigor has one command for it — and a specific way of checking it.</p>
+      </div>
+
+      <div class="viz reveal" role="img" aria-label="A map of the seven commands. A number, a tests-pass, or any done goes to verify-claim, which recomputes, re-runs, reviews and checks citations. A status doc, README or commit message goes to honesty-check, which tags every claim built, in-progress or planned. A question too big for one pass goes to recon, which runs disjoint research and reviews it adversarially. A build too big for one pass goes to fanout, a contract-first gated build with a review pass. A deploy or migration that succeeded goes to verify-effect, which probes the resulting state with a negative control. Handing work to the next session goes to handoff, which emits a brief carrying re-verification commands. Picking up someone's handoff brief goes to pickup, which re-verifies the brief against the repository.">
+        <div class="viz-bar"><span>seven commands, one per unit of work</span><span>pick what you are about to accept</span></div>
+        <div class="viz-body" aria-hidden="true">
+          <svg viewBox="0 0 880 236" xmlns="http://www.w3.org/2000/svg">
+            <text class="vz-lab" x="20" y="20" data-box="20,320" style="font-size:9.5px">what you’re about to accept</text>
+            <text class="vz-lab" x="340" y="20" data-box="340,440" style="font-size:9.5px">run</text>
+            <text class="vz-lab" x="590" y="20" data-box="590,872" style="font-size:9.5px">what actually happens</text>
+            <line class="vz-tick" x1="8" y1="28" x2="872" y2="28"/>
+            <rect class="vz-plate" x="8" y="36" width="864" height="25" rx="4"/>
+            <text class="vz-s" x="20" y="53" data-box="10,330" style="font-size:9.5px">a number, a “tests pass”, any “done”</text>
+            <text class="vz-lab" x="322" y="53" data-box="310,340">→</text>
+            <text class="vz-t vz-tg" x="340" y="53" data-box="336,576" style="font-size:11px">/rigor:verify-claim</text>
+            <text class="vz-lab" x="572" y="53" data-box="560,590">→</text>
+            <text class="vz-lab" x="590" y="53" data-box="586,874" style="font-size:9.5px">recompute · re-run · review · cite</text>
+            <text class="vz-s" x="20" y="80" data-box="10,330" style="font-size:9.5px">a status doc, README, commit message</text>
+            <text class="vz-lab" x="322" y="80" data-box="310,340">→</text>
+            <text class="vz-t vz-tg" x="340" y="80" data-box="336,576" style="font-size:11px">/rigor:honesty-check</text>
+            <text class="vz-lab" x="572" y="80" data-box="560,590">→</text>
+            <text class="vz-lab" x="590" y="80" data-box="586,874" style="font-size:9.5px">built / in-progress / planned, tagged</text>
+            <rect class="vz-plate" x="8" y="90" width="864" height="25" rx="4"/>
+            <text class="vz-s" x="20" y="107" data-box="10,330" style="font-size:9.5px">a question too big for one pass</text>
+            <text class="vz-lab" x="322" y="107" data-box="310,340">→</text>
+            <text class="vz-t vz-tg" x="340" y="107" data-box="336,576" style="font-size:11px">/rigor:recon</text>
+            <text class="vz-lab" x="572" y="107" data-box="560,590">→</text>
+            <text class="vz-lab" x="590" y="107" data-box="586,874" style="font-size:9.5px">disjoint recon, adversarially reviewed</text>
+            <text class="vz-s" x="20" y="134" data-box="10,330" style="font-size:9.5px">a build too big for one pass</text>
+            <text class="vz-lab" x="322" y="134" data-box="310,340">→</text>
+            <text class="vz-t vz-tg" x="340" y="134" data-box="336,576" style="font-size:11px">/rigor:fanout</text>
+            <text class="vz-lab" x="572" y="134" data-box="560,590">→</text>
+            <text class="vz-lab" x="590" y="134" data-box="586,874" style="font-size:9.5px">contract-first, gated, reviewed</text>
+            <rect class="vz-plate" x="8" y="144" width="864" height="25" rx="4"/>
+            <text class="vz-s" x="20" y="161" data-box="10,330" style="font-size:9.5px">a deploy or migration that “succeeded”</text>
+            <text class="vz-lab" x="322" y="161" data-box="310,340">→</text>
+            <text class="vz-t vz-tg" x="340" y="161" data-box="336,576" style="font-size:11px">/rigor:verify-effect</text>
+            <text class="vz-lab" x="572" y="161" data-box="560,590">→</text>
+            <text class="vz-lab" x="590" y="161" data-box="586,874" style="font-size:9.5px">probe the state, with a negative control</text>
+            <text class="vz-s" x="20" y="188" data-box="10,330" style="font-size:9.5px">handing work to the next session</text>
+            <text class="vz-lab" x="322" y="188" data-box="310,340">→</text>
+            <text class="vz-t vz-tg" x="340" y="188" data-box="336,576" style="font-size:11px">/rigor:handoff</text>
+            <text class="vz-lab" x="572" y="188" data-box="560,590">→</text>
+            <text class="vz-lab" x="590" y="188" data-box="586,874" style="font-size:9.5px">a brief carrying re-verification commands</text>
+            <rect class="vz-plate" x="8" y="198" width="864" height="25" rx="4"/>
+            <text class="vz-s" x="20" y="215" data-box="10,330" style="font-size:9.5px">picking up someone’s handoff brief</text>
+            <text class="vz-lab" x="322" y="215" data-box="310,340">→</text>
+            <text class="vz-t vz-tg" x="340" y="215" data-box="336,576" style="font-size:11px">/rigor:pickup</text>
+            <text class="vz-lab" x="572" y="215" data-box="560,590">→</text>
+            <text class="vz-lab" x="590" y="215" data-box="586,874" style="font-size:9.5px">re-verify the brief against the repo</text>
+          </svg>
+        </div>
       </div>
 
       <div class="pills reveal" id="symptom-pills" role="group" aria-label="Pick what you are about to trust">
@@ -703,16 +806,66 @@
       </div>
       <p class="picker-hint" id="picker-hint">↑ pick a symptom to see the exact command and what it actually does.</p>
 
+      <div class="section-head reveal" style="margin-top:56px;margin-bottom:0">
+        <span class="eyebrow">Segregation of duties</span>
+        <h2>Three hooks run without being asked.</h2>
+        <p>Two of them hold the boundary the whole design rests on: the agent proposes the irreversible step, a human runs it.</p>
+      </div>
+
+      <div class="viz reveal" role="img" aria-label="Diagram of the three hooks across a session. The session starts and session-start injects the toolkit pointer. The agent works. When the agent runs a shell command, git-guard refuses git commit, push and rebase and hands the command to the human; change-guard refuses kubectl, helm and terraform commands unless a committed change record carries the evidence; anything else runs.">
+        <div class="viz-bar"><span>three hooks, none of them asked for</span><span>the boundary is enforced, not remembered</span></div>
+        <div class="viz-body" aria-hidden="true">
+          <svg viewBox="0 0 880 220" xmlns="http://www.w3.org/2000/svg">
+            <rect class="vz-node" x="8" y="84" width="132" height="48" rx="8"/>
+            <text class="vz-t" x="24" y="104" data-box="10,138" style="font-size:10px">session starts</text>
+            <line class="vz-arr" x1="140" y1="108" x2="156" y2="108"/>
+            <polyline class="vz-arr" points="149,104 156,108 149,112"/>
+            <rect class="vz-node" x="160" y="84" width="168" height="48" rx="8"/>
+            <text class="vz-t" x="176" y="104" data-box="162,326" style="font-size:10px">session-start</text>
+            <text class="vz-s" x="176" y="120" data-box="162,326" style="font-size:9px">injects the pointer</text>
+            <line class="vz-arr" x1="328" y1="108" x2="344" y2="108"/>
+            <polyline class="vz-arr" points="337,104 344,108 337,112"/>
+            <rect class="vz-node" x="348" y="84" width="128" height="48" rx="8"/>
+            <text class="vz-t" x="364" y="104" data-box="350,474" style="font-size:10px">agent works</text>
+            <line class="vz-arr" x1="476" y1="108" x2="492" y2="108"/>
+            <polyline class="vz-arr" points="485,104 492,108 485,112"/>
+            <rect class="vz-gold" x="496" y="78" width="142" height="60" rx="8"/>
+            <text class="vz-t vz-tg" x="512" y="98" data-box="498,636" style="font-size:10px">runs a shell</text>
+            <text class="vz-s" x="512" y="114" data-box="498,636" style="font-size:9px">command</text>
+            <path class="vz-arr" d="M638 108 H656 M656 108 V40 H672 M656 108 V114 H672 M656 108 V182 H672"/>
+            <polyline class="vz-ar" points="665,36 672,40 665,44"/>
+            <polyline class="vz-ar" points="665,110 672,114 665,118"/>
+            <polyline class="vz-ak" points="665,178 672,182 665,186"/>
+            <rect class="vz-red" x="676" y="8" width="196" height="64" rx="8"/>
+            <text class="vz-t vz-tr" x="692" y="28" data-box="678,870" style="font-size:11px">git-guard</text>
+            <text class="vz-s" x="692" y="44" data-box="678,870" style="font-size:9px">git commit · push · rebase</text>
+            <text class="vz-s" x="692" y="58" data-box="678,870" style="font-size:9px">→ handed to the human</text>
+            <rect class="vz-red" x="676" y="82" width="196" height="64" rx="8"/>
+            <text class="vz-t vz-tr" x="692" y="102" data-box="678,870" style="font-size:11px">change-guard</text>
+            <text class="vz-s" x="692" y="118" data-box="678,870" style="font-size:9px">kubectl · helm · terraform</text>
+            <text class="vz-s" x="692" y="132" data-box="678,870" style="font-size:9px">→ needs a change record</text>
+            <rect class="vz-ok" x="676" y="156" width="196" height="48" rx="8"/>
+            <text class="vz-t vz-tk" x="692" y="176" data-box="678,870" style="font-size:11px">anything else</text>
+            <text class="vz-s" x="692" y="192" data-box="678,870" style="font-size:9px">runs</text>
+          </svg>
+        </div>
+      </div>
+
       <div class="hooks-note reveal">
         <div class="hook">
           <h4>git-guard <span class="auto">runs unasked</span></h4>
-          <p>Blocks agent-initiated <code>git commit</code> / <code>push</code> / history rewrites; the agent outputs the command for <em>you</em> to run instead. Per-repo override: <code>RIGOR_GIT_ALLOW=1</code>.</p>
+          <p>Blocks agent-initiated git history writes — including wrapped, flag-cluster and remote-side <code>gh</code> forms. The agent emits the command and a human runs it. Per-repository override: <code>RIGOR_GIT_ALLOW=1</code>. Friction that keeps the boundary visible, not a security boundary.</p>
+        </div>
+        <div class="hook">
+          <h4>change-guard <span class="auto">provisional</span></h4>
+          <p>Refuses deploy-shaped commands — <code>kubectl apply</code>, <code>helm upgrade</code>, <code>terraform apply</code>, <code>gh workflow run</code> — unless a committed change record carries the required evidence, or a committed emergency-change record names who, when and why.</p>
         </div>
         <div class="hook">
           <h4>session-start <span class="auto">runs unasked</span></h4>
-          <p>Injects a one-paragraph toolkit pointer into every session, so the discipline is present before the first claim is made.</p>
+          <p>Injects the toolkit pointer before the first claim is made, so the discipline is loaded rather than remembered.</p>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -720,17 +873,55 @@
   <section class="section" id="discipline">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">What's code and what's judgment</span>
-        <h2>rigor is not an automated validator for your project.</h2>
-        <p>Worth being precise about, because it kills the most likely misread. Some of rigor executes deterministically; the rest is discipline the agent applies inside <b>your</b> repo, against <b>your</b> gates.</p>
+        <span class="eyebrow">What ships</span>
+        <h2>Three roles, kept apart.</h2>
+        <p>The agent <b>proposes</b> a change and its evidence; deterministic gates <b>decide</b> whether that evidence is sufficient; a human <b>promotes</b> anything irreversible. Some of rigor executes as code; the rest is judgment the agent applies inside <b>your</b> repository, against <b>your</b> gates.</p>
+      </div>
+
+      <div class="viz reveal" role="img" aria-label="Diagram of three separated roles. The agent proposes: it does the work and attaches the evidence — the gate's own output, figures recomputed from source, and a negative control. Deterministic gates decide: 11 check scripts running in code check form, provenance, non-vacuity, tier pins and change records. Insufficient evidence is refused and the reason goes back to the agent. A human promotes: they run the commit, the deploy, and every step that cannot be undone. A dashed path shows the shortcut the agent cannot take — git-guard and change-guard block it.">
+        <div class="viz-bar"><span>three roles, kept apart</span><span>the agent never runs the irreversible step</span></div>
+        <div class="viz-body" aria-hidden="true">
+          <svg viewBox="0 0 880 244" xmlns="http://www.w3.org/2000/svg">
+            <text class="vz-lab" x="24" y="18" data-box="24,304" style="font-size:9.5px">agent — proposes</text>
+            <text class="vz-lab" x="334" y="18" data-box="334,604" style="font-size:9.5px">gates — decide, in the test floor</text>
+            <text class="vz-lab" x="624" y="18" data-box="624,872" style="font-size:9.5px">human — promotes</text>
+            <rect class="vz-node" x="8" y="28" width="290" height="92" rx="8"/>
+            <text class="vz-t" x="24" y="48" data-box="10,296" style="font-size:11px">does the work</text>
+            <text class="vz-s" x="24" y="64" data-box="10,296" style="font-size:9px">and attaches the evidence:</text>
+            <text class="vz-s" x="24" y="78" data-box="10,296" style="font-size:9px">the gate’s own output, figures</text>
+            <text class="vz-s" x="24" y="92" data-box="10,296" style="font-size:9px">recomputed from source, and a</text>
+            <text class="vz-s" x="24" y="106" data-box="10,296" style="font-size:9px">negative control</text>
+            <line class="vz-arr" x1="298" y1="74" x2="314" y2="74"/>
+            <polyline class="vz-arr" points="307,70 314,74 307,78"/>
+            <rect class="vz-gold" x="318" y="28" width="270" height="92" rx="8"/>
+            <text class="vz-t vz-tg" x="334" y="48" data-box="320,586" style="font-size:11px">decides on the evidence</text>
+            <text class="vz-s" x="334" y="64" data-box="320,586" style="font-size:9px">11 check scripts, in code:</text>
+            <text class="vz-s" x="334" y="78" data-box="320,586" style="font-size:9px">form · provenance · non-vacuity</text>
+            <text class="vz-s" x="334" y="92" data-box="320,586" style="font-size:9px">tier pins · change records</text>
+            <line class="vz-arr" x1="588" y1="74" x2="604" y2="74"/>
+            <polyline class="vz-arr" points="597,70 604,74 597,78"/>
+            <rect class="vz-ok" x="608" y="28" width="264" height="92" rx="8"/>
+            <text class="vz-t vz-tk" x="624" y="48" data-box="610,870" style="font-size:10px">runs the irreversible step</text>
+            <text class="vz-s" x="624" y="64" data-box="610,870" style="font-size:9px">the commit</text>
+            <text class="vz-s" x="624" y="78" data-box="610,870" style="font-size:9px">the deploy</text>
+            <text class="vz-s" x="624" y="92" data-box="610,870" style="font-size:9px">every step that cannot be undone</text>
+            <line class="vz-tick" x1="453" y1="120" x2="453" y2="144"/>
+            <rect class="vz-red" x="318" y="144" width="270" height="48" rx="8"/>
+            <text class="vz-t vz-tr" x="334" y="164" data-box="320,586" style="font-size:11px">insufficient → refused</text>
+            <text class="vz-s" x="334" y="180" data-box="320,586" style="font-size:9px">the reason goes back to the agent</text>
+            <path class="vz-dash" d="M153 120 V212 M153 212 H740 M740 212 V128"/>
+            <polyline class="vz-arr" points="736,131 740,124 744,131"/>
+            <text class="vz-lab" x="440" y="232" text-anchor="middle" data-box="0,880" style="font-size:9.5px">git-guard and change-guard block the agent from taking this path itself</text>
+          </svg>
+        </div>
       </div>
 
       <div class="split reveal">
         <div class="half code">
           <h3>Executes as code</h3>
-          <p class="sub">2 hooks + 8 check scripts, all under <code>node --test</code></p>
+          <p class="sub">3 hooks + 11 check scripts, all under <code>node --test</code></p>
           <ul>
-            <li><code>git-guard</code> &amp; <code>session-start</code> hooks</li>
+            <li><code>git-guard</code>, <code>change-guard</code> &amp; <code>session-start</code> hooks</li>
             <li><code>check-surface-scrub</code> — no project fingerprints leak into shipped examples</li>
             <li><code>check-citation-fidelity</code> — every cited identifier/quote exists in its named source</li>
             <li><code>check-effect-probe</code> — effect credited only if the probe passed <em>and</em> the negative control failed</li>
@@ -739,11 +930,14 @@
             <li><code>check-tier-placement</code> — every non-verify agent() call carries a real tier pin</li>
             <li><code>check-tier-sync</code> — agent frontmatter agrees with <code>config/models.json</code></li>
             <li><code>check-learnings</code> — ledger entries anchored, append-only, index↔folder consistent</li>
+            <li><code>check-runlog</code> — a run-log entry carries its invariant core and a re-verification pointer</li>
+            <li><code>check-misfire-closure</code> — a closure carries the evidence it claims; an open one halts</li>
+            <li><code>check-change-record</code> — the deployment properties, in form <span style="color:var(--muted)">(provisional)</span></li>
           </ul>
         </div>
         <div class="half judge">
           <h3>Applied as judgment</h3>
-          <p class="sub">13 skills · 7 commands · 5 agents</p>
+          <p class="sub">20 skills · 8 commands · 5 agents</p>
           <ul>
             <li><code>refute</code> — the core move, specialized per unit</li>
             <li><code>implemented-vs-planned</code> — built / in-progress / planned, tagged</li>
@@ -757,7 +951,7 @@
       </div>
 
       <div class="adr-note reveal">
-        <b>Deliberately not shipped</b> — a turnkey pipeline validator. A shipped checker that certified pipelines whose schema it can't know would itself be a correct-shaped lie (<a href="https://github.com/hossainpazooki/rigor/blob/main/docs/adr/0002-dataeng-is-judgment-not-a-universal-gate.md" target="_blank" rel="noopener" style="color:var(--gold)">ADR-0002 ↗</a>).
+        <b>Deliberately not shipped</b> — a turnkey validator. A checker that certified artifacts whose schema it cannot know would itself be unverified (<a href="https://github.com/hossainpazooki/rigor/blob/main/docs/adr/0002-dataeng-is-judgment-not-a-universal-gate.md" target="_blank" rel="noopener" style="color:var(--gold)">ADR-0002 ↗</a>).
       </div>
     </div>
   </section>
@@ -895,6 +1089,72 @@
     </div>
   </section>
 
+  <!-- PRE-CHANGE AUTHORIZATION -->
+  <section class="section" id="change">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Newest layer — proposed</span>
+        <h2>Has the change earned the right to proceed?</h2>
+        <p>The layer sits <b>upstream</b> of post-implementation verification — before the irreversible step, not after. rigor is the control at the change-approval step; it is not the pipeline, the change advisory board, the deploy executor, or an SRE platform.</p>
+      </div>
+
+      <div class="viz reveal" role="img" aria-label="Flowchart of the pre-change authorization gate. A proposed change and its change record meet three questions. Was the backout tested — did it run on this candidate and exit 0, rather than merely being described? Does the artifact identity hold — is the hash recomputed at the execution edge equal to the hash recorded at review? Can the health signal be read inside the declared blast radius? A described backout or an identity that cannot be recomputed is refused; an unreadable signal halts and is never coerced to pass. If all three hold, the change class decides who executes: class 2, emergency-grade, is where every new pattern starts and a human approves and executes; class 1, normal, needs approval on the record before the agent proceeds; class 0, standard, is earned by a human on evidence and needs no approval per change. The one documented exception is an emergency-change record naming who, when, why and the exact command, written before the bypass runs.">
+        <div class="viz-bar"><span>before the irreversible step, not after</span><span>proposed — no independent codebase yet</span></div>
+        <div class="viz-body" aria-hidden="true">
+          <svg viewBox="0 0 880 250" xmlns="http://www.w3.org/2000/svg">
+            <rect class="vz-node" x="8" y="24" width="140" height="56" rx="8"/>
+            <text class="vz-t" x="24" y="44" data-box="10,146" style="font-size:11px">proposed</text>
+            <text class="vz-s" x="24" y="60" data-box="10,146" style="font-size:9px">change +</text>
+            <text class="vz-s" x="24" y="74" data-box="10,146" style="font-size:9px">change record</text>
+            <line class="vz-arr" x1="148" y1="52" x2="162" y2="52"/>
+            <polyline class="vz-arr" points="155,48 162,52 155,56"/>
+            <rect class="vz-gold" x="166" y="24" width="200" height="56" rx="8"/>
+            <text class="vz-t vz-tg" x="182" y="44" data-box="168,364" style="font-size:11px">backout tested?</text>
+            <text class="vz-s" x="182" y="60" data-box="168,364" style="font-size:9px">ran on this candidate,</text>
+            <text class="vz-s" x="182" y="74" data-box="168,364" style="font-size:9px">exited 0 — not described</text>
+            <line class="vz-arr" x1="366" y1="52" x2="380" y2="52"/>
+            <polyline class="vz-arr" points="373,48 380,52 373,56"/>
+            <rect class="vz-gold" x="384" y="24" width="200" height="56" rx="8"/>
+            <text class="vz-t vz-tg" x="400" y="44" data-box="386,582" style="font-size:11px">artifact identity?</text>
+            <text class="vz-s" x="400" y="60" data-box="386,582" style="font-size:9px">hash recomputed at the edge</text>
+            <text class="vz-s" x="400" y="74" data-box="386,582" style="font-size:9px">= the hash recorded</text>
+            <line class="vz-arr" x1="584" y1="52" x2="598" y2="52"/>
+            <polyline class="vz-arr" points="591,48 598,52 591,56"/>
+            <rect class="vz-gold" x="602" y="24" width="200" height="56" rx="8"/>
+            <text class="vz-t vz-tg" x="618" y="44" data-box="604,800" style="font-size:11px">health signal?</text>
+            <text class="vz-s" x="618" y="60" data-box="604,800" style="font-size:9px">read inside the declared</text>
+            <text class="vz-s" x="618" y="74" data-box="604,800" style="font-size:9px">blast radius</text>
+            <path class="vz-tick" d="M266 80 V100 M484 80 V100 M702 80 V100 M266 100 H568"/>
+            <rect class="vz-red" x="166" y="100" width="402" height="40" rx="8"/>
+            <text class="vz-t vz-tr" x="182" y="120" data-box="168,566" style="font-size:10px">refused</text>
+            <text class="vz-s" x="182" y="136" data-box="168,566" style="font-size:9px">a described backout, or an identity that can’t be recomputed</text>
+            <rect class="vz-gold" x="602" y="100" width="200" height="40" rx="8"/>
+            <text class="vz-t vz-tg" x="618" y="120" data-box="604,800" style="font-size:10px">unreadable → halt</text>
+            <text class="vz-s" x="618" y="136" data-box="604,800" style="font-size:9px">never coerced to pass</text>
+            <text class="vz-lab" x="8" y="164" data-box="8,508" style="font-size:9.5px">all three hold → the change class decides who executes</text>
+            <rect class="vz-red" x="8" y="174" width="282" height="52" rx="8"/>
+            <text class="vz-t vz-tr" x="24" y="194" data-box="10,288" style="font-size:10px">class 2 · emergency-grade</text>
+            <text class="vz-s" x="24" y="210" data-box="10,288" style="font-size:9px">every new pattern starts here —</text>
+            <text class="vz-s" x="24" y="224" data-box="10,288" style="font-size:9px">a human approves and executes</text>
+            <rect class="vz-node" x="300" y="174" width="270" height="52" rx="8"/>
+            <text class="vz-t" x="316" y="194" data-box="302,568" style="font-size:10px">class 1 · normal</text>
+            <text class="vz-s" x="316" y="210" data-box="302,568" style="font-size:9px">approval on the record</text>
+            <text class="vz-s" x="316" y="224" data-box="302,568" style="font-size:9px">before the agent proceeds</text>
+            <rect class="vz-ok" x="590" y="174" width="282" height="52" rx="8"/>
+            <text class="vz-t vz-tk" x="606" y="194" data-box="592,870" style="font-size:10px">class 0 · standard</text>
+            <text class="vz-s" x="606" y="210" data-box="592,870" style="font-size:9px">earned by a human, on evidence —</text>
+            <text class="vz-s" x="606" y="224" data-box="592,870" style="font-size:9px">no approval per change</text>
+            <text class="vz-lab" x="8" y="244" data-box="8,872" style="font-size:9px">the one documented exception: an emergency-change record — who · when · why · the exact command — written before the bypass runs</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="adr-note reveal">
+        <b>Proposed 2026-08-22, and not yet validated.</b> Fixture-tested, with no independent codebase and no live run — every part of it stays provisional until it has been shown to reject a known-bad change in a real repository. The design's first draft was rejected by three independent reviewers and its first build by nine; what ships is what survived five review rounds (<a href="https://github.com/hossainpazooki/rigor/blob/main/docs/DECISIONS.md#deployment-layer" target="_blank" rel="noopener" style="color:var(--gold)">the decision ↗</a>).
+      </div>
+    </div>
+  </section>
+
   <!-- AUDIT SIMULATOR -->
   <section class="section" id="audit">
     <div class="wrap">
@@ -952,6 +1212,39 @@
         <p>rigor applies its own standard to itself. Every component is <b>provisional</b> until the promotion ledger records it surviving ≥2 independent domains. "Settled (scoped)" means settled for the named scope only — unproven reach kept visible.</p>
       </div>
 
+      <div class="viz reveal" role="img" aria-label="Diagram of the test floor. Running node --test, stdlib only, runs the hook tests for git-guard, change-guard and session-start, and the gate tests for all 11 check scripts. If every test is green the merge floor is met; otherwise the change is not mergeable. Every gate ships a fixture it passes and a known-bad input it rejects — a gate that has never been seen to fail is not credited.">
+        <div class="viz-bar"><span>green is the merge floor</span><span>a gate never seen to fail is not credited</span></div>
+        <div class="viz-body" aria-hidden="true">
+          <svg viewBox="0 0 880 202" xmlns="http://www.w3.org/2000/svg">
+            <rect class="vz-node" x="8" y="74" width="150" height="52" rx="8"/>
+            <text class="vz-t" x="24" y="94" data-box="10,156" style="font-size:11px">node --test</text>
+            <text class="vz-s" x="24" y="110" data-box="10,156" style="font-size:9px">stdlib only</text>
+            <path class="vz-arr" d="M158 100 H176 M176 100 V44 H192 M176 100 V156 H192"/>
+            <polyline class="vz-arr" points="185,40 192,44 185,48"/>
+            <polyline class="vz-arr" points="185,152 192,156 185,160"/>
+            <rect class="vz-node" x="196" y="20" width="262" height="48" rx="8"/>
+            <text class="vz-t" x="212" y="40" data-box="198,456" style="font-size:11px">hook tests</text>
+            <text class="vz-s" x="212" y="56" data-box="198,456" style="font-size:9px">git-guard · change-guard · session-start</text>
+            <rect class="vz-node" x="196" y="132" width="262" height="48" rx="8"/>
+            <text class="vz-t" x="212" y="152" data-box="198,456" style="font-size:11px">gate tests</text>
+            <text class="vz-s" x="212" y="168" data-box="198,456" style="font-size:9px">all 11 check scripts</text>
+            <path class="vz-arr" d="M458 44 H476 M476 44 V100 M458 156 H476 M476 156 V100 M476 100 H492"/>
+            <polyline class="vz-arr" points="485,96 492,100 485,104"/>
+            <rect class="vz-gold" x="496" y="74" width="156" height="52" rx="8"/>
+            <text class="vz-t vz-tg" x="512" y="94" data-box="498,650" style="font-size:11px">every test</text>
+            <text class="vz-s" x="512" y="110" data-box="498,650" style="font-size:9px">green?</text>
+            <path class="vz-arr" d="M652 100 H668 M668 100 V68 H684 M668 100 V138 H684"/>
+            <polyline class="vz-ak" points="677,64 684,68 677,72"/>
+            <polyline class="vz-ar" points="677,134 684,138 677,142"/>
+            <rect class="vz-ok" x="688" y="44" width="184" height="48" rx="8"/>
+            <text class="vz-t vz-tk" x="704" y="64" data-box="690,870" style="font-size:11px">merge floor met</text>
+            <rect class="vz-red" x="688" y="114" width="184" height="48" rx="8"/>
+            <text class="vz-t vz-tr" x="704" y="134" data-box="690,870" style="font-size:11px">not mergeable</text>
+            <text class="vz-lab" x="8" y="196" data-box="8,872" style="font-size:9.5px">every gate ships a fixture it passes and a known-bad input it rejects — a gate never seen to fail is not credited</text>
+          </svg>
+        </div>
+      </div>
+
       <div class="table-scroll reveal">
         <table>
           <thead>
@@ -999,6 +1292,7 @@
 
       <p class="misfire-note reveal">The misfires stay in the table on purpose — <b>a verification toolkit that hides its own false refutations would be its own counterexample.</b> Full dated entries live in the promotion ledger.</p>
 
+
       <div class="deep reveal">
         <a href="https://github.com/hossainpazooki/rigor/blob/main/docs/specs/2026-06-25-rigor-plugin-design.md" target="_blank" rel="noopener">
           <h4>Design rationale <span class="arr">↗</span></h4>
@@ -1022,7 +1316,7 @@
         </a>
         <a href="https://github.com/hossainpazooki/rigor/tree/main/tests" target="_blank" rel="noopener">
           <h4>Tests &amp; gates <span class="arr">↗</span></h4>
-          <p><code>node --test</code> — hooks + all 8 check scripts, auto-discovered.</p>
+          <p><code>node --test</code> — hooks + all 11 check gates, auto-discovered. Stdlib only.</p>
         </a>
       </div>
     </div>
@@ -1032,8 +1326,8 @@
   <section class="cta">
     <div class="wrap reveal">
       <span class="eyebrow">Install</span>
-      <h2 style="margin-top:18px">Stop believing green checkmarks.</h2>
-      <p>Two commands in a Claude Code session. The discipline loads before the first claim is made.</p>
+      <h2 style="margin-top:18px">Stop accepting the report.</h2>
+      <p>Two commands in a Claude Code session. The controls load before the first claim is made.</p>
       <div class="gate codeblock" style="margin-top:26px">
         <div class="gate-bar">
           <span>claude — install</span>
@@ -1055,7 +1349,7 @@
 <footer>
   <div class="wrap foot">
     <div class="col-thesis">
-      <div class="t"><span class="k">refute</span> → the one move underneath.<br />Verification you can prove, not confidence you have to trust.</div>
+      <div class="t"><span class="k">verify</span> → before you accept.<br />Evidence you can re-run, not confidence you have to trust.</div>
       <div class="copy">© 2026 Hossain Pazooki · New York</div>
     </div>
     <div class="foot-links">
@@ -1068,13 +1362,13 @@
 </footer>
 
 <script>
-  // Hero: three claims resolve sequentially — two rejected, one trusted.
+  // Hero: three reports resolve sequentially — two rejected, one accepted.
   (function(){
     var rows = document.querySelectorAll('.refute-demo .rd-row');
     if(!rows.length) return;
     var outcomes = [
       {state:'bad', text:'rejected'},
-      {state:'ok',  text:'trusted'},
+      {state:'ok',  text:'accepted'},
       {state:'bad', text:'rejected — vacuous'}
     ];
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
