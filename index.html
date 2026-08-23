@@ -655,47 +655,37 @@
       <div class="section-head reveal">
         <span class="eyebrow">Selected work</span>
         <h2>A portfolio of one conviction.</h2>
-        <p>A point-in-time data platform, a policy plane and its in-browser runtime consumer, and applied ML held to its own evidence. Data and models interpret; deterministic engines execute; every decision leaves a trace.</p>
+        <p>A policy plane that compiles regulation into signed, executable artifacts, applied ML held to its own evidence, and a point-in-time data platform. Data and models interpret; deterministic engines execute; every decision leaves a trace.</p>
       </div>
 
       <div class="ledger">
-        <article class="rec reveal" id="rec-vantage">
-          <div class="kind"><span class="tag">data platform</span><br />point-in-time lakehouse</div>
-          <div>
-            <h3>VANTAGE <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="src" target="_blank" rel="noopener">pit-fundamentals-lakehouse</a></h3>
-            <p>A point-in-time-correct SEC fundamentals lakehouse. An as-of date D returns only what was filed <em>and accepted</em> by D — holding across restatements, so an as-of query never sees a filing that wasn't yet public.</p>
-            <div class="detail">181,351,169 bronze rows distilled to 86,615,392 gold facts across 16,667 filers; 63 of 69 quarters ingested, 6 refused by a fail-closed data-quality gate with recomputed causes. Deployed and published on Databricks serverless under a write-audit-publish rule: audit green on the candidate, the same audit red on a mutated twin, a post-publish consumer probe against a negative control.</div>
-            <div class="stack"><span>Scala</span><span>Spark</span><span>Delta Lake</span><span>Databricks Connect</span><span>fail-closed DQ gate</span></div>
-          </div>
-        </article>
-
         <article class="rec reveal" id="rec-atlas">
           <div class="kind"><span class="tag">policy plane</span><br />regulatory engine</div>
           <div>
-            <h3>ATLAS <a href="https://github.com/hossainpazooki/regulatory-rule-engine" class="src" target="_blank" rel="noopener">regulatory-rule-engine</a></h3>
-            <p>A regulatory rule-execution engine. Compiles regulation into content-addressed, signed, typed-attestation artifacts; a Rust kernel executes them deterministically and fails closed on a verification miss.</p>
-            <div class="detail">A five-gate verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what a rule is allowed to assert; every gate reproducible, every artifact consumed by hash through a WASM verifier.</div>
+            <h3>ATLAS <a href="https://github.com/hossainpazooki/regulatory-rule-engine" class="src" target="_blank" rel="noopener">regulatory-rule-engine&nbsp;↗</a></h3>
+            <p>A regulatory rule-execution engine, and the policy plane of a three-repo system. Compiles contradictory multi-jurisdiction regulation into content-addressed, signed, typed-attestation artifacts; a Rust kernel executes them deterministically and fails closed on a verification miss.</p>
+            <div class="detail">A five-gate verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what a rule is allowed to assert. Every artifact is a pure function of its input: a three-language contract test holds the canonical encoding byte-identical across Rust, Python, and WASM, and Rust↔Python execution equivalence is proven over 1,326 generated scenarios. Three downstream consumers re-derive trust independently and refuse a non-published artifact even when its signature is valid.</div>
             <div class="stack"><span>Rust workspace</span><span>BLAKE3 content-addressed</span><span>ed25519-signed</span><span>typed attestations</span><span>WASM verifier</span></div>
           </div>
         </article>
 
-        <article class="rec reveal">
-          <div class="kind"><span class="tag">runtime plane</span><br />compliance navigator</div>
+        <article class="rec reveal" id="rec-clue">
+          <div class="kind"><span class="tag">applied ML</span><br />multi-omics QA</div>
           <div>
-            <h3>COMPASS <a href="https://github.com/hossainpazooki/cross-border-compliance-navigator" class="src" target="_blank" rel="noopener">cross-border-compliance-navigator</a></h3>
-            <p>Cross-border digital-asset compliance, evaluated in the browser. Resolves jurisdiction conflicts across MiCA, FCA, SEC/CFTC, FINMA, and MAS, and moves a position through explicit verdict states: compliant → conditional → blocked.</p>
-            <div class="detail">The runtime consumer to ATLAS's policy plane: a client-side rule evaluator over versioned decision trees, an in-browser WASM verifier for ATLAS's signed artifacts, and an NLI gate that retracts any drafted rationale it can't entail from the evaluation trace.</div>
-            <div class="stack"><span>Next.js 15</span><span>React 19</span><span>TypeScript</span><span>client-side evaluator</span><span>WASM ATLAS verifier</span></div>
+            <h3>CLUE <a href="https://github.com/hossainpazooki/upstream-label-correction" class="src" target="_blank" rel="noopener">upstream-label-correction&nbsp;↗</a></h3>
+            <p>Upstream label correction for multi-omics cohorts. Generates fidelity-checked synthetic cohorts with planted, dial-able label corruption, then catches the mislabeled samples through cross-omics concordance scoring — before bad labels poison everything downstream.</p>
+            <div class="detail">The synthetic cohort is the measuring instrument, not the result: it probes corruption rates real data cannot, and the loop escalates until it finds the hardest rate the detector still clears. That detector now also clears an outside oracle — run unmodified on the real precisionFDA training matrices, at its default threshold, scored against the challenge organizers' own key: F1 0.914. The blind test labels were withheld by the challenge, so that gap is stated rather than closed.</div>
+            <div class="stack"><span>Python</span><span>scikit-learn</span><span>synthetic multi-omics</span><span>organizer-keyed oracle</span></div>
           </div>
         </article>
 
-        <article class="rec reveal">
-          <div class="kind"><span class="tag">applied ML</span><br />multi-omics QA</div>
+        <article class="rec reveal" id="rec-vantage">
+          <div class="kind"><span class="tag">data platform</span><br />point-in-time lakehouse</div>
           <div>
-            <h3>CLUE <a href="https://github.com/hossainpazooki/upstream-label-correction" class="src" target="_blank" rel="noopener">upstream-label-correction</a></h3>
-            <p>Upstream label correction for multi-omics cohorts. Generates fidelity-checked synthetic cohorts with planted label corruption, then catches the mislabeled samples through cross-omics concordance scoring — before bad labels poison everything downstream.</p>
-            <div class="detail">Scored against exactly what was planted, with a strict line between a verified experiment and a verified result: a self-injected score that's arithmetically real but experimentally self-referential is not a result.</div>
-            <div class="stack"><span>Python</span><span>scikit-learn</span><span>synthetic multi-omics</span><span>precisionFDA-style</span></div>
+            <h3>VANTAGE <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="src" target="_blank" rel="noopener">pit-fundamentals-lakehouse&nbsp;↗</a></h3>
+            <p>A point-in-time-correct SEC fundamentals lakehouse. An as-of date D returns only what was filed <em>and accepted</em> by D — holding across restatements, so an as-of query never sees a filing that wasn't yet public.</p>
+            <div class="detail">181,351,169 bronze rows distilled to 86,615,392 gold facts across 16,667 filers; 63 of 69 quarters ingested, 6 refused by a fail-closed data-quality gate with recomputed causes. Deployed and published on Databricks serverless under a write-audit-publish rule: audit green on the candidate, the same audit red on a mutated twin, a post-publish consumer probe against a negative control. An Airflow DAG now carries that shape — publish is structurally unreachable when the audit is red or unevaluable — and a dbt layer over gold serves the as-of view with its point-in-time invariants tested in CI, each proven able to fail on a planted twin.</div>
+            <div class="stack"><span>Scala</span><span>Spark</span><span>Delta Lake</span><span>Databricks Connect</span><span>Airflow</span><span>dbt-duckdb</span><span>fail-closed DQ gate</span></div>
           </div>
         </article>
       </div>
