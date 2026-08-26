@@ -258,6 +258,9 @@
     scroll-margin-top:84px;
   }
   .article p.body{font-size:16px;color:var(--text-2);line-height:1.72}
+  .article p.body + p.body{margin-top:18px}
+  .article .cards3 + p.body{margin-top:22px}
+  .article .dtable-wrap + p.body{margin-top:18px}
   .article p.body b{color:var(--text);font-weight:600}
   .article p.body i{color:var(--text-2)}
   sup.cite{font-size:.72em;line-height:0}
@@ -401,17 +404,6 @@
   }
   .copybtn:hover{color:var(--gold);border-color:var(--gold-dim)}
 
-  /* ---------- author-note placeholder ---------- */
-  .todo{
-    margin-top:26px;border:1.5px dashed var(--line);border-radius:10px;
-    padding:14px 18px;background:var(--wash-1);
-  }
-  .todo .t-label{
-    font-family:var(--mono);font-size:10.5px;font-weight:600;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  }
-  .todo p{margin-top:6px;font-size:13.5px;color:var(--muted);line-height:1.6;font-style:italic}
-
   /* ---------- quote / cite-as ---------- */
   .citeq{
     margin-top:22px;border-left:3px solid var(--line);
@@ -522,6 +514,7 @@
       <li><a href="#s1" data-spy="s1"><span class="n">1</span>The selective-labels problem</a></li>
       <li><a href="#s2" data-spy="s2"><span class="n">2</span>The harness: plant the truth, hide it honestly</a></li>
       <li><a href="#s2-worlds" class="sub" data-spy="s2-worlds">Two synthetic worlds, eight levers</a></li>
+      <li><a href="#s2-round" class="sub" data-spy="s2-round">One round, as it actually ran</a></li>
       <li><a href="#s3" data-spy="s3"><span class="n">3</span>Results</a></li>
       <li><a href="#s3-frontier" class="sub" data-spy="s3-frontier">Correction holds to 0.4 — and breaks at 0.6</a></li>
       <li><a href="#s3-dist" class="sub" data-spy="s3-dist">The frontier is a distribution, not a point</a></li>
@@ -550,10 +543,10 @@
       <span>New York</span>
       <span>published in <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">Towards AI ↗</a></span>
       <span>July 2026</span>
-      <span>9 min read</span>
+      <span>12 min read</span>
     </div>
 
-    <p class="companion-note">This page is the expanded, visual companion to the published essay — same argument, with the figures drawn out and every number traceable to committed evidence in the <a href="/cldd/">code &amp; data</a>. The essay's prose is being ported in; sections marked as author's notes are still to be written.</p>
+    <p class="companion-note">This page is the expanded, visual companion to the published essay — same argument, every number traceable to committed evidence in the <a href="/cldd/">code &amp; data</a>. The blog is its own surface, styled apart from the rest of the site's appearance; its figures only restyle what the project's committed docs and artifacts already contain — recreated for readability, never invented here. One dated update is recorded rather than retro-edited: the harness later tested the essay's central attribution by direct intervention and withdrew it — the boundary measurements stand, and <a href="#s4">the closing section</a> carries the ledger.</p>
 
     <!-- SECTION 1 -->
     <section class="sec" id="s1">
@@ -631,10 +624,9 @@
         </div>
       </div>
 
-      <div class="todo">
-        <div class="t-label">author's note · to be written</div>
-        <p>The essay's opening narrative for this section — the concrete lending vignette and the framing of "deployed on everyone, graded on the approved" — lands here.</p>
-      </div>
+      <p class="body">Put a desk under the abstraction. A small-business lender funds 60-day daily-ACH loans — 3% origination fee, 5.75% of principal in term interest — approving about <b>60%</b> of applicants under an incumbent policy, over a labeled pool that ran near a <b>17%</b> default rate; these are the economics the harness's worlds mirror. A challenger PD model arrives, and the validation deck grades it the only place a grade exists: the booked loans. It wins there. But every row of that deck is a loan the incumbent already chose to fund — and the challenger's business case is the opposite region, the applicants the incumbent declined that the challenger would approve.</p>
+
+      <p class="body">Cross the two policies and the deck's coverage becomes visible. Where both would fund, labels exist and the deck grades. Where the incumbent funded and the challenger declines, the avoided risk is measurable too. Where both decline, nothing changes and no claim is needed. That leaves one cell — the incumbent declined, the challenger would fund, and money moves — and it is exactly the cell in which <b>no label has ever formed</b>. That is the precise sense in which the model is <b>deployed on everyone and graded on the approved</b>: the gap is not missing data waiting on better collection, it is the structure of the decision itself, which is why each escape above circles back to an assumption about the very region under test. The harness's answer is not to close the gap in real data; it is to build a world in which the gap can be <i>manufactured at a chosen severity</i> — with the truth on the far side of it still in the harness's hand.</p>
     </section>
 
     <!-- SECTION 2 -->
@@ -728,10 +720,13 @@
 <span class="c">&gt;&gt;&gt;</span> result.frontier_severity  <span class="c"># the last severity where declined-cohort calibration holds</span></div>
       </div>
 
-      <div class="todo">
-        <div class="t-label">author's note · to be written</div>
-        <p>The essay's walkthrough of one loop round — what a cohort looks like, what the approval policy censors at severity 0.4, and how a lever earns or loses its keep — lands here.</p>
-      </div>
+      <h3 id="s2-round">One round, as it actually ran</h3>
+
+      <p class="body">Here is one round from the committed run — the SCM world, seed 42, severity 0.4, every number from <code>artifacts/loop_frontier_scm.csv</code>. <b>Generate:</b> 4,000 applicants, true default planted for every row — 17.5% of this cohort will default, and the harness knows which rows. The approval policy funds the lowest-risk 60% by a selection score; severity is how tightly that score tracks true latent risk — at 0 approval is random with respect to risk, at 1 it would track latent risk in full, including a component no feature column contains. At 0.4 the censoring is already violent: the 2,400 funded rows carry a planted default rate near <b>8.8%</b>, the 1,600 declined rows <b>30.4%</b>. Every declined label is then hidden — held by the harness, invisible to every model that follows.</p>
+
+      <p class="body"><b>Measure:</b> the PD model trains on the 2,400 funded rows alone, then scores the 1,600 declined rows against the truth it never saw. It prices that pool at a mean PD of 21.3% where the planted rate is 30.4% — an underestimate no production system could see — and its declined-cohort ECE lands at <b>0.112</b>, over the 0.10 target. <b>Improve:</b> the IPW lever fits a propensity model and upweights the funded rows that most resemble declines; declined-cohort ECE falls to <b>0.097</b>, under target, and the round passes on the strength of that one lever. The disjoint-retrain lever, handed a fresh cohort with the same censoring, lands at 0.114 and fails the same bar — while clearing it comfortably in the flat world (0.092). A lever earns its keep per world and per severity, never in general.</p>
+
+      <p class="body"><b>Regenerate:</b> severity rises to 0.6, and the lever that just earned its keep collapses — IPW declined-ECE <b>0.244</b> — while the observable alarm fires without touching a single declined label: the propensity model's effective-sample-size ratio drops 0.92 → 0.80 and the share of weights pinned at the clip floor jumps 0.13% → 7.5%. The loop stops; the frontier is 0.4, exactly the boundary Figure 3 draws. One lever can push past it: exploration — deliberately funding 157 applicants the policy would have declined, 56 of whom default, at a net cost of <b>$439,578</b> — buys declined-cohort ECE 0.092 at severity 0.6. Identification can be bought instead of assumed; ≈$2,800 a label is what it costs in this world.</p>
     </section>
 
     <!-- SECTION 3 -->
@@ -834,7 +829,7 @@
 
       <h3 id="s3-wall">Both deliverables break at the same wall</h3>
 
-      <p class="body">The counterfactual deliverable tells the same story from the other side. Inside the frontier, g-computation<sup class="cite"><a href="#references">[4]</a></sup> earns its keep: <b>−13.5% counterfactual MAE</b> against naive conditioning, positive on 24 of 25 seeds (Wilcoxon p = 1.5e-7). At full severity the advantage collapses to a negligible +0.0017 — because the highest severity selects through an <b>unobserved confounder</b>, which defeats backdoor adjustment<sup class="cite"><a href="#references">[6]</a></sup> and IPW<sup class="cite"><a href="#references">[5]</a></sup> alike. One cause explains both failures: the calibration correction and the counterfactual advantage break at the <b>same wall</b> — selection through a variable no feature set contained. That is the essay's central claim, and it is a <i>measured</i> limit, not an argued one.</p>
+      <p class="body">The counterfactual deliverable tells the same story from the other side. Inside the frontier, g-computation<sup class="cite"><a href="#references">[4]</a></sup> earns its keep: <b>−13.5% counterfactual MAE</b> against naive conditioning, positive on 24 of 25 seeds (Wilcoxon p = 1.5e-7). At full severity the advantage collapses to a negligible +0.0017 — because the highest severity selects through an <b>unobserved confounder</b>, which defeats backdoor adjustment<sup class="cite"><a href="#references">[6]</a></sup> and IPW<sup class="cite"><a href="#references">[5]</a></sup> alike. One cause explains both failures: the calibration correction and the counterfactual advantage break at the <b>same wall</b> — selection through a variable no feature set contained. That is the essay's central claim, and it is a <i>measured</i> limit, not an argued one. <i>Post-publication (August 2026): v4 made this attribution an intervention — the confounder's strength became an explicit axis — and the pre-registered test withdrew it: the wall stands with the confounder switched off. The boundary survives; the one-cause sentence did not. <a href="#s4" style="color:var(--gold)">The closing section</a> carries the ledger.</i></p>
 
       <h3 id="s3-emp">Two EMPs disagree — that's the finding</h3>
 
@@ -900,10 +895,25 @@
 
       <p class="body">The harness is a synthetic <b>validation harness</b>, not a production pipeline: retraining and feedback are seeded simulations inside the loop; it never acts on live data or real lending decisions. Its numbers hold inside their stated boundaries, and the boundaries ship with the results: the harness-economics EMP rests on planted-but-unfitted default timing — a <b>verified experiment, not a verified result</b>; ~22.5% of planted defaults land past the 60-day term and are priced at a stated convention; the frontier is a property of <i>this</i> model family in <i>these</i> worlds, reported as a distribution precisely so a lucky seed can't become a headline. Limits are reported, not smoothed over — that is the discipline the harness exists to enforce.</p>
 
-      <div class="todo">
-        <div class="t-label">author's note · to be written</div>
-        <p>The essay's closing argument — what an operating frontier changes about how PD models are governed, and where the loop goes next — lands here.</p>
+      <p class="body">What an operating frontier changes is the sentence a PD model ships with. A validation deck closes on a score — AUC on the booked loans, a calibration chart over the same rows — measured precisely where the incumbent already decided, silent precisely where the challenger would decide differently. A frontier closes on a boundary statement: <b>this correction held to severity 0.4, broke at 0.6, and the break announced itself</b>. That last clause is the governable part. Declined-cohort calibration cannot be watched in production — that is the whole problem — but the conditions under which a correction was <i>shown to fail</i> can be: propensity AUC, effective-sample-size ratio, clip-floor share, none of which needs a declined-row label. In the committed runs those diagnostics crossed their calibrated thresholds exactly at the severity where correction failed, in both worlds; in the v0.3.0 feedback runs the declined-ECE alarm fired by generation 1–2 in every unexplored run — severity 0.4: 25 of 25 at generation 1. Governance stops being "trust the score" and becomes <b>state the envelope, and watch the dials that told us when it broke</b> — an envelope that ships with its error bar, 0.2–0.4 depending on the draw, because a seed is a draw, not a fact.</p>
+
+      <p class="body">The other thing the loop changes is what happens to the claims after publication, because an escalating harness does not stop when the essay does. This page froze its numbers at v0.2.0; the loop kept running — and it is allowed to come back for its author. Three measurement campaigns have landed since, each committed beside the claims it tested. First, v0.3.0 priced the <b>feedback regime</b> — the model's own approvals creating its next training set, three arms over 25 spaced seeds — and the decomposition it exists for came back one-for-three, reported as measured:</p>
+
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>the feedback decomposition — recreated from the README's v0.3.0 table · severity 0.4 · generations 1–11</caption>
+          <thead><tr><th>hypothesis</th><th>median paired deficit</th><th>sign</th><th>verdict</th></tr></thead>
+          <tbody>
+            <tr><td>H1 — feedback accumulation costs money (treatment − frozen, ε=0)</td><td class="hi">−0.0028</td><td>24/25</td><td class="pass">confirmed — p_holm 2.3e-06, clears the 0.0018 noise floor</td></tr>
+            <tr><td>H2 — the policy switch costs money (frozen − prior, ε=0)</td><td>+0.0119</td><td>0/25</td><td class="fail">not confirmed — measured opposite in direction</td></tr>
+            <tr><td>H3 — exploration buys profit back (treatment ε=.05 − ε=0)</td><td>−0.0024</td><td>0/25</td><td class="fail">not confirmed</td></tr>
+          </tbody>
+        </table>
       </div>
+
+      <p class="body">Then the replication attack: both sweeps re-run on fully disjoint "spaced" seeds. The counterfactual advantage <b>survives</b> — +0.0129, positive on 22 of 25 seeds, Wilcoxon p = 1.6e-6 — while the SCM world's median frontier moves 0.2 → 0.4: a seed-overlap caveat the README had carried was real, and removing it moved the center. And last, v4 made the essay's central attribution an intervention: the unobserved confounder's strength became an explicit axis — 300 loop runs and 450 counterfactual evals against four pre-registered, Holm-corrected hypotheses. All four came back <b>not confirmed</b>. The wall stands with the confounder switched off — at strength 0 the flat world's frontier sits at 0.4 on 25 of 25 seeds — and the one-cause reading is <b>withdrawn as measured</b>, not softened.</p>
+
+      <p class="body">That ledger is the closing argument. The replication moved a median and said so; the feedback decomposition confirmed one of its own three predictions and reported the other two as measured-opposite and not-confirmed; and the interventional test took this essay's central attribution and withdrew it. What survives is every boundary measurement — the frontier, its 0.2–0.4 range, the counterfactual collapse. What fell is the explanatory sentence. The next experiments are already named: pre-register the frontier shift observed post-hoc at maximum confounding, and reveal the confounder to the estimator to measure what remains of the wall. A harness that can only agree with its author is marketing. This one has now disagreed with its author in public, on committed evidence — <b>that is the property worth governing with</b>.</p>
     </section>
 
     <!-- CODE & DATA -->
