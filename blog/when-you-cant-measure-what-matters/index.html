@@ -546,7 +546,7 @@
       <span>12 min read</span>
     </div>
 
-    <p class="companion-note">This page is the expanded, visual companion to the published essay — same argument, every number traceable to committed evidence in the <a href="/cldd/">code &amp; data</a>. The blog is its own surface, styled apart from the rest of the site's appearance; its figures only restyle what the project's committed docs and artifacts already contain — recreated for readability, never invented here. One dated update is recorded rather than retro-edited: the harness later tested the essay's central attribution by direct intervention and withdrew it — the boundary measurements stand, and <a href="#s4">the closing section</a> carries the ledger.</p>
+    <p class="companion-note">This page is the expanded, visual companion to the published essay — same argument, every number traceable to committed evidence in the <a href="/cldd/">code &amp; data</a>. The blog is its own surface, styled apart from the rest of the site's appearance; its figures only restyle what the project's committed docs and artifacts already contain — recreated for readability, never invented here. Dated post-publication updates are recorded rather than retro-edited — the largest: the harness later tested the essay's central attribution by direct intervention and withdrew it; the boundary measurements stand, and <a href="#s4">the closing section</a> carries the ledger.</p>
 
     <!-- SECTION 1 -->
     <section class="sec" id="s1">
@@ -827,9 +827,22 @@
         </table>
       </div>
 
+      <p class="body"><i>Post-publication (2026-07-29): both sweeps were re-run on fully seed-disjoint "spaced" draws — and the overlapping set's SCM median of 0.2 does <b>not</b> replicate. On the independent draw both worlds center at 0.4; what survives is the range, 0.2–0.4 depending on the draw:</i></p>
+
+      <div class="dtable-wrap reveal">
+        <table class="dtable">
+          <caption>frontier distribution, replicated — artifacts/frontier_sweep_spaced.csv · 25 seed-disjoint seeds · post-publication 2026-07-29</caption>
+          <thead><tr><th>world</th><th>min</th><th>median</th><th>max</th><th>seeds at 0.4</th><th>seeds at 0.2</th></tr></thead>
+          <tbody>
+            <tr><td>flat</td><td>0.2</td><td class="hi">0.4</td><td>0.4</td><td>18/25</td><td>7/25</td></tr>
+            <tr><td>SCM</td><td>0.2</td><td class="hi">0.4</td><td>0.4</td><td>15/25</td><td>10/25</td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <h3 id="s3-wall">Both deliverables break at the same wall</h3>
 
-      <p class="body">The counterfactual deliverable tells the same story from the other side. Inside the frontier, g-computation<sup class="cite"><a href="#references">[4]</a></sup> earns its keep: <b>−13.5% counterfactual MAE</b> against naive conditioning, positive on 24 of 25 seeds (Wilcoxon p = 1.5e-7). At full severity the advantage collapses to a negligible +0.0017 — because the highest severity selects through an <b>unobserved confounder</b>, which defeats backdoor adjustment<sup class="cite"><a href="#references">[6]</a></sup> and IPW<sup class="cite"><a href="#references">[5]</a></sup> alike. One cause explains both failures: the calibration correction and the counterfactual advantage break at the <b>same wall</b> — selection through a variable no feature set contained. That is the essay's central claim, and it is a <i>measured</i> limit, not an argued one. <i>Post-publication (August 2026): v4 made this attribution an intervention — the confounder's strength became an explicit axis — and the pre-registered test withdrew it: the wall stands with the confounder switched off. The boundary survives; the one-cause sentence did not. <a href="#s4" style="color:var(--gold)">The closing section</a> carries the ledger.</i></p>
+      <p class="body">The counterfactual deliverable tells the same story from the other side. Inside the frontier, g-computation<sup class="cite"><a href="#references">[4]</a></sup> earns its keep: <b>−13.5% counterfactual MAE</b> against naive conditioning, positive on 24 of 25 seeds (Wilcoxon p = 1.5e-7; on an independent spaced seed set: 22/25, p = 1.6e-6). At full severity the advantage collapses to a negligible +0.0017 — because the highest severity selects through an <b>unobserved confounder</b>, which defeats backdoor adjustment<sup class="cite"><a href="#references">[6]</a></sup> and IPW<sup class="cite"><a href="#references">[5]</a></sup> alike. One cause explains both failures: the calibration correction and the counterfactual advantage break at the <b>same wall</b> — selection through a variable no feature set contained. That is the essay's central claim, and it is a <i>measured</i> limit, not an argued one. <i>Post-publication (August 2026): v4 made this attribution an intervention — the confounder's strength became an explicit axis — and the pre-registered test withdrew it: the wall stands with the confounder switched off. The boundary survives; the one-cause sentence did not. <a href="#s4" style="color:var(--gold)">The closing section</a> carries the ledger.</i></p>
 
       <h3 id="s3-emp">Two EMPs disagree — that's the finding</h3>
 
@@ -913,7 +926,7 @@
 
       <p class="body">Then the replication attack: both sweeps re-run on fully disjoint "spaced" seeds. The counterfactual advantage <b>survives</b> — +0.0129, positive on 22 of 25 seeds, Wilcoxon p = 1.6e-6 — while the SCM world's median frontier moves 0.2 → 0.4: a seed-overlap caveat the README had carried was real, and removing it moved the center. And last, v4 made the essay's central attribution an intervention: the unobserved confounder's strength became an explicit axis — 300 loop runs and 450 counterfactual evals against four pre-registered, Holm-corrected hypotheses. All four came back <b>not confirmed</b>. The wall stands with the confounder switched off — at strength 0 the flat world's frontier sits at 0.4 on 25 of 25 seeds — and the one-cause reading is <b>withdrawn as measured</b>, not softened.</p>
 
-      <p class="body">That ledger is the closing argument. The replication moved a median and said so; the feedback decomposition confirmed one of its own three predictions and reported the other two as measured-opposite and not-confirmed; and the interventional test took this essay's central attribution and withdrew it. What survives is every boundary measurement — the frontier, its 0.2–0.4 range, the counterfactual collapse. What fell is the explanatory sentence. The next experiments are already named: pre-register the frontier shift observed post-hoc at maximum confounding, and reveal the confounder to the estimator to measure what remains of the wall. A harness that can only agree with its author is marketing. This one has now disagreed with its author in public, on committed evidence — <b>that is the property worth governing with</b>.</p>
+      <p class="body">That ledger is the closing argument. The replication moved a median and said so; the feedback decomposition confirmed one of its own three predictions and reported the other two as measured-opposite and not-confirmed; and the interventional test took this essay's central attribution and withdrew it. What survives is every boundary measurement — the frontier, its 0.2–0.4 range, the counterfactual collapse. What fell is the explanatory sentence. The harness has now disagreed with its author in public, on committed evidence — <b>that is the property worth governing with</b>.</p>
     </section>
 
     <!-- CODE & DATA -->
@@ -934,12 +947,14 @@
         <div class="install-bar"><span>reproduce the numbers from committed evidence</span><span>MIT · deterministic per seed</span></div>
         <div class="install-body"><span class="p">$</span> pip install closed-loop-default-detection
 <span class="p">$</span> python scripts/paired_significance.py   <span class="c"># the −13.5% MAE headline, 25 seeds, Wilcoxon p = 1.5e-7</span>
-<span class="p">$</span> python scripts/run_frontier_sweep.py    <span class="c"># the frontier distribution — one subprocess per run, resumable</span>
-<span class="c">#</span> artifacts/loop_frontier*.csv · artifacts/frontier_sweep.csv · artifacts/exploration_frontier.csv
+<span class="p">$</span> python scripts/paired_significance.py --sweep-csv artifacts/seed_sweep_spaced.csv   <span class="c"># spaced replication: 22/25, p = 1.6e-6</span>
+<span class="p">$</span> python scripts/feedback_sweep_stats.py  <span class="c"># v0.3.0 hypotheses H1–H4 from the committed 450-run sweep</span>
+<span class="p">$</span> python scripts/surface_stats.py         <span class="c"># v4 surface verdicts — fail-closed on missing cells</span>
+<span class="c">#</span> artifacts/loop_frontier*.csv · frontier_sweep{,_spaced}.csv · seed_sweep_spaced.csv · surface_*.csv
 <span class="c">#</span> exact pins for float-exact reproduction: requirements-dev.txt</div>
       </div>
 
-      <p class="note"><b>Versions.</b> v0.1.0 (2026-07-03) ships the harness — the loop, two worlds, eight levers, 123 tests. v0.2.0 (2026-07-14) adds the EMP measurement layer and the 25-seed sweep — 149 tests, every v0.1.0 column of the committed CSVs verified byte-identical. Full release notes, semver policy, and reading caveats live on <a href="/cldd/" style="color:var(--gold)">/cldd</a>.</p>
+      <p class="note"><b>Versions.</b> v0.1.0 (2026-07-03) ships the harness — the loop, two worlds, eight levers, 123 tests. v0.2.0 (2026-07-14) adds the EMP measurement layer and the 25-seed sweep — 149 tests, every v0.1.0 column of the committed CSVs verified byte-identical. v0.3.0 (2026-07-22) adds the three-arm feedback-loop profit decomposition and its 450-run sweep — 203 tests. Committed at the repo tip, unreleased: the spaced-seed replication, the v4 <code>unobserved_strength</code> × severity surface with its verdicts, and a 13-claim doc-number gate that recomputes every quoted figure in CI — suite at 246. Full release notes, semver policy, and reading caveats live on <a href="/cldd/" style="color:var(--gold)">/cldd</a>.</p>
     </section>
 
     <!-- CITATION -->
@@ -973,7 +988,7 @@
   title   = {closed-loop-default-detection},
   author  = {Pazooki, Hossain},
   year    = {2026},
-  version = {0.2.0},
+  version = {0.3.0},
   license = {MIT},
   url     = {https://github.com/hossainpazooki/closed-loop-default-detection}
 }</div>
