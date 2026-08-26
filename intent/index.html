@@ -159,10 +159,13 @@
 
   /* ---------- intro / the plane ---------- */
   .intro{padding:88px 0 64px}
+  .intro-head{max-width:760px}
   .intro-grid{
+    margin-top:46px;
     display:grid;grid-template-columns:1.05fr .95fr;
     gap:56px;align-items:center;
   }
+  .intro-grid .fx{margin-top:0}
   .intro .eyebrow{margin-bottom:26px}
   .intro h1{
     font-family:'Space Grotesk',var(--sans);
@@ -172,7 +175,7 @@
     max-width:560px;
   }
   .intro h1 .dim{color:var(--text-2)}
-  .intro .lede{margin-top:22px;font-size:clamp(15.5px,2.2vw,17.5px);max-width:540px}
+  .intro .lede{margin-top:22px;font-size:clamp(15.5px,2.2vw,17.5px);max-width:640px}
 
   .fx{margin-top:28px;display:flex;flex-direction:column;gap:10px;max-width:540px}
   .fx-row{
@@ -752,11 +755,14 @@
 
   <!-- INTRO / THE PLANE -->
   <section class="intro section" id="plane">
-    <div class="wrap intro-grid">
-      <div>
+    <div class="wrap">
+      <div class="intro-head">
         <span class="eyebrow">the intent plane — fail-closed authorization</span>
         <h1>Agents propose.<br />The gate disposes.<br /><span class="dim">The record re&#8209;verifies — without trusting the gate.</span></h1>
         <p class="lede">Before an AI agent submits a regulatory report, moves money, or triggers anything irreversible, it must <b>declare the intent</b>. A deterministic gate authorizes it against a policy a human <b>signed</b> — or refuses. Every decision leaves <b>exactly one durable record</b> that a third party can re-check. The worst case is an action that <b>wrongly waits</b>, never one that wrongly executes.</p>
+      </div>
+      <div class="intro-grid">
+      <div>
         <div class="fx">
           <div class="fx-row with">
             <span class="w">with the plane</span>
@@ -799,6 +805,7 @@
           <span class="vl">the verifier — recomputes from the feed alone</span>
           <span class="vv" id="cver-v">standing by…</span>
         </div>
+      </div>
       </div>
     </div>
   </section>
