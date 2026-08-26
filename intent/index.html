@@ -750,10 +750,6 @@
         <h1>Agents propose.<br />The gate disposes.<br /><span class="dim">The record re&#8209;verifies — without trusting the gate.</span></h1>
         <p class="lede">Before an AI agent submits a regulatory report, moves money, or triggers anything irreversible, it must <b>declare the intent</b>. A deterministic gate authorizes it against a policy a human <b>signed</b> — or refuses. Every decision leaves <b>exactly one durable record</b> that a third party can re-check. The worst case is an action that <b>wrongly waits</b>, never one that wrongly executes.</p>
         <div class="fx">
-          <div class="fx-row without">
-            <span class="w">without</span>
-            <p>Authorization lives <b>inside</b> the agent's code — ad-hoc checks, config nobody signed. Audit reads the logs afterward and has to <b>trust the code that wrote them</b>.</p>
-          </div>
           <div class="fx-row with">
             <span class="w">with the plane</span>
             <p>Authorization sits <b>outside the agent</b>: the rules arrive only in a <b>spec a human signed</b>, anything the gate <b>cannot evaluate is a no</b>, and the record can be <b>re-checked by someone who trusts nothing</b>.</p>
@@ -771,12 +767,12 @@
           <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane ↗</a>
         </div>
       </div>
-      <div class="runs" role="img" aria-label="The gate console: three declarations against the same signed policy. Scenario one, a clean grant — an intent declares with key K1, citing the spec by content address; the spec resolves because its signature verifies and its bytes hash to the claimed address; every criterion passes; the dispatch-edge re-check holds and key K1 is reserved; the terminal is ACHIEVED, exactly one durable fsynced record, sequence 41. Scenario two, an unattested spec — the declaration cites a hash with no attestation; resolution refuses before any scoring and the terminal is FAILED, unevaluable colon unattested-spec; the scorer is never consulted and nothing settles. Scenario three, revoked at the edge — an attested spec passes verification, but a signed tombstone lands mid-flight; the dispatch-edge re-check finds it and the terminal is FAILED_AT_DISPATCH, revoked; the key is not reserved and nothing settles. The durable feed below holds exactly one ACHIEVED record throughout, and the verifier chip confirms the whole feed re-derives from the records alone — grant or refusal, every terminal recomputes without trusting the gate.">
+      <div class="runs" role="img" aria-label="The gate console: one clean grant, end to end. An intent declares with key K1, citing the signed spec by content address; the spec resolves — its signature verifies and its bytes hash to the claimed address; every criterion passes; the dispatch-edge re-check holds and key K1 is reserved; the terminal is ACHIEVED — exactly one durable, fsynced record, sequence 41. The durable feed below shows the record, and the verifier chip confirms every hash recomputes from the feed alone — without trusting the gate. The refusal side is shown in the treasury section below.">
         <div class="spec-chip" data-s="idle" id="cspec" aria-hidden="true">
           <span class="sl">signed intentspec · <span class="h" id="cspec-h">c7a36959…dc51</span></span>
           <span class="sr" id="cspec-s">attested · published in the store</span>
         </div>
-        <div class="runs-cap" aria-hidden="true"><span id="cscn">scenario 1 of 3 · a clean grant</span><span>fail-closed · every branch</span></div>
+        <div class="runs-cap" aria-hidden="true"><span id="cscn">a clean grant — end to end</span><span>declare → verify → re-check → record</span></div>
         <div class="run" aria-hidden="true">
           <div class="run-head" id="chead">intent 7f3a…<b>cites spec c7a36959… · <span class="key">key K1</span></b></div>
           <div class="gsteps">
@@ -830,6 +826,22 @@
             <text class="vz-s" x="700" y="81">or refusal + reason</text>
             <text class="vz-lab" x="16" y="132">the bridge imports no CDM package — dicts in, dicts out; the kernel underneath knows no finance</text>
           </svg>
+        </div>
+      </div>
+
+      <div class="install reveal" style="max-width:820px" role="img" aria-label="One call, for a CDM desk. Import gate_cdm_event from cdm_adapter — stdlib only, importing no CDM package. Call it with one CDM WorkflowStep, a plain dict in the 7.1.0 JSON shape; your submit callable, which runs only on a grant; the client; your reporting entity and rule set; optionally your Qualify dispatch as the qualifier — a step whose declared intent mismatches what its instruction qualifies as declares nothing; the intent spec hash, scope, run id, and a UTC timestamp. The return value is a WorkflowStep: ACHIEVED with its business event, or the refusal with its reason.">
+        <div class="install-bar"><span>one call, for a CDM desk</span><span>stdlib only · vendor the tree</span></div>
+        <div class="install-body" aria-hidden="true">
+<span class="k">from</span> cdm_adapter <span class="k">import</span> gate_cdm_event <span class="c">&nbsp;&nbsp;# imports no CDM package</span><br />
+<br />
+step_out = <span class="g">gate_cdm_event</span>(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;step, <span class="c">&nbsp;&nbsp;# one CDM WorkflowStep — a plain dict, 7.1.0 JSON shape</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">lambda</span>: tr.submit(xml), <span class="c">&nbsp;&nbsp;# your submit — runs only on a grant</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;client, reporting_entity=LEI, rule_set=RULES,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;qualifier=qualify, <span class="c">&nbsp;&nbsp;# your Qualify_* dispatch — a mismatched intent declares nothing</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;intent_spec_hash=SPEC, scope=<span class="b">"per-actor"</span>, run_id=run_id, timestamp_utc=now)<br />
+<br />
+<span class="c"># step_out is a WorkflowStep: ACHIEVED with its business event — or the refusal, with its reason</span>
         </div>
       </div>
 
@@ -1323,7 +1335,7 @@ ACHIEVED {<br />
 
     var SCN = [
       {
-        label:'scenario 1 of 3 · a clean grant',
+        label:'a clean grant — end to end',
         head:'intent 7f3a…<b>cites spec c7a36959… · <span class="key">key K1</span></b>',
         hash:'c7a36959…dc51', chip:'attested · published in the store', chipS:'on',
         rows:[
@@ -1336,34 +1348,6 @@ ACHIEVED {<br />
         ledger:'ACHIEVED × 1 · seq 41 · trajectory hash committed',
         ver:'VERIFIED — every hash recomputes'
       },
-      {
-        label:'scenario 2 of 3 · an unattested spec',
-        head:'intent 9c1e…<b>cites spec 41be03c7… · <span class="key">key K2</span></b>',
-        hash:'41be03c7…a112', chip:'no attestation for this hash', chipS:'idle',
-        rows:[
-          ['declared','key K2 present · spec cited by content address','ok'],
-          ['spec resolution','unattested — no verified spec for this hash','bad',{chip:['no attestation — refuses at the door','bad']}],
-          ['failed','unevaluable:unattested-spec · scorer never consulted','bad'],
-          ['—','not reached','void'],
-          ['—','no record — nothing settles','void']
-        ],
-        ledger:'ACHIEVED × 1 — unchanged · nothing unevaluable settles',
-        ver:'VERIFIED — no record ⟹ it never happened'
-      },
-      {
-        label:'scenario 3 of 3 · revoked at the edge',
-        head:'intent e410…<b>cites spec c7a36959… · <span class="key">key K3</span></b>',
-        hash:'c7a36959…dc51', chip:'attested · published in the store', chipS:'on',
-        rows:[
-          ['declared','key K3 present · spec cited by content address','ok'],
-          ['spec resolved','attested at declaration · signature verifies','ok'],
-          ['verifying','every criterion pass · none unevaluable','ok'],
-          ['dispatch edge','re-check finds a verified tombstone','bad',{chip:['revoked — a signed tombstone landed','bad']}],
-          ['failed_at_dispatch','revoked:<ref> · key not reserved · no record','bad']
-        ],
-        ledger:'ACHIEVED × 1 · the refusal durably recorded',
-        ver:'VERIFIED — refusals recompute too'
-      }
     ];
 
     function setStep(i, t, s, state){
