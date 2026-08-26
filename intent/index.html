@@ -191,7 +191,7 @@
   .fx-row p{font-size:13.5px;color:var(--text-2);line-height:1.55}
   .fx-row p b{color:var(--text);font-weight:600}
 
-  .fwpills{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;max-width:640px}
+  .fwpills{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;max-width:640px}
   .fwp{
     border:1px solid var(--gold-dim);border-radius:999px;
     background:rgba(224,164,54,.06);padding:6px 14px;
@@ -201,7 +201,7 @@
   }
   .fwp .d{color:var(--muted);letter-spacing:.03em;text-transform:none}
 
-  .refuses{margin-top:16px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
+  .refuses{margin-top:18px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
   .refuses b{color:var(--text-2);font-weight:600}
 
   /* the gate console — one gate, three declarations, one feed, one verifier */
@@ -347,7 +347,7 @@
 
   /* ---------- section diagrams (inline SVG) ---------- */
   .viz{
-    margin-top:26px;max-width:860px;
+    margin-top:28px;max-width:860px;
     border:1px solid var(--line);border-radius:8px;overflow:hidden;
     background:var(--panel);
   }
@@ -385,7 +385,7 @@
   .viz svg .cv-no{fill:var(--block)}
 
   /* ---------- section frame ---------- */
-  .section{padding:74px 0;border-top:1px solid var(--line-soft)}
+  .section{padding:84px 0;border-top:1px solid var(--line-soft)}
   .section-head{margin-bottom:42px}
   .section-head h2{
     margin-top:18px;
@@ -434,7 +434,7 @@
   .adapters .ad.key .dep{color:var(--gold-dim)}
   @media(max-width:720px){.adapters{grid-template-columns:1fr}}
 
-  .attach{margin-top:16px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
+  .attach{margin-top:18px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
   .attach b{color:var(--text-2);font-weight:600}
 
   /* ---------- two sides, one record ---------- */
@@ -513,7 +513,7 @@
 
   /* ---------- install / code panels ---------- */
   .install{
-    margin-top:30px;max-width:660px;
+    margin-top:28px;max-width:660px;
     border:1px solid var(--line);border-radius:8px;overflow:hidden;
     background:var(--panel);
   }
@@ -536,7 +536,7 @@
   .install-body .r{color:var(--block)}
   .install-body .b{color:var(--blue)}
 
-  .cta-row{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
   .btn{
     font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;
     padding:12px 20px;border-radius:6px;
@@ -570,7 +570,7 @@
   @media(max-width:860px){.loop,.loop.cols3{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.loop,.loop.cols3{grid-template-columns:1fr}}
   .note{
-    margin-top:18px;font-size:13.5px;color:var(--muted);max-width:720px;line-height:1.6;
+    margin-top:24px;font-size:13.5px;color:var(--muted);max-width:720px;line-height:1.6;
   }
   .note b{color:var(--text-2);font-weight:500}
 
@@ -606,6 +606,7 @@
 
   /* ---------- invariants / policy grid ---------- */
   .policy{
+    margin-top:28px;
     display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
     background:var(--line-soft);border:1px solid var(--line-soft);
     border-radius:8px;overflow:hidden;
@@ -638,10 +639,10 @@
   }
   .finding p{margin-top:6px;font-size:14px;color:var(--text-2);line-height:1.6;max-width:720px}
   .finding p b{color:var(--text);font-weight:600}
-  .findings-stack{margin-top:22px;display:flex;flex-direction:column;gap:12px;max-width:820px}
+  .findings-stack{margin-top:28px;display:flex;flex-direction:column;gap:12px;max-width:860px}
 
   /* ---------- collapsible caveats ---------- */
-  .chg{margin-top:26px;display:flex;flex-direction:column;gap:14px;max-width:820px}
+  .chg{margin-top:28px;display:flex;flex-direction:column;gap:14px;max-width:860px}
   .chg-grp{
     border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--ink-2);
   }
@@ -814,7 +815,7 @@
       <div class="viz reveal" role="img" aria-label="CDM in, CDM out — animated in two passes. Pass one, a clean submission: a CDM WorkflowStep, a plain dict in the 7.1.0 JSON shape, enters the bridge; its report identity is derived — what it is, never what it says — and declared to the gate; the gate grants, and a WorkflowStep comes back carrying ACHIEVED with its business event; the submit ran once. Pass two, the same identity with changed bytes: the same report derives the same key; the gate refuses — already reserved — and the WorkflowStep comes back carrying the refusal and its reason; the submit never ran. The bridge imports no CDM package; the kernel underneath knows no finance.">
         <div class="viz-bar"><span id="cv-cap">cdm in — cdm out</span><span>the bridge lives at the edge</span></div>
         <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 880 150" xmlns="http://www.w3.org/2000/svg" id="cv-svg">
+          <svg viewBox="0 16 880 130" xmlns="http://www.w3.org/2000/svg" id="cv-svg">
             <g class="cv-stage on" id="cv-s1">
               <rect class="vz-blue" x="16" y="28" width="196" height="64" rx="8"/>
               <text class="vz-t vz-tb" x="30" y="53">WorkflowStep in</text>
@@ -850,7 +851,7 @@
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px" role="img" aria-label="One call, for a CDM desk. Import gate_cdm_event from cdm_adapter — stdlib only, importing no CDM package. Call it with one CDM WorkflowStep, a plain dict in the 7.1.0 JSON shape; your submit callable, which runs only on a grant; the client; your reporting entity and rule set; optionally your Qualify dispatch as the qualifier — a step whose declared intent mismatches what its instruction qualifies as declares nothing; the intent spec hash, scope, run id, and a UTC timestamp. The return value is a WorkflowStep: ACHIEVED with its business event, or the refusal with its reason.">
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="One call, for a CDM desk. Import gate_cdm_event from cdm_adapter — stdlib only, importing no CDM package. Call it with one CDM WorkflowStep, a plain dict in the 7.1.0 JSON shape; your submit callable, which runs only on a grant; the client; your reporting entity and rule set; optionally your Qualify dispatch as the qualifier — a step whose declared intent mismatches what its instruction qualifies as declares nothing; the intent spec hash, scope, run id, and a UTC timestamp. The return value is a WorkflowStep: ACHIEVED with its business event, or the refusal with its reason.">
         <div class="install-bar"><span>one call, for a CDM desk</span><span>stdlib only · vendor the tree</span></div>
         <div class="install-body" aria-hidden="true">
 <span class="k">from</span> cdm_adapter <span class="k">import</span> gate_cdm_event <span class="c">&nbsp;&nbsp;# imports no CDM package</span><br />
@@ -939,7 +940,7 @@ step_out = <span class="g">gate_cdm_event</span>(<br />
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px;margin-top:26px" role="img" aria-label="The live demonstration, one command: the monorepo's quickstart runs keygen, attestation, publish, an authorization against the signed spec, an idempotency collision, a refusal of an unattested hash, a revocation whose reason surfaces, declarations through both SDK languages, a gated LangChain tool, a gated MCP server, a gated MCP proxy fronting a server the operator does not own, a live reporting-adapter submission with a same-identity retry refused, a scorer outage that makes the plane deny, and a final recompute of the whole live feed by both verifier twins — expected final line: RESULT: 15 of 15 probes passed.">
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The live demonstration, one command: the monorepo's quickstart runs keygen, attestation, publish, an authorization against the signed spec, an idempotency collision, a refusal of an unattested hash, a revocation whose reason surfaces, declarations through both SDK languages, a gated LangChain tool, a gated MCP server, a gated MCP proxy fronting a server the operator does not own, a live reporting-adapter submission with a same-identity retry refused, a scorer outage that makes the plane deny, and a final recompute of the whole live feed by both verifier twins — expected final line: RESULT: 15 of 15 probes passed.">
         <div class="install-bar"><span>the whole plane, live — one command in the monorepo</span><span>self-asserting</span></div>
         <div class="install-body" aria-hidden="true">
 <span class="p">$</span> treasury/quickstart.sh <span class="c"># or quickstart.ps1 — real gate, real scorer, live feed</span><br />
@@ -1001,7 +1002,7 @@ step_out = <span class="g">gate_cdm_event</span>(<br />
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px" role="img" aria-label="The four integrations in one Python snippet. Import gate_tool from langchain_adapter, which needs langchain-core; IntentGateMiddleware and gated_proxy from mcp_adapter, which needs fastmcp; and ReportIdentity and gate_submission from reporting_adapter, stdlib only. Construct a Client pointed at the gate, bounded at 30 seconds per call by default. Path a: gated equals gate_tool of my_tool and the client, with the intent spec hash, a scope, and a run id. Path b: server.add_middleware of IntentGateMiddleware with the same three arguments. Path c: gated equals gated_proxy of the backend and the client, with the same three arguments. Path d: done equals gate_submission of a ReportIdentity — reporting entity, UTI, action type VALU, rule set, as-of date — a submit callable, and the client. In every path the tool body runs only on a fresh synchronous Proceed.">
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The four integrations in one Python snippet. Import gate_tool from langchain_adapter, which needs langchain-core; IntentGateMiddleware and gated_proxy from mcp_adapter, which needs fastmcp; and ReportIdentity and gate_submission from reporting_adapter, stdlib only. Construct a Client pointed at the gate, bounded at 30 seconds per call by default. Path a: gated equals gate_tool of my_tool and the client, with the intent spec hash, a scope, and a run id. Path b: server.add_middleware of IntentGateMiddleware with the same three arguments. Path c: gated equals gated_proxy of the backend and the client, with the same three arguments. Path d: done equals gate_submission of a ReportIdentity — reporting entity, UTI, action type VALU, rule set, as-of date — a submit callable, and the client. In every path the tool body runs only on a fresh synchronous Proceed.">
         <div class="install-bar"><span>the whole integration — four paths, one discipline</span><span>declarant/pydeclarant/</span></div>
         <div class="install-body" aria-hidden="true">
 <span class="k">from</span> client <span class="k">import</span> Client<br />
@@ -1142,7 +1143,7 @@ done = <span class="g">gate_submission</span>(<span class="g">ReportIdentity</sp
       <div class="viz reveal" role="img" aria-label="The state machine, drawn. Four working states run left to right: DECLARED, key and spec hash bind; RESOLVING, the signature verifies; ACTIVE, admitted; VERIFYING, tri-state scoring; then the dispatch edge, which re-checks volatile facts and reserves the key. Four terminals sit below: FAILED, anything unevaluable at any step, reached from a door refusal at DECLARED or from scoring; SHADOW_RECORDED, fully scored and recorded but not authorized; ACHIEVED, the one durable record, reached from the dispatch edge when the key is reserved; FAILED_AT_DISPATCH, drift, a tombstone, or a duplicate key at the edge. No terminal is unsafe.">
         <div class="viz-bar"><span>the state machine, drawn</span><span>terminals below the line — none unsafe</span></div>
         <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 900 262" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 16 900 246" xmlns="http://www.w3.org/2000/svg">
             <rect class="vz-node" x="16" y="28" width="124" height="46" rx="8"/>
             <text class="vz-t" x="28" y="48">DECLARED</text>
             <text class="vz-s" x="28" y="64">key + spec hash</text>
@@ -1195,7 +1196,7 @@ done = <span class="g">gate_submission</span>(<span class="g">ReportIdentity</sp
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px;margin-top:26px" role="img" aria-label="The ACHIEVED trace record — the contract's exact field set: intent id, idempotency key, rule artifact hash, intent spec hash, trajectory hash, and the feed sequence number. The intent spec hash points back to the signed policy; the trajectory hash replays the authorization byte-identically; the idempotency key is the reservation that makes a duplicate impossible.">
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The ACHIEVED trace record — the contract's exact field set: intent id, idempotency key, rule artifact hash, intent spec hash, trajectory hash, and the feed sequence number. The intent spec hash points back to the signed policy; the trajectory hash replays the authorization byte-identically; the idempotency key is the reservation that makes a duplicate impossible.">
         <div class="install-bar"><span>the ACHIEVED trace record — what closes the loop</span><span>field set verbatim · values illustrative</span></div>
         <div class="install-body" aria-hidden="true">
 ACHIEVED {<br />
@@ -1269,7 +1270,7 @@ ACHIEVED {<br />
       <div class="viz reveal" role="img" aria-label="The audit side's seat, drawn. The durable feed, events.jsonl, is read by two independent implementations — the Go verifier and pyverifier, a stdlib-only Python twin. Each recomputes every record from the feed alone; their canonical reports are byte-compared. Verdicts are tri-state: verified, refuted, unverifiable — and unverifiable never passes. The verifier tree is import-pinned to run none of the gate's code.">
         <div class="viz-bar"><span>recompute, don't trust</span><span>two languages · one byte-compared report</span></div>
         <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 880 236" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 44 880 192" xmlns="http://www.w3.org/2000/svg">
             <rect class="vz-blue" x="16" y="90" width="210" height="56" rx="8"/>
             <text class="vz-t vz-tb" x="30" y="113">the durable feed</text>
             <text class="vz-s" x="30" y="131">events.jsonl — records alone</text>
@@ -1301,7 +1302,7 @@ ACHIEVED {<br />
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px" role="img" aria-label="The verifier CLI over the frozen feed fixtures: run against events-good.jsonl the result is VERIFIED with exit code 0 — every hash recomputes, the lifecycle replays, at-most-once holds. Run against events-tampered.jsonl, which differs by one flipped byte, the result is REFUTED with exit code 1.">
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The verifier CLI over the frozen feed fixtures: run against events-good.jsonl the result is VERIFIED with exit code 0 — every hash recomputes, the lifecycle replays, at-most-once holds. Run against events-tampered.jsonl, which differs by one flipped byte, the result is REFUTED with exit code 1.">
         <div class="install-bar"><span>the audit side's seat · verifier/cmd/intent-verify</span><span>exit codes are the interface</span></div>
         <div class="install-body" aria-hidden="true">
 <span class="p">$</span> go run ./verifier/cmd/intent-verify core/contract/feed/events-good.jsonl<br />
