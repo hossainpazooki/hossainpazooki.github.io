@@ -376,6 +376,13 @@
   .vz-pin{fill:rgba(224,164,54,.1);stroke:var(--gold-dim);stroke-width:1.25}
   .vz-pt{fill:var(--gold);font-size:10.5px;font-weight:600}
   .vz-tick{stroke:var(--line);stroke-width:1.25;fill:none}
+  .viz svg .cv-stage{transition:opacity .45s ease}
+  .viz svg.play .cv-stage{opacity:.28}
+  .viz svg.play .cv-stage.on{opacity:1}
+  .viz svg g.cv-bad rect{stroke:var(--block-dim);fill:rgba(212,101,74,.06)}
+  .viz svg g.cv-bad .vz-tb{fill:var(--block)}
+  .viz svg .cv-ok{fill:var(--gold)}
+  .viz svg .cv-no{fill:var(--block)}
 
   /* ---------- section frame ---------- */
   .section{padding:74px 0;border-top:1px solid var(--line-soft)}
@@ -804,26 +811,40 @@
         <p>Agents are entering post-trade workflows, and the first irreversible thing they will do is <b>submit</b>. <code>gate_cdm_event</code> takes one CDM <code>WorkflowStep</code> — a plain dict in 7.1.0's JSON shape — declares the submission to the gate, and returns the outcome as a step your stack already stores: <code>ACHIEVED</code> with its business event, or the refusal and its reason. The plane never reads the report itself: a submission is keyed by what it <b>is</b> — entity, trade, action, rule set — never by what it <b>says</b>.</p>
       </div>
 
-      <div class="viz reveal" role="img" aria-label="CDM in, CDM out. A CDM WorkflowStep — a plain dict in the 7.1.0 JSON shape — enters the bridge, which derives the report's identity: what it is, never what it says. The identity is declared to the gate, which decides fail-closed. The decision comes back as a WorkflowStep your stack already stores: ACHIEVED with its business event, or the refusal and its reason. The bridge lives at the edge and imports no CDM package; the kernel underneath knows no finance.">
-        <div class="viz-bar"><span>cdm in — cdm out</span><span>the bridge lives at the edge</span></div>
+      <div class="viz reveal" role="img" aria-label="CDM in, CDM out — animated in two passes. Pass one, a clean submission: a CDM WorkflowStep, a plain dict in the 7.1.0 JSON shape, enters the bridge; its report identity is derived — what it is, never what it says — and declared to the gate; the gate grants, and a WorkflowStep comes back carrying ACHIEVED with its business event; the submit ran once. Pass two, the same identity with changed bytes: the same report derives the same key; the gate refuses — already reserved — and the WorkflowStep comes back carrying the refusal and its reason; the submit never ran. The bridge imports no CDM package; the kernel underneath knows no finance.">
+        <div class="viz-bar"><span id="cv-cap">cdm in — cdm out</span><span>the bridge lives at the edge</span></div>
         <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 880 150" xmlns="http://www.w3.org/2000/svg">
-            <rect class="vz-blue" x="16" y="28" width="196" height="64" rx="8"/>
-            <text class="vz-t vz-tb" x="30" y="53">WorkflowStep in</text>
-            <text class="vz-s" x="30" y="71">a plain dict — 7.1.0 shape</text>
-            <line class="vz-arr" x1="212" y1="60" x2="248" y2="60"/><polyline class="vz-arr" points="241,56 248,60 241,64"/>
-            <rect class="vz-node" x="252" y="28" width="196" height="64" rx="8"/>
-            <text class="vz-t" x="266" y="53">report identity</text>
-            <text class="vz-s" x="266" y="71">what it is — never what it says</text>
-            <line class="vz-arr" x1="448" y1="60" x2="484" y2="60"/><polyline class="vz-arr" points="477,56 484,60 477,64"/>
-            <rect class="vz-gold" x="488" y="28" width="160" height="64" rx="8"/>
-            <text class="vz-t vz-tg" x="502" y="53">the gate</text>
-            <text class="vz-s" x="502" y="71">fail-closed</text>
-            <line class="vz-arr" x1="648" y1="60" x2="684" y2="60"/><polyline class="vz-arr" points="677,56 684,60 677,64"/>
-            <rect class="vz-blue" x="688" y="28" width="176" height="64" rx="8"/>
-            <text class="vz-t vz-tb" x="700" y="49">WorkflowStep back</text>
-            <text class="vz-s" x="700" y="66">ACHIEVED + event</text>
-            <text class="vz-s" x="700" y="81">or refusal + reason</text>
+          <svg viewBox="0 0 880 150" xmlns="http://www.w3.org/2000/svg" id="cv-svg">
+            <g class="cv-stage on" id="cv-s1">
+              <rect class="vz-blue" x="16" y="28" width="196" height="64" rx="8"/>
+              <text class="vz-t vz-tb" x="30" y="53">WorkflowStep in</text>
+              <text class="vz-s" x="30" y="71" id="cv-b1s">a plain dict — 7.1.0 shape</text>
+            </g>
+            <g class="cv-stage on" id="cv-a1">
+              <line class="vz-arr" x1="212" y1="60" x2="248" y2="60"/><polyline class="vz-arr" points="241,56 248,60 241,64"/>
+            </g>
+            <g class="cv-stage on" id="cv-s2">
+              <rect class="vz-node" x="252" y="28" width="196" height="64" rx="8"/>
+              <text class="vz-t" x="266" y="53">report identity</text>
+              <text class="vz-s" x="266" y="71" id="cv-b2s">what it is — never what it says</text>
+            </g>
+            <g class="cv-stage on" id="cv-a2">
+              <line class="vz-arr" x1="448" y1="60" x2="484" y2="60"/><polyline class="vz-arr" points="477,56 484,60 477,64"/>
+            </g>
+            <g class="cv-stage on" id="cv-s3">
+              <rect class="vz-gold" x="488" y="28" width="160" height="64" rx="8"/>
+              <text class="vz-t vz-tg" x="502" y="53">the gate</text>
+              <text class="vz-s" x="502" y="71" id="cv-b3s">fail-closed</text>
+            </g>
+            <g class="cv-stage on" id="cv-a3">
+              <line class="vz-arr" x1="648" y1="60" x2="684" y2="60"/><polyline class="vz-arr" points="677,56 684,60 677,64"/>
+            </g>
+            <g class="cv-stage on" id="cv-s4">
+              <rect class="vz-blue" x="688" y="28" width="176" height="64" rx="8"/>
+              <text class="vz-t vz-tb" x="700" y="49">WorkflowStep back</text>
+              <text class="vz-s" x="700" y="66" id="cv-b4a">ACHIEVED + event</text>
+              <text class="vz-s" x="700" y="81" id="cv-b4b">or refusal + reason</text>
+            </g>
             <text class="vz-lab" x="16" y="132">the bridge imports no CDM package — dicts in, dicts out; the kernel underneath knows no finance</text>
           </svg>
         </div>
@@ -1420,6 +1441,54 @@ ACHIEVED {<br />
         if(i >= ops.length){ i = 0; }
         next();
       }, op[1]);
+    })();
+  })();
+
+  // The CDM bridge, animated: pass 1 a clean submission to ACHIEVED,
+  // pass 2 the same identity with changed bytes — refused, submit never run.
+  (function(){
+    var svg = document.getElementById('cv-svg');
+    var cap = document.getElementById('cv-cap');
+    if(!svg || !cap) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // keep the finished grant state
+    var $ = function(id){ return document.getElementById(id); };
+    var stages = ['cv-s1','cv-a1','cv-s2','cv-a2','cv-s3','cv-a3','cv-s4'];
+    function setText(id, t){ var el=$(id); if(el) el.textContent=t; }
+    function verdict(t, cls){ var el=$('cv-b3s'); el.textContent=t; el.setAttribute('class','vz-s '+cls); }
+    function outcome(bad, l1, l2){
+      var g=$('cv-s4');
+      g.setAttribute('class', 'cv-stage'+(bad?' cv-bad':''));
+      setText('cv-b4a', l1); setText('cv-b4b', l2);
+    }
+    function dimAll(){
+      stages.forEach(function(id){ $(id).setAttribute('class', $(id).getAttribute('class').replace(/ ?\bon\b/,'')); });
+    }
+    function on(id){ var el=$(id); if(el.getAttribute('class').indexOf('on')<0) el.setAttribute('class', el.getAttribute('class')+' on'); }
+    svg.setAttribute('class','play');
+    var ops = [
+      // pass 1 — a clean submission
+      [function(){ dimAll(); cap.textContent='pass 1 of 2 · a clean submission';
+        setText('cv-b1s','a plain dict — 7.1.0 shape');
+        setText('cv-b2s','what it is — never what it says');
+        verdict('fail-closed','');
+        outcome(false,'…','…'); }, 750],
+      [function(){ on('cv-s1'); }, 850],
+      [function(){ on('cv-a1'); on('cv-s2'); setText('cv-b2s','identity derived ⟹ key K'); }, 950],
+      [function(){ on('cv-a2'); on('cv-s3'); verdict('Proceed — fresh grant','cv-ok'); }, 950],
+      [function(){ on('cv-a3'); outcome(false,'ACHIEVED + business event','submit ran — once'); on('cv-s4'); }, 3400],
+      // pass 2 — same identity, new bytes
+      [function(){ dimAll(); cap.textContent='pass 2 of 2 · same identity — new bytes';
+        setText('cv-b1s','same report · numbers changed'); verdict('fail-closed',''); }, 750],
+      [function(){ on('cv-s1'); }, 850],
+      [function(){ on('cv-a1'); on('cv-s2'); setText('cv-b2s','same identity ⟹ same key K'); }, 950],
+      [function(){ on('cv-a2'); on('cv-s3'); verdict('already reserved — refused','cv-no'); }, 950],
+      [function(){ on('cv-a3'); outcome(true,'the refusal + its reason','submit never ran'); on('cv-s4'); }, 4400]
+    ];
+    var i = 0;
+    (function next(){
+      var op = ops[i];
+      op[0]();
+      setTimeout(function(){ i++; if(i >= ops.length) i = 0; next(); }, op[1]);
     })();
   })();
 
