@@ -9,8 +9,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<title>Intent Plane — fail-closed authorization for AI agents · LangChain + MCP adapters</title>
-<meta name="description" content="The intent plane: a fail-closed authorization gate for AI agents that take irreversible actions — with an audit record third parties can re-verify without trusting the gate. Gate the call four ways: a LangChain tool in one call, MCP middleware for a server you own, a gated MCP proxy for one you don't, and a regulatory-report submission the plane never sees. One signed object, authority as key possession, fail-closed twice, exactly one durable record per decision. For regulatory compliance teams: report submissions keyed by regulatory identity, with a FINOS CDM WorkflowStep bridge." />
+<title>Intent Plane — fail-closed authorization for AI agents · CDM · LangChain · MCP</title>
+<meta name="description" content="The intent plane: a fail-closed authorization gate for AI agents that take irreversible actions — with an audit record third parties can re-verify without trusting the gate. Speaks CDM at the edge: a WorkflowStep in, the decision back as a WorkflowStep — plus LangChain and MCP adapters. Not a reporting engine: the kernel knows no domain. One signed object, authority as key possession, fail-closed twice, exactly one durable record per decision." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
@@ -163,6 +163,16 @@
     display:grid;grid-template-columns:1.05fr .95fr;
     gap:56px;align-items:center;
   }
+  .intro-below{margin-top:54px}
+  .intro-below .fx{margin-top:0;max-width:none}
+  .ib-cols{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px 48px}
+  .ib-cols .refuses,.ib-cols .attach{margin-top:0;max-width:none}
+  .ib-foot{
+    margin-top:28px;display:flex;justify-content:space-between;
+    align-items:center;gap:18px;flex-wrap:wrap;
+  }
+  .ib-foot .fwpills{margin-top:0;max-width:none}
+  .ib-foot .cta-row{margin-top:0}
   .intro .eyebrow{margin-bottom:26px}
   .intro h1{
     font-family:'Space Grotesk',var(--sans);
@@ -191,7 +201,7 @@
   .fx-row p{font-size:13.5px;color:var(--text-2);line-height:1.55}
   .fx-row p b{color:var(--text);font-weight:600}
 
-  .fwpills{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;max-width:560px}
+  .fwpills{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;max-width:640px}
   .fwp{
     border:1px solid var(--gold-dim);border-radius:999px;
     background:rgba(224,164,54,.06);padding:6px 14px;
@@ -201,7 +211,7 @@
   }
   .fwp .d{color:var(--muted);letter-spacing:.03em;text-transform:none}
 
-  .refuses{margin-top:16px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
+  .refuses{margin-top:18px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
   .refuses b{color:var(--text-2);font-weight:600}
 
   /* the gate console — one gate, three declarations, one feed, one verifier */
@@ -343,11 +353,12 @@
 
   @media(max-width:860px){
     .intro-grid{grid-template-columns:1fr;gap:44px}
+    .ib-cols{grid-template-columns:1fr}
   }
 
   /* ---------- section diagrams (inline SVG) ---------- */
   .viz{
-    margin-top:26px;max-width:860px;
+    margin-top:28px;max-width:860px;
     border:1px solid var(--line);border-radius:8px;overflow:hidden;
     background:var(--panel);
   }
@@ -376,9 +387,16 @@
   .vz-pin{fill:rgba(224,164,54,.1);stroke:var(--gold-dim);stroke-width:1.25}
   .vz-pt{fill:var(--gold);font-size:10.5px;font-weight:600}
   .vz-tick{stroke:var(--line);stroke-width:1.25;fill:none}
+  .viz svg .cv-stage{transition:opacity .45s ease}
+  .viz svg.play .cv-stage{opacity:.28}
+  .viz svg.play .cv-stage.on{opacity:1}
+  .viz svg g.cv-bad rect{stroke:var(--block-dim);fill:rgba(212,101,74,.06)}
+  .viz svg g.cv-bad .vz-tb{fill:var(--block)}
+  .viz svg .cv-ok{fill:var(--gold)}
+  .viz svg .cv-no{fill:var(--block)}
 
   /* ---------- section frame ---------- */
-  .section{padding:74px 0;border-top:1px solid var(--line-soft)}
+  .section{padding:84px 0;border-top:1px solid var(--line-soft)}
   .section-head{margin-bottom:42px}
   .section-head h2{
     margin-top:18px;
@@ -427,7 +445,7 @@
   .adapters .ad.key .dep{color:var(--gold-dim)}
   @media(max-width:720px){.adapters{grid-template-columns:1fr}}
 
-  .attach{margin-top:16px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
+  .attach{margin-top:18px;font-size:13.5px;color:var(--muted);max-width:540px;line-height:1.6}
   .attach b{color:var(--text-2);font-weight:600}
 
   /* ---------- two sides, one record ---------- */
@@ -506,7 +524,7 @@
 
   /* ---------- install / code panels ---------- */
   .install{
-    margin-top:30px;max-width:660px;
+    margin-top:28px;max-width:660px;
     border:1px solid var(--line);border-radius:8px;overflow:hidden;
     background:var(--panel);
   }
@@ -529,7 +547,7 @@
   .install-body .r{color:var(--block)}
   .install-body .b{color:var(--blue)}
 
-  .cta-row{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+  .cta-row{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap}
   .btn{
     font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;
     padding:12px 20px;border-radius:6px;
@@ -563,7 +581,7 @@
   @media(max-width:860px){.loop,.loop.cols3{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:480px){.loop,.loop.cols3{grid-template-columns:1fr}}
   .note{
-    margin-top:18px;font-size:13.5px;color:var(--muted);max-width:720px;line-height:1.6;
+    margin-top:24px;font-size:13.5px;color:var(--muted);max-width:720px;line-height:1.6;
   }
   .note b{color:var(--text-2);font-weight:500}
 
@@ -599,6 +617,7 @@
 
   /* ---------- invariants / policy grid ---------- */
   .policy{
+    margin-top:28px;
     display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
     background:var(--line-soft);border:1px solid var(--line-soft);
     border-radius:8px;overflow:hidden;
@@ -631,10 +650,10 @@
   }
   .finding p{margin-top:6px;font-size:14px;color:var(--text-2);line-height:1.6;max-width:720px}
   .finding p b{color:var(--text);font-weight:600}
-  .findings-stack{margin-top:22px;display:flex;flex-direction:column;gap:12px;max-width:820px}
+  .findings-stack{margin-top:28px;display:flex;flex-direction:column;gap:12px;max-width:860px}
 
   /* ---------- collapsible caveats ---------- */
-  .chg{margin-top:26px;display:flex;flex-direction:column;gap:14px;max-width:820px}
+  .chg{margin-top:28px;display:flex;flex-direction:column;gap:14px;max-width:860px}
   .chg-grp{
     border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--ink-2);
   }
@@ -723,12 +742,11 @@
     <a class="brand" href="/"><span class="up">hp /</span>intent<span class="dot">.</span></a>
     <nav class="nav-links">
       <a href="/" class="hideable">home</a>
+      <a href="#cdm" class="hideable">cdm</a>
+      <a href="#treasury" class="hideable">treasury</a>
       <a href="#adapters" class="hideable">langchain&nbsp;·&nbsp;mcp</a>
-      <a href="#sides" class="hideable">two sides</a>
       <a href="#lifecycle" class="hideable">lifecycle</a>
       <a href="#verifier" class="hideable">verifier</a>
-      <a href="#treasury" class="hideable">treasury</a>
-      <a href="#cdm" class="hideable">cdm</a>
       <a href="/baseline/" class="hideable">/baseline</a>
       <a href="/rigor/" class="hideable">/rigor</a>
       <a href="/blog/" class="hideable">/blog</a>
@@ -745,39 +763,19 @@
 
   <!-- INTRO / THE PLANE -->
   <section class="intro section" id="plane">
-    <div class="wrap intro-grid">
-      <div>
+    <div class="wrap">
+      <div class="intro-grid">
+      <div class="intro-head">
         <span class="eyebrow">the intent plane — fail-closed authorization</span>
-        <h1>Agents propose.<br />The gate disposes.<br /><span class="dim">The record re&#8209;verifies — without trusting the gate.</span></h1>
-        <p class="lede">Before an AI agent moves money, files a report, or triggers a workflow, it must <b>declare the intent</b>. A deterministic gate authorizes it against a policy a human <b>signed</b> — or refuses. Every decision leaves <b>exactly one durable record</b> that a third party can re-check. The worst case is an action that <b>wrongly waits</b>, never one that wrongly executes.</p>
-        <div class="fx">
-          <div class="fx-row without">
-            <span class="w">without</span>
-            <p>Authorization lives <b>inside</b> the agent's code — ad-hoc checks, config nobody signed. Audit reads the logs afterward and has to <b>trust the code that wrote them</b>.</p>
-          </div>
-          <div class="fx-row with">
-            <span class="w">with the plane</span>
-            <p>Authorization sits <b>outside the agent</b>: the rules arrive only in a <b>spec a human signed</b>, anything the gate <b>cannot evaluate is a no</b>, and the record can be <b>re-checked by someone who trusts nothing</b>.</p>
-          </div>
-        </div>
-        <p class="refuses"><b>What it refuses: anything it cannot evaluate.</b> Missing data, an unsigned or revoked spec, an empty rule set, a duplicate action — all deny.</p>
-        <div class="fwpills" role="list" aria-label="Adapters that ship pre-wired: LangChain, on langchain-core; MCP, on fastmcp, probed against version 3.4.7; and a regulatory-reporting adapter, stdlib only.">
-          <span class="fwp" role="listitem">langchain<span class="d">langchain-core</span></span>
-          <span class="fwp" role="listitem">mcp<span class="d">fastmcp 3.4.7</span></span>
-          <span class="fwp" role="listitem">reporting<span class="d">stdlib only</span></span>
-        </div>
-        <p class="attach"><b>It attaches at the tool-call seam, not in the prompt</b> — a LangChain tool wrapped in one call, an MCP server you own, one you don't (fronted unchanged), or a regulatory-report submission the plane never sees.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#adapters">Gate the call, four ways →</a>
-          <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane ↗</a>
-        </div>
+        <h1>Agents propose.<br />The gate disposes.<br /><span class="dim">The record proves it — no trust required.</span></h1>
+        <p class="lede">Before an AI agent submits a regulatory report, moves money, or triggers anything irreversible, it must <b>declare the intent</b>. A deterministic gate authorizes it against a policy a human <b>signed</b> — or refuses. Every decision leaves <b>exactly one durable record</b> that a third party can re-check. The worst case is an action that <b>wrongly waits</b>, never one that wrongly executes.</p>
       </div>
-      <div class="runs" role="img" aria-label="The gate console: three declarations against the same signed policy. Scenario one, a clean grant — an intent declares with key K1, citing the spec by content address; the spec resolves because its signature verifies and its bytes hash to the claimed address; every criterion passes; the dispatch-edge re-check holds and key K1 is reserved; the terminal is ACHIEVED, exactly one durable fsynced record, sequence 41. Scenario two, an unattested spec — the declaration cites a hash with no attestation; resolution refuses before any scoring and the terminal is FAILED, unevaluable colon unattested-spec; the scorer is never consulted and nothing settles. Scenario three, revoked at the edge — an attested spec passes verification, but a signed tombstone lands mid-flight; the dispatch-edge re-check finds it and the terminal is FAILED_AT_DISPATCH, revoked; the key is not reserved and nothing settles. The durable feed below holds exactly one ACHIEVED record throughout, and the verifier chip confirms the whole feed re-derives from the records alone — grant or refusal, every terminal recomputes without trusting the gate.">
+      <div class="runs" role="img" aria-label="The gate console: one clean grant, end to end. An intent declares with key K1, citing the signed spec by content address; the spec resolves — its signature verifies and its bytes hash to the claimed address; every criterion passes; the dispatch-edge re-check holds and key K1 is reserved; the terminal is ACHIEVED — exactly one durable, fsynced record, sequence 41. The durable feed below shows the record, and the verifier chip confirms every hash recomputes from the feed alone — without trusting the gate. The refusal side is shown in the treasury section below.">
         <div class="spec-chip" data-s="idle" id="cspec" aria-hidden="true">
           <span class="sl">signed intentspec · <span class="h" id="cspec-h">c7a36959…dc51</span></span>
           <span class="sr" id="cspec-s">attested · published in the store</span>
         </div>
-        <div class="runs-cap" aria-hidden="true"><span id="cscn">scenario 1 of 3 · a clean grant</span><span>fail-closed · every branch</span></div>
+        <div class="runs-cap" aria-hidden="true"><span id="cscn">a clean grant — end to end</span><span>declare → verify → re-check → record</span></div>
         <div class="run" aria-hidden="true">
           <div class="run-head" id="chead">intent 7f3a…<b>cites spec c7a36959… · <span class="key">key K1</span></b></div>
           <div class="gsteps">
@@ -797,6 +795,189 @@
           <span class="vv" id="cver-v">standing by…</span>
         </div>
       </div>
+      </div>
+      <div class="intro-below">
+        <div class="fx">
+          <div class="fx-row with">
+            <span class="w">with the plane</span>
+            <p>Authorization sits <b>outside the agent</b>: the rules arrive only in a <b>spec a human signed</b>, anything the gate <b>cannot evaluate is a no</b>, and the record can be <b>re-checked by someone who trusts nothing</b>.</p>
+          </div>
+        </div>
+        <div class="ib-cols">
+        <p class="refuses"><b>What it refuses: anything it cannot evaluate.</b> Missing data, an unsigned or revoked spec, an empty rule set, a duplicate action — all deny.</p>
+        <p class="attach"><b>It attaches at the tool-call seam, not in the prompt</b> — a regulatory-report submission the plane never reads, a LangChain tool wrapped in one call, a FastMCP server you own or one you don't, fronted unchanged.</p>
+        </div>
+        <div class="ib-foot">
+        <div class="fwpills" role="list" aria-label="Adapters that ship pre-wired: a CDM reporting bridge, stdlib only; LangChain, on langchain-core; and FastMCP for MCP servers, probed against version 3.4.7.">
+          <span class="fwp" role="listitem">cdm<span class="d">reporting · stdlib</span></span>
+          <span class="fwp" role="listitem">langchain<span class="d">langchain-core</span></span>
+          <span class="fwp" role="listitem">fastmcp<span class="d">mcp · 3.4.7</span></span>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#cdm">For the reporting stack →</a>
+          <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane ↗</a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CDM — WHERE IT LANDS FIRST -->
+  <section class="section" id="cdm">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">where it lands first — finos cdm</span>
+        <h2>A <span class="pr">WorkflowStep</span> in.<br />The decision back, as a <span class="pr">WorkflowStep</span>.</h2>
+        <p>Agents are entering post-trade workflows, and the first irreversible thing they will do is <b>submit</b>. <code>gate_cdm_event</code> takes one CDM <code>WorkflowStep</code> — a plain dict in 7.1.0's JSON shape — declares the submission to the gate, and returns the outcome as a step your stack already stores: <code>ACHIEVED</code> with its business event, or the refusal and its reason. The plane never reads the report itself: a submission is keyed by what it <b>is</b> — entity, trade, action, rule set — never by what it <b>says</b>.</p>
+      </div>
+
+      <div class="viz reveal" role="img" aria-label="CDM in, CDM out — animated in two passes. Pass one, a clean submission: a CDM WorkflowStep, a plain dict in the 7.1.0 JSON shape, enters the bridge; its report identity is derived — what it is, never what it says — and declared to the gate; the gate grants, and a WorkflowStep comes back carrying ACHIEVED with its business event; the submit ran once. Pass two, the same identity with changed bytes: the same report derives the same key; the gate refuses — already reserved — and the WorkflowStep comes back carrying the refusal and its reason; the submit never ran. The bridge imports no CDM package; the kernel underneath knows no finance.">
+        <div class="viz-bar"><span id="cv-cap">cdm in — cdm out</span><span>the bridge lives at the edge</span></div>
+        <div class="viz-body" aria-hidden="true">
+          <svg viewBox="0 16 880 130" xmlns="http://www.w3.org/2000/svg" id="cv-svg">
+            <g class="cv-stage on" id="cv-s1">
+              <rect class="vz-blue" x="16" y="28" width="196" height="64" rx="8"/>
+              <text class="vz-t vz-tb" x="30" y="53">WorkflowStep in</text>
+              <text class="vz-s" x="30" y="71" id="cv-b1s">a plain dict — 7.1.0 shape</text>
+            </g>
+            <g class="cv-stage on" id="cv-a1">
+              <line class="vz-arr" x1="212" y1="60" x2="248" y2="60"/><polyline class="vz-arr" points="241,56 248,60 241,64"/>
+            </g>
+            <g class="cv-stage on" id="cv-s2">
+              <rect class="vz-node" x="252" y="28" width="196" height="64" rx="8"/>
+              <text class="vz-t" x="266" y="53">report identity</text>
+              <text class="vz-s" x="266" y="71" id="cv-b2s">what it is — never what it says</text>
+            </g>
+            <g class="cv-stage on" id="cv-a2">
+              <line class="vz-arr" x1="448" y1="60" x2="484" y2="60"/><polyline class="vz-arr" points="477,56 484,60 477,64"/>
+            </g>
+            <g class="cv-stage on" id="cv-s3">
+              <rect class="vz-gold" x="488" y="28" width="160" height="64" rx="8"/>
+              <text class="vz-t vz-tg" x="502" y="53">the gate</text>
+              <text class="vz-s" x="502" y="71" id="cv-b3s">fail-closed</text>
+            </g>
+            <g class="cv-stage on" id="cv-a3">
+              <line class="vz-arr" x1="648" y1="60" x2="684" y2="60"/><polyline class="vz-arr" points="677,56 684,60 677,64"/>
+            </g>
+            <g class="cv-stage on" id="cv-s4">
+              <rect class="vz-blue" x="688" y="28" width="176" height="64" rx="8"/>
+              <text class="vz-t vz-tb" x="700" y="49">WorkflowStep back</text>
+              <text class="vz-s" x="700" y="66" id="cv-b4a">ACHIEVED + event</text>
+              <text class="vz-s" x="700" y="81" id="cv-b4b">or refusal + reason</text>
+            </g>
+            <text class="vz-lab" x="16" y="132">the bridge imports no CDM package — dicts in, dicts out; the kernel underneath knows no finance</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="One call, for a CDM desk. Import gate_cdm_event from cdm_adapter — stdlib only, importing no CDM package. Call it with one CDM WorkflowStep, a plain dict in the 7.1.0 JSON shape; your submit callable, which runs only on a grant; the client; your reporting entity and rule set; optionally your Qualify dispatch as the qualifier — a step whose declared intent mismatches what its instruction qualifies as declares nothing; the intent spec hash, scope, run id, and a UTC timestamp. The return value is a WorkflowStep: ACHIEVED with its business event, or the refusal with its reason.">
+        <div class="install-bar"><span>one call, for a CDM desk</span><span>stdlib only · vendor the tree</span></div>
+        <div class="install-body" aria-hidden="true">
+<span class="k">from</span> cdm_adapter <span class="k">import</span> gate_cdm_event <span class="c">&nbsp;&nbsp;# imports no CDM package</span><br />
+<br />
+step_out = <span class="g">gate_cdm_event</span>(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;step, <span class="c">&nbsp;&nbsp;# one CDM WorkflowStep — a plain dict, 7.1.0 JSON shape</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">lambda</span>: tr.submit(xml), <span class="c">&nbsp;&nbsp;# your submit — runs only on a grant</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;client, reporting_entity=LEI, rule_set=RULES,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;qualifier=qualify, <span class="c">&nbsp;&nbsp;# your Qualify_* dispatch — a mismatched intent declares nothing</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;intent_spec_hash=SPEC, scope=<span class="b">"per-actor"</span>, run_id=run_id, timestamp_utc=now)<br />
+<br />
+<span class="c"># step_out is a WorkflowStep: ACHIEVED with its business event — or the refusal, with its reason</span>
+        </div>
+      </div>
+
+      <div class="policy reveal">
+        <div class="p-cell">
+          <h4><span class="num">01</span>Same report, new numbers — refused</h4>
+          <p>A resubmission with different bytes is still <b>the same report</b>, refused before it fires. That is the duplicate a trade repository will <b>not</b> reject for you — and exactly what a retry after a timeout produces.</p>
+        </div>
+        <div class="p-cell">
+          <h4><span class="num">02</span>Says one thing, proposes another — refused</h4>
+          <p>Pass your own qualifier and a step whose declared intent is <b>not what its instruction qualifies as</b> declares nothing at all. The check runs before anything is declared — an agent cannot label its way past the gate.</p>
+        </div>
+        <div class="p-cell">
+          <h4><span class="num">03</span>A doorway, not a dependency</h4>
+          <p>The bridge is one edge module that <b>imports no CDM package</b>. The kernel underneath carries no financial vocabulary — pinned by tests — and the same gate fronts payments, LangChain tools, and MCP servers below.</p>
+        </div>
+      </div>
+
+      <p class="note reveal"><b>Honestly scoped.</b> The action-type table is EMIR-Refit-shaped and stated as the author's reading — verify it against your current validation rules before any production claim. Identity fields are keyed verbatim; case normalization is the operator's, upstream.</p>
+
+      <div class="cta-row reveal">
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/blob/main/declarant/pydeclarant/cdm_adapter.py" target="_blank" rel="noopener">the bridge — cdm_adapter.py ↗</a>
+        <a class="btn btn-ghost" href="#treasury">Proof on payments →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE REFERENCE APPLICATION — TREASURY -->
+  <section class="section" id="treasury">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">the reference application — proof on payments</span>
+        <h2>The same gate, pointed at a real consequence: treasury payments.</h2>
+        <p>The kernel knows no domain — criteria, thresholds, and what counts as a duplicate arrive only through the signed spec. Pointed at treasury payments in the testing monorepo, the loop closes: every settlement carries three hashes joining the runtime trace back to the exact signed policy that authorized it.</p>
+      </div>
+
+      <div class="tgrid">
+        <div class="reveal">
+          <h3>A duplicate of an irreversible payment isn't caught.<br /><span class="dim">It's impossible — refused at the dispatch edge, by construction.</span></h3>
+          <p class="tp">The worked example the monorepo runs end to end: the idempotency key is a <b>declared, first-class gate criterion</b> — required, and reserved at the dispatch edge. The same declared key then keys the settlement ledger, so at-most-once holds end to end.</p>
+        </div>
+        <div class="runs reveal" role="img" aria-label="The treasury worked example. At the top, the signed policy: IntentSpec c7a36959, published in the ATLAS registry. Two runs pass through the gate under it, side by side. Run 1, a treasury payment, passes declaration, verification, and the dispatch-edge re-check, reserves its idempotency key, and reaches the single durable ACHIEVED record. Run 2, a near-duplicate with the same key and one changed field, passes verification but collides on the reserved key at the dispatch edge and ends FAILED_AT_DISPATCH. The durable feed below shows one ACHIEVED record — the payment ran exactly once — and a return rail carries the settlement's trace hashes back up to the signed policy chip: the loop closes on the exact policy that authorized the run.">
+          <div class="spec-chip" data-s="idle" id="spec" aria-hidden="true">
+            <span class="sl">signed intentspec · <span class="h">c7a36959…dc51</span></span>
+            <span class="sr" id="spec-s">atlas registry · published</span>
+          </div>
+          <div class="loopback" data-s="idle" id="loopback" aria-hidden="true"></div>
+          <div class="runs-cap" aria-hidden="true"><span>worked example · treasury payment · class 1</span><span>spec re-verified per run · fail-closed</span></div>
+          <div class="runs-grid" aria-hidden="true">
+            <div class="run">
+              <div class="run-head">run 1 · the payment<b>intent 7f3a… · <span class="key">key K</span></b></div>
+              <div class="gsteps">
+                <div class="gstep" data-s="idle" id="a1"><span class="d"></span><span class="t">declared</span><span class="s">key present</span></div>
+                <div class="gstep" data-s="idle" id="a2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass · none unevaluable</span></div>
+                <div class="gstep" data-s="idle" id="a3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">volatile re-check holds</span></div>
+                <div class="gstep" data-s="idle" id="a4"><span class="d"></span><span class="t">key K reserved</span><span class="s">first reservation</span></div>
+                <div class="gstep" data-s="idle" id="a5"><span class="d"></span><span class="t">achieved</span><span class="s">one durable record · fsync</span></div>
+              </div>
+            </div>
+            <div class="run dup">
+              <div class="run-head">run 2 · near-duplicate<b>intent 9c1e… · <span class="key">same key K</span></b></div>
+              <div class="gsteps">
+                <div class="gstep" data-s="idle" id="b1"><span class="d"></span><span class="t">declared</span><span class="s">same key · one field changed</span></div>
+                <div class="gstep" data-s="idle" id="b2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass — validity isn't the question</span></div>
+                <div class="gstep" data-s="idle" id="b3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">key K already reserved</span></div>
+                <div class="gstep" data-s="idle" id="b4"><span class="d"></span><span class="t">failed_at_dispatch</span><span class="s">refused · no record written</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="ledger" data-s="idle" id="ledger" aria-hidden="true">
+            <span class="ll">durable feed — what downstream observes</span>
+            <span class="lv" id="ledger-v">awaiting records…</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The live demonstration, one command: the monorepo's quickstart runs keygen, attestation, publish, an authorization against the signed spec, an idempotency collision, a refusal of an unattested hash, a revocation whose reason surfaces, declarations through both SDK languages, a gated LangChain tool, a gated MCP server, a gated MCP proxy fronting a server the operator does not own, a live reporting-adapter submission with a same-identity retry refused, a scorer outage that makes the plane deny, and a final recompute of the whole live feed by both verifier twins — expected final line: RESULT: 15 of 15 probes passed.">
+        <div class="install-bar"><span>the whole plane, live — one command in the monorepo</span><span>self-asserting</span></div>
+        <div class="install-body" aria-hidden="true">
+<span class="p">$</span> treasury/quickstart.sh <span class="c"># or quickstart.ps1 — real gate, real scorer, live feed</span><br />
+<span class="c">→</span> keygen → attest → publish → <span class="k">authorize</span> → <span class="r">collide on the key</span> → <span class="r">refuse an unattested hash</span><br />
+<span class="c">→</span> <span class="r">revoke — the reason surfaces</span> → <span class="k">declare through both SDKs</span> <span class="c">(PROCEED · ALREADY_RESERVED)</span><br />
+<span class="c">→</span> <span class="k">gate a LangChain tool · an MCP server · a gated proxy</span> <span class="c">(each consequence fires once)</span><br />
+<span class="c">→</span> <span class="k">submit a report</span> → <span class="r">same identity, new bytes — refused</span><br />
+<span class="c">→</span> <span class="r">kill the scorer — the plane denies</span> → <span class="b">verifier twins re-derive the live feed, byte-compared</span><br />
+<span class="c">→</span> RESULT: <span class="g">15/15 probes passed</span>
+        </div>
+      </div>
+
+      <p class="note reveal"><b>No production claim.</b> A working authorization plane with proven invariants, not a deployed payment system. Everything else on this page is a fact of the <code>intent-plane</code> repo, reproducible from its test suites; the treasury facts reproduce from the monorepo's quickstart. No metric on this page is invented.</p>
+
+      <div class="cta-row reveal">
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane — the SDK ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">treasury-intent-controller — the reference application ↗</a>
+      </div>
     </div>
   </section>
 
@@ -807,56 +988,6 @@
         <span class="eyebrow">the attach point — langchain · mcp · reporting</span>
         <h2>Gate the call, four ways.<br />The tool body runs only on a fresh <span class="pr">Proceed</span>.</h2>
         <p>The gate sits at the <b>tool-call seam</b>, not in the prompt — it is not an instruction an agent can be talked out of. Embed it once at the framework layer and every agent inherits it. Three adapters ship pre-wired: a LangChain tool wrapper (<code>langchain-core</code>), an MCP middleware with a proxy front end (<code>fastmcp</code>, probed on 3.4.7), and a stdlib regulatory-reporting adapter with a dict-shaped CDM <code>WorkflowStep</code> bridge.</p>
-      </div>
-
-      <div class="viz reveal" role="img" aria-label="Four attach paths converge on one gate. A LangChain tool wrapped by gate_tool, an MCP server you own carrying the middleware, an MCP server you do not own fronted by gated_proxy, and a regulatory-report submission through gate_submission all declare to the same gate. Two outcomes leave it: on a fresh Proceed the tool body runs; on anything else, a classified refusal and the body is never called. On the proxy path a refused call never reaches the backend; on the reporting path the plane never sees the report.">
-        <div class="viz-bar"><span>four paths in — one decision out</span><span>the tool body is what's being gated</span></div>
-        <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 880 322" xmlns="http://www.w3.org/2000/svg">
-            <rect class="vz-node" x="16" y="14" width="210" height="50" rx="8"/>
-            <text class="vz-t" x="30" y="35">langchain</text>
-            <text class="vz-s" x="30" y="51">gate_tool(my_tool, …)</text>
-            <rect class="vz-node" x="16" y="92" width="210" height="50" rx="8"/>
-            <text class="vz-t" x="30" y="113">mcp — a server you own</text>
-            <text class="vz-s" x="30" y="129">add_middleware(gate)</text>
-            <rect class="vz-node" x="16" y="170" width="210" height="50" rx="8"/>
-            <text class="vz-t" x="30" y="191">mcp — one you don't</text>
-            <text class="vz-s" x="30" y="207">gated_proxy(backend, …)</text>
-            <rect class="vz-node" x="16" y="248" width="210" height="50" rx="8"/>
-            <text class="vz-t" x="30" y="269">regulatory report</text>
-            <text class="vz-s" x="30" y="285">gate_submission(identity, …)</text>
-
-            <path class="vz-arr" d="M226,39 C300,39 296,140 356,140"/>
-            <polyline class="vz-arr" points="348,136 356,140 348,144"/>
-            <path class="vz-arr" d="M226,117 C300,117 296,155 356,155"/>
-            <polyline class="vz-arr" points="348,151 356,155 348,159"/>
-            <path class="vz-arr" d="M226,195 C300,195 296,173 356,173"/>
-            <polyline class="vz-arr" points="348,169 356,173 348,177"/>
-            <path class="vz-arr" d="M226,273 C300,273 296,188 356,188"/>
-            <polyline class="vz-arr" points="348,184 356,188 348,192"/>
-
-            <rect class="vz-gold" x="360" y="124" width="160" height="80" rx="8"/>
-            <text class="vz-t vz-tg" x="378" y="154">the gate</text>
-            <text class="vz-s" x="378" y="172">declare → decide</text>
-            <text class="vz-s" x="378" y="187">fail-closed</text>
-
-            <path class="vz-ag" d="M520,148 C584,148 580,97 644,97"/>
-            <polyline class="vz-ag" points="636,93 644,97 636,101"/>
-            <text class="vz-lab vz-lg" x="548" y="106">fresh Proceed</text>
-            <rect class="vz-gold" x="648" y="70" width="216" height="54" rx="8"/>
-            <text class="vz-t vz-tg" x="662" y="93">the tool body runs</text>
-            <text class="vz-s" x="662" y="111">on a grant — and only then</text>
-
-            <path class="vz-ar" d="M520,182 C584,182 580,227 644,227"/>
-            <polyline class="vz-ar" points="636,223 644,227 636,231"/>
-            <text class="vz-lab vz-lr" x="548" y="243">anything else</text>
-            <rect class="vz-red" x="648" y="200" width="216" height="54" rx="8"/>
-            <text class="vz-t vz-tr" x="662" y="223">classified refusal</text>
-            <text class="vz-s" x="662" y="241">the body is never called</text>
-
-            <text class="vz-lab" x="16" y="315">proxy path: a refused call never reaches the backend · reporting path: the plane never sees the report</text>
-          </svg>
-        </div>
       </div>
 
       <div class="adapters reveal" role="img" aria-label="Three attach points, side by side. (a) LangChain, one call: gate_tool wraps any tool; every invocation declares an intent and runs only on a grant, and two spellings of one action count as the same action, so a retry can never slip past as new. Optional dependency: langchain-core. (b) MCP, a server you own: attach IntentGateMiddleware; every tool is gated by default, naming a subset is an explicit choice to leave the rest ungoverned, and the middleware keeps nothing between calls, so it scales with no shared state. Optional dependency: fastmcp, probed on 3.4.7. (c) MCP, a server you do not own: gated_proxy fronts the backend with the same middleware — the backend never learns the gate exists, and a refused call never reaches it at all; the one thing the other paths cannot do. (d) Regulatory reporting, stdlib only: gate_submission keys a report by its regulatory identity, never its content, so a second valuation for one trade on one day is refused even when the bytes changed — the duplicate a trade repository will not reject. A dict-shaped CDM WorkflowStep bridge rides along.">
@@ -890,7 +1021,7 @@
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px" role="img" aria-label="The four integrations in one Python snippet. Import gate_tool from langchain_adapter, which needs langchain-core; IntentGateMiddleware and gated_proxy from mcp_adapter, which needs fastmcp; and ReportIdentity and gate_submission from reporting_adapter, stdlib only. Construct a Client pointed at the gate, bounded at 30 seconds per call by default. Path a: gated equals gate_tool of my_tool and the client, with the intent spec hash, a scope, and a run id. Path b: server.add_middleware of IntentGateMiddleware with the same three arguments. Path c: gated equals gated_proxy of the backend and the client, with the same three arguments. Path d: done equals gate_submission of a ReportIdentity — reporting entity, UTI, action type VALU, rule set, as-of date — a submit callable, and the client. In every path the tool body runs only on a fresh synchronous Proceed.">
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The four integrations in one Python snippet. Import gate_tool from langchain_adapter, which needs langchain-core; IntentGateMiddleware and gated_proxy from mcp_adapter, which needs fastmcp; and ReportIdentity and gate_submission from reporting_adapter, stdlib only. Construct a Client pointed at the gate, bounded at 30 seconds per call by default. Path a: gated equals gate_tool of my_tool and the client, with the intent spec hash, a scope, and a run id. Path b: server.add_middleware of IntentGateMiddleware with the same three arguments. Path c: gated equals gated_proxy of the backend and the client, with the same three arguments. Path d: done equals gate_submission of a ReportIdentity — reporting entity, UTI, action type VALU, rule set, as-of date — a submit callable, and the client. In every path the tool body runs only on a fresh synchronous Proceed.">
         <div class="install-bar"><span>the whole integration — four paths, one discipline</span><span>declarant/pydeclarant/</span></div>
         <div class="install-body" aria-hidden="true">
 <span class="k">from</span> client <span class="k">import</span> Client<br />
@@ -922,16 +1053,12 @@ done = <span class="g">gate_submission</span>(<span class="g">ReportIdentity</sp
 
       <div class="findings-stack reveal">
         <div class="finding">
-          <span class="f-label">what happens on anything that isn't a grant</span>
-          <p><b>Everything that is not a fresh <code>Proceed</code> is a classified refusal with the body never called</b> — a failed criterion, a revoked spec, a duplicate, an outage. LangChain and the reporting adapter raise <code>IntentRefused</code>, carrying the class, the terminal, the reason, and a machine-readable retry position. MCP has no structured error channel, so the same classification rides the <code>ToolError</code> message as literal <code>class=</code> / <code>terminal=</code> / <code>reason=</code> / <code>retry_safe=</code> substrings. Match on those, not on prose.</p>
-        </div>
-        <div class="finding">
-          <span class="f-label">the failure these adapters are engineered against</span>
-          <p><b>The gate refuses duplicates by key, so the dangerous failure is a <i>fork</i>: one action, spelled two ways, deriving two keys.</b> The second key has no reservation to collide with — it is authorized, and the action <b>executes twice</b>. An earlier recipe did exactly that on four argument shapes against a live <code>fastmcp 3.4.7</code> server (a nested object left empty vs spelled out, one spelled partly, an omitted <code>default_factory</code>, <code>500</code> vs <code>500.0</code>). The shipped canonicalization closes all four, and on the proxy path a call whose effective value <b>no schema can reveal</b> is refused before anything is declared. The reverse mistake — two actions, one key — merely fails closed. The reporting adapter states its own residual rather than hiding it: identity fields are keyed <b>verbatim</b> after whitespace and Unicode-form checks — letter case is deliberately not folded, so case normalization is the operator's duty upstream.</p>
+          <span class="f-label">on anything that isn't a grant</span>
+          <p><b>Everything that is not a fresh <code>Proceed</code> is a classified refusal — the body is never called.</b> LangChain and the reporting adapter raise <code>IntentRefused</code>; MCP carries the same classification in the <code>ToolError</code> message as literal <code>class=</code> / <code>terminal=</code> / <code>reason=</code> / <code>retry_safe=</code> substrings. And the key derivation is engineered against <i>forks</i> — one action spelled two ways — with the four spellings that once double-executed against a live <code>fastmcp 3.4.7</code> server now pinned by tests.</p>
         </div>
       </div>
 
-      <p class="note reveal"><b>Optional by construction.</b> The LangChain and MCP modules are the only exceptions to <code>pydeclarant</code>'s stdlib-only rule — the reporting adapter and its CDM bridge add none. Nothing else in the tree imports either framework, and each framework adapter's tests <b>skip visibly</b> without it. There is no PyPI package — the Python tree is <b>vendored: copy it</b>. Or skip the adapters and speak the wire directly; the Go and Python SDKs are the same discipline as plain libraries.</p>
+      <p class="note reveal"><b>Optional by construction.</b> Only the LangChain and MCP modules leave <code>pydeclarant</code>'s stdlib-only rule, and each adapter's tests <b>skip visibly</b> without its framework. There is no PyPI package — <b>vendor the tree</b>, or skip the adapters and speak the wire directly.</p>
 
       <div class="cta-row reveal">
         <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/blob/main/docs/integration.md" target="_blank" rel="noopener">docs/integration.md — the embedding guide ↗</a>
@@ -973,26 +1100,6 @@ done = <span class="g">gate_submission</span>(<span class="g">ReportIdentity</sp
 
       <p class="note reveal"><b>The two amber packages are what the repo ships</b> — one per side of the sale; the blue feed is the record they meet at. Plane internals mature in a private testing monorepo and are ported here once they settle.</p>
 
-      <div class="install reveal" style="max-width:820px" role="img" aria-label="Repository layout. CONTRACT.md is the single current-state contract and source of truth. core holds the Go gate, the Python criterion scorer, and the wire and feed fixtures. plane holds the signed artifact: envelope, spec store, resolver — verification only, no signing seat in this repo. verifier is the audit side's package: Go package plus intent-verify CLI plus a stdlib-only Python twin. declarant is the platform side's package: Go package plus intent-declare CLI, and pydeclarant, the Python twin carrying the LangChain, MCP, and reporting adapters. docs holds architecture, assurance, and integration.">
-        <div class="install-bar"><span>layout — the published SDK</span><span>ownership runs per tree</span></div>
-        <div class="install-body" aria-hidden="true">
-intent-plane/<br />
-├── CONTRACT.md &nbsp;&nbsp;<span class="c"># the single current-state contract — the source of truth</span><br />
-├── core/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># the gate (Go) · the criterion scorer (Python) · wire + feed fixtures</span><br />
-├── plane/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># the signed artifact: envelope, spec store, resolver — verification only</span><br />
-├── <span class="k">verifier/</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># ← audit side: Go pkg + intent-verify CLI + stdlib-only Python twin</span><br />
-├── <span class="k">declarant/</span> &nbsp;&nbsp;&nbsp;<span class="c"># ← platform side: Go pkg + intent-declare CLI — embed once, inherit everywhere</span><br />
-│&nbsp;&nbsp;&nbsp;└── <span class="k">pydeclarant/</span> <span class="c"># the Python twin + the <b>LangChain</b>, <b>MCP</b>, and <b>reporting</b> adapters</span><br />
-└── docs/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c"># architecture · assurance · integration</span>
-        </div>
-      </div>
-
-      <div class="findings-stack reveal">
-        <div class="finding">
-          <span class="f-label">the platform side, in one rule</span>
-          <p><b>Declare once at the framework layer — every agent inherits it.</b> The declarant derives each key from the action itself, never a fresh UUID per attempt — so a retry <i>is</i> the same action, by construction. Any answer it cannot classify fails closed as <code>Unknown</code>, and on a server error it consults the intent's own record <b>before</b> deciding anything.</p>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1040,7 +1147,7 @@ intent-plane/<br />
           <div class="cn-s">resolves the spec by hash equality · executes exactly the signed bytes</div>
         </div>
       </div>
-      <p class="chain-note reveal"><span class="r">⤷ a signed tombstone revokes</span> — a tombstone signed by any other key does not. Revocation is checked at declaration and <b>re-checked at the dispatch edge</b>: a spec pulled mid-flight stops at the edge, and the withdrawal is itself part of the record.</p>
+      <p class="chain-note reveal"><span class="r">⤷ a signed tombstone revokes</span> — checked at declaration, <b>re-checked at the dispatch edge</b>; the withdrawal is itself part of the record.</p>
     </div>
   </section>
 
@@ -1050,35 +1157,12 @@ intent-plane/<br />
       <div class="section-head reveal">
         <span class="eyebrow">the decision flow</span>
         <h2>Four moves, four terminals — and every branch fails closed.</h2>
-        <p>Every declared intent walks toward exactly one terminal — and a refused or duplicate intent leaves no <code>ACHIEVED</code> record, which means <b>no value moved</b>. The full state machine is in the table below.</p>
+        <p>Every declared intent walks toward exactly one terminal — and a refused or duplicate intent leaves no <code>ACHIEVED</code> record: <b>no value moved</b>. The gate's job ends at the durable record — <b>emit-and-observe</b>: it settles nothing and never calls out; consumers pull the feed and recompute.</p>
       </div>
-      <div class="loop reveal">
-        <div class="step">
-          <span class="n">01 · declare</span><span class="arr">→</span>
-          <h3>Key required, spec by hash</h3>
-          <p>The declarant supplies the idempotency key, scope, and the spec's content address — criteria cannot ride the wire. An absent key, or an unattested, revoked, or thin spec, refuses at the door: the scorer is never consulted.</p>
-        </div>
-        <div class="step">
-          <span class="n">02 · verify</span><span class="arr">→</span>
-          <h3>Score tri-state</h3>
-          <p>The gate consults the scorer: every declared criterion lands Pass, Fail, or Unevaluable. Any Fail or Unevaluable denies authorization — unevaluable never collapses into a pass.</p>
-        </div>
-        <div class="step">
-          <span class="n">03 · re-check</span><span class="arr">→</span>
-          <h3>The dispatch edge</h3>
-          <p>Volatile facts and the authority itself are re-verified immediately before the consequence fires, and the declared key is reserved. Drift, a tombstone, or a key collision ⟹ FAILED_AT_DISPATCH.</p>
-        </div>
-        <div class="step">
-          <span class="n">04 · record</span><span class="arr">■</span>
-          <h3>One durable answer</h3>
-          <p>One synchronous terminal, one durable record — grant, shadow, or refusal — fsynced before success and carrying its trajectory hash. Consumers settle only from observed ACHIEVED.</p>
-        </div>
-      </div>
-
       <div class="viz reveal" role="img" aria-label="The state machine, drawn. Four working states run left to right: DECLARED, key and spec hash bind; RESOLVING, the signature verifies; ACTIVE, admitted; VERIFYING, tri-state scoring; then the dispatch edge, which re-checks volatile facts and reserves the key. Four terminals sit below: FAILED, anything unevaluable at any step, reached from a door refusal at DECLARED or from scoring; SHADOW_RECORDED, fully scored and recorded but not authorized; ACHIEVED, the one durable record, reached from the dispatch edge when the key is reserved; FAILED_AT_DISPATCH, drift, a tombstone, or a duplicate key at the edge. No terminal is unsafe.">
         <div class="viz-bar"><span>the state machine, drawn</span><span>terminals below the line — none unsafe</span></div>
         <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 900 262" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 16 900 246" xmlns="http://www.w3.org/2000/svg">
             <rect class="vz-node" x="16" y="28" width="124" height="46" rx="8"/>
             <text class="vz-t" x="28" y="48">DECLARED</text>
             <text class="vz-s" x="28" y="64">key + spec hash</text>
@@ -1131,34 +1215,20 @@ intent-plane/<br />
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px" role="img" aria-label="Wire transcript: POST /v2/intents declares an intent citing the spec by hash; the gate answers synchronously with the terminal ACHIEVED, a trajectory hash, and achieved_seq 41. GET /v2/events?since=0 returns the durable records with a next_since cursor — consumers settle from observed records; the gate never calls out.">
-        <div class="install-bar"><span>one declaration, on the wire</span><span>synchronous terminal · emit-and-observe</span></div>
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The ACHIEVED trace record — the contract's exact field set: intent id, idempotency key, rule artifact hash, intent spec hash, trajectory hash, and the feed sequence number. The intent spec hash points back to the signed policy; the trajectory hash replays the authorization byte-identically; the idempotency key is the reservation that makes a duplicate impossible.">
+        <div class="install-bar"><span>the ACHIEVED trace record — what closes the loop</span><span>field set verbatim · values illustrative</span></div>
         <div class="install-body" aria-hidden="true">
-<span class="p">$</span> curl -s -X POST :8080/v2/intents -d @declaration.json &nbsp;<span class="c"># criteria never ride the wire</span><br />
-<span class="c">→</span> { <span class="k">"terminal"</span>: <span class="g">"ACHIEVED"</span>, <span class="k">"trajectory_hash"</span>: <span class="g">"9d0c…"</span>, <span class="k">"achieved_seq"</span>: 41 }<br />
-&nbsp;&nbsp;<span class="c">↳ one synchronous answer — grant, shadow, or a closed refusal set</span><br />
-<span class="p">$</span> curl -s ':8080/v2/events?since=<span class="k">0</span>' &nbsp;<span class="c"># the feed is pull-only — the gate never calls out</span><br />
-<span class="c">→</span> { <span class="k">"events"</span>: [ …, { <span class="k">"type"</span>: <span class="g">"ACHIEVED"</span>, <span class="k">"intent_spec_hash"</span>: <span class="g">"c7a3…"</span> } ], <span class="k">"next_since"</span>: 41 }
+ACHIEVED {<br />
+&nbsp;&nbsp;intent_id: <span class="g">"7f3a…"</span>,<br />
+&nbsp;&nbsp;idempotency_key: <span class="g">"pay-2026-07-042"</span>, <span class="c">// the reservation — a duplicate is impossible</span><br />
+&nbsp;&nbsp;rule_artifact_hash: <span class="k">"…"</span>, <span class="c">// the rule pack in force</span><br />
+&nbsp;&nbsp;intent_spec_hash: <span class="k">"c7a36959…dc51"</span>, <span class="c">// ⟲ the signed policy that authorized this run</span><br />
+&nbsp;&nbsp;trajectory_hash: <span class="k">"…"</span>, <span class="c">// byte-identical replay of the decision itself</span><br />
+&nbsp;&nbsp;seq: 41 <span class="c">// global cursor in the durable feed</span><br />
+}
         </div>
       </div>
 
-      <div class="dtable-wrap reveal">
-        <table class="dtable">
-          <caption>the state machine — terminal states in bold, none of them unsafe</caption>
-          <thead><tr><th>state</th><th>kind</th><th>meaning</th></tr></thead>
-          <tbody>
-            <tr><td>DECLARED</td><td>working</td><td class="wraps">declaration received; the idempotency key and the spec's content address bind. Door refusals — absent key, unattested / revoked / thin spec — answer FAILED synchronously</td></tr>
-            <tr><td>RESOLVING → ACTIVE</td><td>working</td><td class="wraps">the signed spec resolves — signature verified, bytes hashing to the claimed address — and the intent is admitted for scoring</td></tr>
-            <tr><td>VERIFYING</td><td>working</td><td class="wraps">tri-state scoring over every declared criterion, via the plane's scorer</td></tr>
-            <tr><td class="pass">ACHIEVED</td><td>terminal</td><td class="wraps">the one durable record, fsynced before success — consumers settle from it</td></tr>
-            <tr><td class="shadow">SHADOW_RECORDED</td><td>terminal</td><td class="wraps">fully scored, durably recorded, <b>not</b> authorized — staged rollout, itself signed; promotion to enforce is a fresh attestation, never a config toggle</td></tr>
-            <tr><td class="fail">FAILED</td><td>terminal</td><td class="wraps">anything unevaluable, at any step — missing key, unattested or revoked or thin spec, unreachable scorer, failed criterion. No record settles</td></tr>
-            <tr><td class="fail">FAILED_AT_DISPATCH</td><td>terminal</td><td class="wraps">a drifted fact, a pulled spec, or a duplicate key at the last moment before the consequence fires. The key is not reserved; nothing settles</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p class="note reveal"><b>Scope — emit-and-observe.</b> The gate's job ends at the durable record. It settles nothing and never calls out; a consumer <b>pulls</b> the feed by cursor and recomputes. A crash on either side loses nothing. And the terminal-position record of <b>every</b> completed authorization — grant, shadow, or refusal — carries its trajectory hash, so a trimmed or edited log is detectable by recomputation.</p>
     </div>
   </section>
 
@@ -1170,54 +1240,6 @@ intent-plane/<br />
         <h2>Eight properties, enforced by construction and pinned by tests.</h2>
         <p>None of these is a convention the code tries to follow. Each is structural — violating it fails an acceptance test, not a guideline. Amendments run <code>CONTRACT.md</code> first, then the pinned tables — never the reverse.</p>
       </div>
-      <div class="viz reveal" role="img" aria-label="Where each property bites, mapped onto the decision flow. Declare carries pin 07, thin-spec refuses first. Score carries pin 02, tri-state. Between score and the dispatch edge sits pin 03, stable versus volatile. The dispatch edge carries pin 04, key reserved. The durable record carries pins 01, sole emitter; 05, replay; and 06, durability. A bracket under the whole flow carries pin 08: core neutrality — the kernel knows no domain. Pin numbers match the cards below.">
-        <div class="viz-bar"><span>where each property bites</span><span>numbers match the cards below</span></div>
-        <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 880 196" xmlns="http://www.w3.org/2000/svg">
-            <rect class="vz-node" x="16" y="24" width="180" height="40" rx="8"/>
-            <text class="vz-t" x="66" y="49">declare</text>
-            <rect class="vz-node" x="236" y="24" width="180" height="40" rx="8"/>
-            <text class="vz-t" x="294" y="49">score</text>
-            <rect class="vz-gold" x="456" y="24" width="180" height="40" rx="8"/>
-            <text class="vz-t vz-tg" x="491" y="49">dispatch edge</text>
-            <rect class="vz-node" x="676" y="24" width="180" height="40" rx="8"/>
-            <text class="vz-t" x="705" y="49">durable record</text>
-
-            <line class="vz-arr" x1="196" y1="44" x2="232" y2="44"/><polyline class="vz-arr" points="225,40 232,44 225,48"/>
-            <line class="vz-arr" x1="416" y1="44" x2="452" y2="44"/><polyline class="vz-arr" points="445,40 452,44 445,48"/>
-            <line class="vz-arr" x1="636" y1="44" x2="672" y2="44"/><polyline class="vz-arr" points="665,40 672,44 665,48"/>
-
-            <line class="vz-tick" x1="106" y1="64" x2="106" y2="92"/>
-            <circle class="vz-pin" cx="106" cy="104" r="12"/><text class="vz-pt" x="106" y="108" text-anchor="middle">07</text>
-            <text class="vz-lab" x="106" y="132" text-anchor="middle">thin-spec refuses</text>
-
-            <line class="vz-tick" x1="326" y1="64" x2="326" y2="92"/>
-            <circle class="vz-pin" cx="326" cy="104" r="12"/><text class="vz-pt" x="326" y="108" text-anchor="middle">02</text>
-            <text class="vz-lab" x="326" y="132" text-anchor="middle">tri-state</text>
-
-            <circle class="vz-pin" cx="434" cy="104" r="12"/><text class="vz-pt" x="434" y="108" text-anchor="middle">03</text>
-            <text class="vz-lab" x="434" y="132" text-anchor="middle">stable vs volatile</text>
-
-            <line class="vz-tick" x1="546" y1="64" x2="546" y2="92"/>
-            <circle class="vz-pin" cx="546" cy="104" r="12"/><text class="vz-pt" x="546" y="108" text-anchor="middle">04</text>
-            <text class="vz-lab" x="546" y="132" text-anchor="middle">key reserved</text>
-
-            <line class="vz-tick" x1="706" y1="64" x2="706" y2="92"/>
-            <circle class="vz-pin" cx="706" cy="104" r="12"/><text class="vz-pt" x="706" y="108" text-anchor="middle">01</text>
-            <text class="vz-lab" x="706" y="132" text-anchor="middle">sole emitter</text>
-            <line class="vz-tick" x1="776" y1="64" x2="776" y2="92"/>
-            <circle class="vz-pin" cx="776" cy="104" r="12"/><text class="vz-pt" x="776" y="108" text-anchor="middle">05</text>
-            <text class="vz-lab" x="776" y="132" text-anchor="middle">replay</text>
-            <line class="vz-tick" x1="836" y1="64" x2="836" y2="92"/>
-            <circle class="vz-pin" cx="836" cy="104" r="12"/><text class="vz-pt" x="836" y="108" text-anchor="middle">06</text>
-            <text class="vz-lab" x="836" y="132" text-anchor="middle">durability</text>
-
-            <polyline class="vz-tick" points="16,150 16,158 856,158 856,150"/>
-            <text class="vz-lab vz-lg" x="436" y="182" text-anchor="middle">08 · core neutrality — the kernel knows no domain; every property above is domain-blind</text>
-          </svg>
-        </div>
-      </div>
-
       <div class="policy cols4 reveal">
         <div class="p-cell">
           <h4><span class="num">01</span>Sole emitter</h4>
@@ -1267,7 +1289,7 @@ intent-plane/<br />
       <div class="viz reveal" role="img" aria-label="The audit side's seat, drawn. The durable feed, events.jsonl, is read by two independent implementations — the Go verifier and pyverifier, a stdlib-only Python twin. Each recomputes every record from the feed alone; their canonical reports are byte-compared. Verdicts are tri-state: verified, refuted, unverifiable — and unverifiable never passes. The verifier tree is import-pinned to run none of the gate's code.">
         <div class="viz-bar"><span>recompute, don't trust</span><span>two languages · one byte-compared report</span></div>
         <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 880 236" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 44 880 192" xmlns="http://www.w3.org/2000/svg">
             <rect class="vz-blue" x="16" y="90" width="210" height="56" rx="8"/>
             <text class="vz-t vz-tb" x="30" y="113">the durable feed</text>
             <text class="vz-s" x="30" y="131">events.jsonl — records alone</text>
@@ -1299,7 +1321,7 @@ intent-plane/<br />
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:820px" role="img" aria-label="The verifier CLI over the frozen feed fixtures: run against events-good.jsonl the result is VERIFIED with exit code 0 — every hash recomputes, the lifecycle replays, at-most-once holds. Run against events-tampered.jsonl, which differs by one flipped byte, the result is REFUTED with exit code 1.">
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The verifier CLI over the frozen feed fixtures: run against events-good.jsonl the result is VERIFIED with exit code 0 — every hash recomputes, the lifecycle replays, at-most-once holds. Run against events-tampered.jsonl, which differs by one flipped byte, the result is REFUTED with exit code 1.">
         <div class="install-bar"><span>the audit side's seat · verifier/cmd/intent-verify</span><span>exit codes are the interface</span></div>
         <div class="install-body" aria-hidden="true">
 <span class="p">$</span> go run ./verifier/cmd/intent-verify core/contract/feed/events-good.jsonl<br />
@@ -1309,239 +1331,16 @@ intent-plane/<br />
         </div>
       </div>
 
-      <p class="note reveal"><b>Two implementations, one report.</b> A Go package and a <b>stdlib-only Python twin</b> produce canonical reports that are byte-compared, and an import pin proves the verifier tree runs <b>none of the gate's code</b>. Verdicts are tri-state like the gate itself — verified · refuted · unverifiable — and unverifiable never passes.</p>
-
-      <div class="dtable-wrap reveal">
-        <table class="dtable">
-          <caption>what the record proves, by stage — nothing asks to be believed</caption>
-          <thead><tr><th>stage</th><th>standing</th><th>what it proves</th></tr></thead>
-          <tbody>
-            <tr><td>from the feed alone</td><td class="pass">available now</td><td class="wraps">the record is self-consistent and every hash recomputes — in your language, not ours. Refusals carry trajectory hashes too, so a trimmed log is detectable</td></tr>
-            <tr><td>+ signed specifications</td><td class="hi">enforced · test keys</td><td class="wraps">the gate executed the signed spec: criteria arrive only through signature verification + content-address equality</td></tr>
-            <tr><td>+ record signing</td><td>staged · R1</td><td class="wraps">the record was never rewritten — the feed itself becomes tamper-evident</td></tr>
-            <tr><td>+ workload identity</td><td>staged · R2</td><td class="wraps">this gate, and only this gate, produced it — sole writer as a deployment fact</td></tr>
-          </tbody>
-        </table>
-      </div>
-
       <div class="chg reveal">
         <details class="chg-grp" open>
-          <summary><span class="tag tag-limits">Status, honestly</span> <span class="count">5 stated</span><span class="chev">›</span></summary>
+          <summary><span class="tag tag-limits">Status, honestly</span> <span class="count">4 stated</span><span class="chev">›</span></summary>
           <ul>
             <li><b>Key authority is test-grade until ADR-0009</b> — and every signature says so (<code>key_authority: "test"</code>).</li>
             <li><b>Record signing (R1) and workload identity (R2) are staged, not built</b> — so today the verifier proves the record self-consistent, not never-rewritten.</li>
             <li><b><code>force_scores</code> is guarded and witnessed</b>: refused unless the server booted with <code>INTENT_UNSAFE_FORCE_SCORES=1</code>, and every scored record carries a <code>scorer_id</code> witness — a forced decision is never byte-indistinguishable from a live one. Wherever the flag <b>is</b> set the bypass is total; it must never reach production.</li>
             <li><b>The feed read surface is unauthenticated by design</b> — network isolation is a deployment decision the platform owns.</li>
-            <li><b>The declarant ships as twins — Go and Python</b>, held to the same golden wire bytes; the LangChain, MCP, and reporting/CDM adapters ride the Python twin and are Python-only by precedent.</li>
           </ul>
         </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- THE REFERENCE APPLICATION — TREASURY -->
-  <section class="section" id="treasury">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">the reference application · one step from concept to consequence</span>
-        <h2>The same gate, pointed at a real consequence: treasury payments.</h2>
-        <p>The kernel knows no domain — criteria, thresholds, and what counts as a duplicate arrive only through the signed spec. Instantiated on treasury payments in the testing monorepo, the loop closes over three hashes: every settlement carries <code>rule_artifact_hash</code> · <code>intent_spec_hash</code> · <code>trajectory_hash</code>, joining the runtime trace back to the exact signed policy that authorized it.</p>
-      </div>
-
-      <div class="tgrid">
-        <div class="reveal">
-          <h3>A duplicate of an irreversible payment isn't caught.<br /><span class="dim">It's impossible — refused at the dispatch edge, by construction.</span></h3>
-          <p class="tp">The worked example the monorepo runs end to end: the idempotency key is a <b>declared, first-class gate criterion</b> — required, and reserved at the dispatch edge. The same declared key then keys the settlement ledger, so at-most-once holds end to end.</p>
-          <div class="fx">
-            <div class="fx-row without">
-              <span class="w">without</span>
-              <p>At-most-once is an <b>assertion</b>: dedup lives in each adapter's retry logic, audited after the fact. A retried near-duplicate can <b>execute twice</b> before anyone reads the log.</p>
-            </div>
-            <div class="fx-row with">
-              <span class="w">with the gate</span>
-              <p>Same key, one changed field ⟹ <b>FAILED_AT_DISPATCH</b>. At-most-once holds <b>by construction</b>, whatever the action is.</p>
-            </div>
-          </div>
-        </div>
-        <div class="runs reveal" role="img" aria-label="The treasury worked example. At the top, the signed policy: IntentSpec c7a36959, published in the ATLAS registry. Two runs pass through the gate under it, side by side. Run 1, a treasury payment, passes declaration, verification, and the dispatch-edge re-check, reserves its idempotency key, and reaches the single durable ACHIEVED record. Run 2, a near-duplicate with the same key and one changed field, passes verification but collides on the reserved key at the dispatch edge and ends FAILED_AT_DISPATCH. The durable feed below shows one ACHIEVED record — the payment ran exactly once — and a return rail carries the settlement's trace hashes back up to the signed policy chip: the loop closes on the exact policy that authorized the run.">
-          <div class="spec-chip" data-s="idle" id="spec" aria-hidden="true">
-            <span class="sl">signed intentspec · <span class="h">c7a36959…dc51</span></span>
-            <span class="sr" id="spec-s">atlas registry · published</span>
-          </div>
-          <div class="loopback" data-s="idle" id="loopback" aria-hidden="true"></div>
-          <div class="runs-cap" aria-hidden="true"><span>worked example · treasury payment · class 1</span><span>spec re-verified per run · fail-closed</span></div>
-          <div class="runs-grid" aria-hidden="true">
-            <div class="run">
-              <div class="run-head">run 1 · the payment<b>intent 7f3a… · <span class="key">key K</span></b></div>
-              <div class="gsteps">
-                <div class="gstep" data-s="idle" id="a1"><span class="d"></span><span class="t">declared</span><span class="s">key present</span></div>
-                <div class="gstep" data-s="idle" id="a2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass · none unevaluable</span></div>
-                <div class="gstep" data-s="idle" id="a3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">volatile re-check holds</span></div>
-                <div class="gstep" data-s="idle" id="a4"><span class="d"></span><span class="t">key K reserved</span><span class="s">first reservation</span></div>
-                <div class="gstep" data-s="idle" id="a5"><span class="d"></span><span class="t">achieved</span><span class="s">one durable record · fsync</span></div>
-              </div>
-            </div>
-            <div class="run dup">
-              <div class="run-head">run 2 · near-duplicate<b>intent 9c1e… · <span class="key">same key K</span></b></div>
-              <div class="gsteps">
-                <div class="gstep" data-s="idle" id="b1"><span class="d"></span><span class="t">declared</span><span class="s">same key · one field changed</span></div>
-                <div class="gstep" data-s="idle" id="b2"><span class="d"></span><span class="t">verifying</span><span class="s">criteria pass — validity isn't the question</span></div>
-                <div class="gstep" data-s="idle" id="b3"><span class="d"></span><span class="t">dispatch edge</span><span class="s">key K already reserved</span></div>
-                <div class="gstep" data-s="idle" id="b4"><span class="d"></span><span class="t">failed_at_dispatch</span><span class="s">refused · no record written</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="ledger" data-s="idle" id="ledger" aria-hidden="true">
-            <span class="ll">durable feed — what downstream observes</span>
-            <span class="lv" id="ledger-v">awaiting records…</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="loop cols3 reveal">
-        <div class="step">
-          <span class="n">policy plane · atlas</span><span class="arr">→</span>
-          <h3>IntentSpec — the signed policy</h3>
-          <p>What authorizes a payment — including what counts as a duplicate — is a signed, expert-attested, registry-governed artifact, published by content hash. Not adapter-local config.</p>
-        </div>
-        <div class="step gate-step">
-          <span class="n">this plane · the gate</span><span class="arr">→</span>
-          <h3>Authorization</h3>
-          <p>The resolver re-verifies the pinned artifact before any criterion is scored — absent, revoked, or hash-mismatched ⟹ fail closed. Then tri-state scoring, the dispatch edge, one durable record.</p>
-        </div>
-        <div class="step">
-          <span class="n">settlement plane · compass</span><span class="arr">⟲</span>
-          <h3>Settlement — the loop closes</h3>
-          <p>Pulls <code>GET /v2/events?since=cursor</code> and recomputes from observed ACHIEVED records only. Each settlement carries the full trace record — pointing back to the signed policy that started the loop.</p>
-        </div>
-      </div>
-
-      <div class="install reveal" style="max-width:820px;margin-top:26px" role="img" aria-label="The ACHIEVED trace record — the contract's exact field set: intent id, idempotency key, rule artifact hash, intent spec hash, trajectory hash, and the feed sequence number. The intent spec hash points back to the signed policy; the trajectory hash replays the authorization byte-identically; the idempotency key is the reservation that makes a duplicate impossible.">
-        <div class="install-bar"><span>the ACHIEVED trace record — what closes the loop</span><span>field set verbatim · values illustrative</span></div>
-        <div class="install-body" aria-hidden="true">
-ACHIEVED {<br />
-&nbsp;&nbsp;intent_id: <span class="g">"7f3a…"</span>,<br />
-&nbsp;&nbsp;idempotency_key: <span class="g">"pay-2026-07-042"</span>, <span class="c">// the reservation — a duplicate is impossible</span><br />
-&nbsp;&nbsp;rule_artifact_hash: <span class="k">"…"</span>, <span class="c">// the rule pack in force</span><br />
-&nbsp;&nbsp;intent_spec_hash: <span class="k">"c7a36959…dc51"</span>, <span class="c">// ⟲ the signed policy that authorized this run</span><br />
-&nbsp;&nbsp;trajectory_hash: <span class="k">"…"</span>, <span class="c">// byte-identical replay of the decision itself</span><br />
-&nbsp;&nbsp;seq: 41 <span class="c">// global cursor in the durable feed</span><br />
-}
-        </div>
-      </div>
-
-      <div class="install reveal" style="max-width:820px;margin-top:26px" role="img" aria-label="The live demonstration, one command: the monorepo's quickstart runs keygen, attestation, publish, an authorization against the signed spec, an idempotency collision, a refusal of an unattested hash, a revocation whose reason surfaces, declarations through both SDK languages, a gated LangChain tool, a gated MCP server, a gated MCP proxy fronting a server the operator does not own, a live reporting-adapter submission with a same-identity retry refused, a scorer outage that makes the plane deny, and a final recompute of the whole live feed by both verifier twins — expected final line: RESULT: 15 of 15 probes passed.">
-        <div class="install-bar"><span>the whole plane, live — one command in the monorepo</span><span>self-asserting</span></div>
-        <div class="install-body" aria-hidden="true">
-<span class="p">$</span> treasury/quickstart.sh <span class="c"># or quickstart.ps1 — real gate, real scorer, live feed</span><br />
-<span class="c">→</span> keygen → attest → publish → <span class="k">authorize</span> → <span class="r">collide on the key</span> → <span class="r">refuse an unattested hash</span><br />
-<span class="c">→</span> <span class="r">revoke — the reason surfaces</span> → <span class="k">declare through both SDKs</span> <span class="c">(PROCEED · ALREADY_RESERVED)</span><br />
-<span class="c">→</span> <span class="k">gate a LangChain tool · an MCP server · a gated proxy</span> <span class="c">(each consequence fires once)</span><br />
-<span class="c">→</span> <span class="k">submit a report</span> → <span class="r">same identity, new bytes — refused</span><br />
-<span class="c">→</span> <span class="r">kill the scorer — the plane denies</span> → <span class="b">verifier twins re-derive the live feed, byte-compared</span><br />
-<span class="c">→</span> RESULT: <span class="g">15/15 probes passed</span>
-        </div>
-      </div>
-
-      <p class="note reveal"><b>No production claim.</b> A working authorization plane with proven invariants, not a deployed payment system. The application seats — authority, control, authoring — and the live demonstration stay in the monorepo; the consumer-facing packages are born in <code>intent-plane</code> and consumed back for the probes. Everything above this section is a fact of the <code>intent-plane</code> repo — roles, terminals, invariants, standings — reproducible from <code>go test ./... -count=1</code>, the scorer's pytest gate, and the verifier lanes; the treasury facts reproduce from the monorepo's quickstart. No metric here is invented for the page.</p>
-
-      <div class="cta-row reveal">
-        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane — the SDK ↗</a>
-        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/blob/main/docs/assurance.md" target="_blank" rel="noopener">docs/assurance.md — the claim-by-claim standing ↗</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- REGULATORY COMPLIANCE — REPORTING THROUGH CDM -->
-  <section class="section" id="cdm">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">for regulatory compliance teams · reporting through cdm</span>
-        <h2>Your reporting runs on CDM.<br />The gate refuses the duplicate a trade repository won't.</h2>
-        <p>Path (d) of the attach points above is the platform team's view; this is the compliance seat. The reporting adapter keys a report's <b>regulatory identity</b> — entity, UTI, action type, rule set — never its content, and the CDM bridge runs the loop in the vocabulary your desk already speaks: FINOS Common Domain Model <code>WorkflowStep</code> in, gated submission, <code>WorkflowStep</code> out.</p>
-      </div>
-
-      <div class="viz reveal" role="img" aria-label="The CDM loop, drawn. A CDM WorkflowStep dict from your desk is read into an identity in CDM vocabulary — the UTI, the action, the event references. The gate derives the idempotency key from that identity and decides. Two outcomes return, each as a WorkflowStep: granted, carrying a businessEvent; or refused, carrying rejected true with the class and reason. Both carry the idempotency key as their eventIdentifier, so a CDM consumer can recompute the plane's record by it. An unkeyable step — no UTI, two different UTIs, a correction with no previousWorkflowStep — is refused before anything is declared, with the message naming the missing CDM field.">
-        <div class="viz-bar"><span>the loop, in your vocabulary</span><span>gate_cdm_event · workflowstep in · workflowstep out</span></div>
-        <div class="viz-body" aria-hidden="true">
-          <svg viewBox="0 0 880 244" xmlns="http://www.w3.org/2000/svg">
-            <rect class="vz-blue" x="16" y="92" width="190" height="56" rx="8"/>
-            <text class="vz-t vz-tb" x="30" y="115">a CDM WorkflowStep</text>
-            <text class="vz-s" x="30" y="133">your desk's dict · 7.1.0</text>
-
-            <path class="vz-arr" d="M206,120 L236,120"/>
-            <polyline class="vz-arr" points="228,116 236,120 228,124"/>
-
-            <rect class="vz-node" x="240" y="92" width="200" height="56" rx="8"/>
-            <text class="vz-t" x="254" y="115">identity, read in CDM</text>
-            <text class="vz-s" x="254" y="133">UTI · action · event refs</text>
-
-            <path class="vz-arr" d="M440,120 L470,120"/>
-            <polyline class="vz-arr" points="462,116 470,120 462,124"/>
-
-            <rect class="vz-gold" x="474" y="92" width="146" height="56" rx="8"/>
-            <text class="vz-t vz-tg" x="488" y="115">the gate</text>
-            <text class="vz-s" x="488" y="133">key = f(identity)</text>
-
-            <path class="vz-ag" d="M620,112 C650,112 650,78 684,78"/>
-            <polyline class="vz-ag" points="676,74 684,78 676,82"/>
-            <path class="vz-ar" d="M620,128 C650,128 650,162 684,162"/>
-            <polyline class="vz-ar" points="676,158 684,162 676,166"/>
-
-            <rect class="vz-gold" x="688" y="52" width="176" height="52" rx="8"/>
-            <text class="vz-t vz-tg" x="702" y="74">granted</text>
-            <text class="vz-s" x="702" y="92">businessEvent present</text>
-
-            <rect class="vz-red" x="688" y="136" width="176" height="52" rx="8"/>
-            <text class="vz-t vz-tr" x="702" y="158">refused</text>
-            <text class="vz-s" x="702" y="176">rejected: true · class</text>
-
-            <text class="vz-lab" x="16" y="216">unkeyable — no UTI, two UTIs, no previousWorkflowStep ⟹ refused before declaring, named in CDM terms</text>
-            <text class="vz-lab vz-lg" x="16" y="234">both outcome steps carry eventIdentifier = the idempotency key — recompute the plane's record by it</text>
-          </svg>
-        </div>
-      </div>
-
-      <div class="dtable-wrap reveal">
-        <table class="dtable">
-          <caption>the closed action-type table — five base fields always keyed · verify meanings against the current ESMA validation rules before any production claim</caption>
-          <thead><tr><th>action_type</th><th>keys on (beyond the base fields)</th><th>meaning — EMIR-Refit-shaped</th></tr></thead>
-          <tbody>
-            <tr><td>NEWT</td><td>—</td><td class="wraps">new trade: one per UTI</td></tr>
-            <tr><td>MODI</td><td>event_ref</td><td class="wraps">modification, by the firm's stable lifecycle-event id</td></tr>
-            <tr><td>CORR</td><td>event_ref · prior_ref</td><td class="wraps">correction of a prior submission</td></tr>
-            <tr><td>EROR</td><td>prior_ref</td><td class="wraps">erasure of a prior submission</td></tr>
-            <tr><td>REVI</td><td>event_ref</td><td class="wraps">revival</td></tr>
-            <tr><td>TERM</td><td>event_ref</td><td class="wraps">early termination</td></tr>
-            <tr><td>VALU · COLU · POSC · MARU</td><td>as_of</td><td class="wraps">daily valuation / collateral / position / margin updates: one per UTI per day</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p class="note reveal"><b>Refused in your vocabulary, before anything declares.</b> No UTI, two different UTIs, no <code>eventIdentifier</code>, a <code>Correct</code> or <code>Cancel</code> with no <code>previousWorkflowStep</code>, a daily type with no <code>eventDate</code> — each refusal names the missing <b>CDM field</b>, never the adapter's internals. The default action mapping (<code>New→NEWT</code> · <code>Correct→CORR</code> · <code>Cancel→EROR</code>) is a convenience the caller overrides — CDM's <code>ActionEnum</code> is not the regulatory vocabulary. And map <code>EROR</code> to a spec whose <code>human_judgment</code> list is non-empty and the gate refuses every erasure — <code>unevaluable:human-judgment</code> — while the obligation is unresolved: <b>approval is the plane's attestation mechanism, not adapter code</b>.</p>
-
-      <div class="findings-stack reveal">
-        <div class="finding">
-          <span class="f-label">the compliance seat, in one rule</span>
-          <p><b>Reconcile by recomputation, never by parsing prose.</b> <code>reconcile()</code> re-derives every logged submission's key from its identity alone and checks the bijection against the feed's ACHIEVED records, reporting defects by class: a key with two log entries is the duplicate this adapter exists to prevent; a key with two ACHIEVED records is the gate's invariant broken — verifier territory. What was inside the report stays evidenced by the firm's own log, bound to the feed by key: <b>the plane never saw it, so the plane cannot leak it</b>.</p>
-        </div>
-      </div>
-
-      <div class="chg reveal">
-        <details class="chg-grp">
-          <summary><span class="tag tag-limits">Stated limits</span> <span class="count">4 stated</span><span class="chev">›</span></summary>
-          <ul>
-            <li><b>Letter case is keyed as given — a recorded residual, open on purpose.</b> Case-folding could merge two identifiers a scheme legitimately treats as distinct, and reservations never expire — a false merge bricks a legitimate report forever. Normalize case upstream, or two casings of one identifier are two reports. Whitespace and non-NFC Unicode, by contrast, are refused outright.</li>
-            <li><b>The <code>finos-cdm</code> oracle lane skips visibly today.</b> CDM 7.1.0's own <code>WorkflowStep.model_validate</code> refuses a populated <code>eventIdentifier</code>, so the emitted shape is asserted against <code>CONTRACT.md</code> §2.7, never against CDM's own types — a skipped oracle is never a green one.</li>
-            <li><b>The action-type table is EMIR-Refit-shaped, not ESMA-verified.</b> The meanings are the author's reading; verifying them against the current validation rules precedes any production claim.</li>
-            <li><b>Adapters are Python-only by precedent</b> — the reporting adapter and CDM bridge are stdlib-only and ride the Python declarant twin. <code>gate_batch</code> promises no batch atomicity (a file with per-record ACK/NACK is neither ACHIEVED nor REFUSED as a whole), and each declaration carries one reporting entity.</li>
-          </ul>
-        </details>
-      </div>
-
-      <div class="cta-row reveal">
-        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/tree/main/declarant/pydeclarant" target="_blank" rel="noopener">declarant/pydeclarant — the reporting adapter + CDM bridge ↗</a>
-        <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane/blob/main/CONTRACT.md" target="_blank" rel="noopener">CONTRACT.md §2.7 — the reporting contract ↗</a>
       </div>
     </div>
   </section>
@@ -1557,7 +1356,7 @@ ACHIEVED {<br />
     <div class="foot-links">
       <a href="/">hossainpazooki.github.io <span class="arr">→</span></a>
       <a href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane <span class="arr">↗</span></a>
-      <a href="https://github.com/hossainpazooki/intent-plane/blob/main/CONTRACT.md" target="_blank" rel="noopener">CONTRACT.md <span class="arr">↗</span></a>
+      <a href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">treasury-intent-controller <span class="arr">↗</span></a>
       <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
     </div>
   </div>
@@ -1577,7 +1376,7 @@ ACHIEVED {<br />
 
     var SCN = [
       {
-        label:'scenario 1 of 3 · a clean grant',
+        label:'a clean grant — end to end',
         head:'intent 7f3a…<b>cites spec c7a36959… · <span class="key">key K1</span></b>',
         hash:'c7a36959…dc51', chip:'attested · published in the store', chipS:'on',
         rows:[
@@ -1590,34 +1389,6 @@ ACHIEVED {<br />
         ledger:'ACHIEVED × 1 · seq 41 · trajectory hash committed',
         ver:'VERIFIED — every hash recomputes'
       },
-      {
-        label:'scenario 2 of 3 · an unattested spec',
-        head:'intent 9c1e…<b>cites spec 41be03c7… · <span class="key">key K2</span></b>',
-        hash:'41be03c7…a112', chip:'no attestation for this hash', chipS:'idle',
-        rows:[
-          ['declared','key K2 present · spec cited by content address','ok'],
-          ['spec resolution','unattested — no verified spec for this hash','bad',{chip:['no attestation — refuses at the door','bad']}],
-          ['failed','unevaluable:unattested-spec · scorer never consulted','bad'],
-          ['—','not reached','void'],
-          ['—','no record — nothing settles','void']
-        ],
-        ledger:'ACHIEVED × 1 — unchanged · nothing unevaluable settles',
-        ver:'VERIFIED — no record ⟹ it never happened'
-      },
-      {
-        label:'scenario 3 of 3 · revoked at the edge',
-        head:'intent e410…<b>cites spec c7a36959… · <span class="key">key K3</span></b>',
-        hash:'c7a36959…dc51', chip:'attested · published in the store', chipS:'on',
-        rows:[
-          ['declared','key K3 present · spec cited by content address','ok'],
-          ['spec resolved','attested at declaration · signature verifies','ok'],
-          ['verifying','every criterion pass · none unevaluable','ok'],
-          ['dispatch edge','re-check finds a verified tombstone','bad',{chip:['revoked — a signed tombstone landed','bad']}],
-          ['failed_at_dispatch','revoked:<ref> · key not reserved · no record','bad']
-        ],
-        ledger:'ACHIEVED × 1 · the refusal durably recorded',
-        ver:'VERIFIED — refusals recompute too'
-      }
     ];
 
     function setStep(i, t, s, state){
@@ -1690,6 +1461,54 @@ ACHIEVED {<br />
         if(i >= ops.length){ i = 0; }
         next();
       }, op[1]);
+    })();
+  })();
+
+  // The CDM bridge, animated: pass 1 a clean submission to ACHIEVED,
+  // pass 2 the same identity with changed bytes — refused, submit never run.
+  (function(){
+    var svg = document.getElementById('cv-svg');
+    var cap = document.getElementById('cv-cap');
+    if(!svg || !cap) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // keep the finished grant state
+    var $ = function(id){ return document.getElementById(id); };
+    var stages = ['cv-s1','cv-a1','cv-s2','cv-a2','cv-s3','cv-a3','cv-s4'];
+    function setText(id, t){ var el=$(id); if(el) el.textContent=t; }
+    function verdict(t, cls){ var el=$('cv-b3s'); el.textContent=t; el.setAttribute('class','vz-s '+cls); }
+    function outcome(bad, l1, l2){
+      var g=$('cv-s4');
+      g.setAttribute('class', 'cv-stage'+(bad?' cv-bad':''));
+      setText('cv-b4a', l1); setText('cv-b4b', l2);
+    }
+    function dimAll(){
+      stages.forEach(function(id){ $(id).setAttribute('class', $(id).getAttribute('class').replace(/ ?\bon\b/,'')); });
+    }
+    function on(id){ var el=$(id); if(el.getAttribute('class').indexOf('on')<0) el.setAttribute('class', el.getAttribute('class')+' on'); }
+    svg.setAttribute('class','play');
+    var ops = [
+      // pass 1 — a clean submission
+      [function(){ dimAll(); cap.textContent='pass 1 of 2 · a clean submission';
+        setText('cv-b1s','a plain dict — 7.1.0 shape');
+        setText('cv-b2s','what it is — never what it says');
+        verdict('fail-closed','');
+        outcome(false,'…','…'); }, 750],
+      [function(){ on('cv-s1'); }, 850],
+      [function(){ on('cv-a1'); on('cv-s2'); setText('cv-b2s','identity derived ⟹ key K'); }, 950],
+      [function(){ on('cv-a2'); on('cv-s3'); verdict('Proceed — fresh grant','cv-ok'); }, 950],
+      [function(){ on('cv-a3'); outcome(false,'ACHIEVED + business event','submit ran — once'); on('cv-s4'); }, 3400],
+      // pass 2 — same identity, new bytes
+      [function(){ dimAll(); cap.textContent='pass 2 of 2 · same identity — new bytes';
+        setText('cv-b1s','same report · numbers changed'); verdict('fail-closed',''); }, 750],
+      [function(){ on('cv-s1'); }, 850],
+      [function(){ on('cv-a1'); on('cv-s2'); setText('cv-b2s','same identity ⟹ same key K'); }, 950],
+      [function(){ on('cv-a2'); on('cv-s3'); verdict('already reserved — refused','cv-no'); }, 950],
+      [function(){ on('cv-a3'); outcome(true,'the refusal + its reason','submit never ran'); on('cv-s4'); }, 4400]
+    ];
+    var i = 0;
+    (function next(){
+      var op = ops[i];
+      op[0]();
+      setTimeout(function(){ i++; if(i >= ops.length) i = 0; next(); }, op[1]);
     })();
   })();
 
