@@ -52,8 +52,11 @@ collide with the `/intent` and `/rigor` paths).
 
 ## Hero
 
-- Eyebrow: `Data & Platform Engineer · Fail-Closed Data & Agentic
-  Systems — New York`
+- Eyebrow — the current LinkedIn headline, verbatim, featured up top:
+  `Building auditable agentic systems and the cost-efficient serving
+  infrastructure they run on — New York`
+- `<title>` and the meta description lead with the same headline
+  (locked 2026-08-31 from the live LinkedIn profile).
 - H1: `Hossain Pazooki` / dim second line `Three planes, one section.`
 - Lede: "Everything I build sits somewhere in this cut: **a data plane
   for what is known, an authorization plane for what may act, and an
