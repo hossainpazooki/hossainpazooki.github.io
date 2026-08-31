@@ -110,7 +110,7 @@ creed line and ©. Everything cut from home resolves to a link here
 |---|---|---|
 | research | cross-model KV-cache transfer · `◐ in progress · paper in preparation` | GitHub ↗ (profile) |
 | writing | when you can't measure what matters · towards ai, jul 2026 | Medium ↗ (the Towards AI essay) |
-| career | algoverse (now) · orawell · engager · 3deo · penske media | LinkedIn ↗ |
+| career | algoverse · orawell · engager · 3deo · pmc · inet | LinkedIn ↗ |
 
 Closing creed line under the block:
 `interpret → execute → attest. AI you can prove, not just trust.`
