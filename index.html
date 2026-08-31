@@ -1,48 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="ink">
+<html lang="en" data-theme="paper">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0A1424" id="metatheme" />
-<script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
+<meta name="theme-color" content="#F6F4EE" id="metatheme" />
+<script>(function(){var t='paper';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='ink'?'ink':'paper'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<title>Hossain Pazooki — Data &amp; Platform Engineer · AI/ML Infrastructure on Kubernetes · Fail-Closed Data &amp; Agentic Systems</title>
-<meta name="description" content="Data &amp; Platform Engineer — AI/ML infrastructure on Kubernetes, fail-closed data, and agentic systems for financial and regulated domains. The model interprets, a deterministic engine executes the consequential action, every decision carries an audit trace." />
+<title>Hossain Pazooki — Building auditable agentic systems and the cost-efficient serving infrastructure they run on</title>
+<meta name="description" content="Building auditable agentic systems and the cost-efficient serving infrastructure they run on. Three planes, one section — DATUM: what is known; INTENT: what may act; RIGOR: the audit boundary that holds both to their evidence." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
 <style>
   :root{
-    color-scheme:dark;
-    --ink:#0A1424;
-    --ink-2:#0D1930;
-    --panel:#101E38;
-    --panel-2:#142440;
-    --line:#1D3050;
-    --line-soft:#172942;
-    --text:#E9EEF8;
-    --text-2:#B8C5DB;
-    --muted:#7F92B0;
-    --gold:#E0A436;
-    --gold-dim:#7a5d22;
-    --ok:#5BB98C;
-    --warn:#E0A436;
-    --block:#D4654A;
-    --header-bg:rgba(10,20,36,.72);
-    --gold-hover:#f3c269;
-    --wash-1:rgba(255,255,255,.012);
-    --wash-2:rgba(255,255,255,.03);
-    --lamp-off:#2C3E5E;
-    --gate-shadow:0 1px 0 rgba(255,255,255,.02) inset, 0 18px 50px -30px rgba(0,0,0,.8);
-    --maxw:1080px;
-    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
-    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
-  }
-
-  :root[data-theme="paper"]{
     color-scheme:light;
     --ink:#F6F4EE;
     --ink-2:#EFECE2;
@@ -55,15 +28,32 @@
     --muted:#6C7484;
     --gold:#8A6217;
     --gold-dim:#D3BE8F;
-    --ok:#1E7A4D;
-    --warn:#8A6217;
-    --block:#AE4529;
-    --header-bg:rgba(246,244,238,.8);
     --gold-hover:#B07C1E;
+    --header-bg:rgba(246,244,238,.8);
     --wash-1:rgba(30,35,44,.025);
-    --wash-2:rgba(30,35,44,.05);
-    --lamp-off:#DDD6C6;
-    --gate-shadow:0 1px 2px rgba(30,35,44,.05), 0 18px 50px -30px rgba(30,35,44,.35);
+    --hatch:rgba(30,35,44,.03);
+    --maxw:1080px;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  :root[data-theme="ink"]{
+    color-scheme:dark;
+    --ink:#0A1424;
+    --ink-2:#0D1930;
+    --panel:#101E38;
+    --panel-2:#142440;
+    --line:#1D3050;
+    --line-soft:#172942;
+    --text:#E9EEF8;
+    --text-2:#B8C5DB;
+    --muted:#7F92B0;
+    --gold:#E0A436;
+    --gold-dim:#7a5d22;
+    --gold-hover:#f3c269;
+    --header-bg:rgba(10,20,36,.72);
+    --wash-1:rgba(255,255,255,.012);
+    --hatch:rgba(255,255,255,.014);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -93,7 +83,6 @@
 
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
 
-  /* ---------- eyebrow / mono labels ---------- */
   .eyebrow{
     font-family:var(--mono);
     font-size:12px;
@@ -101,15 +90,14 @@
     letter-spacing:.18em;
     text-transform:uppercase;
     color:var(--muted);
-    display:inline-flex;
-    align-items:center;
-    gap:.6em;
   }
   .eyebrow::before{
     content:"";
     width:18px;height:1px;
     background:var(--gold);
     display:inline-block;
+    vertical-align:middle;
+    margin-right:.8em;
   }
 
   /* ---------- header ---------- */
@@ -129,21 +117,20 @@
     font-size:15px;
     letter-spacing:.04em;
     color:var(--text);
-    display:inline-flex;align-items:center;gap:.5em;
   }
   .brand .dot{color:var(--gold)}
-  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links{display:flex;gap:24px;align-items:center}
   .nav-links a{
     font-family:var(--mono);
     font-size:13px;
     color:var(--muted);
     letter-spacing:.02em;
+    white-space:nowrap;
     transition:color .18s ease;
   }
   .nav-links a:hover{color:var(--text)}
   .nav-links a.ext{color:var(--gold)}
   .nav-links a.ext:hover{color:var(--gold-hover)}
-  .nav-links a{white-space:nowrap}
   .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
   .theme-sw button{
     font-family:var(--mono);font-size:10.5px;font-weight:600;
@@ -152,371 +139,211 @@
     transition:color .18s ease,background .18s ease;
   }
   .theme-sw button+button{border-left:1px solid var(--line)}
-  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(224,164,54,.08)}
-  @media(max-width:1160px){.nav-links{gap:14px}}
-  @media(max-width:620px){
-    .nav-links a.hideable{display:none}
-  }
+  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(138,98,23,.08)}
+  :root[data-theme="ink"] .theme-sw button[aria-pressed="true"]{background:rgba(224,164,54,.08)}
+  @media(max-width:520px){.nav-links a.hideable{display:none}}
 
   /* ---------- hero ---------- */
-  .hero{padding:88px 0 64px}
-  .hero .eyebrow{display:block;position:relative;padding-left:calc(18px + .6em);margin-bottom:26px}
-  .hero .eyebrow::before{position:absolute;left:0;top:.8em}
+  .hero{padding:64px 0 8px}
+  .hero .eyebrow{display:block;position:relative;padding-left:calc(18px + .8em);margin-bottom:22px}
+  .hero .eyebrow::before{position:absolute;left:0;top:.8em;margin:0}
   .name{
     font-family:'Space Grotesk',var(--sans);
     font-weight:600;
-    font-size:clamp(38px,6.2vw,68px);
-    line-height:1.04;
+    font-size:clamp(34px,5.4vw,56px);
+    line-height:1.06;
     letter-spacing:-.02em;
-    margin-bottom:28px;
+    margin-bottom:20px;
   }
   .name .ln2{color:var(--text-2)}
-
-  /* the signature: assertion / gate panel */
-  .gate{
-    border:1px solid var(--line);
-    background:
-      linear-gradient(180deg,rgba(224,164,54,.05),rgba(224,164,54,0) 90px),
-      var(--panel);
-    border-radius:8px;
-    max-width:660px;
-    overflow:hidden;
-    box-shadow:var(--gate-shadow);
-  }
-  .gate-bar{
-    border-bottom:1px solid var(--line);
-    padding:11px 18px;
-    display:flex;align-items:center;justify-content:space-between;
-    font-family:var(--mono);
-    font-size:11.5px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--muted);
-    background:var(--wash-1);
-  }
-  .gate-bar .lights{display:inline-flex;gap:6px}
-  .gate-bar .lights i{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--line)}
-  .gate-bar .lights i:nth-child(1){background:var(--lamp-off)}
-  .gate-bar .lights i:nth-child(2){background:var(--lamp-off)}
-  .gate-bar .lights i:nth-child(3){background:var(--gold-dim)}
-  .gate-body{padding:24px 18px 18px}
-  .assert{
-    font-family:var(--mono);
-    font-size:clamp(14px,2.4vw,17px);
-    line-height:1.85;
-    color:var(--text);
-  }
-  .assert .k{color:var(--gold)}
-  .assert .c{color:var(--muted)}
-  .gate-foot{
-    margin-top:20px;
-    padding-top:16px;
-    border-top:1px dashed var(--line);
-    display:flex;align-items:center;justify-content:space-between;
-    gap:14px;flex-wrap:wrap;
-  }
-  .gate-foot .meta{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--muted);
-    letter-spacing:.02em;
-  }
-  .gate-foot .meta b{color:var(--text-2);font-weight:500}
-  .verdict{
-    font-family:var(--mono);
-    font-size:12.5px;
-    font-weight:600;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    padding:7px 13px;
-    border-radius:999px;
-    border:1px solid var(--gold-dim);
-    color:var(--gold);
-    background:rgba(224,164,54,.08);
-    display:inline-flex;align-items:center;gap:8px;
-    white-space:nowrap;
-    transition:color .3s ease, border-color .3s ease, background .3s ease;
-  }
-  .verdict .tick{
-    width:7px;height:7px;border-radius:50%;background:var(--gold);
-    box-shadow:0 0 0 0 rgba(224,164,54,.5);
-  }
-  .verdict[data-state="eval"]{
-    color:var(--muted);border-color:var(--line);background:transparent;
-  }
-  .verdict[data-state="eval"] .tick{background:var(--muted);animation:blink 1s steps(2) infinite}
-  @keyframes blink{50%{opacity:.25}}
-
   .lede{
-    margin-top:34px;
-    max-width:620px;
-    font-size:clamp(16px,2.4vw,19px);
+    max-width:640px;
+    font-size:clamp(16px,2.4vw,18px);
     line-height:1.65;
     color:var(--text-2);
   }
   .lede b{color:var(--text);font-weight:500}
 
-  .cta-row{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
-  .btn{
-    font-family:var(--mono);
-    font-size:13.5px;
-    letter-spacing:.02em;
-    padding:12px 20px;
-    border-radius:6px;
-    display:inline-flex;align-items:center;gap:9px;
-    transition:transform .15s ease, background .18s ease, border-color .18s ease;
+  /* ---------- the cross-section ---------- */
+  .xwrap{margin-top:40px;position:relative}
+  .marker{
+    position:absolute;top:46%;
+    font-family:var(--mono);font-size:13px;color:var(--muted);
   }
-  .btn-primary{background:var(--gold);color:#10110d;font-weight:600}
-  .btn-primary:hover{transform:translateY(-1px);background:#edb24a}
-  .btn-ghost{border:1px solid var(--line);color:var(--text-2)}
-  .btn-ghost:hover{border-color:var(--muted);color:var(--text)}
+  .marker.a{left:-44px}
+  .marker.b{right:-44px}
+  @media(max-width:1200px){.marker{display:none}}
 
-  /* ---------- section frame ---------- */
-  .section{padding:74px 0;border-top:1px solid var(--line-soft)}
-  .section-head{margin-bottom:42px}
-  .section-head h2{
-    margin-top:18px;
-    font-size:clamp(24px,4vw,34px);
-    font-weight:600;
-    letter-spacing:-.02em;
-    line-height:1.15;
-    max-width:680px;
-  }
-  .section-head p{
-    margin-top:14px;max-width:600px;color:var(--muted);font-size:15.5px;
-  }
-
-  /* ---------- capabilities ---------- */
-  .facts{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:1px;
-    background:var(--line-soft);
-    border:1px solid var(--line-soft);
-    border-radius:8px;
-    overflow:hidden;
-  }
-  .fact{background:var(--ink-2);padding:24px 22px;display:flex;flex-direction:column;gap:10px}
-  .fact .big{
-    font-family:var(--mono);
-    font-size:clamp(22px,3.4vw,30px);
-    font-weight:600;
-    color:var(--text);
-    letter-spacing:-.01em;
-    line-height:1.1;
-  }
-  .fact .big .u{color:var(--gold)}
-  .fact .cap{font-size:13px;color:var(--muted);line-height:1.5}
-  .fact .trace{
-    margin-top:auto;
-    font-family:var(--mono);
-    font-size:11px;
-    letter-spacing:.04em;
-    color:var(--gold-dim);
-    padding-top:12px;
-  }
-  .fact .trace a{color:var(--gold-dim);text-decoration:underline;text-underline-offset:2px;transition:color .15s ease}
-  .fact .trace a:hover{color:var(--gold)}
-  @media(max-width:860px){.facts{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:480px){.facts{grid-template-columns:1fr}}
-
-  /* ---------- work ledger ---------- */
-  .ledger{border-top:1px solid var(--line)}
-  .rec{
-    display:grid;
-    grid-template-columns:160px 1fr;
-    gap:30px;
-    padding:30px 8px;
-    border-bottom:1px solid var(--line);
+  .xsec{
+    display:block;
+    border:1px dashed var(--gold-dim);
+    background:var(--wash-1);
+    padding:28px 24px 20px;
     position:relative;
+  }
+  .xsec-tab{
+    position:absolute;top:-10px;right:22px;
+    background:var(--ink);
+    padding:1px 12px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    color:var(--gold);
+    transition:background-color .25s ease;
+  }
+  .plane{
+    display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:stretch;
+  }
+  .plane-label{padding:14px 0}
+  .p-num{
+    font-family:var(--mono);font-size:12px;letter-spacing:.2em;
+    color:var(--gold);margin-bottom:7px;
+  }
+  .p-creed{
+    font-family:'Space Grotesk',var(--sans);
+    font-size:19px;font-weight:600;letter-spacing:-.01em;margin-bottom:7px;
+  }
+  .p-what{font-size:12.5px;color:var(--muted);line-height:1.55}
+
+  .cells{
+    display:grid;gap:1px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  .cells.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cells.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .cells.hatched{
+    background-image:repeating-linear-gradient(135deg,var(--hatch) 0 1px,transparent 1px 9px);
+  }
+  .cell{
+    background:var(--panel);
+    padding:16px;
+    display:flex;flex-direction:column;gap:5px;
     transition:background .18s ease;
   }
-  .rec::before{
-    content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
-    background:var(--gold);transform:scaleY(0);transform-origin:top;
-    transition:transform .22s ease;
+  .cell:hover{background:var(--panel-2)}
+  .cell .n{font-family:var(--mono);font-size:12.5px;color:var(--text)}
+  .cell .n .go{color:var(--gold)}
+  .cell .d{font-size:12.5px;color:var(--muted);line-height:1.55}
+  .cell.proposed{outline:1px dashed var(--gold-dim);outline-offset:-5px}
+  .cell.proposed .n{color:var(--muted)}
+
+  .gate-line{display:flex;align-items:center;gap:14px;margin:16px 0}
+  .gate-rule{flex-grow:1;border-top:1px dashed var(--gold-dim);position:relative}
+  .gate-rule i{
+    position:absolute;top:-6px;width:11px;height:11px;
+    background:var(--ink);border:1.4px solid var(--gold);
+    transition:background-color .25s ease;
   }
-  .rec:hover{background:linear-gradient(90deg,rgba(224,164,54,.035),transparent 60%)}
-  .rec:hover::before{transform:scaleY(1)}
-  .rec .kind{
-    font-family:var(--mono);
-    font-size:11.5px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--muted);
-    padding-top:5px;
+  .gate-rule i:nth-child(1){left:22%}
+  .gate-rule i:nth-child(2){left:52%}
+  .gate-rule i:nth-child(3){left:82%}
+  .gate-cap{
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    color:var(--muted);white-space:nowrap;
   }
-  .rec .kind .tag{color:var(--gold)}
-  .rec h3{
-    font-size:21px;font-weight:600;letter-spacing:-.01em;margin-bottom:8px;
-    display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+
+  .rail{
+    margin-top:16px;border-top:1px dashed var(--gold-dim);padding-top:14px;
+    display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:center;
   }
-  .rec h3 .src{
-    font-family:var(--mono);font-size:12px;font-weight:400;color:var(--muted);
-    letter-spacing:.02em;
-  }
-  a.src{text-decoration:none;transition:color .15s ease}
-  a.src:hover{color:var(--gold)}
-  .rec p{color:var(--text-2);font-size:15px;max-width:620px;line-height:1.62}
-  .rec .detail{color:var(--muted);font-size:13.5px;margin-top:7px;max-width:620px}
-  .stack{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}
-  .stack span{
+  .rail-label{font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.6}
+  .rail-label .k{color:var(--gold)}
+  .rail-chips{display:flex;gap:10px;flex-wrap:wrap}
+  .rail-chips a{
     font-family:var(--mono);font-size:11.5px;color:var(--text-2);
-    border:1px solid var(--line);border-radius:4px;padding:3px 9px;
-    background:var(--wash-1);
+    border:1px solid var(--line);border-radius:4px;padding:8px 12px;
+    background:var(--panel);
+    transition:background .18s ease,border-color .18s ease;
   }
+  .rail-chips a:hover{background:var(--panel-2);border-color:var(--muted)}
+  .rail-chips a .go{color:var(--gold)}
+
+  .xcap{
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    margin-top:12px;
+    font-family:var(--mono);font-size:11px;color:var(--muted);
+  }
+
+  @media(max-width:860px){
+    .plane,.rail{grid-template-columns:1fr;gap:14px}
+    .plane-label{padding:4px 0 0}
+    .cells.c3{grid-template-columns:1fr}
+    .cells.c4{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .gate-line{flex-direction:column;align-items:stretch;gap:8px}
+    .gate-cap{white-space:normal}
+  }
+  @media(max-width:480px){
+    .cells.c4{grid-template-columns:1fr}
+    .xsec{padding:22px 16px 16px}
+  }
+
+  /* ---------- the index ---------- */
+  .index{margin-top:48px}
+  .ix{
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    background:var(--panel);
+  }
+  .ix-row{
+    display:grid;grid-template-columns:110px 1fr 180px;gap:20px;
+    padding:15px 20px;align-items:baseline;
+    border-bottom:1px solid var(--line-soft);
+    transition:background .18s ease;
+  }
+  .ix-row:last-child{border-bottom:0}
+  a.ix-row:hover{background:var(--panel-2)}
+  .ix-k{font-family:var(--mono);font-size:12px;color:var(--gold)}
+  .ix-l{font-size:13.5px;color:var(--text-2)}
+  .ix-l .st{font-family:var(--mono);font-size:11.5px;color:var(--gold)}
+  .ix-l .now{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .ix-d{font-family:var(--mono);font-size:12px;color:var(--gold);text-align:right;white-space:nowrap}
+  .ix-d a{color:var(--gold)}
+  .ix-d a:hover{color:var(--gold-hover)}
   @media(max-width:680px){
-    .rec{grid-template-columns:1fr;gap:12px;padding:26px 4px}
-    .rec .kind{padding-top:0}
+    .ix-row{grid-template-columns:1fr auto;gap:4px 16px;padding:13px 16px}
+    .ix-l{grid-column:1 / -1}
   }
 
-  /* ---------- featured band: writing × systems ---------- */
-  .band{background:linear-gradient(180deg,rgba(224,164,54,.035),transparent 240px)}
-  .duo{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:stretch}
-  .duo-col{display:flex;flex-direction:column;scroll-margin-top:76px}
-  .duo-col .eyebrow{margin-bottom:18px}
-  .duo-col h2{
-    font-size:clamp(22px,2.8vw,27px);font-weight:600;
-    letter-spacing:-.015em;line-height:1.2;margin-bottom:10px;
+  /* ---------- creed ---------- */
+  .creed{
+    margin-top:36px;border-top:1px solid var(--line-soft);
+    padding:22px 0 46px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;
   }
-  .duo-col .sub{color:var(--muted);font-size:14.5px;margin-bottom:24px}
-  .systems{
-    display:grid;grid-template-columns:1fr;grid-auto-rows:1fr;gap:1px;flex:1;
-    background:var(--line-soft);border:1px solid var(--line-soft);
-    border-radius:10px;overflow:hidden;
-  }
-  .system{
-    background:var(--ink-2);padding:26px 24px;
-    display:flex;flex-direction:column;gap:14px;
-    position:relative;transition:background .18s ease;
-  }
-  .system::before{
-    content:"";position:absolute;left:0;top:0;right:0;height:2px;
-    background:var(--gold);transform:scaleX(0);transform-origin:left;
-    transition:transform .22s ease;
-  }
-  .system:hover{background:var(--panel-2)}
-  .system:hover::before{transform:scaleX(1)}
-  .sys-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .sys-kind{
-    font-family:var(--mono);font-size:11px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--muted);
-  }
-  .sys-arrow{font-family:var(--mono);font-size:12.5px;color:var(--gold);letter-spacing:.02em;white-space:nowrap}
-  .sys-effect{font-size:19px;font-weight:600;letter-spacing:-.01em;line-height:1.3;color:var(--text)}
-  .sys-what{font-size:13.5px;color:var(--text-2);line-height:1.6;margin-top:auto}
+  .creed .t{font-family:var(--mono);font-size:13px;line-height:1.8;color:var(--text-2)}
+  .creed .t .k{color:var(--gold)}
+  .creed .t .q{color:var(--muted)}
+  .creed .copy{font-family:var(--mono);font-size:12px;color:var(--muted)}
 
-  /* essay card */
-  .pub-card{
-    background:var(--ink-2);border:1px solid var(--line-soft);border-radius:10px;
-    padding:26px 24px;flex:1;
-    display:flex;flex-direction:column;gap:14px;
-    position:relative;overflow:hidden;transition:background .18s ease;
-  }
-  .pub-card::before{
-    content:"";position:absolute;left:0;top:0;right:0;height:2px;
-    background:var(--gold);transform:scaleX(0);transform-origin:left;
-    transition:transform .22s ease;
-  }
-  .pub-card:hover{background:var(--panel-2)}
-  .pub-card:hover::before{transform:scaleX(1)}
-  .pub-t{font-size:18.5px;font-weight:600;letter-spacing:-.01em;line-height:1.35;color:var(--text)}
-  .pub-dek{font-size:13.5px;color:var(--text-2);line-height:1.6}
-  .pub-meta{
-    margin-top:auto;padding-top:14px;border-top:1px dashed var(--line);
-    font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--muted);
-  }
-  .pub-companion{margin-top:14px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
-  .pub-companion a{color:var(--gold);transition:color .15s ease}
-  .pub-companion a:hover{color:var(--gold-hover)}
-  @media(max-width:880px){.duo{grid-template-columns:1fr;gap:60px}}
-
-  /* ---------- skills ---------- */
-  .skills{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
-  .skill-grp{background:var(--ink-2);padding:22px 22px}
-  .skill-grp h4{
-    font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--gold);margin-bottom:14px;
-  }
-  .skill-grp ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-  .skill-grp li{
-    font-size:14.5px;color:var(--text-2);display:flex;gap:10px;align-items:baseline;
-  }
-  .skill-grp li::before{content:"—";color:var(--muted);font-family:var(--mono);font-size:12px}
-  @media(max-width:680px){.skills{grid-template-columns:1fr}}
-
-  /* ---------- career ---------- */
-  .timeline{border-left:1px solid var(--line);margin-left:6px}
-  .job{position:relative;padding:0 0 38px 30px}
-  .job:last-child{padding-bottom:0}
-  .job::before{
-    content:"";position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;
-    background:var(--ink);border:1px solid var(--muted);
-  }
-  .job.now::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 4px rgba(224,164,54,.14)}
-  .job .yr{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
-  .job h3{font-size:18px;font-weight:600;margin-top:6px}
-  .job h3 .co{color:var(--gold);font-weight:500}
-  .job .where{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:3px}
-  .job ul{list-style:none;margin-top:13px;display:flex;flex-direction:column;gap:8px}
-  .job li{font-size:14.5px;color:var(--text-2);line-height:1.55;padding-left:18px;position:relative}
-  .job li::before{content:"›";position:absolute;left:0;color:var(--gold);font-family:var(--mono)}
-
-  .edu{
-    margin-top:34px;border:1px solid var(--line);border-radius:8px;
-    padding:20px 22px;background:var(--ink-2);
-    display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center;
-  }
-  .edu .d{font-size:15px}
-  .edu .d b{font-weight:600}
-  .edu .d span{color:var(--muted);font-size:13.5px}
-  .edu .yr{font-family:var(--mono);font-size:12px;color:var(--muted)}
-
-  /* ---------- footer ---------- */
-  footer{border-top:1px solid var(--line);padding:46px 0 60px}
-  .foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end}
-  .foot .col-thesis{max-width:380px}
-  .foot .col-thesis .t{font-family:var(--mono);font-size:13px;color:var(--text-2);line-height:1.7}
-  .foot .col-thesis .t .k{color:var(--gold)}
-  .foot .copy{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:18px}
-  .foot-links{display:flex;flex-direction:column;gap:11px;text-align:right}
-  .foot-links a{
-    font-family:var(--mono);font-size:13.5px;color:var(--text-2);
-    display:inline-flex;gap:9px;justify-content:flex-end;align-items:center;
-    transition:color .16s ease;
-  }
-  .foot-links a:hover{color:var(--gold)}
-  .foot-links a .arr{color:var(--muted)}
-  @media(max-width:560px){
-    .foot{flex-direction:column;align-items:flex-start}
-    .foot-links{text-align:left}
-    .foot-links a{justify-content:flex-start}
-  }
-
-  /* reveal */
+  /* ---------- settle + reveal ---------- */
+  .js .settle{opacity:0;transform:translateY(10px)}
+  .js .xsec{border-color:transparent}
+  .js .xsec .xsec-tab{opacity:0}
+  .js .xsec.in{border-color:var(--gold-dim);transition:border-color .45s ease .85s}
+  .js .xsec.in .xsec-tab{opacity:1;transition:opacity .45s ease .85s}
+  .js .xsec.in .settle{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+  .js .xsec.in .s-datum{transition-delay:.05s}
+  .js .xsec.in .s-gate{transition-delay:.3s}
+  .js .xsec.in .s-intent{transition-delay:.5s}
+  .js .xsec.in .s-rigor{transition-delay:.85s}
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
   .reveal.in{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){
-    .reveal{opacity:1;transform:none;transition:none}
+    .js .settle,.reveal{opacity:1;transform:none;transition:none}
+    .js .xsec{border-color:var(--gold-dim)}
+    .js .xsec .xsec-tab{opacity:1}
   }
 </style>
-<noscript><style>.reveal{opacity:1;transform:none}.theme-sw{display:none}</style></noscript>
+<noscript><style>.settle,.reveal{opacity:1;transform:none}.xsec{border-color:var(--gold-dim)}.xsec-tab{opacity:1}.theme-sw{display:none}</style></noscript>
 </head>
 <body>
 
 <header>
   <div class="wrap nav">
     <a class="brand" href="/">HP<span class="dot">.</span></a>
-    <nav class="nav-links">
-      <a href="/blog/" class="hideable">blog</a>
-      <a href="#systems" class="hideable">systems</a>
-      <a href="#work" class="hideable">work</a>
-      <a href="#skills" class="hideable">skills</a>
-      <a href="#career" class="hideable">career</a>
-      <a href="https://hossainpazooki.com" class="ext" target="_blank" rel="noopener">hossainpazooki.com&nbsp;↗</a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="/blog/">blog</a>
+      <a href="https://hossainpazooki.com" class="ext hideable" target="_blank" rel="noopener">hossainpazooki.com&nbsp;↗</a>
       <div class="theme-sw" role="group" aria-label="Theme">
-        <button type="button" data-set="ink" aria-pressed="true">ink</button>
-        <button type="button" data-set="paper" aria-pressed="false">paper</button>
+        <button type="button" data-set="paper" aria-pressed="true">paper</button>
+        <button type="button" data-set="ink" aria-pressed="false">ink</button>
       </div>
     </nav>
   </div>
@@ -527,319 +354,141 @@
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">Data &amp; Platform Engineer · AI/ML Infrastructure on Kubernetes · Fail-Closed Data &amp; Agentic Systems — New York</span>
-      <h1 class="name">Hossain<br /><span class="ln2">Pazooki</span></h1>
-
-      <div class="gate" role="img" aria-label="Architectural thesis: the model interprets, a deterministic engine executes the consequential action, every decision carries an audit trace. Gate verified.">
-        <div class="gate-bar">
-          <span>integrity_gate.assert</span>
-          <span class="lights"><i></i><i></i><i></i></span>
-        </div>
-        <div class="gate-body">
-          <div class="assert" aria-hidden="true">
-            <span class="c">// the conviction every system inherits</span><br />
-            <span class="k">interpret</span> &nbsp;→ the model reads intent, never the final word<br />
-            <span class="k">execute</span> &nbsp;&nbsp;→ a deterministic engine takes the consequential action<br />
-            <span class="k">attest</span> &nbsp;&nbsp;&nbsp;→ every decision carries an audit trace
-          </div>
-          <div class="gate-foot">
-            <span class="meta">policy:&nbsp;<b>fail-closed on unevaluable</b></span>
-            <span class="verdict" data-state="eval" id="verdict"><span class="tick"></span><span id="verdict-text">evaluating…</span></span>
-          </div>
-        </div>
-      </div>
-
-      <p class="lede">I build data platforms, evaluation harnesses, and reliable agentic &amp; LLM systems for regulated domains — point-in-time financial data, healthcare claims, cross-border compliance — <b>where a wrong answer has a real cost and "it usually works" isn't good enough.</b></p>
-
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#systems">Explore the systems →</a>
-        <a class="btn btn-ghost" href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub ↗</a>
-      </div>
+      <span class="eyebrow">Building auditable agentic systems and the cost-efficient serving infrastructure they run on — New York</span>
+      <h1 class="name">Hossain Pazooki<br /><span class="ln2">Three planes, one section.</span></h1>
+      <p class="lede">Everything I build sits somewhere in this cut: <b>a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence.</b></p>
     </div>
   </section>
 
-  <!-- FEATURED: WRITING × SYSTEMS -->
-  <section class="section band" id="highlights">
-    <div class="wrap">
-      <div class="duo">
+  <!-- THE CROSS-SECTION -->
+  <section class="wrap xwrap">
+    <span class="marker a" aria-hidden="true">A —</span>
+    <span class="marker b" aria-hidden="true">— A′</span>
 
-        <div class="duo-col reveal" id="writing">
-          <span class="eyebrow">Blog</span>
-          <h2>The reasoning, written down.</h2>
-          <p class="sub">Long-form essays where the discipline gets argued in public.</p>
-          <a class="pub-card" href="/blog/when-you-cant-measure-what-matters/">
-            <div class="sys-top">
-              <span class="sys-kind">essay · towards ai · jul 2026</span>
-              <span class="sys-arrow">read&nbsp;→</span>
-            </div>
-            <div class="pub-t">When You Can't Measure What Matters: A Closed-Loop Harness for Probability-of-Default Estimation</div>
-            <p class="pub-dek">Lending data only labels the loans a past policy approved — so the declined cohort, exactly where a new PD model must be right, is the one it can't be graded on. The essay closes the loop: plant the truth in a synthetic causal world, hide it the way real approval policies do, escalate selection severity until correction fails, and report the operating frontier as a distribution, not a point.</p>
-            <p class="pub-dek">The finding staked highest: the counterfactual advantage and the calibration correction break at the same wall — selection through a confounder no feature set contained.</p>
-            <div class="stack"><span>selective labels</span><span>causal attribution</span><span>declined-cohort calibration</span><span>operating frontier</span></div>
-            <div class="pub-meta">9 min read · published in towards ai · code &amp; data: cldd</div>
+    <nav class="xsec" id="xsec" aria-label="Site map — the cross-section of three programs">
+      <span class="xsec-tab s-rigor">RIGOR — THE AUDIT BOUNDARY</span>
+
+      <!-- 02 INTENT -->
+      <div class="plane settle s-intent">
+        <div class="plane-label">
+          <div class="p-num">02 · INTENT</div>
+          <div class="p-creed">What may act.</div>
+          <p class="p-what">The plane where irreversible actions pass — or wait. Agents propose; a deterministic gate disposes.</p>
+        </div>
+        <div class="cells c3">
+          <a class="cell" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">
+            <span class="n">intent-plane <span class="go">↗</span></span>
+            <span class="d">declarant + verifier — the record re-verified without trusting the gate</span>
           </a>
-          <div class="pub-companion">read on <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">Towards AI ↗</a> · all posts <a href="/blog/">/blog →</a></div>
+          <a class="cell" href="/intent/">
+            <span class="n">treasury gate <span class="go">→</span></span>
+            <span class="d">sole emitter of one durable ACHIEVED record — no record, no value moved</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/regulatory-rule-engine" target="_blank" rel="noopener">
+            <span class="n">atlas <span class="go">↗</span></span>
+            <span class="d">signed, expert-attested specs the gate consumes, never authors</span>
+          </a>
         </div>
+      </div>
 
-        <div class="duo-col reveal" id="systems">
-          <span class="eyebrow">Deep dives</span>
-          <h2>Three systems, one discipline.</h2>
-          <p class="sub">Each a working system with its own page — the effect stated in one line.</p>
-          <div class="systems">
-        <a class="system" href="/baseline/">
-          <div class="sys-top">
-            <span class="sys-kind">data platform · concept page</span>
-            <span class="sys-arrow">/baseline →</span>
-          </div>
-          <div class="sys-effect">The shift is cheap. The baseline is the instrument.</div>
-          <div class="sys-what">The optics underneath VANTAGE × PARALLAX — an as-of viewpoint, the revision that shifts between viewpoints, and the contract that makes the two comparable: one read surface, one Reader protocol, a gate proven able to fail.</div>
-        </a>
-        <a class="system" href="/intent/" id="sys-intent">
-          <div class="sys-top">
-            <span class="sys-kind">authorization kernel</span>
-            <span class="sys-arrow">/intent →</span>
-          </div>
-          <div class="sys-effect">A duplicate of an irreversible action isn't caught — it's impossible.</div>
-          <div class="sys-what">A deterministic gate that authorizes an irreversible action only on a reproducible, measured demonstration — one durable ACHIEVED record, or nothing at all.</div>
-        </a>
-        <a class="system" href="/rigor/">
-          <div class="sys-top">
-            <span class="sys-kind">open-source plugin</span>
-            <span class="sys-arrow">/rigor →</span>
-          </div>
-          <div class="sys-effect">Don't trust the claim. Try to break it.</div>
-          <div class="sys-what">A Claude Code plugin that holds agents to their evidence — refute a claim before you believe it, and never let an agent silently write your git history.</div>
-        </a>
-          </div>
+      <!-- gate interface -->
+      <div class="gate-line settle s-gate" aria-hidden="true">
+        <div class="gate-rule"><i></i><i></i><i></i></div>
+        <span class="gate-cap">actions touch the data plane only through gates · fail-closed on unevaluable</span>
+      </div>
+
+      <!-- 01 DATUM -->
+      <div class="plane settle s-datum">
+        <div class="plane-label">
+          <div class="p-num">01 · DATUM</div>
+          <div class="p-creed">What is known.</div>
+          <p class="p-what">The bedrock — a reference frame for checkable claims. Produced, adversarially re-derived, recorded as replayable verdicts.</p>
         </div>
+        <div class="cells c4 hatched">
+          <a class="cell" href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">
+            <span class="n">vantage <span class="go">↗</span></span>
+            <span class="d">point-in-time SEC fundamentals — 86.6M gold facts</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/parallax" target="_blank" rel="noopener">
+            <span class="n">parallax <span class="go">↗</span></span>
+            <span class="d">the consumer side re-derives every number</span>
+          </a>
+          <a class="cell" href="/baseline/">
+            <span class="n">baseline <span class="go">→</span></span>
+            <span class="d">the catalog of dated, replayable verdicts</span>
+          </a>
+          <a class="cell proposed" href="https://github.com/hossainpazooki/meridian" target="_blank" rel="noopener">
+            <span class="n">meridian ○</span>
+            <span class="d">portfolio ledger — design locked · unclaimed</span>
+          </a>
+        </div>
+      </div>
 
+      <!-- 03 RIGOR rail -->
+      <div class="rail settle s-rigor">
+        <div class="rail-label">03 · <span class="k">RIGOR</span> — the boundary itself: the discipline that audits both planes.</div>
+        <div class="rail-chips">
+          <a href="/rigor/">rigor — plugin · 20 skills · 11 gates <span class="go">→</span></a>
+          <a href="/cldd/">cldd — closed-loop default detection <span class="go">→</span></a>
+          <a href="https://github.com/hossainpazooki/upstream-label-correction" target="_blank" rel="noopener">clue — upstream label correction <span class="go">↗</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="xcap">
+      <span>every cell is a link — the section is the site map</span>
+      <span>solid = built · dashed = proposed · statuses restated from each repo</span>
+    </div>
+  </section>
+
+  <!-- THE INDEX -->
+  <section class="wrap index">
+    <div class="ix reveal">
+      <a class="ix-row" href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">
+        <span class="ix-k">research</span>
+        <span class="ix-l">cross-model KV-cache transfer · <span class="st">◐ in progress · paper in preparation</span></span>
+        <span class="ix-d">LinkedIn ↗</span>
+      </a>
+      <a class="ix-row" href="/blog/">
+        <span class="ix-k">writing</span>
+        <span class="ix-l">when you can't measure what matters · towards ai, jul 2026</span>
+        <span class="ix-d">/blog →</span>
+      </a>
+      <a class="ix-row" href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">
+        <span class="ix-k">career</span>
+        <span class="ix-l">algoverse <span class="now">(now)</span> · orawell · engager · 3deo · penske media</span>
+        <span class="ix-d">LinkedIn ↗</span>
+      </a>
+      <div class="ix-row">
+        <span class="ix-k">contact</span>
+        <span class="ix-l">new york · <a href="mailto:hossain@pazooki.com">hossain@pazooki.com</a></span>
+        <span class="ix-d"><a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub ↗</a> · <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn ↗</a></span>
       </div>
     </div>
   </section>
 
-  <!-- CAPABILITIES -->
-  <section class="section" id="proof">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">What the work proves</span>
-        <h2>Correctness you can audit — not confidence you have to trust.</h2>
-      </div>
-      <div class="facts reveal">
-        <div class="fact">
-          <div class="big"><span class="u">34%</span> fewer</div>
-          <div class="cap">claim denials, after a production failure exposed systematic LLM over-confidence and I rebuilt the decision gate.</div>
-          <div class="trace">context · <a href="#job-orawell">Orawell Group — AI/ML Tech Lead</a>, healthcare RCM</div>
-        </div>
-        <div class="fact">
-          <div class="big">five-<span class="u">gate</span></div>
-          <div class="cap">verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what the model is <em>allowed</em> to act on.</div>
-          <div class="trace">source · <a href="#rec-atlas">ATLAS</a> — verification stack</div>
-        </div>
-        <div class="fact">
-          <div class="big">fail-<span class="u">closed</span></div>
-          <div class="cap">on unevaluable, not just on failure. Absence of valid proof is a denial, never a default-pass.</div>
-          <div class="trace">concept · <a href="#sys-intent">Intent Layer</a> — authorization</div>
-        </div>
-        <div class="fact">
-          <div class="big"><span class="u">86.6M</span><br />gold facts</div>
-          <div class="cap">point-in-time-correct, distilled from 181M bronze rows across 16,667 filers. An as-of date returns only what was already public.</div>
-          <div class="trace">source · <a href="#rec-vantage">VANTAGE</a> — point-in-time</div>
-        </div>
-      </div>
+  <!-- CREED -->
+  <footer class="wrap creed">
+    <div class="t">
+      <span class="k">datum</span> → <span class="k">intent</span> → <span class="k">rigor</span> · below the line, above the line, around both.<br />
+      <span class="q">interpret → execute → attest. AI you can prove, not just trust.</span>
     </div>
-  </section>
-
-  <!-- WORK -->
-  <section class="section" id="work">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Selected work</span>
-        <h2>A portfolio of one conviction.</h2>
-        <p>A policy plane that compiles regulation into signed, executable artifacts, applied ML held to its own evidence, and a point-in-time data platform. Data and models interpret; deterministic engines execute; every decision leaves a trace.</p>
-      </div>
-
-      <div class="ledger">
-        <article class="rec reveal" id="rec-atlas">
-          <div class="kind"><span class="tag">policy plane</span><br />regulatory engine</div>
-          <div>
-            <h3>ATLAS <a href="https://github.com/hossainpazooki/regulatory-rule-engine" class="src" target="_blank" rel="noopener">regulatory-rule-engine&nbsp;↗</a></h3>
-            <p>A regulatory rule-execution engine, and the policy plane of a three-repo system. Compiles contradictory multi-jurisdiction regulation into content-addressed, signed, typed-attestation artifacts; a Rust kernel executes them deterministically and fails closed on a verification miss.</p>
-            <div class="detail">A five-gate verification stack — schema, semantic, source-span, conflict, expert-attestation — decides what a rule is allowed to assert. Every artifact is a pure function of its input: a three-language contract test holds the canonical encoding byte-identical across Rust, Python, and WASM, and Rust↔Python execution equivalence is proven over 1,326 generated scenarios. Three downstream consumers re-derive trust independently and refuse a non-published artifact even when its signature is valid.</div>
-            <div class="stack"><span>Rust workspace</span><span>BLAKE3 content-addressed</span><span>ed25519-signed</span><span>typed attestations</span><span>WASM verifier</span></div>
-          </div>
-        </article>
-
-        <article class="rec reveal" id="rec-clue">
-          <div class="kind"><span class="tag">applied ML</span><br />multi-omics QA</div>
-          <div>
-            <h3>CLUE <a href="https://github.com/hossainpazooki/upstream-label-correction" class="src" target="_blank" rel="noopener">upstream-label-correction&nbsp;↗</a></h3>
-            <p>Upstream label correction for multi-omics cohorts. Generates fidelity-checked synthetic cohorts with planted, dial-able label corruption, then catches the mislabeled samples through cross-omics concordance scoring — before bad labels poison everything downstream.</p>
-            <div class="detail">The synthetic cohort is the measuring instrument, not the result: it probes corruption rates real data cannot, and the loop escalates until it finds the hardest rate the detector still clears. That detector now also clears an outside oracle — run unmodified on the real precisionFDA training matrices, at its default threshold, scored against the challenge organizers' own key: F1 0.914. The blind test labels were withheld by the challenge, so that gap is stated rather than closed.</div>
-            <div class="stack"><span>Python</span><span>scikit-learn</span><span>synthetic multi-omics</span><span>organizer-keyed oracle</span></div>
-          </div>
-        </article>
-
-        <article class="rec reveal" id="rec-vantage">
-          <div class="kind"><span class="tag">data platform</span><br />point-in-time lakehouse</div>
-          <div>
-            <h3>VANTAGE <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="src" target="_blank" rel="noopener">pit-fundamentals-lakehouse&nbsp;↗</a></h3>
-            <p>A point-in-time-correct SEC fundamentals lakehouse. An as-of date D returns only what was filed <em>and accepted</em> by D — holding across restatements, so an as-of query never sees a filing that wasn't yet public.</p>
-            <div class="detail">181,351,169 bronze rows distilled to 86,615,392 gold facts across 16,667 filers; 63 of 69 quarters ingested, 6 refused by a fail-closed data-quality gate with recomputed causes. Deployed and published on Databricks serverless under a write-audit-publish rule: audit green on the candidate, the same audit red on a mutated twin, a post-publish consumer probe against a negative control. An Airflow DAG now carries that shape — publish is structurally unreachable when the audit is red or unevaluable — and a dbt layer over gold serves the as-of view with its point-in-time invariants tested in CI, each proven able to fail on a planted twin.</div>
-            <div class="stack"><span>Scala</span><span>Spark</span><span>Delta Lake</span><span>Databricks Connect</span><span>Airflow</span><span>dbt-duckdb</span><span>fail-closed DQ gate</span></div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section class="section" id="skills">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Technical skills</span>
-        <h2>Across the stack, end to end.</h2>
-      </div>
-      <div class="skills reveal">
-        <div class="skill-grp">
-          <h4>Data platforms &amp; pipelines</h4>
-          <ul>
-            <li>Scala · Spark · Delta Lake</li>
-            <li>Point-in-time correctness &amp; as-of restatement</li>
-            <li>Databricks — serverless + Connect, write-audit-publish</li>
-            <li>ETL, fail-closed data-quality gates, content-addressed lineage</li>
-          </ul>
-        </div>
-        <div class="skill-grp">
-          <h4>Evaluation &amp; correctness infra</h4>
-          <ul>
-            <li>Validation harnesses over planted ground truth</li>
-            <li>Fail-closed gates — unevaluable never passes</li>
-            <li>Precision / recall / hallucination tracking</li>
-            <li>Reproducible, signed, content-addressed artifacts</li>
-          </ul>
-        </div>
-        <div class="skill-grp">
-          <h4>Agentic AI &amp; LLMs</h4>
-          <ul>
-            <li>Multi-agent orchestration &amp; fan-out builds</li>
-            <li>Hybrid RAG — BM25 + vector retrieval</li>
-            <li>Confidence calibration &amp; verification gates</li>
-            <li>NLI / entailment verification</li>
-          </ul>
-        </div>
-        <div class="skill-grp">
-          <h4>Languages &amp; systems</h4>
-          <ul>
-            <li>Python — FastAPI, async, strict typing</li>
-            <li>Rust — deterministic execution kernels</li>
-            <li>Scala / Spark · Go gates · TypeScript / React</li>
-            <li>Kubernetes / EKS · PostgreSQL · CI/CD</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CAREER -->
-  <section class="section" id="career">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Career</span>
-        <h2>Where the conviction was earned.</h2>
-      </div>
-
-      <div class="timeline reveal">
-        <div class="job" id="job-orawell">
-          <div class="yr">Nov 2024 — Jan 2026 · Full-time</div>
-          <h3>AI/ML Tech Lead — <span class="co">Orawell Group</span></h3>
-          <div class="where">New York, NY · healthcare revenue-cycle management</div>
-          <ul>
-            <li>Led a team building agentic compliance pipelines — PydanticAI agents orchestrating claim review, denial prediction, and appeal generation with human-in-the-loop checkpoints.</li>
-            <li>Designed a multi-layer confidence-calibration and verification-gate system after a production failure exposed systematic over-confidence in LLM decisions — reduced claim denial rates by 34%.</li>
-            <li>Built a hybrid retrieval pipeline (BM25 + vector) over regulatory and payer-policy documents, with a structured eval framework tracking precision, recall, and hallucination rate.</li>
-            <li>Owned the infrastructure: FastAPI, PostgreSQL, Kubernetes on EKS, Terraform IaC, CI/CD with strict mypy enforcement and 450+ CI-gated tests.</li>
-          </ul>
-        </div>
-
-        <div class="job">
-          <div class="yr">Mar 2022 — Aug 2024 · Full-time</div>
-          <h3>Co-Founder / Lead Engineer — <span class="co">Engager Inc.</span></h3>
-          <div class="where">New York, NY</div>
-          <ul>
-            <li>Built the platform from the first commit to production — establishing architecture, CI/CD, and engineering practice.</li>
-            <li>Designed and shipped the core backend and frontend (React, Python).</li>
-            <li>Owned ingestion and analytics pipelines feeding product and growth decisions.</li>
-          </ul>
-        </div>
-
-        <div class="job">
-          <div class="yr">2020 — 2022 · Full-time</div>
-          <h3>Founding ML Engineer — <span class="co">3DEO</span></h3>
-          <div class="where">Los Angeles, CA · metal additive-manufacturing R&amp;D</div>
-          <ul>
-            <li>Built the ML platform: a unified data layer linking process parameters, characterization, and production outcomes by part ID across sintering logs, mechanical-test data, and QA.</li>
-            <li>Shipped model-serving hooks that scored new production runs automatically, plus drift monitoring against characterization ground truth.</li>
-            <li>Translated materials-team objectives — yield, faster qualification — into tractable ML KPIs with non-technical domain experts.</li>
-          </ul>
-        </div>
-
-        <div class="job">
-          <div class="yr">2019 — 2020 · Full-time</div>
-          <h3>Data Engineer — <span class="co">Penske Media Corporation</span></h3>
-          <div class="where">Marketing analytics &amp; revenue</div>
-          <ul>
-            <li>Built marketing-analytics models and reporting infrastructure supporting ad sales and audience monetization across PMC's portfolio.</li>
-          </ul>
-        </div>
-
-        <div class="job">
-          <div class="yr">2017 — 2019</div>
-          <h3>Econometrics Research — <span class="co">Institute for New Economic Thinking</span></h3>
-          <div class="where">Sovereign-wealth-fund investment &amp; capital-allocation models</div>
-        </div>
-      </div>
-
-      <div class="edu reveal">
-        <div class="d"><b>University of Southern California</b><br /><span>B.S. Electrical Engineering · B.A. Economics · 2-yr econometrics research at INET</span></div>
-        <div class="yr">2013 — 2019</div>
-      </div>
-    </div>
-  </section>
+    <div class="copy">© 2026 Hossain Pazooki · New York</div>
+  </footer>
 
 </main>
 
-<footer>
-  <div class="wrap foot">
-    <div class="col-thesis">
-      <div class="t"><span class="k">interpret</span> → <span class="k">execute</span> → <span class="k">attest</span>.<br />AI you can prove, not just trust.</div>
-      <div class="copy">© 2026 Hossain Pazooki · New York</div>
-    </div>
-    <div class="foot-links">
-      <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="arr">↗</span></a>
-      <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
-      <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="arr">↗</span></a>
-      <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="arr">→</span></a>
-    </div>
-  </div>
-</footer>
-
 <script>
-  // The signature moment: the integrity gate evaluates, then verifies. Once, on load.
+  // One-time settle: datum, then intent, then the boundary traces around both.
   (function(){
-    var v = document.getElementById('verdict');
-    var t = document.getElementById('verdict-text');
-    if(!v || !t) return;
+    var x = document.getElementById('xsec');
+    if(!x) return;
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function verify(){
-      v.setAttribute('data-state','ok');
-      t.textContent = 'verified';
-      v.setAttribute('aria-label','verified');
-    }
-    if(reduce){ verify(); }
-    else { setTimeout(verify, 850); }
+    if(reduce){ x.classList.add('in'); return; }
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ x.classList.add('in'); }); });
   })();
 
-  // Scroll reveal
+  // Light reveal for the index.
   (function(){
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var items = document.querySelectorAll('.reveal');
@@ -864,11 +513,11 @@
   function apply(t){
     document.documentElement.dataset.theme = t;
     try { localStorage.setItem('hp-theme', t); } catch(e){}
-    if (meta) meta.setAttribute('content', META[t] || META.ink);
+    if (meta) meta.setAttribute('content', META[t] || META.paper);
     btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
   }
   btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
-  apply(document.documentElement.dataset.theme === 'paper' ? 'paper' : 'ink');
+  apply(document.documentElement.dataset.theme === 'ink' ? 'ink' : 'paper');
 })();
 </script>
 </body>

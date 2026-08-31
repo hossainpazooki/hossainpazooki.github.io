@@ -104,8 +104,8 @@ creed lines and ©. Everything cut from home resolves to a link here:
 
 | row | line | destination |
 |---|---|---|
-| research | cross-model KV-cache transfer — a model swap shouldn't repay the full prefill · `◐ in progress · paper in preparation` | LinkedIn ↗ |
-| writing | when you can't measure what matters — a closed-loop harness for PD estimation · towards ai, jul 2026 | `/blog` → |
+| research | cross-model KV-cache transfer · `◐ in progress · paper in preparation` | LinkedIn ↗ |
+| writing | when you can't measure what matters · towards ai, jul 2026 | `/blog` → |
 | career | algoverse (now) · orawell · engager · 3deo · penske media | LinkedIn ↗ |
 | contact | new york · hossain@pazooki.com | GitHub ↗ · LinkedIn ↗ |
 
