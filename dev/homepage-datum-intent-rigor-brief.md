@@ -46,7 +46,7 @@ changes. `color-scheme: light` on base, `dark` under ink.
 ## Header
 
 Sticky, mechanics unchanged. Nav is the thesis:
-`datum · intent · rigor · career · blog` + theme switch. Band links go
+`datum · intent · rigor · research · career · blog` + theme switch. Band links go
 to in-page fragments `#datum` / `#intent` / `#rigor` (fragments don't
 collide with the `/intent` and `/rigor` paths).
 
@@ -137,6 +137,33 @@ git history.
 | cldd | Closed-loop default detection — plant the truth, hide it the way real approval policies do, escalate until correction fails. | essay published in Towards AI · Jul 2026 | ● published | /cldd |
 | clue | Upstream label correction — catch mislabeled samples through cross-omics concordance before they poison downstream. | F1 0.914 on the organizers' own key | ● verified | repo ↗ |
 
+## Research (current — the serving-infrastructure half)
+
+New section at `#research`, after the RIGOR band and before the proof
+strip. It substantiates the headline's "cost-efficient serving
+infrastructure" — stated as **live work, never as results** (source:
+the LinkedIn Algoverse entry, locked 2026-08-31).
+
+- Eyebrow: `Research`
+- H2: `A model swap shouldn't repay the full prefill.`
+- Side lede: current work at Algoverse — AI Research Fellow ·
+  part-time · Jul 2026 — Present — on cross-model KV-cache transfer.
+- One card, three mono-labeled blocks + meta:
+  - `transfer` — model swaps (cascading, routing, mid-conversation
+    handoff) discard the KV cache and repay full prefill; we map one
+    model's cache into another's with a closed-form linear fit from a
+    small calibration set — no gradients.
+  - `instrumentation` — PyTorch internals · HF attention hooks · GPU
+    memory · experiment + intervention design · inference under small
+    samples.
+  - `open question` — at an agent handoff, can a short replay of the
+    latest tool observation predict whether a translated cache changes
+    the target's next action, without full prefill? A pair-level
+    pre-fit screen plus a runtime commutation gate, **fail-closed on
+    disagreement**.
+  - Meta: `◐ in progress · replication + harness underway · paper in
+    preparation` — same lamp vocabulary as the bands.
+
 ## Proof strip
 
 The four facts survive, relabeled `what the section is load-tested by`,
@@ -153,9 +180,13 @@ triad; the duo layout is retired.
 
 ## Career & skills (condensed)
 
-- Timeline keeps all four roles + education row; bullets trimmed to
-  **≤2 per role** (Orawell keeps the team-lead line and the 34% gate
-  line; earlier roles keep one line each).
+- Timeline gains **Algoverse** on top (AI Research Fellow · part-time ·
+  Jul 2026 — Present · New York) and the gold "now" dot moves to it;
+  its single bullet points up: "Cross-model KV-cache transfer —
+  detailed in Research above." Orawell's dot becomes a past dot.
+- Bullets trimmed to **≤2 per role** (Orawell keeps the team-lead line
+  and the 34% gate line; earlier roles keep one line each); education
+  row kept.
 - Skills grid (2×2, 16 items) → **one band, four cells, one chip-line
   each**:
   - data — Scala · Spark · Delta Lake · Databricks · Airflow · dbt
@@ -200,4 +231,7 @@ Links unchanged (site, GitHub, LinkedIn, email).
   ◐ concept; rigor's deploy layer stays ◐ provisional until the
   feedback ledger promotes it.
 - Solid = built, dashed = proposed — applied consistently in the figure.
+- Research is reported as live work exactly as recorded — Jul 2026 —
+  Present, in progress, paper in preparation; the open question stays
+  phrased as a question. No result is claimed until the paper exists.
 - No production claims anywhere the repos make none.
