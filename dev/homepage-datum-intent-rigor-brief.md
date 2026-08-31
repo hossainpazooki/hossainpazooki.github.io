@@ -78,17 +78,20 @@ region whose cells are links. Drafting conventions carry claim state:
 - **RIGOR — the audit boundary**: dashed gold enclosure around
   everything, tab label top-right; its rail row inside the boundary's
   bottom edge.
-- **INTENT plane** (upper band): intent-plane ↗ repo · treasury gate →
-  `/intent` · atlas ↗ repo.
+- **INTENT plane** (upper band): intent-plane → `/intent` (the concept
+  page leads) · treasury gate ↗ treasury-intent-controller · atlas ↗
+  regulatory-rule-engine.
 - **Gate interface line** between the bands: dashed rule, three gate
   squares, caption `actions touch the data plane only through gates ·
   fail-closed on unevaluable`.
-- **DATUM bedrock** (lower band, faint 135° hatch): vantage ↗ repo
+- **DATUM bedrock** (lower band, faint 135° hatch), baseline leads:
+  baseline → `/baseline` · vantage ↗ pit-fundamentals-lakehouse
   ("point-in-time SEC fundamentals — 86.6M gold facts") · parallax ↗
-  repo · baseline → `/baseline` · meridian ↗ repo — meridian's cell
-  dashed with the ○ lamp and "design locked · unclaimed".
+  pit-revision-examiner · meridian ↗ repo — meridian's cell dashed
+  with the ○ lamp and "design locked · unclaimed".
 - **RIGOR rail**: rigor → `/rigor` ("plugin · 20 skills · 11 gates") ·
-  cldd → `/cldd` · clue ↗ repo.
+  cldd → `/cldd` · network-as-code ↗ repo (name-only chip — no
+  descriptor invented until one is supplied) · clue ↗ repo.
 - Section markers `A —` / `— A′` at the sides.
 - Caption line under the figure, mono, split left/right:
   `every cell is a link — the section is the site map` ·
@@ -99,20 +102,20 @@ region whose cells are links. Drafting conventions carry claim state:
 
 ## The index (bottom)
 
-One bordered block, four rows (`label · line · destination`), then the
-creed lines and ©. Everything cut from home resolves to a link here:
+One bordered block, three rows (`label · line · destination`), then the
+creed line and ©. Everything cut from home resolves to a link here
+(no contact row — email lives off-home; the blog stays in the header):
 
 | row | line | destination |
 |---|---|---|
-| research | cross-model KV-cache transfer · `◐ in progress · paper in preparation` | LinkedIn ↗ |
-| writing | when you can't measure what matters · towards ai, jul 2026 | `/blog` → |
+| research | cross-model KV-cache transfer · `◐ in progress · paper in preparation` | GitHub ↗ (profile) |
+| writing | when you can't measure what matters · towards ai, jul 2026 | Medium ↗ (the Towards AI essay) |
 | career | algoverse (now) · orawell · engager · 3deo · penske media | LinkedIn ↗ |
-| contact | new york · hossain@pazooki.com | GitHub ↗ · LinkedIn ↗ |
 
-Closing creed lines under the block:
-`datum → intent → rigor · below the line, above the line, around both.`
+Closing creed line under the block:
 `interpret → execute → attest. AI you can prove, not just trust.`
-Plus `© 2026 Hossain Pazooki · New York`.
+Plus `© 2026 Hossain Pazooki · New York`. (The datum → intent → rigor
+line was cut 2026-08-31.)
 
 ## Implementation essentials
 
