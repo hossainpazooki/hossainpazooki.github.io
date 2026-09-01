@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="ink">
+<html lang="en" data-theme="paper">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0A1424" id="metatheme" />
-<script>(function(){var t='ink';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='paper'?'paper':'ink'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
+<meta name="theme-color" content="#F6F4EE" id="metatheme" />
+<script>(function(){var t='paper';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='ink'?'ink':'paper'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
@@ -570,8 +570,8 @@
       <a href="/intent/" class="hideable">/intent</a>
       <a href="https://github.com/hossainpazooki/rigor" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
       <div class="theme-sw" role="group" aria-label="Theme">
-        <button type="button" data-set="ink" aria-pressed="true">ink</button>
-        <button type="button" data-set="paper" aria-pressed="false">paper</button>
+        <button type="button" data-set="paper" aria-pressed="true">paper</button>
+        <button type="button" data-set="ink" aria-pressed="false">ink</button>
       </div>
     </nav>
   </div>
@@ -1559,7 +1559,7 @@
     btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
   }
   btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
-  apply(document.documentElement.dataset.theme === 'paper' ? 'paper' : 'ink');
+  apply(document.documentElement.dataset.theme === 'ink' ? 'ink' : 'paper');
 })();
 </script>
 </body>
