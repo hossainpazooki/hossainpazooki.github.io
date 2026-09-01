@@ -4,29 +4,21 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#F6F4EE" id="metatheme" />
+<script>(function(){var t='paper';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='ink'?'ink':'paper'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<title>BASELINE — the fixed separation underneath VANTAGE × PARALLAX</title>
-<meta name="description" content="The conceptual underpinning connecting VANTAGE and PARALLAX, taken seriously as optics: a shift becomes a measurement only across a known, rigid baseline. In astronomy that baseline is the surveyed orbit; here it is the contract — one read surface, one Reader protocol, and a gate proven able to fail. Also this site's first light-theme test." />
-<script>(function(){var t='paper';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='ink'?'ink':'paper'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
+<title>BASELINE — the baseline is the instrument</title>
+<meta name="description" content="Restated fundamentals are parallax: the same fact appears in two places from two viewpoints. A shift becomes a measurement only across a baseline you can cite — and the dated, machine-checked rows live in the ledger." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
 <style>
-  /* ============================================================
-     ONE TOKEN SET, TWO GROUNDS — the ink theme the rest of the
-     site runs, and a paper theme derived from it, role for role.
-     The header toggle flips html[data-theme]; ink is the site
-     default and one remembered choice (hp-theme) rides all pages.
-     One asymmetry: in daylight gold splits into a line metal
-     (--gold) and a darker text weight (--gold-text).
-     ============================================================ */
   :root{
     color-scheme:light;
-    --bg:#F6F4EE;
-    --bg-2:#EFECE2;
+    --ink:#F6F4EE;
+    --ink-2:#EFECE2;
     --panel:#FCFBF7;
     --panel-2:#F1EEE5;
     --line:#D8D3C4;
@@ -34,35 +26,20 @@
     --text:#1E232C;
     --text-2:#454D5C;
     --muted:#6C7484;
-    --gold:#B07C1E;
-    --gold-text:#7E5A10;
+    --gold:#8A6217;
+    --gold-dim:#D3BE8F;
     --gold-hover:#B07C1E;
-    --gold-border:rgba(176,124,30,.35);
-    --gold-wash:rgba(176,124,30,.08);
-    --ok:#1E7A4D;
-    --ok-border:#AACFBB;
-    --ok-wash:rgba(30,122,77,.07);
-    --block:#AE4529;
-    --block-border:#DFB1A1;
-    --block-wash:rgba(174,69,41,.06);
     --blue:#2D5FA3;
-    --blue-border:#B9C9E1;
-    --bgline:#C9C3B2;
-    --plate:#EDE9DC;
-    --bgstar:#BDB5A2;
-    --nd-fill:#FCFBF7;
-    --sel-fg:#FFFDF8;
-    --code-border:rgba(176,124,30,.22);
     --header-bg:rgba(246,244,238,.8);
-    --shadow:0 1px 2px rgba(30,35,44,.04),0 16px 44px -24px rgba(30,35,44,.22);
+    --wash-1:rgba(30,35,44,.025);
     --maxw:1080px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
   }
   :root[data-theme="ink"]{
     color-scheme:dark;
-    --bg:#0A1424;
-    --bg-2:#0D1930;
+    --ink:#0A1424;
+    --ink-2:#0D1930;
     --panel:#101E38;
     --panel-2:#142440;
     --line:#1D3050;
@@ -71,34 +48,17 @@
     --text-2:#B8C5DB;
     --muted:#7F92B0;
     --gold:#E0A436;
-    --gold-text:#E0A436;
+    --gold-dim:#7a5d22;
     --gold-hover:#f3c269;
-    --gold-border:#7a5d22;
-    --gold-wash:rgba(224,164,54,.08);
-    --ok:#5BB98C;
-    --ok-border:#2c5a44;
-    --ok-wash:rgba(91,185,140,.06);
-    --block:#D4654A;
-    --block-border:#6a3327;
-    --block-wash:rgba(212,101,74,.06);
     --blue:#6CA7E8;
-    --blue-border:#2c4a6a;
-    --bgline:#1D3050;
-    --plate:#12203A;
-    --bgstar:#3E5480;
-    --nd-fill:#0D1930;
-    --sel-fg:#0A1424;
-    --code-border:rgba(224,164,54,.14);
     --header-bg:rgba(10,20,36,.72);
-    --shadow:none;
+    --wash-1:rgba(255,255,255,.012);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-
   body{
-    background:var(--bg);
+    background:var(--ink);
     color:var(--text);
     font-family:var(--sans);
     font-weight:400;
@@ -108,39 +68,21 @@
     overflow-x:hidden;
     transition:background-color .25s ease,color .25s ease;
   }
-
   a{color:inherit;text-decoration:none}
-  ::selection{background:var(--gold);color:var(--sel-fg)}
-
-  :focus-visible{
-    outline:2px solid var(--gold-text);
-    outline-offset:3px;
-    border-radius:2px;
-  }
-
+  ::selection{background:var(--gold);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-  .section{scroll-margin-top:76px}
-
-  code{font-family:var(--mono)}
-  p code, li code, td code, .note code{
-    font-size:.9em;color:var(--gold-text);
-    background:var(--gold-wash);
-    border:1px solid var(--code-border);
-    border-radius:4px;padding:1px 6px;white-space:nowrap;
-  }
 
   .eyebrow{
-    font-family:var(--mono);
-    font-size:12px;font-weight:500;
-    letter-spacing:.18em;text-transform:uppercase;
-    color:var(--muted);
-    display:inline-flex;align-items:center;gap:.6em;
+    font-family:var(--mono);font-size:12px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
   }
   .eyebrow::before{
-    content:"";width:25px;height:5px;display:inline-block;
-    background:repeating-linear-gradient(90deg,var(--gold) 0 1px,transparent 1px 6px);
+    content:"";width:18px;height:1px;background:var(--gold);
+    display:inline-block;vertical-align:middle;margin-right:.8em;
   }
 
+  /* ---------- header ---------- */
   header{
     position:sticky;top:0;z-index:50;
     background:var(--header-bg);
@@ -149,23 +91,19 @@
   }
   .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
   .brand{
-    font-family:var(--mono);font-weight:600;font-size:15px;
-    letter-spacing:.04em;color:var(--text);
-    display:inline-flex;align-items:center;gap:.5em;
-    white-space:nowrap;flex:none;
+    font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:.04em;
+    color:var(--text);display:inline-flex;align-items:center;gap:.5em;white-space:nowrap;
   }
-  .brand .dot{color:var(--gold-text)}
+  .brand .dot{color:var(--gold)}
   .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
-  .nav-links{display:flex;gap:26px;align-items:center}
+  .nav-links{display:flex;gap:24px;align-items:center}
   .nav-links a{
     font-family:var(--mono);font-size:13px;color:var(--muted);
-    letter-spacing:.02em;transition:color .18s ease;white-space:nowrap;
+    letter-spacing:.02em;white-space:nowrap;transition:color .18s ease;
   }
   .nav-links a:hover{color:var(--text)}
-  .nav-links a.ext{color:var(--gold-text)}
+  .nav-links a.ext{color:var(--gold)}
   .nav-links a.ext:hover{color:var(--gold-hover)}
-  @media(max-width:760px){.nav-links a.hideable{display:none}}
-  @media(max-width:560px){.nav-links{gap:12px}.nav-links a.ext{display:none}}
   .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
   .theme-sw button{
     font-family:var(--mono);font-size:10.5px;font-weight:600;
@@ -174,252 +112,124 @@
     transition:color .18s ease,background .18s ease;
   }
   .theme-sw button+button{border-left:1px solid var(--line)}
-  .theme-sw button[aria-pressed="true"]{color:var(--gold-text);background:var(--gold-wash)}
+  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(138,98,23,.08)}
+  :root[data-theme="ink"] .theme-sw button[aria-pressed="true"]{background:rgba(224,164,54,.08)}
+  @media(max-width:520px){.nav-links a.hideable{display:none}}
 
-  /* ---------- hero / the instrument ---------- */
-  .intro{padding:88px 0 24px}
-  .intro .eyebrow{margin-bottom:26px}
-  .intro h1{
+  /* ---------- hero ---------- */
+  .hero{padding:56px 0 8px}
+  .hero .eyebrow{display:block;position:relative;padding-left:calc(18px + .8em);margin-bottom:20px}
+  .hero .eyebrow::before{position:absolute;left:0;top:.8em;margin:0}
+  .name{
     font-family:'Space Grotesk',var(--sans);
-    font-size:clamp(34px,5.6vw,58px);font-weight:600;
-    letter-spacing:-.02em;line-height:1.04;max-width:880px;
+    font-weight:600;
+    font-size:clamp(32px,5vw,52px);
+    line-height:1.06;letter-spacing:-.02em;margin-bottom:18px;
   }
-  .intro h1 .dim{color:var(--muted);font-weight:600}
-  .lede{
-    margin-top:24px;max-width:800px;
-    font-size:clamp(16px,2.4vw,18.5px);line-height:1.66;color:var(--text-2);
-  }
-  .lede b{color:var(--text);font-weight:600}
+  .name .ln2{color:var(--text-2)}
+  .lede{max-width:660px;font-size:clamp(15.5px,2.3vw,17.5px);line-height:1.65;color:var(--text-2)}
+  .lede b{color:var(--text);font-weight:500}
 
-  .instrument{padding:34px 0 64px}
-  .optic{
-    border:1px solid var(--line);border-radius:12px;
-    background:var(--panel);box-shadow:var(--shadow);
-    padding:26px 22px 18px;overflow-x:auto;
-  }
-  .optic svg{display:block;width:100%;height:auto;min-width:640px}
-  .optic .ln-sight{stroke:var(--blue);stroke-width:1.4;opacity:.8}
-  .optic .ln-base{stroke:var(--gold);stroke-width:2}
-  .optic .ln-bg{stroke:var(--bgline);stroke-width:1}
-  .optic .ln-tick{stroke:var(--muted);stroke-width:1}
-  .optic .ln-shift{stroke:var(--text);stroke-width:1.4}
-  .optic .nd{fill:var(--nd-fill);stroke:var(--blue);stroke-width:1.6}
-  .optic .obj{fill:var(--gold)}
-  .optic .pp{fill:var(--blue)}
-  .optic text{font-family:var(--mono)}
-  .optic .t-tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;fill:var(--muted)}
-  .optic .t-name{font-size:13px;font-weight:600;letter-spacing:.06em;fill:var(--text)}
-  .optic .t-name.au{fill:var(--gold-text)}
-  .optic .t-name.bl{fill:var(--blue)}
-  .optic .t-sub{font-size:10.5px;fill:var(--muted)}
-  .optic .t-mark{font-size:11px;fill:var(--text-2)}
-  .optic .plate{stroke:var(--plate);stroke-width:1}
-  .optic .bgstar{fill:var(--bgstar)}
-  .optic .reticle{stroke:var(--gold);stroke-width:1;opacity:.55}
-  .optic .ln-arc{stroke:var(--text-2);stroke-width:1.1;fill:none}
-
-  /* ---------- shared optical-glyph vocabulary (mapping, bench, failures) ---------- */
-  .g-sight{stroke:var(--blue);stroke-width:1.3;opacity:.75}
-  .g-bg{stroke:var(--bgline);stroke-width:1}
-  .g-tick{stroke:var(--muted);stroke-width:1}
-  .g-shift{stroke:var(--text);stroke-width:1.3}
-  .g-base{stroke:var(--gold);stroke-width:2.4}
-  .g-base.bad{stroke:var(--block);stroke-dasharray:4 4}
-  .g-base.flex{stroke:var(--block)}
-  .g-obj{fill:var(--gold)}
-  .g-ghost{fill:none;stroke:var(--block);stroke-width:1.2;opacity:.7}
-  .g-nd{fill:var(--nd-fill);stroke:var(--blue);stroke-width:1.4}
-  .g-pp{fill:var(--blue)}
-  .g-ok{stroke:var(--ok);stroke-width:1.6;fill:none}
-  .g-ok.dash{stroke-dasharray:3 4}
-  .g-tube{fill:var(--panel-2);stroke:var(--line)}
-  .g-div{stroke:var(--line);stroke-width:1.5}
-  .g-path{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 5;opacity:.7}
-  .g-ray{stroke:var(--blue);stroke-width:1.2;stroke-dasharray:4 4;opacity:.6}
-  .g-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;fill:var(--muted)}
-  .g-tlab{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;fill:var(--text-2)}
-  .g-txt{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
-  .g-au{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;fill:var(--gold-text)}
-  .g-bad-txt{font-family:var(--mono);font-size:11px;font-weight:600;fill:var(--block)}
-  .mapg{width:44px;height:20px;vertical-align:-5px;margin-right:10px}
+  /* ---------- the instrument ---------- */
   .bench{
-    border:1px solid var(--line);border-radius:12px;background:var(--panel);
-    box-shadow:var(--shadow);padding:20px 18px 10px;overflow-x:auto;margin-bottom:16px;
+    margin-top:34px;
+    border:1px dashed var(--gold-dim);
+    background:var(--wash-1);
+    padding:26px 22px 14px;
+    position:relative;
   }
-  .bench svg{display:block;width:100%;height:auto;min-width:640px}
-  .fl-fig{padding:14px 18px 2px}
-  .fl-fig svg{display:block;width:100%;height:auto;max-width:280px;margin:0 auto}
-  .optic-cap{
-    margin-top:16px;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;
-    font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--muted);
+  .bench-tab{
+    position:absolute;top:-10px;right:22px;
+    background:var(--ink);
+    padding:1px 12px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    color:var(--gold);
+    transition:background-color .25s ease;
   }
-  .optic-cap b{font-weight:600}
-  .optic-cap .cv{color:var(--blue)}
-  .optic-cap .cb{color:var(--gold-text)}
-  .optic-cap .cp{color:var(--text)}
-  @media(prefers-reduced-motion:no-preference){
-    .js .optic .ln-sight{stroke-dasharray:520;stroke-dashoffset:520;transition:stroke-dashoffset 1.1s ease .2s}
-    .js .optic .late{opacity:0;transition:opacity .5s ease 1.1s}
-    .js .optic.reveal.in .ln-sight{stroke-dashoffset:0}
-    .js .optic.reveal.in .late{opacity:1}
+  .bench svg{display:block;width:100%;height:auto;max-width:880px;margin:0 auto}
+
+  .o-bg{stroke:var(--line);stroke-width:1}
+  .o-tick{stroke:var(--muted);stroke-width:1}
+  .o-base{stroke:var(--gold);stroke-width:2.6}
+  .o-sight{stroke:var(--blue);stroke-width:1.4;fill:none}
+  .o-obj{fill:var(--gold)}
+  .o-nd{fill:var(--ink);stroke:var(--blue);stroke-width:1.6;transition:fill .25s ease}
+  .o-pp{fill:var(--blue)}
+  .o-shift{stroke:var(--text);stroke-width:1.3}
+  .o-tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;fill:var(--muted)}
+  .o-lab{font-family:var(--mono);font-size:12.5px;fill:var(--text-2)}
+  .o-au{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;fill:var(--gold)}
+  .o-shift-lab{font-family:var(--mono);font-size:12px;font-weight:600;fill:var(--text)}
+
+  /* the loop: the viewpoint alternates; the fact does not move */
+  @keyframes vpA{0%,40%{opacity:1}48%,90%{opacity:.14}98%,100%{opacity:1}}
+  @keyframes vpB{0%,40%{opacity:.14}48%,90%{opacity:1}98%,100%{opacity:.14}}
+  .js .vpA{animation:vpA 9s ease-in-out infinite}
+  .js .vpB{animation:vpB 9s ease-in-out infinite}
+  /* one-time draw-in of the sight lines on arrival */
+  .js .o-sight{stroke-dasharray:540;stroke-dashoffset:540}
+  .js .in .o-sight{stroke-dashoffset:0;transition:stroke-dashoffset 1.2s ease .25s}
+  .js .bench{border-color:transparent}
+  .js .bench .bench-tab{opacity:0}
+  .js .bench.in{border-color:var(--gold-dim);transition:border-color .45s ease .8s}
+  .js .bench.in .bench-tab{opacity:1;transition:opacity .45s ease .8s}
+  @media (prefers-reduced-motion:reduce){
+    .js .vpA,.js .vpB{animation:none;opacity:1}
+    .js .o-sight{stroke-dasharray:none;stroke-dashoffset:0}
+    .js .bench{border-color:var(--gold-dim)}
+    .js .bench .bench-tab{opacity:1}
   }
 
-  .aside-card{
-    margin-top:26px;border:1px solid var(--line);border-radius:10px;
-    background:linear-gradient(90deg,var(--gold-wash),var(--panel) 55%);
-    padding:18px 22px;
+  .bench-cap{
+    margin-top:10px;text-align:center;
+    font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.03em;
   }
-  .aside-card .ac-tag{
-    font-family:var(--mono);font-size:10.5px;font-weight:600;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text);
-  }
-  .aside-card p{margin-top:8px;font-size:14px;color:var(--text-2);line-height:1.65;max-width:900px}
-  .aside-card p b{color:var(--text);font-weight:600}
+  .bench-cap .k{color:var(--gold)}
 
-  /* ---------- bands ---------- */
-  .band{border-top:1px solid var(--line);padding:72px 0}
-  .section-head{margin-bottom:42px}
-  .section-head h2{
-    margin-top:18px;
-    font-size:clamp(24px,4vw,34px);font-weight:600;
-    letter-spacing:-.02em;line-height:1.15;max-width:820px;
+  /* ---------- the pointer ---------- */
+  .cta-row{
+    margin:26px 0 0;
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;
   }
-  .section-head p{margin-top:14px;max-width:720px;color:var(--text-2);font-size:15.5px}
-  .section-head p b{color:var(--text);font-weight:600}
+  a.cta{
+    font-family:var(--mono);font-size:13.5px;font-weight:600;
+    color:var(--gold);border:1px solid var(--gold);border-radius:6px;
+    padding:12px 18px;background:transparent;
+    transition:background .18s ease,color .18s ease;
+  }
+  a.cta:hover{background:var(--gold);color:var(--ink)}
+  .chips{display:flex;gap:10px;flex-wrap:wrap}
+  .chips a{
+    font-family:var(--mono);font-size:11.5px;color:var(--text-2);
+    border:1px solid var(--line);border-radius:4px;padding:9px 12px;
+    background:var(--panel);
+    transition:background .18s ease,border-color .18s ease;
+  }
+  .chips a:hover{background:var(--panel-2);border-color:var(--muted)}
+  .chips a .go{color:var(--gold)}
 
-  .note{
-    margin-top:18px;font-size:13.5px;color:var(--muted);max-width:820px;line-height:1.65;
-  }
-  .note b{color:var(--text-2);font-weight:600}
-
-  /* ---------- mapping table ---------- */
-  .dtable-wrap{margin-top:8px;overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:var(--shadow)}
-  table.dtable{
-    border-collapse:collapse;width:100%;min-width:640px;
-    font-size:13.5px;
-  }
-  .dtable caption{
-    caption-side:top;text-align:left;
-    font-family:var(--mono);font-size:11px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--muted);
-    padding:12px 18px;border-bottom:1px solid var(--line);
-    background:var(--panel-2);
-  }
-  .dtable th,.dtable td{
-    padding:12px 18px;text-align:left;border-bottom:1px solid var(--line-soft);
-    vertical-align:top;
-  }
-  .dtable th{
-    font-family:var(--mono);font-size:11px;font-weight:600;
-    letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap;
-  }
-  .dtable td{color:var(--text-2);line-height:1.55}
-  .dtable td.k{
-    font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--text);
-    white-space:nowrap;
-  }
-  .dtable td b{color:var(--text);font-weight:600}
-  .dtable tr:last-child td{border-bottom:0}
-  .dtable td .who{
-    display:inline-block;margin-left:8px;
-    font-family:var(--mono);font-size:10px;font-weight:600;
-    letter-spacing:.1em;text-transform:uppercase;
-    border:1px solid var(--line);border-radius:999px;padding:2px 8px;
-  }
-  .dtable td .who.v{color:var(--blue);border-color:var(--blue-border)}
-  .dtable td .who.p{color:var(--text-2)}
-  .dtable td .who.b{color:var(--gold-text);border-color:var(--gold-border)}
-
-  /* ---------- struts ---------- */
-  .struts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
-  .strut{
-    border:1px solid var(--line);border-radius:10px;background:var(--panel);
-    box-shadow:var(--shadow);padding:20px 22px;
-    display:flex;flex-direction:column;
-  }
-  .strut .st-tag{
-    font-family:var(--mono);font-size:10.5px;font-weight:600;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text);
-    display:flex;justify-content:space-between;gap:10px;
-  }
-  .strut h3{margin-top:10px;font-size:17.5px;font-weight:600;letter-spacing:-.01em}
-  .strut p{margin-top:9px;font-size:13.5px;color:var(--text-2);line-height:1.6}
-  .strut p b{color:var(--text);font-weight:600}
-  .strut ul{margin-top:12px;list-style:none;display:flex;flex-direction:column;gap:8px}
-  .strut li{
-    font-size:13px;color:var(--text-2);line-height:1.55;
-    padding-left:16px;position:relative;
-  }
-  .strut li::before{content:"–";position:absolute;left:0;color:var(--gold-text)}
-  .strut li b{color:var(--text);font-weight:600}
-  @media(max-width:900px){.struts{grid-template-columns:1fr}}
-
-  /* ---------- failure modes ---------- */
-  .fails{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
-  .fail{
-    border:1px solid var(--line);border-radius:10px;background:var(--panel);
-    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;
-  }
-  .fail .fl-head{
-    padding:13px 20px;border-bottom:1px solid var(--line);
-    background:var(--panel-2);
-    display:flex;align-items:baseline;gap:10px;
-  }
-  .fail .fl-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--block)}
-  .fail .fl-name{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text);letter-spacing:.02em}
-  .fail .fl-half{padding:15px 20px}
-  .fail .fl-half + .fl-half{border-top:1px dashed var(--line)}
-  .fail .fl-cap{
-    font-family:var(--mono);font-size:10px;font-weight:600;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  }
-  .fail .fl-cap.sys{color:var(--blue)}
-  .fail p{margin-top:7px;font-size:13px;color:var(--text-2);line-height:1.6}
-  .fail p b{color:var(--text);font-weight:600}
-  @media(max-width:900px){.fails{grid-template-columns:1fr}}
-
-  /* ---------- token ledger ---------- */
-  .sw{
-    display:inline-block;width:13px;height:13px;border-radius:4px;
-    border:1px solid var(--line);vertical-align:-2px;margin-right:7px;
-  }
-  .tok td{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
-  .tok td.k{font-size:12.5px}
-  .tok td.wide{white-space:normal;font-family:var(--sans);font-size:13px}
-  .arrow{color:var(--muted);padding:0 4px}
-
-  footer{border-top:1px solid var(--line);padding:44px 0 60px}
+  footer{margin-top:44px;border-top:1px solid var(--line-soft);padding:20px 0 44px}
   .foot{
-    display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
-    font-family:var(--mono);font-size:12.5px;color:var(--muted);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:12px;color:var(--muted);
   }
-  .foot a{color:var(--gold-text)}
+  .foot a{color:var(--gold)}
   .foot a:hover{color:var(--gold-hover)}
 
-  .reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s ease}
   .reveal.in{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){
-    .reveal{opacity:1;transform:none;transition:none}
-  }
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 </style>
-<noscript><style>.reveal{opacity:1;transform:none}.theme-sw{display:none}</style></noscript>
+<noscript><style>.reveal{opacity:1;transform:none}.bench{border-color:var(--gold-dim)}.bench-tab{opacity:1}.theme-sw{display:none}</style></noscript>
 </head>
 <body>
 
 <header>
   <div class="wrap nav">
     <a class="brand" href="/"><span class="up">hp /</span>baseline<span class="dot">.</span></a>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Site">
       <a href="/" class="hideable">home</a>
-      <a href="#mapping" class="hideable">mapping</a>
-      <a href="#struts" class="hideable">struts</a>
-      <a href="#failures" class="hideable">failures</a>
-      <a href="#light" class="hideable">light</a>
-      <a href="/intent/" class="hideable">/intent</a>
-      <a href="/rigor/" class="hideable">/rigor</a>
-      <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" class="ext" target="_blank" rel="noopener">VANTAGE&nbsp;↗</a>
-      <a href="https://github.com/hossainpazooki/pit-revision-examiner" class="ext" target="_blank" rel="noopener">PARALLAX&nbsp;↗</a>
-      <a href="https://baseline-beryl.vercel.app/" class="ext" target="_blank" rel="noopener">LEDGER&nbsp;↗</a>
+      <a href="https://baseline-beryl.vercel.app/" class="ext" target="_blank" rel="noopener">ledger&nbsp;↗</a>
       <div class="theme-sw" role="group" aria-label="Theme">
         <button type="button" data-set="paper" aria-pressed="true">paper</button>
         <button type="button" data-set="ink" aria-pressed="false">ink</button>
@@ -429,405 +239,83 @@
 </header>
 
 <main id="top">
-
-  <!-- HERO — optics first -->
-  <section class="intro section" id="effect">
+  <section class="hero">
     <div class="wrap">
-      <span class="eyebrow">the underpinning of vantage × parallax</span>
-      <h1>The shift is cheap.<br /><span class="dim">The baseline is the instrument.</span></h1>
-      <p class="lede"><b>VANTAGE</b> is the viewpoint: it fixes where you stand when you read — as-of date&nbsp;D, nothing accepted after&nbsp;D. <b>PARALLAX</b> is the shift: what the same fact appears to do when the viewpoint changes. This page is the third term, the one the other two stand on — the <b>baseline</b>, the known, rigid separation between viewpoints. Optics settled this first: <b>a shift becomes a measurement only across a baseline you can cite.</b> The rows that make it citable are published as a <a href="https://baseline-beryl.vercel.app/" target="_blank" rel="noopener">conformance ledger&nbsp;↗</a> — dated, machine-checked, and gated so the page cannot claim more than the rows do.</p>
+      <span class="eyebrow">01 · DATUM — the reference frame</span>
+      <h1 class="name">The shift is cheap.<br /><span class="ln2">The baseline is the instrument.</span></h1>
+      <p class="lede">A restated number is parallax: <b>the same fact, seen from two viewpoints,
+      lands in two places.</b> Astronomy turned that into measurement by citing the separation
+      between viewpoints. Fundamentals data mostly doesn't — it overwrites, and the shift is
+      lost. Here the viewpoints are pinned (<b>as-of day&nbsp;D</b> vs. <b>today</b>), the shift
+      is measured, and the proof is written down where you can check it.</p>
     </div>
   </section>
 
-  <!-- THE INSTRUMENT -->
-  <section class="instrument section" id="instrument">
-    <div class="wrap">
-      <figure class="optic reveal" role="img" aria-label="A parallax diagram. At the bottom, two observation points sit on a gold baseline: an as-of read at date D and an as-of read of the latest record — both VANTAGE gold reads. The baseline between them is labeled with the contract: ADR-0001, the Reader protocol, and the gate-green twin-red rule. In the middle, a single gold point: the same filer-quarter. Two blue sight lines run from the observation points through that fact and cross at it, projecting it onto a background line at the top at two different apparent positions — as seen from D, and as seen from the latest record. The bracket between the two projections is the apparent shift: the revision, which PARALLAX measures. A faint measurement grid, a reticle on the fact, and the parallax angle theta at the crossing mark the figure as an instrument reading, not an illustration.">
-        <svg viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <!-- photographic-plate grid -->
-          <defs>
-            <pattern id="plategrid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path class="plate" d="M40 0H0V40" fill="none" />
-            </pattern>
-          </defs>
-          <rect x="80" y="10" width="760" height="446" fill="url(#plategrid)" opacity=".5" />
+  <section class="wrap">
+    <div class="bench" id="bench">
+      <span class="bench-tab">THE INSTRUMENT</span>
+      <svg viewBox="0 0 920 420" role="img" aria-label="A parallax construction. Two observers stand on a solid gold baseline labeled B = cited: one reads as of day D, one reads today. Sight lines from each observer pass through the same fact — one filer-quarter — and project it to two different positions on a background line. The bracket between the two projections is the restatement. The animation alternates which viewpoint is active; the fact itself never moves.">
+        <!-- background: where the value appears -->
+        <line class="o-bg" x1="120" y1="60" x2="800" y2="60" />
+        <line class="o-tick" x1="120" y1="53" x2="120" y2="67" />
+        <line class="o-tick" x1="800" y1="53" x2="800" y2="67" />
+        <text class="o-tag" x="800" y="40" text-anchor="end">where the value appears</text>
 
-          <!-- distant stars — they do not move -->
-          <circle class="bgstar" cx="150" cy="48" r="1.8" />
-          <circle class="bgstar" cx="205" cy="60" r="1.4" />
-          <circle class="bgstar" cx="258" cy="44" r="1.6" />
-          <circle class="bgstar" cx="700" cy="62" r="1.5" />
-          <circle class="bgstar" cx="762" cy="63" r="1.8" />
-          <circle class="bgstar" cx="826" cy="60" r="1.3" />
+        <!-- the restatement bracket: fixed, because both projections are real -->
+        <line class="o-shift" x1="275" y1="88" x2="645" y2="88" />
+        <line class="o-shift" x1="275" y1="82" x2="275" y2="94" />
+        <line class="o-shift" x1="645" y1="82" x2="645" y2="94" />
+        <text class="o-shift-lab" x="460" y="110" text-anchor="middle">the restatement — measured, not overwritten</text>
 
-          <!-- background line (where the fact appears) -->
-          <line class="ln-bg" x1="120" y1="72" x2="800" y2="72" />
-          <line class="ln-tick" x1="120" y1="66" x2="120" y2="78" />
-          <line class="ln-tick" x1="800" y1="66" x2="800" y2="78" />
-          <text class="t-tag" x="800" y="52" text-anchor="end">background · where the fact appears</text>
+        <!-- viewpoint A: as-of day D -->
+        <g class="vpA">
+          <line class="o-sight" x1="300" y1="340" x2="645" y2="60" />
+          <circle class="o-pp" cx="645" cy="60" r="3.2" />
+          <text class="o-lab" x="300" y="374" text-anchor="middle">read as-of day D</text>
+        </g>
+        <!-- viewpoint B: today -->
+        <g class="vpB">
+          <line class="o-sight" x1="620" y1="340" x2="275" y2="60" />
+          <circle class="o-pp" cx="275" cy="60" r="3.2" />
+          <text class="o-lab" x="620" y="374" text-anchor="middle">read today</text>
+        </g>
 
-          <!-- sight lines: cross at the object -->
-          <line class="ln-sight" x1="300" y1="392" x2="633" y2="72" />
-          <line class="ln-sight" x1="620" y1="392" x2="303" y2="72" />
+        <!-- the fact: it never moves -->
+        <path class="o-obj" d="M460 196 l10 13 -10 13 -10 -13 z" />
+        <text class="o-lab" x="460" y="240" text-anchor="middle">one filer-quarter — the fact never moves</text>
 
-          <!-- projections on the background -->
-          <g class="late">
-            <circle class="pp" cx="303" cy="72" r="4.5" />
-            <circle class="pp" cx="633" cy="72" r="4.5" />
-            <text class="t-sub" x="268" y="100" text-anchor="middle">seen from latest</text>
-            <text class="t-sub" x="668" y="100" text-anchor="middle">seen from D</text>
-            <!-- shift bracket -->
-            <line class="ln-shift" x1="303" y1="34" x2="633" y2="34" />
-            <line class="ln-shift" x1="303" y1="28" x2="303" y2="40" />
-            <line class="ln-shift" x1="633" y1="28" x2="633" y2="40" />
-            <text class="t-name" x="468" y="24" text-anchor="middle">PARALLAX — the apparent shift, measured</text>
-          </g>
+        <!-- the baseline: solid, surveyed, citable -->
+        <circle class="o-nd" cx="300" cy="340" r="7" />
+        <circle class="o-nd" cx="620" cy="340" r="7" />
+        <line class="o-base" x1="310" y1="340" x2="610" y2="340" />
+        <text class="o-au" x="460" y="330" text-anchor="middle">B = cited</text>
+      </svg>
+      <p class="bench-cap">the viewpoint alternates · the fact never moves ·
+        <span class="k">the separation is what turns the shift into a measurement</span></p>
+    </div>
 
-          <!-- the object, held in a reticle -->
-          <g>
-            <line class="reticle" x1="460" y1="212" x2="460" y2="218" />
-            <line class="reticle" x1="460" y1="254" x2="460" y2="260" />
-            <line class="reticle" x1="440" y1="236" x2="446" y2="236" />
-            <line class="reticle" x1="474" y1="236" x2="480" y2="236" />
-            <path class="obj" d="M460 224 l9 12 -9 12 -9 -12 z" />
-            <text class="t-mark" x="505" y="236">the same filer-quarter</text>
-            <text class="t-sub" x="505" y="252">one fact · as-filed vs. restated</text>
-          </g>
-
-          <!-- the parallax angle at the crossing -->
-          <g class="late">
-            <path class="ln-arc" d="M446.7 251.1 A 24 24 0 0 0 480.9 251.5" />
-            <text class="t-mark" x="464" y="272" text-anchor="middle">θ</text>
-          </g>
-
-          <!-- observers -->
-          <circle class="nd" cx="300" cy="392" r="8" />
-          <circle class="nd" cx="620" cy="392" r="8" />
-          <text class="t-sub" x="286" y="376" text-anchor="end">as-of read · D</text>
-          <text class="t-sub" x="634" y="376" text-anchor="start">as-of read · latest</text>
-          <text class="t-name bl" x="140" y="388">VANTAGE</text>
-          <text class="t-sub" x="140" y="404">produces the viewpoint</text>
-
-          <!-- baseline, with surveyor's ticks -->
-          <line class="ln-base" x1="312" y1="392" x2="608" y2="392" />
-          <line class="ln-base" x1="312" y1="386" x2="312" y2="398" />
-          <line class="ln-base" x1="608" y1="386" x2="608" y2="398" />
-          <text class="t-name au" x="460" y="428" text-anchor="middle">BASELINE — the fixed separation between viewpoints</text>
-          <text class="t-sub" x="460" y="446" text-anchor="middle">ADR-0001 · Reader protocol · gate green on live / red on twin</text>
-        </svg>
-        <figcaption class="optic-cap">
-          <span class="cv"><b>VANTAGE</b> — the viewpoint</span>
-          <span class="cb"><b>BASELINE</b> — the separation that makes viewpoints comparable</span>
-          <span class="cp"><b>PARALLAX</b> — what shifts</span>
-        </figcaption>
-      </figure>
-      <p class="note reveal">The bracket is honest about its own state: the first measurement across this baseline <b>has been taken</b>. Scoped <code>cik % 10</code>, 17,787 filer-quarters — as-of and restated YoY revenue growth come out <b>bit-identical for 89.4%</b> of them, <b>3.4%</b> diverge by more than 10pp, <b>1.51%</b> flip sign. Rare, but violent where it lands. Re-read 150 days later the divergence barely moves, and that is the part that counts: what shifted was the data, not the read path. Attribution is exactly what the separation buys, and it has now been paid out once. A full-surface run stays unclaimed; <code>STATUS.md</code> bounds the rest.</p>
-
-      <p class="note reveal">Turning the same distinction outward changed what it is evidence for. Read against a commercial market-data and SEC-fundamentals API — its published surface, not its data — the filings and fundamentals endpoints carry <b>no as-of mode</b> and <b>no acceptance instant</b>; the field dating a period is the <b>most recent</b> filing that touched it. The same vendor timestamps trade and quote receipt <b>to the nanosecond</b>. So the zero-baseline failure below is not a cautionary sketch — it is the default shape of the surface most consumers read, and the precision that would fix it already exists one product line over.</p>
-
-      <div class="aside-card reveal">
-        <span class="ac-tag">1838 · the first baseline that held</span>
-        <p>Friedrich Bessel picked <b>61 Cygni</b> for its restless proper motion, took Earth's orbit as his ruler, and read the shift: <b>0.3136″ ± 0.0202″</b> — about 10.4 light-years, the first measured distance to a star. The value on record today, two centuries of instruments later: <b>0.286″ — 11.4 light-years</b>. The first parallax ever taken carries its own as-filed → restated history, and it embarrasses nothing: the viewpoint was recorded beside the value, so the revision is data rather than an error. That bookkeeping — <b>the viewpoint stored next to the fact</b> — is exactly what VANTAGE's gold model is.</p>
+    <div class="cta-row reveal">
+      <a class="cta" href="https://baseline-beryl.vercel.app/" target="_blank" rel="noopener">open the ledger — dated, machine-checked rows ↗</a>
+      <div class="chips">
+        <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">vantage — the viewpoint <span class="go">↗</span></a>
+        <a href="https://github.com/hossainpazooki/pit-revision-examiner" target="_blank" rel="noopener">parallax — the shift <span class="go">↗</span></a>
       </div>
     </div>
   </section>
-
-  <!-- THE MAPPING -->
-  <section class="band section" id="mapping">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">the argument</span>
-        <h2>The pun is load-bearing — and it stands on its invisible third term.</h2>
-        <p>Naming the two visible terms was the easy part: <b>VANTAGE</b> produces viewpoints, <b>PARALLAX</b> measures what shifts between them. But nothing about two viewpoints makes them comparable. What does is the separation between them being <b>known before the measurement and rigid during it</b> — in astronomy the surveyed orbit, here the contract. Every claim either repo makes routes through it.</p>
-      </div>
-      <div class="dtable-wrap reveal">
-        <table class="dtable">
-          <caption>the mapping · optics → the pair</caption>
-          <thead>
-            <tr><th>in the instrument</th><th>in the pair</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><circle class="g-nd" cx="10" cy="10" r="3.4"/><circle class="g-nd" cx="34" cy="10" r="3.4"/></svg>two observation points</td>
-              <td>two as-of reads of published gold — at <b>D</b>, and at the <b>latest record</b> <span class="who v">VANTAGE produces both</span></td>
-            </tr>
-            <tr>
-              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><path class="g-obj" d="M22 3 l6 7 -6 7 -6 -7 z"/></svg>the near star</td>
-              <td>the same <b>filer-quarter</b> — one economic fact, filed and later restated</td>
-            </tr>
-            <tr>
-              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><line class="g-bg" x1="4" y1="10" x2="40" y2="10"/><line class="g-tick" x1="4" y1="6" x2="4" y2="14"/><line class="g-tick" x1="40" y1="6" x2="40" y2="14"/></svg>the distant background</td>
-              <td>the gold schema and its semantics — the <b>common ruler</b> both reads are read against</td>
-            </tr>
-            <tr>
-              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><line class="g-shift" x1="6" y1="5" x2="38" y2="5"/><line class="g-shift" x1="6" y1="5" x2="6" y2="10"/><line class="g-shift" x1="38" y1="5" x2="38" y2="10"/><circle class="g-pp" cx="6" cy="15" r="2.6"/><circle class="g-pp" cx="38" cy="15" r="2.6"/></svg>the apparent shift · θ</td>
-              <td>the <b>revision</b>: as-filed at D vs. restated at latest <span class="who p">PARALLAX measures it</span></td>
-            </tr>
-            <tr>
-              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><line class="g-base" x1="6" y1="10" x2="38" y2="10"/><line class="g-base" x1="6" y1="5" x2="6" y2="15"/><line class="g-base" x1="38" y1="5" x2="38" y2="15"/></svg>the baseline · B</td>
-              <td>the <b>contract</b>: one surface (ADR-0001) · one <code>Reader</code> protocol · a gate shown able to fail <span class="who b">this page</span></td>
-            </tr>
-            <tr>
-              <td class="k"><svg class="mapg" viewBox="0 0 44 20" aria-hidden="true"><path class="g-ok dash" d="M8 10 H36"/><path class="g-ok" d="M12 5 L7 10 L12 15"/><path class="g-ok" d="M32 5 L37 10 L32 15"/></svg>the inferred distance · d</td>
-              <td>the <b>finding</b> — a shift attributable to the data, not to the read path</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note reveal">Withhold the baseline and the shift is still visible — it just stops meaning anything. A consumer without the contract measures <b>its own read path</b> and files the artifact as a revision. That is why the consumer gate runs before any study does, and why an unevaluable read <b>refuses instead of passing</b>.</p>
-    </div>
-  </section>
-
-  <!-- THE STRUTS -->
-  <section class="band section" id="struts">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">what the baseline is made of</span>
-        <h2>A rangefinder is mostly tube. This baseline is mostly refusals.</h2>
-        <p>A coincidence rangefinder is two windows at the ends of a rigid tube — the tube's known length <b>is</b> the instrument. The pair's tube has three sections, each load-bearing, each earned by a refusal rather than a promise.</p>
-      </div>
-      <figure class="bench reveal" role="img" aria-label="A coincidence rangefinder drawn as a schematic. Light from the same distant fact enters two windows at the ends of a rigid tube and is folded to a central eyepiece, where the two views must coincide — the dial that aligns them reads the distance. The tube is divided into three labeled sections, strut 01 one surface, strut 02 one protocol, strut 03 the twin rule, and a gold dimension line beneath marks B, the tube's known length. The three cards below are the three sections of this tube.">
-        <svg viewBox="0 0 920 152" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <text class="g-tag" x="830" y="18" text-anchor="end">coincidence rangefinder · schematic</text>
-
-          <!-- the same fact, far away -->
-          <path class="g-obj" d="M460 9 l6 8 -6 8 -6 -8 z" />
-          <text class="g-txt" x="444" y="14" text-anchor="end">the same fact, again</text>
-          <line class="g-ray" x1="454" y1="20" x2="106" y2="50" />
-          <line class="g-ray" x1="466" y1="20" x2="814" y2="50" />
-
-          <!-- the rigid tube, in three sections -->
-          <rect class="g-tube" x="90" y="54" width="740" height="36" rx="6" />
-          <line class="g-div" x1="336" y1="54" x2="336" y2="90" />
-          <line class="g-div" x1="583" y1="54" x2="583" y2="90" />
-          <text class="g-tlab" x="213" y="76" text-anchor="middle">strut 01 · one surface</text>
-          <text class="g-tlab" x="460" y="76" text-anchor="middle">strut 02 · one protocol</text>
-          <text class="g-tlab" x="707" y="76" text-anchor="middle">strut 03 · the twin rule</text>
-
-          <!-- end windows, folded light path, eyepiece -->
-          <circle class="g-nd" cx="100" cy="54" r="6" />
-          <circle class="g-nd" cx="820" cy="54" r="6" />
-          <line class="g-div" x1="95" y1="59" x2="107" y2="83" />
-          <line class="g-div" x1="825" y1="59" x2="813" y2="83" />
-          <line class="g-path" x1="107" y1="84" x2="446" y2="84" />
-          <line class="g-path" x1="813" y1="84" x2="474" y2="84" />
-          <rect class="g-tube" x="446" y="90" width="28" height="20" rx="4" />
-          <circle class="g-nd" cx="460" cy="100" r="4.5" />
-          <text class="g-txt" x="484" y="104">eyepiece — the two views must coincide · the dial reads d</text>
-
-          <!-- the tube's known length -->
-          <line class="g-base" x1="90" y1="130" x2="830" y2="130" />
-          <line class="g-base" x1="90" y1="123" x2="90" y2="137" />
-          <line class="g-base" x1="830" y1="123" x2="830" y2="137" />
-          <text class="g-au" x="460" y="148" text-anchor="middle">B — the tube&#8217;s known length · rigid by construction</text>
-        </svg>
-      </figure>
-      <div class="struts reveal">
-        <article class="strut">
-          <div class="st-tag"><span>strut 01</span><span>ADR-0001</span></div>
-          <h3>One surface</h3>
-          <p>Published gold is the only thing PARALLAX may read — never bronze, never silver, never a path around the boundary. <b>Sibling, not fork</b>; the consumer never writes upstream.</p>
-          <ul>
-            <li>one end of the baseline is welded to the boundary: <b>no read below the published surface</b></li>
-            <li>the producer's guarantee is scoped to the gold model — deliberately not end-to-end through the ingest seam, which is <b>why an independent consumer gate exists at all</b></li>
-          </ul>
-        </article>
-        <article class="strut">
-          <div class="st-tag"><span>strut 02</span><span>Reader protocol</span></div>
-          <h3>One protocol</h3>
-          <p>Gate checks and study queries are written against a <code>Reader</code> protocol — never a path, never a connection string — so every surface answers the same question with the same semantics.</p>
-          <ul>
-            <li><b>naive datetimes rejected</b> at the protocol boundary; a zoneless timestamp moves the PIT boundary between machines</li>
-            <li>the reader <b>refuses to glob</b> a Delta table — the bare-glob double-count after an overwrite is a pinned test, not a war story</li>
-          </ul>
-        </article>
-        <article class="strut">
-          <div class="st-tag"><span>strut 03</span><span>the twin rule</span></div>
-          <h3>Proof it can fail</h3>
-          <p>A gate that has never been red holds nothing up. Every surface earns two cells: <b>green on the live gold, red on a planted twin</b> staged the same way.</p>
-          <ul>
-            <li>live: three checks over <b>440,661 as-of rows</b> — zero violations (2026-08-07, replayable)</li>
-            <li>twin: the same subset, one row mutated — caught as <b>exactly one violation</b> per affected check; the good copy of the staging gated PASS first</li>
-            <li>fixture twins for the other two mutation families run <b>red in CI</b> on every push</li>
-          </ul>
-        </article>
-      </div>
-      <p class="note reveal">Lane 1 (local Parquet) holds both cells today. Lanes 2–3 — Unity Catalog, then Snowflake over Iceberg — are <b>empty on purpose</b>: the sentence isn't claimable there yet, and the page that bounds those claims is <code>STATUS.md</code>, not this one. Each lane re-earns both cells against a twin <b>staged in that catalog</b>; vendor read paths differ, the invariants don't get to.</p>
-    </div>
-  </section>
-
-  <!-- FAILURE MODES -->
-  <section class="band section" id="failures">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">how baselines fail</span>
-        <h2>Zero, unknown, flexing — three failures, three different lost claims.</h2>
-        <p>Each strut exists because its failure mode is real. Every optics failure has a system twin — and each twin has either been caught in this build already or is pinned so it stays caught.</p>
-      </div>
-      <div class="fails reveal">
-        <article class="fail">
-          <div class="fl-head"><span class="fl-num">00</span><span class="fl-name">zero baseline</span></div>
-          <div class="fl-fig" aria-hidden="true">
-            <svg viewBox="0 0 220 112">
-              <line class="g-bg" x1="30" y1="20" x2="190" y2="20" />
-              <line class="g-tick" x1="30" y1="15" x2="30" y2="25" />
-              <line class="g-tick" x1="190" y1="15" x2="190" y2="25" />
-              <line class="g-sight" x1="110" y1="92" x2="110" y2="20" />
-              <path class="g-obj" d="M110 48 l7 9 -7 9 -7 -9 z" />
-              <circle class="g-nd" cx="110" cy="92" r="5.5" />
-            </svg>
-          </div>
-          <div class="fl-half">
-            <span class="fl-cap">in the instrument</span>
-            <p>One viewpoint. Nothing shifts; a near star and the far background are indistinguishable. There is no measurement to get wrong.</p>
-          </div>
-          <div class="fl-half">
-            <span class="fl-cap sys">in the pair</span>
-            <p>Latest-only reads — no as-of discipline, so lookahead has nowhere to show up and quietly becomes the dataset. A backtest built on it isn't wrong about the edge; <b>it isn't about an edge at all</b>.</p>
-          </div>
-        </article>
-        <article class="fail">
-          <div class="fl-head"><span class="fl-num">01</span><span class="fl-name">unknown baseline</span></div>
-          <div class="fl-fig" aria-hidden="true">
-            <svg viewBox="0 0 220 112">
-              <line class="g-bg" x1="30" y1="20" x2="190" y2="20" />
-              <line class="g-tick" x1="30" y1="15" x2="30" y2="25" />
-              <line class="g-tick" x1="190" y1="15" x2="190" y2="25" />
-              <line class="g-sight" x1="55" y1="92" x2="165" y2="20" />
-              <line class="g-sight" x1="165" y1="92" x2="55" y2="20" />
-              <circle class="g-pp" cx="165" cy="20" r="2.8" />
-              <circle class="g-pp" cx="55" cy="20" r="2.8" />
-              <line class="g-shift" x1="55" y1="9" x2="165" y2="9" />
-              <line class="g-shift" x1="55" y1="5" x2="55" y2="13" />
-              <line class="g-shift" x1="165" y1="5" x2="165" y2="13" />
-              <path class="g-obj" d="M110 48 l7 9 -7 9 -7 -9 z" />
-              <circle class="g-nd" cx="55" cy="92" r="5.5" />
-              <circle class="g-nd" cx="165" cy="92" r="5.5" />
-              <line class="g-base bad" x1="63" y1="92" x2="157" y2="92" />
-              <text class="g-bad-txt" x="110" y="108" text-anchor="middle">B = ?</text>
-            </svg>
-          </div>
-          <div class="fl-half">
-            <span class="fl-cap">in the instrument</span>
-            <p>The shift is right there on the plate, but with no citable separation it never becomes a distance — <b>a number with no meaning</b>.</p>
-          </div>
-          <div class="fl-half">
-            <span class="fl-cap sys">in the pair</span>
-            <p>An unproven contract. A divergence between two reads can't be attributed: data revision, or read-path artifact? An always-green gate lives here too — green that has <b>never been shown able to go red</b> cites nothing.</p>
-          </div>
-        </article>
-        <article class="fail">
-          <div class="fl-head"><span class="fl-num">02</span><span class="fl-name">flexing baseline</span></div>
-          <div class="fl-fig" aria-hidden="true">
-            <svg viewBox="0 0 220 112">
-              <line class="g-bg" x1="30" y1="20" x2="190" y2="20" />
-              <line class="g-tick" x1="30" y1="15" x2="30" y2="25" />
-              <line class="g-tick" x1="190" y1="15" x2="190" y2="25" />
-              <line class="g-sight" x1="55" y1="86" x2="185" y2="20" />
-              <line class="g-sight" x1="165" y1="96" x2="74" y2="20" />
-              <path class="g-obj" d="M110 48 l7 9 -7 9 -7 -9 z" />
-              <path class="g-ghost" d="M124 50 l7 9 -7 9 -7 -9 z" />
-              <circle class="g-nd" cx="55" cy="86" r="5.5" />
-              <circle class="g-nd" cx="165" cy="96" r="5.5" />
-              <path class="g-base flex" fill="none" d="M62 88 Q 88 78 110 88 T 158 94" />
-            </svg>
-          </div>
-          <div class="fl-half">
-            <span class="fl-cap">in the instrument</span>
-            <p>The separation moves between the two observations and the instrument manufactures shift — <b>false parallax</b>, indistinguishable from signal on a single pair of plates.</p>
-          </div>
-          <div class="fl-half">
-            <span class="fl-cap sys">in the pair</span>
-            <p>Read semantics drifting between reads: the Delta <b>bare-glob double-count</b> after an overwrite; zoneless SEC timestamps parsed in local zone, <b>moving the PIT boundary between machines</b>. Both real, both caught, both pinned as tests.</p>
-          </div>
-        </article>
-      </div>
-      <p class="note reveal">The struts and the failures are the same list with the sign flipped — which is exactly what it means for the baseline to be the instrument.</p>
-    </div>
-  </section>
-
-  <!-- THE LIGHT TEST -->
-  <section class="band section" id="light">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">this page was the test bench</span>
-        <h2>Parallax is observed at night. A rangefinder is read in daylight.</h2>
-        <p>The whole site now carries both grounds — the ink set it launched with, and the paper set that was earned here token by token. The same header toggle rides every page, one remembered choice governs them all, and <b>ink stays the site default</b>. The ledger below is the mapping the rest of the site inherited.</p>
-      </div>
-      <div class="dtable-wrap reveal">
-        <table class="dtable">
-          <caption>token ledger · ink → paper · what each carries</caption>
-          <thead>
-            <tr><th>role</th><th>ink theme</th><th>paper theme</th><th>carries</th></tr>
-          </thead>
-          <tbody>
-            <tr class="tok">
-              <td class="k">ground</td>
-              <td><span class="sw" style="background:#0A1424"></span>#0A1424</td>
-              <td><span class="sw" style="background:#F6F4EE"></span>#F6F4EE</td>
-              <td class="wide">the page itself</td>
-            </tr>
-            <tr class="tok">
-              <td class="k">text</td>
-              <td><span class="sw" style="background:#E9EEF8"></span>#E9EEF8</td>
-              <td><span class="sw" style="background:#1E232C"></span>#1E232C</td>
-              <td class="wide">prose</td>
-            </tr>
-            <tr class="tok">
-              <td class="k">gold</td>
-              <td><span class="sw" style="background:#E0A436"></span>#E0A436</td>
-              <td><span class="sw" style="background:#B07C1E"></span>#B07C1E line · <span class="sw" style="background:#7E5A10"></span>#7E5A10 text</td>
-              <td class="wide">authority marks — the baseline, eyebrows, the brand dot</td>
-            </tr>
-            <tr class="tok">
-              <td class="k">ok</td>
-              <td><span class="sw" style="background:#5BB98C"></span>#5BB98C</td>
-              <td><span class="sw" style="background:#1E7A4D"></span>#1E7A4D</td>
-              <td class="wide">pass · claimable</td>
-            </tr>
-            <tr class="tok">
-              <td class="k">block</td>
-              <td><span class="sw" style="background:#D4654A"></span>#D4654A</td>
-              <td><span class="sw" style="background:#AE4529"></span>#AE4529</td>
-              <td class="wide">fail · refusal · UNEVALUABLE</td>
-            </tr>
-            <tr class="tok">
-              <td class="k">blue</td>
-              <td><span class="sw" style="background:#6CA7E8"></span>#6CA7E8</td>
-              <td><span class="sw" style="background:#2D5FA3"></span>#2D5FA3</td>
-              <td class="wide">sight lines · measured values</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note reveal">One gold at night becomes two in daylight — the line keeps its metal, the type drops darker to hold contrast. That asymmetry is the only concession the port needed. State of the test: <b>passed and propagated</b> — the toggle now rides every page of the site.</p>
-    </div>
-  </section>
-
 </main>
 
 <footer>
   <div class="wrap foot">
     <span>hp / baseline — the separation that turns a shift into a measurement.</span>
-    <span>
-      <a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">VANTAGE ↗</a>
-      &nbsp;·&nbsp;
-      <a href="https://github.com/hossainpazooki/pit-revision-examiner" target="_blank" rel="noopener">PARALLAX ↗</a>
-      &nbsp;·&nbsp;
-      <a href="https://baseline-beryl.vercel.app/" target="_blank" rel="noopener">LEDGER ↗</a>
-      &nbsp;·&nbsp;
-      <a href="/">hossainpazooki.github.io</a>
-    </span>
+    <span><a href="https://baseline-beryl.vercel.app/" target="_blank" rel="noopener">ledger ↗</a>
+      &nbsp;·&nbsp; <a href="/">hossainpazooki.github.io</a></span>
   </div>
 </footer>
 
 <script>
 (function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* reveal on scroll */
-  var revealed = document.querySelectorAll('.reveal');
-  if (reduce || !('IntersectionObserver' in window)) {
+  var revealed = document.querySelectorAll('.reveal, .bench');
+  if (!('IntersectionObserver' in window)) {
     revealed.forEach(function(el){ el.classList.add('in'); });
   } else {
     var io = new IntersectionObserver(function(entries){
@@ -837,8 +325,6 @@
     }, { threshold:.15 });
     revealed.forEach(function(el){ io.observe(el); });
   }
-
-  /* ---------- theme toggle ---------- */
   var META_COLORS = { paper:'#F6F4EE', ink:'#0A1424' };
   var meta = document.getElementById('metatheme');
   var swBtns = document.querySelectorAll('.theme-sw button');
@@ -854,6 +340,5 @@
   applyTheme(document.documentElement.dataset.theme === 'ink' ? 'ink' : 'paper');
 })();
 </script>
-
 </body>
 </html>
