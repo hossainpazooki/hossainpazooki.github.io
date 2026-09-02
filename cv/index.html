@@ -143,14 +143,6 @@
   .hero-txt{min-width:0}
   @media(max-width:980px){.hero-grid{grid-template-columns:minmax(0,1fr);gap:28px}}
 
-  :root{
-    --h-lang:#2D5FA3; --h-ai:#B4552F; --h-ml:#7A4E9E; --h-be:#1E7A4D; --h-data:#5B6B2E;
-    --h-fe:#A8386E; --h-infra:#6C7A1C; --h-sec:#2A7A8C; --h-rev:#8A6217; --h-quant:#4A5A8A;
-  }
-  :root[data-theme="ink"]{
-    --h-lang:#6CA7E8; --h-ai:#E58A5C; --h-ml:#B78BE0; --h-be:#5BB98C; --h-data:#A9BD5A;
-    --h-fe:#E07AAE; --h-infra:#C2D35A; --h-sec:#5FC1D6; --h-rev:#E0A436; --h-quant:#8FA0D8;
-  }
   .graph{
     position:relative;border:1px dashed var(--gold-dim);background:var(--wash-1);
     padding:22px 12px 12px;
@@ -166,28 +158,25 @@
     transition:background-color .25s ease;
   }
   .graph svg{display:block;width:100%;height:auto;font-family:var(--mono)}
-  .graph .lk{stroke:var(--c);stroke-opacity:.28;stroke-width:1;transition:stroke-opacity .2s ease}
+  .graph .lk{stroke:var(--gold-dim);stroke-opacity:.55;stroke-width:1;transition:stroke-opacity .2s ease,stroke .2s ease}
   .graph .nd{cursor:default}
   .graph .nd circle{
-    fill:color-mix(in srgb,var(--c) 9%,var(--panel));
-    stroke:color-mix(in srgb,var(--c) 45%,var(--line));stroke-width:1;
+    fill:var(--panel);stroke:var(--line);stroke-width:1;
     transition:fill .2s ease,stroke .2s ease,opacity .2s ease;
   }
-  .graph .nd text{fill:var(--text-2);font-size:10px;text-anchor:middle;pointer-events:none;transition:opacity .2s ease}
-  .graph .nd.fam circle{stroke-dasharray:3 3}
-  .graph .nd.fam text{fill:var(--muted)}
+  .graph .nd text{fill:var(--text-2);font-size:11px;text-anchor:middle;pointer-events:none;transition:opacity .2s ease,fill .2s ease}
   .graph .hub{cursor:pointer}
-  .graph .hub circle{
-    fill:color-mix(in srgb,var(--c) 22%,var(--panel));
-    stroke:var(--c);stroke-width:2;
-  }
-  .graph .hub .ic{font-size:20px;font-family:var(--sans)}
-  .graph .hub .lb{fill:var(--c);font-weight:600;font-size:11.5px;letter-spacing:.02em}
-  .graph.focus .lk,.graph.focus .nd{opacity:.14}
-  .graph.focus .lk.on{opacity:1;stroke-opacity:.7;stroke-width:1.4}
+  .graph .hub circle{fill:var(--gold-wash);stroke:var(--gold);stroke-width:1.6}
+  .graph .hub .ic{fill:var(--gold);font-size:10.5px;letter-spacing:.2em}
+  .graph .hub .lb{fill:var(--text);font-weight:600;font-size:11px;letter-spacing:0}
+  .graph.focus .lk,.graph.focus .nd{opacity:.18}
+  .graph.focus .lk.on{opacity:1;stroke:var(--gold);stroke-opacity:.9;stroke-width:1.4}
   .graph.focus .nd.on{opacity:1}
-  .graph.focus .hub.on circle{fill:color-mix(in srgb,var(--c) 34%,var(--panel));filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c) 45%,transparent))}
-  .graph.focus .nd.on circle{fill:color-mix(in srgb,var(--c) 16%,var(--panel));stroke:var(--c)}
+  .graph.focus .hub.on circle{fill:var(--gold);stroke:var(--gold)}
+  .graph.focus .hub.on .ic{fill:var(--ink)}
+  .graph.focus .hub.on .lb{fill:var(--ink)}
+  .graph.focus .nd.on circle{stroke:var(--gold);fill:var(--gold-wash)}
+  .graph.focus .nd.on text{fill:var(--text)}
   .graph-tip{
     margin-top:10px;min-height:54px;padding:10px 12px;
     border-top:1px solid var(--line-soft);
@@ -198,7 +187,7 @@
   .graph-tip.idle{color:var(--muted);font-family:var(--mono);font-size:11.5px}
   .js .graph .lk,.js .graph .nd{opacity:0}
   .js .graph.in .lk,.js .graph.in .nd{opacity:1;transition:opacity .6s ease}
-  .js .graph.in.focus .lk,.js .graph.in.focus .nd{opacity:.14}
+  .js .graph.in.focus .lk,.js .graph.in.focus .nd{opacity:.18}
   .js .graph.in.focus .lk.on,.js .graph.in.focus .nd.on{opacity:1}
   @media (prefers-reduced-motion:reduce){.js .graph .lk,.js .graph .nd{opacity:1;transition:none}}
   @media print{.graph{break-inside:avoid}.graph-tip{display:none}}
@@ -412,13 +401,13 @@
         </div>
       </div>
 
-      <div class="graph" id="graph" aria-label="Technical skills map: ten hubs, each linked to the tools and practices that belong to it">
+      <div class="graph" id="graph" aria-label="Technical skills map: six hubs, each linked to its essential tools and practices">
         <span class="graph-tab">TECHNICAL SKILLS</span>
         <span class="graph-hint">hover for details</span>
-        <svg id="graph-svg" viewBox="0 0 540 580" role="img" aria-labelledby="graph-title">
-          <title id="graph-title">Skills map — hubs for languages, AI and agents, ML research, backend, data, frontend, infra and DevEx, security and observability, review and evaluation, and quantitative methods, each linked to its tools.</title>
+        <svg id="graph-svg" viewBox="0 0 540 520" role="img" aria-labelledby="graph-title">
+          <title id="graph-title">Skills map — six hubs: languages, AI and agents, ML research, backend and data, infra and DevEx, verification — each linked to its essential tools.</title>
         </svg>
-        <div class="graph-tip idle" id="graph-tip" aria-live="polite">hover a hub for details · click to jump to the list · dashed = familiar</div>
+        <div class="graph-tip idle" id="graph-tip" aria-live="polite">hover a hub for details · click to jump to the list</div>
       </div>
     </div>
   </section>
@@ -860,38 +849,30 @@
   var svgNS='http://www.w3.org/2000/svg';
   var svg=document.getElementById('graph-svg'), box=document.getElementById('graph'), tip=document.getElementById('graph-tip');
   if(!svg||!box) return;
-  var W=540,H=580;
+  var W=540,H=520;
   var HUBS=[
-    {id:'sk-lang', name:'Languages',        ic:'💻', c:'--h-lang',  note:'Seven years of production code. Python and SQL are the daily instruments.',
-      leaves:['Python','SQL','TypeScript','Go','Rust','Scala','Java']},
-    {id:'sk-ai',   name:'AI / Agents',      ic:'🤖', c:'--h-ai',    note:'Agents propose; deterministic gates dispose. Evaluation is the product.',
-      leaves:['PydanticAI','MCP','Anthropic','OpenAI','Hybrid RAG','LLM-as-judge','HITL','Calibration']},
-    {id:'sk-ml',   name:'ML Research',      ic:'🧠', c:'--h-ml',    note:'KV-cache instrumentation under the model; serving hooks and drift you can see.',
-      leaves:['PyTorch','HF hooks','KV-cache','GPU profiling','Model serving','Drift']},
-    {id:'sk-be',   name:'Backend',          ic:'⚙️', c:'--h-be',    note:'Event-driven services, durable state machines, idempotent consumers, typed contracts.',
-      leaves:['FastAPI','Pydantic','async','pytest / mypy','OpenAPI 3.1','State machines','Idempotency']},
-    {id:'sk-data', name:'Data',             ic:'🗄️', c:'--h-data',  note:'Point-in-time correctness and fail-closed data-quality gates.',
-      leaves:['PostgreSQL','Redis','Spark','Delta Lake','ETL / ELT','Point-in-time','Kafka*','Temporal*','dbt*']},
-    {id:'sk-fe',   name:'Frontend',         ic:'🎨', c:'--h-fe',    note:'The product surface, typed end to end from the API spec.',
-      leaves:['React 19','Next.js 15','Node.js','oasdiff']},
-    {id:'sk-infra',name:'Infra / DevEx',    ic:'🚀', c:'--h-infra', note:'The platform carries the validation habits: merge gates that have held a PR at BLOCKED.',
-      leaves:['Kubernetes','EKS','Terraform','Docker','GitHub Actions','OPA / Rego','AWS','Infracost','Helm*','ArgoCD*']},
-    {id:'sk-sec',  name:'Security / Obs',   ic:'🛡️', c:'--h-sec',   note:'Least privilege, signed artifacts, and an audit record for every decision that can move value.',
-      leaves:['ed25519','BLAKE3','IAM / IRSA','Audit logs','OpenTelemetry','Prometheus','Grafana']},
-    {id:'sk-rev',  name:'Review / Eval',    ic:'✅', c:'--h-rev',   note:'A check that passes either way proves nothing. Verdicts a second reviewer can reproduce.',
-      leaves:['PR review','Negative controls','Differential tests','Mutation','Rubrics','Traces']},
-    {id:'sk-quant',name:'Quant',            ic:'📈', c:'--h-quant', note:'Where the discipline started: causal inference on cross-country panel data.',
-      leaves:['IV / 2SLS','GMM','Heckman','IPW','Panel data']}
+    {id:'sk-lang', n:'01', name:'Languages',     note:'Python and SQL daily; TypeScript, Go and Rust ship in the open-source work.',
+      leaves:['Python','SQL','TypeScript','Go','Rust','React']},
+    {id:'sk-ai',   n:'02', name:'AI / Agents',   note:'Agents propose; deterministic gates dispose. Evaluation is the product.',
+      leaves:['PydanticAI','MCP','Hybrid RAG','LLM-as-judge','HITL']},
+    {id:'sk-ml',   n:'03', name:'ML Research',   note:'KV-cache instrumentation under the model; serving hooks and drift you can see.',
+      leaves:['PyTorch','KV-cache','HF hooks','Drift']},
+    {id:'sk-be',   n:'04', name:'Backend / Data',note:'Event-driven services and point-in-time data with fail-closed quality gates.',
+      leaves:['FastAPI','PostgreSQL','Redis','Spark / Delta','Point-in-time']},
+    {id:'sk-infra',n:'05', name:'Infra / DevEx', note:'The platform carries the validation habits: merge gates that have held a PR at BLOCKED.',
+      leaves:['Kubernetes','Terraform','AWS','GitHub Actions','OPA / Rego']},
+    {id:'sk-rev',  n:'06', name:'Verification',  note:'A check that passes either way proves nothing. Negative controls, calibration, audit trails.',
+      leaves:['Negative controls','Calibration','Mutation tests','Audit logs','OpenTelemetry']}
   ];
-  var HR=30, LR=18, REST=72;
+  var HR=40, LR=23, REST=96;
   var nodes=[], links=[];
   HUBS.forEach(function(h,i){
-    var a=-Math.PI/2+i*2*Math.PI/HUBS.length, R=Math.min(W,H)*0.22;
+    var a=-Math.PI/2+i*2*Math.PI/HUBS.length, R=Math.min(W,H)*0.24;
     var hub={hub:true,h:h,r:HR,x:W/2+Math.cos(a)*R,y:H/2+Math.sin(a)*R,vx:0,vy:0};
     nodes.push(hub);
     h.leaves.forEach(function(l,j){
-      var b=a+(j-(h.leaves.length-1)/2)*0.55;
-      var n={hub:false,h:h,label:l.replace('*',''),fam:/\*$/.test(l),r:LR,tw:l.replace('*','').length*3.2+4,
+      var b=a+(j-(h.leaves.length-1)/2)*0.5;
+      var n={hub:false,h:h,label:l.replace('*',''),fam:/\*$/.test(l),r:LR,tw:l.replace('*','').length*3.5+4,
              x:hub.x+Math.cos(b)*REST,y:hub.y+Math.sin(b)*REST,vx:0,vy:0,p:hub};
       nodes.push(n); links.push({s:hub,t:n});
     });
@@ -901,8 +882,8 @@
     for(i=0;i<nodes.length;i++){a=nodes[i];
       for(j=i+1;j<nodes.length;j++){b=nodes[j];
         dx=b.x-a.x;dy=b.y-a.y;d2=dx*dx+dy*dy;if(d2<1){dx=(Math.random()-.5);dy=(Math.random()-.5);d2=1}
-        var min=a.r+b.r+((a.hub&&b.hub)?80:(a.hub||b.hub)?14:10);
-        var k=(a.hub&&b.hub)?7000:(a.hub||b.hub)?1600:1100;
+        var min=a.r+b.r+((a.hub&&b.hub)?50:(a.hub||b.hub)?18:20);
+        var k=(a.hub&&b.hub)?6500:(a.hub||b.hub)?2400:2000;
         d=Math.sqrt(d2); f=k/d2*alpha; if(d<min) f+= (min-d)*0.25*alpha;
         dx/=d;dy/=d; a.vx-=dx*f;a.vy-=dy*f;b.vx+=dx*f;b.vy+=dy*f;
       }
@@ -912,7 +893,7 @@
       dx/=d;dy/=d;l.t.vx-=dx*f;l.t.vy-=dy*f;l.s.vx+=dx*f*0.35;l.s.vy+=dy*f*0.35;
     });
     nodes.forEach(function(n){
-      if(n.hub){n.vx+=(W/2-n.x)*0.016*alpha;n.vy+=(H/2-n.y)*0.016*alpha}
+      if(n.hub){n.vx+=(W/2-n.x)*0.02*alpha;n.vy+=(H/2-n.y)*0.02*alpha}
       n.vx*=0.78;n.vy*=0.78;n.x+=n.vx;n.y+=n.vy;
       var pad=n.r+6, padx=Math.max(pad,(n.tw||0)+4);
       if(n.x<padx){n.x=padx;n.vx=0} if(n.x>W-padx){n.x=W-padx;n.vx=0}
@@ -923,16 +904,15 @@
   var gl=document.createElementNS(svgNS,'g'), gn=document.createElementNS(svgNS,'g');
   svg.appendChild(gl); svg.appendChild(gn);
   links.forEach(function(l){
-    var e=document.createElementNS(svgNS,'line'); e.setAttribute('class','lk'); e.style.setProperty('--c','var('+l.s.h.c+')');
+    var e=document.createElementNS(svgNS,'line'); e.setAttribute('class','lk');
     l.el=e; gl.appendChild(e);
   });
   nodes.forEach(function(n){
     var g=document.createElementNS(svgNS,'g'); g.setAttribute('class','nd'+(n.hub?' hub':'')+(n.fam?' fam':''));
-    g.style.setProperty('--c','var('+n.h.c+')');
     var c=document.createElementNS(svgNS,'circle'); c.setAttribute('r',n.r); g.appendChild(c);
     if(n.hub){
-      var ic=document.createElementNS(svgNS,'text'); ic.setAttribute('class','ic'); ic.setAttribute('y','-2'); ic.setAttribute('text-anchor','middle'); ic.textContent=n.h.ic; g.appendChild(ic);
-      var lb=document.createElementNS(svgNS,'text'); lb.setAttribute('class','lb'); lb.setAttribute('y','19'); lb.setAttribute('text-anchor','middle'); lb.textContent=n.h.name; g.appendChild(lb);
+      var ic=document.createElementNS(svgNS,'text'); ic.setAttribute('class','ic'); ic.setAttribute('y','-6'); ic.setAttribute('text-anchor','middle'); ic.textContent=n.h.n; g.appendChild(ic);
+      var lb=document.createElementNS(svgNS,'text'); lb.setAttribute('class','lb'); lb.setAttribute('y','11'); lb.setAttribute('text-anchor','middle'); lb.textContent=n.h.name; g.appendChild(lb);
       g.setAttribute('tabindex','0'); g.setAttribute('role','link'); g.setAttribute('aria-label',n.h.name+' — jump to the list');
     }else{
       var t=document.createElementNS(svgNS,'text'); t.setAttribute('y','4'); t.textContent=n.label; g.appendChild(t);
@@ -959,7 +939,7 @@
     nodes.forEach(function(n){n.el.classList.toggle('on',n.h===h)});
     links.forEach(function(l){l.el.classList.toggle('on',l.s.h===h)});
     tip.classList.remove('idle');
-    tip.innerHTML='<div class="t">'+h.name+'<span class="n">'+h.leaves.length+' nodes · click to jump</span></div>'+h.note;
+    tip.innerHTML='<div class="t">'+h.n+' · '+h.name+'<span class="n">click to jump to the list</span></div>'+h.note;
   }
   function blur(){ box.classList.remove('focus'); tip.classList.add('idle'); tip.textContent=idle; }
   nodes.filter(function(n){return n.hub}).forEach(function(n){
