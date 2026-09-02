@@ -125,7 +125,8 @@
   .name .ln2{color:var(--text-2)}
   .lede{max-width:680px;font-size:clamp(15.5px,2.3vw,17.5px);line-height:1.65;color:var(--text-2)}
   .lede b{color:var(--text);font-weight:500}
-  .lede+.lede{margin-top:14px}
+  .lede .open{display:block;margin-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.6}
+  .lede .open .k{color:var(--gold)}
 
   .contact{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .contact a,.contact button{
@@ -136,6 +137,71 @@
   }
   .contact a:hover,.contact button:hover{background:var(--panel-2);border-color:var(--muted)}
   .contact .go{color:var(--gold)}
+
+  /* ---------- hero grid + skills graph ---------- */
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 470px;gap:40px;align-items:start}
+  .hero-txt{min-width:0}
+  @media(max-width:980px){.hero-grid{grid-template-columns:minmax(0,1fr);gap:28px}}
+
+  :root{
+    --h-lang:#2D5FA3; --h-ai:#B4552F; --h-ml:#7A4E9E; --h-be:#1E7A4D; --h-data:#5B6B2E;
+    --h-fe:#A8386E; --h-infra:#6C7A1C; --h-sec:#2A7A8C; --h-rev:#8A6217; --h-quant:#4A5A8A;
+  }
+  :root[data-theme="ink"]{
+    --h-lang:#6CA7E8; --h-ai:#E58A5C; --h-ml:#B78BE0; --h-be:#5BB98C; --h-data:#A9BD5A;
+    --h-fe:#E07AAE; --h-infra:#C2D35A; --h-sec:#5FC1D6; --h-rev:#E0A436; --h-quant:#8FA0D8;
+  }
+  .graph{
+    position:relative;border:1px dashed var(--gold-dim);background:var(--wash-1);
+    padding:22px 12px 12px;
+  }
+  .graph-tab{
+    position:absolute;top:-10px;left:18px;background:var(--ink);
+    padding:1px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--gold);
+    transition:background-color .25s ease;
+  }
+  .graph-hint{
+    position:absolute;top:-10px;right:18px;background:var(--ink);
+    padding:1px 12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    transition:background-color .25s ease;
+  }
+  .graph svg{display:block;width:100%;height:auto;font-family:var(--mono)}
+  .graph .lk{stroke:var(--c);stroke-opacity:.28;stroke-width:1;transition:stroke-opacity .2s ease}
+  .graph .nd{cursor:default}
+  .graph .nd circle{
+    fill:color-mix(in srgb,var(--c) 9%,var(--panel));
+    stroke:color-mix(in srgb,var(--c) 45%,var(--line));stroke-width:1;
+    transition:fill .2s ease,stroke .2s ease,opacity .2s ease;
+  }
+  .graph .nd text{fill:var(--text-2);font-size:10px;text-anchor:middle;pointer-events:none;transition:opacity .2s ease}
+  .graph .nd.fam circle{stroke-dasharray:3 3}
+  .graph .nd.fam text{fill:var(--muted)}
+  .graph .hub{cursor:pointer}
+  .graph .hub circle{
+    fill:color-mix(in srgb,var(--c) 22%,var(--panel));
+    stroke:var(--c);stroke-width:2;
+  }
+  .graph .hub .ic{font-size:20px;font-family:var(--sans)}
+  .graph .hub .lb{fill:var(--c);font-weight:600;font-size:11.5px;letter-spacing:.02em}
+  .graph.focus .lk,.graph.focus .nd{opacity:.14}
+  .graph.focus .lk.on{opacity:1;stroke-opacity:.7;stroke-width:1.4}
+  .graph.focus .nd.on{opacity:1}
+  .graph.focus .hub.on circle{fill:color-mix(in srgb,var(--c) 34%,var(--panel));filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c) 45%,transparent))}
+  .graph.focus .nd.on circle{fill:color-mix(in srgb,var(--c) 16%,var(--panel));stroke:var(--c)}
+  .graph-tip{
+    margin-top:10px;min-height:54px;padding:10px 12px;
+    border-top:1px solid var(--line-soft);
+    font-size:12.5px;color:var(--text-2);line-height:1.5;
+  }
+  .graph-tip .t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+  .graph-tip .t .n{color:var(--muted);letter-spacing:.02em;text-transform:none;margin-left:.6em}
+  .graph-tip.idle{color:var(--muted);font-family:var(--mono);font-size:11.5px}
+  .js .graph .lk,.js .graph .nd{opacity:0}
+  .js .graph.in .lk,.js .graph.in .nd{opacity:1;transition:opacity .6s ease}
+  .js .graph.in.focus .lk,.js .graph.in.focus .nd{opacity:.14}
+  .js .graph.in.focus .lk.on,.js .graph.in.focus .nd.on{opacity:1}
+  @media (prefers-reduced-motion:reduce){.js .graph .lk,.js .graph .nd{opacity:1;transition:none}}
+  @media print{.graph{break-inside:avoid}.graph-tip{display:none}}
 
   /* ---------- at a glance ---------- */
   .glance{
@@ -181,6 +247,7 @@
   }
   .sk:hover{background:var(--panel-2)}
   .sk.wide{grid-column:1 / -1}
+  .sk.flash{background:var(--gold-wash);outline:1px solid var(--gold);outline-offset:-1px}
   .sk-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
   .sk-num{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold)}
   .sk-t{font-family:'Space Grotesk',var(--sans);font-weight:600;font-size:16.5px;letter-spacing:-.01em}
@@ -327,43 +394,54 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="wrap">
-      <span class="eyebrow">CV — technical skills · New York</span>
-      <h1 class="name">Hossain Pazooki<br /><span class="ln2">The model interprets. A deterministic system executes.</span></h1>
-      <p class="lede">I build data platforms, evaluation harnesses, and reliable agentic and LLM systems for regulated
-      domains — <b>point-in-time financial data, healthcare claims, cross-border compliance</b> — where a wrong
-      answer has a real cost and "it usually works" isn't good enough.</p>
-      <p class="lede">Everything I ship is fail-closed: nothing load-bearing is trusted until it survives an attempt to
-      break it, models interpret while deterministic systems execute, and when a decision can't be evaluated the
-      system refuses rather than guesses. <b>Open to software engineering roles in data platform, AI infrastructure,
-      and platform reliability.</b></p>
+    <div class="wrap hero-grid">
+      <div class="hero-txt">
+        <span class="eyebrow">CV — technical skills · New York</span>
+        <h1 class="name">Hossain Pazooki<br /><span class="ln2">The model interprets. A deterministic system executes.</span></h1>
+        <p class="lede">I build data platforms, evaluation harnesses, and reliable agentic and LLM systems for regulated
+        domains — <b>point-in-time financial data, healthcare claims, cross-border compliance</b> — where a wrong
+        answer has a real cost and "it usually works" isn't good enough.
+        <span class="open"><span class="k">open to</span> software engineering roles in data platform, AI infrastructure, and platform reliability.</span></p>
 
-      <div class="contact" aria-label="Contact">
-        <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="go">→</span></a>
-        <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="go">↗</span></a>
-        <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="go">↗</span></a>
-        <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="go">↗</span></a>
-        <button type="button" id="print-btn">print / save as PDF <span class="go">⎙</span></button>
+        <div class="contact" aria-label="Contact">
+          <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="go">→</span></a>
+          <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="go">↗</span></a>
+          <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="go">↗</span></a>
+          <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="go">↗</span></a>
+          <button type="button" id="print-btn">print / save as PDF <span class="go">⎙</span></button>
+        </div>
       </div>
 
-      <div class="glance" aria-label="At a glance">
-        <span class="glance-tab">AT A GLANCE</span>
-        <div>
-          <div class="g-k">Now</div>
-          <div class="g-v">AI Research Fellow, Algoverse<br /><span class="m">cross-model KV-cache transfer · agent evaluation under censored feedback</span></div>
-        </div>
-        <div>
-          <div class="g-k">Previously</div>
-          <div class="g-v">AI/ML Tech Lead, Orawell<br /><span class="m">HIPAA-aligned healthcare RCM platform · team of 4</span></div>
-        </div>
-        <div>
-          <div class="g-k">Production languages</div>
-          <div class="g-v"><span class="m">Python · SQL · TypeScript · Go · Rust · Scala · Java</span></div>
-        </div>
-        <div>
-          <div class="g-k">Certified</div>
-          <div class="g-v"><span class="m">GCP Professional ML Engineer · CKAD · Anthropic Claude Code · Stanford AI Security · AWS ML Engineer Associate</span></div>
-        </div>
+      <div class="graph" id="graph" aria-label="Technical skills map: ten hubs, each linked to the tools and practices that belong to it">
+        <span class="graph-tab">TECHNICAL SKILLS</span>
+        <span class="graph-hint">hover for details</span>
+        <svg id="graph-svg" viewBox="0 0 540 580" role="img" aria-labelledby="graph-title">
+          <title id="graph-title">Skills map — hubs for languages, AI and agents, ML research, backend, data, frontend, infra and DevEx, security and observability, review and evaluation, and quantitative methods, each linked to its tools.</title>
+        </svg>
+        <div class="graph-tip idle" id="graph-tip" aria-live="polite">hover a hub for details · click to jump to the list · dashed = familiar</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AT A GLANCE -->
+  <section class="wrap">
+    <div class="glance" aria-label="At a glance">
+      <span class="glance-tab">AT A GLANCE</span>
+      <div>
+        <div class="g-k">Now</div>
+        <div class="g-v">AI Research Fellow, Algoverse<br /><span class="m">cross-model KV-cache transfer · agent evaluation under censored feedback</span></div>
+      </div>
+      <div>
+        <div class="g-k">Previously</div>
+        <div class="g-v">AI/ML Tech Lead, Orawell<br /><span class="m">HIPAA-aligned healthcare RCM platform · team of 4</span></div>
+      </div>
+      <div>
+        <div class="g-k">Production languages</div>
+        <div class="g-v"><span class="m">Python · SQL · TypeScript · Go · Rust · Scala · Java</span></div>
+      </div>
+      <div>
+        <div class="g-k">Certified</div>
+        <div class="g-v"><span class="m">GCP Professional ML Engineer · CKAD · Anthropic Claude Code · Stanford AI Security · AWS ML Engineer Associate</span></div>
       </div>
     </div>
   </section>
@@ -377,7 +455,7 @@
 
     <div class="skills">
 
-      <div class="sk">
+      <div class="skNone" id="sk-lang">
         <div class="sk-head"><span class="sk-t">Languages</span><span class="sk-num">01·A</span></div>
         <p class="sk-w">Seven years writing, reviewing and debugging production code. Python and SQL are the daily instruments; the rest ship in the open-source work below.</p>
         <div class="tags">
@@ -392,7 +470,7 @@
         </div>
       </div>
 
-      <div class="sk">
+      <div class="skNone" id="sk-ai">
         <div class="sk-head"><span class="sk-t">Applied AI &amp; agentic systems</span><span class="sk-num">01·B</span></div>
         <p class="sk-w">Agents that propose; deterministic gates that dispose. Evaluation is the product, not the afterthought.</p>
         <div class="tags">
@@ -413,7 +491,7 @@
         </div>
       </div>
 
-      <div class="sk">
+      <div class="skNone" id="sk-ml">
         <div class="sk-head"><span class="sk-t">ML research &amp; serving</span><span class="sk-num">01·C</span></div>
         <p class="sk-w">Instrumentation under the model, and the serving hooks that turn a fitted model into a production signal with drift you can see.</p>
         <div class="tags">
@@ -430,7 +508,7 @@
         </div>
       </div>
 
-      <div class="sk">
+      <div class="skNone" id="sk-be">
         <div class="sk-head"><span class="sk-t">Backend &amp; distributed systems</span><span class="sk-num">01·D</span></div>
         <p class="sk-w">Event-driven services with durable state, idempotent consumers, and contracts generated from a single source of truth.</p>
         <div class="tags">
@@ -449,7 +527,7 @@
         </div>
       </div>
 
-      <div class="sk">
+      <div class="skNone" id="sk-data">
         <div class="sk-head"><span class="sk-t">Data &amp; storage</span><span class="sk-num">01·E</span></div>
         <p class="sk-w">Point-in-time correctness and fail-closed data-quality gates: as-of day D returns only what was known by D.</p>
         <div class="tags">
@@ -470,7 +548,7 @@
         </div>
       </div>
 
-      <div class="sk">
+      <div class="skNone" id="sk-fe">
         <div class="sk-head"><span class="sk-t">Full-stack &amp; contracts</span><span class="sk-num">01·F</span></div>
         <p class="sk-w">The product surface, typed end to end from the API spec.</p>
         <div class="tags">
@@ -482,7 +560,7 @@
         </div>
       </div>
 
-      <div class="sk">
+      <div class="skNone" id="sk-infra">
         <div class="sk-head"><span class="sk-t">Infra, DevEx &amp; release</span><span class="sk-num">01·G</span></div>
         <p class="sk-w">The platform, not the reviewer, carries the validation habits: required-check merge gates that have held a PR at BLOCKED under branch protection.</p>
         <div class="tags">
@@ -504,7 +582,7 @@
         </div>
       </div>
 
-      <div class="sk">
+      <div class="skNone" id="sk-sec">
         <div class="sk-head"><span class="sk-t">Security &amp; observability</span><span class="sk-num">01·H</span></div>
         <p class="sk-w">Least privilege, signed artifacts, and an audit record for every decision that can move value.</p>
         <div class="tags">
@@ -520,7 +598,7 @@
         </div>
       </div>
 
-      <div class="sk wide">
+      <div class="sk wide" id="sk-rev">
         <div class="sk-head"><span class="sk-t">Code review, testing &amp; evaluation practice</span><span class="sk-num">01·I</span></div>
         <p class="sk-w">A check that passes either way proves nothing. Verdicts are written so a second reviewer can reproduce them.</p>
         <div class="tags">
@@ -538,7 +616,7 @@
         </div>
       </div>
 
-      <div class="sk wide">
+      <div class="sk wide" id="sk-quant">
         <div class="sk-head"><span class="sk-t">Quantitative &amp; econometrics</span><span class="sk-num">01·J</span></div>
         <p class="sk-w">Where the discipline started: the quantitative seat where a model that looks right and isn't moves capital.</p>
         <div class="tags">
@@ -775,6 +853,126 @@
     <span>© 2026 Hossain Pazooki · New York &nbsp;·&nbsp; <a href="/">hossainpazooki.github.io</a> &nbsp;·&nbsp; <a href="mailto:hossain@pazooki.com">hossain@pazooki.com</a></span>
   </div>
 </footer>
+
+<script>
+// Skills map: a small force layout — hubs repel, leaves spring to their hub, everything stays in the box.
+(function(){
+  var svgNS='http://www.w3.org/2000/svg';
+  var svg=document.getElementById('graph-svg'), box=document.getElementById('graph'), tip=document.getElementById('graph-tip');
+  if(!svg||!box) return;
+  var W=540,H=580;
+  var HUBS=[
+    {id:'sk-lang', name:'Languages',        ic:'💻', c:'--h-lang',  note:'Seven years of production code. Python and SQL are the daily instruments.',
+      leaves:['Python','SQL','TypeScript','Go','Rust','Scala','Java']},
+    {id:'sk-ai',   name:'AI / Agents',      ic:'🤖', c:'--h-ai',    note:'Agents propose; deterministic gates dispose. Evaluation is the product.',
+      leaves:['PydanticAI','MCP','Anthropic','OpenAI','Hybrid RAG','LLM-as-judge','HITL','Calibration']},
+    {id:'sk-ml',   name:'ML Research',      ic:'🧠', c:'--h-ml',    note:'KV-cache instrumentation under the model; serving hooks and drift you can see.',
+      leaves:['PyTorch','HF hooks','KV-cache','GPU profiling','Model serving','Drift']},
+    {id:'sk-be',   name:'Backend',          ic:'⚙️', c:'--h-be',    note:'Event-driven services, durable state machines, idempotent consumers, typed contracts.',
+      leaves:['FastAPI','Pydantic','async','pytest / mypy','OpenAPI 3.1','State machines','Idempotency']},
+    {id:'sk-data', name:'Data',             ic:'🗄️', c:'--h-data',  note:'Point-in-time correctness and fail-closed data-quality gates.',
+      leaves:['PostgreSQL','Redis','Spark','Delta Lake','ETL / ELT','Point-in-time','Kafka*','Temporal*','dbt*']},
+    {id:'sk-fe',   name:'Frontend',         ic:'🎨', c:'--h-fe',    note:'The product surface, typed end to end from the API spec.',
+      leaves:['React 19','Next.js 15','Node.js','oasdiff']},
+    {id:'sk-infra',name:'Infra / DevEx',    ic:'🚀', c:'--h-infra', note:'The platform carries the validation habits: merge gates that have held a PR at BLOCKED.',
+      leaves:['Kubernetes','EKS','Terraform','Docker','GitHub Actions','OPA / Rego','AWS','Infracost','Helm*','ArgoCD*']},
+    {id:'sk-sec',  name:'Security / Obs',   ic:'🛡️', c:'--h-sec',   note:'Least privilege, signed artifacts, and an audit record for every decision that can move value.',
+      leaves:['ed25519','BLAKE3','IAM / IRSA','Audit logs','OpenTelemetry','Prometheus','Grafana']},
+    {id:'sk-rev',  name:'Review / Eval',    ic:'✅', c:'--h-rev',   note:'A check that passes either way proves nothing. Verdicts a second reviewer can reproduce.',
+      leaves:['PR review','Negative controls','Differential tests','Mutation','Rubrics','Traces']},
+    {id:'sk-quant',name:'Quant',            ic:'📈', c:'--h-quant', note:'Where the discipline started: causal inference on cross-country panel data.',
+      leaves:['IV / 2SLS','GMM','Heckman','IPW','Panel data']}
+  ];
+  var HR=30, LR=18, REST=72;
+  var nodes=[], links=[];
+  HUBS.forEach(function(h,i){
+    var a=-Math.PI/2+i*2*Math.PI/HUBS.length, R=Math.min(W,H)*0.22;
+    var hub={hub:true,h:h,r:HR,x:W/2+Math.cos(a)*R,y:H/2+Math.sin(a)*R,vx:0,vy:0};
+    nodes.push(hub);
+    h.leaves.forEach(function(l,j){
+      var b=a+(j-(h.leaves.length-1)/2)*0.55;
+      var n={hub:false,h:h,label:l.replace('*',''),fam:/\*$/.test(l),r:LR,tw:l.replace('*','').length*3.2+4,
+             x:hub.x+Math.cos(b)*REST,y:hub.y+Math.sin(b)*REST,vx:0,vy:0,p:hub};
+      nodes.push(n); links.push({s:hub,t:n});
+    });
+  });
+  function tick(alpha){
+    var i,j,a,b,dx,dy,d2,d,f;
+    for(i=0;i<nodes.length;i++){a=nodes[i];
+      for(j=i+1;j<nodes.length;j++){b=nodes[j];
+        dx=b.x-a.x;dy=b.y-a.y;d2=dx*dx+dy*dy;if(d2<1){dx=(Math.random()-.5);dy=(Math.random()-.5);d2=1}
+        var min=a.r+b.r+((a.hub&&b.hub)?80:(a.hub||b.hub)?14:10);
+        var k=(a.hub&&b.hub)?7000:(a.hub||b.hub)?1600:1100;
+        d=Math.sqrt(d2); f=k/d2*alpha; if(d<min) f+= (min-d)*0.25*alpha;
+        dx/=d;dy/=d; a.vx-=dx*f;a.vy-=dy*f;b.vx+=dx*f;b.vy+=dy*f;
+      }
+    }
+    links.forEach(function(l){
+      dx=l.t.x-l.s.x;dy=l.t.y-l.s.y;d=Math.sqrt(dx*dx+dy*dy)||1;f=(d-REST)*0.09*alpha;
+      dx/=d;dy/=d;l.t.vx-=dx*f;l.t.vy-=dy*f;l.s.vx+=dx*f*0.35;l.s.vy+=dy*f*0.35;
+    });
+    nodes.forEach(function(n){
+      if(n.hub){n.vx+=(W/2-n.x)*0.016*alpha;n.vy+=(H/2-n.y)*0.016*alpha}
+      n.vx*=0.78;n.vy*=0.78;n.x+=n.vx;n.y+=n.vy;
+      var pad=n.r+6, padx=Math.max(pad,(n.tw||0)+4);
+      if(n.x<padx){n.x=padx;n.vx=0} if(n.x>W-padx){n.x=W-padx;n.vx=0}
+      if(n.y<pad){n.y=pad;n.vy=0} if(n.y>H-pad){n.y=H-pad;n.vy=0}
+    });
+  }
+  // build DOM
+  var gl=document.createElementNS(svgNS,'g'), gn=document.createElementNS(svgNS,'g');
+  svg.appendChild(gl); svg.appendChild(gn);
+  links.forEach(function(l){
+    var e=document.createElementNS(svgNS,'line'); e.setAttribute('class','lk'); e.style.setProperty('--c','var('+l.s.h.c+')');
+    l.el=e; gl.appendChild(e);
+  });
+  nodes.forEach(function(n){
+    var g=document.createElementNS(svgNS,'g'); g.setAttribute('class','nd'+(n.hub?' hub':'')+(n.fam?' fam':''));
+    g.style.setProperty('--c','var('+n.h.c+')');
+    var c=document.createElementNS(svgNS,'circle'); c.setAttribute('r',n.r); g.appendChild(c);
+    if(n.hub){
+      var ic=document.createElementNS(svgNS,'text'); ic.setAttribute('class','ic'); ic.setAttribute('y','-2'); ic.setAttribute('text-anchor','middle'); ic.textContent=n.h.ic; g.appendChild(ic);
+      var lb=document.createElementNS(svgNS,'text'); lb.setAttribute('class','lb'); lb.setAttribute('y','19'); lb.setAttribute('text-anchor','middle'); lb.textContent=n.h.name; g.appendChild(lb);
+      g.setAttribute('tabindex','0'); g.setAttribute('role','link'); g.setAttribute('aria-label',n.h.name+' — jump to the list');
+    }else{
+      var t=document.createElementNS(svgNS,'text'); t.setAttribute('y','4'); t.textContent=n.label; g.appendChild(t);
+    }
+    n.el=g; gn.appendChild(g);
+  });
+  function draw(){
+    links.forEach(function(l){l.el.setAttribute('x1',l.s.x);l.el.setAttribute('y1',l.s.y);l.el.setAttribute('x2',l.t.x);l.el.setAttribute('y2',l.t.y)});
+    nodes.forEach(function(n){n.el.setAttribute('transform','translate('+n.x.toFixed(1)+','+n.y.toFixed(1)+')')});
+  }
+  // settle: most of it before first paint, the tail on screen
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var i, alpha=1;
+  for(i=0;i<220;i++){tick(alpha);alpha=Math.max(0.35,alpha*0.992)}
+  draw(); box.classList.add('in');
+  if(!reduce){
+    var left=140;
+    (function step(){ if(left--<=0) return; tick(alpha); alpha*=0.985; draw(); requestAnimationFrame(step); })();
+  }else{ for(i=0;i<140;i++){tick(alpha);alpha*=0.985} draw(); }
+  // hover / focus / click
+  var idle=tip.textContent;
+  function focus(h){
+    box.classList.add('focus');
+    nodes.forEach(function(n){n.el.classList.toggle('on',n.h===h)});
+    links.forEach(function(l){l.el.classList.toggle('on',l.s.h===h)});
+    tip.classList.remove('idle');
+    tip.innerHTML='<div class="t">'+h.name+'<span class="n">'+h.leaves.length+' nodes · click to jump</span></div>'+h.note;
+  }
+  function blur(){ box.classList.remove('focus'); tip.classList.add('idle'); tip.textContent=idle; }
+  nodes.filter(function(n){return n.hub}).forEach(function(n){
+    n.el.addEventListener('mouseenter',function(){focus(n.h)});
+    n.el.addEventListener('mouseleave',blur);
+    n.el.addEventListener('focus',function(){focus(n.h)});
+    n.el.addEventListener('blur',blur);
+    function go(){ var t=document.getElementById(n.h.id); if(!t) return; var sec=t.closest('.reveal'); if(sec) sec.classList.add('in'); t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'}); t.classList.add('flash'); setTimeout(function(){t.classList.remove('flash')},1600); }
+    n.el.addEventListener('click',go);
+    n.el.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();go()} });
+  });
+})();
+</script>
 
 <script>
 (function(){
