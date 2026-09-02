@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#F6F4EE" id="metatheme" />
+<script>(function(){var t='paper';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='ink'?'ink':'paper'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<title>Hossain Pazooki — CV · technical skills</title>
+<meta name="description" content="Technical CV of Hossain Pazooki — software engineer in New York building data platforms, evaluation harnesses, and fail-closed agentic and LLM systems for regulated domains. Skills, experience, open-source projects, education and certifications." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    color-scheme:light;
+    --ink:#F6F4EE;
+    --ink-2:#EFECE2;
+    --panel:#FCFBF7;
+    --panel-2:#F1EEE5;
+    --line:#D8D3C4;
+    --line-soft:#E5E1D4;
+    --text:#1E232C;
+    --text-2:#454D5C;
+    --muted:#6C7484;
+    --gold:#8A6217;
+    --gold-dim:#D3BE8F;
+    --gold-hover:#B07C1E;
+    --gold-wash:rgba(138,98,23,.08);
+    --header-bg:rgba(246,244,238,.8);
+    --wash-1:rgba(30,35,44,.025);
+    --hatch:rgba(30,35,44,.03);
+    --maxw:1080px;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+  :root[data-theme="ink"]{
+    color-scheme:dark;
+    --ink:#0A1424;
+    --ink-2:#0D1930;
+    --panel:#101E38;
+    --panel-2:#142440;
+    --line:#1D3050;
+    --line-soft:#172942;
+    --text:#E9EEF8;
+    --text-2:#B8C5DB;
+    --muted:#7F92B0;
+    --gold:#E0A436;
+    --gold-dim:#7a5d22;
+    --gold-hover:#f3c269;
+    --gold-wash:rgba(224,164,54,.08);
+    --header-bg:rgba(10,20,36,.72);
+    --wash-1:rgba(255,255,255,.012);
+    --hatch:rgba(255,255,255,.014);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    background:var(--ink);color:var(--text);
+    font-family:var(--sans);font-weight:400;line-height:1.6;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+    transition:background-color .25s ease,color .25s ease;
+  }
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--gold);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .eyebrow::before{
+    content:"";width:18px;height:1px;background:var(--gold);
+    display:inline-block;vertical-align:middle;margin-right:.8em;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--header-bg);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{
+    font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:.04em;
+    color:var(--text);display:inline-flex;align-items:center;gap:.5em;white-space:nowrap;
+  }
+  .brand .dot{color:var(--gold)}
+  .brand .up{color:var(--muted);font-weight:400;font-size:12px;margin-right:2px}
+  .nav-links{display:flex;gap:22px;align-items:center}
+  .nav-links a{
+    font-family:var(--mono);font-size:13px;color:var(--muted);
+    letter-spacing:.02em;white-space:nowrap;transition:color .18s ease;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.ext{color:var(--gold)}
+  .nav-links a.ext:hover{color:var(--gold-hover)}
+  .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
+  .theme-sw button{
+    font-family:var(--mono);font-size:10.5px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    background:transparent;border:0;padding:6px 12px;cursor:pointer;
+    transition:color .18s ease,background .18s ease;
+  }
+  .theme-sw button+button{border-left:1px solid var(--line)}
+  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:var(--gold-wash)}
+  @media(max-width:1000px){.nav-links{gap:14px}}
+  @media(max-width:760px){.nav-links a.hideable{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:56px 0 12px}
+  .hero .eyebrow{display:block;position:relative;padding-left:calc(18px + .8em);margin-bottom:20px}
+  .hero .eyebrow::before{position:absolute;left:0;top:.8em;margin:0}
+  .name{
+    font-family:'Space Grotesk',var(--sans);font-weight:600;
+    font-size:clamp(32px,5vw,52px);line-height:1.06;letter-spacing:-.02em;margin-bottom:18px;
+  }
+  .name .ln2{color:var(--text-2)}
+  .lede{max-width:680px;font-size:clamp(15.5px,2.3vw,17.5px);line-height:1.65;color:var(--text-2)}
+  .lede b{color:var(--text);font-weight:500}
+  .lede .open{display:block;margin-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.6}
+  .lede .open .k{color:var(--gold)}
+
+  .contact{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .contact a,.contact button{
+    font-family:var(--mono);font-size:12px;color:var(--text-2);
+    border:1px solid var(--line);border-radius:4px;padding:9px 12px;
+    background:var(--panel);cursor:pointer;line-height:1.2;
+    transition:background .18s ease,border-color .18s ease;
+  }
+  .contact a:hover,.contact button:hover{background:var(--panel-2);border-color:var(--muted)}
+  .contact .go{color:var(--gold)}
+
+  /* ---------- hero grid + skills graph ---------- */
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 470px;gap:40px;align-items:start}
+  .hero-txt{min-width:0}
+  @media(max-width:980px){.hero-grid{grid-template-columns:minmax(0,1fr);gap:28px}}
+
+  .graph{
+    position:relative;border:1px dashed var(--gold-dim);background:var(--wash-1);
+    padding:22px 12px 12px;
+  }
+  .graph-tab{
+    position:absolute;top:-10px;left:18px;background:var(--ink);
+    padding:1px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--gold);
+    transition:background-color .25s ease;
+  }
+  .graph-hint{
+    position:absolute;top:-10px;right:18px;background:var(--ink);
+    padding:1px 12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+    transition:background-color .25s ease;
+  }
+  .graph svg{display:block;width:100%;height:auto;font-family:var(--mono)}
+  .graph .lk{stroke:var(--gold-dim);stroke-opacity:.55;stroke-width:1;transition:stroke-opacity .2s ease,stroke .2s ease}
+  .graph .nd{cursor:default}
+  .graph .nd circle{
+    fill:var(--panel);stroke:var(--line);stroke-width:1;
+    transition:fill .2s ease,stroke .2s ease,opacity .2s ease;
+  }
+  .graph .nd text{fill:var(--text-2);font-size:11px;text-anchor:middle;pointer-events:none;transition:opacity .2s ease,fill .2s ease}
+  .graph .hub{cursor:pointer}
+  .graph .hub circle{fill:var(--gold-wash);stroke:var(--gold);stroke-width:1.6}
+  .graph .hub .ic{fill:var(--gold);font-size:10.5px;letter-spacing:.2em}
+  .graph .hub .lb{fill:var(--text);font-weight:600;font-size:11px;letter-spacing:0}
+  .graph.focus .lk,.graph.focus .nd{opacity:.18}
+  .graph.focus .lk.on{opacity:1;stroke:var(--gold);stroke-opacity:.9;stroke-width:1.4}
+  .graph.focus .nd.on{opacity:1}
+  .graph.focus .hub.on circle{fill:var(--gold);stroke:var(--gold)}
+  .graph.focus .hub.on .ic{fill:var(--ink)}
+  .graph.focus .hub.on .lb{fill:var(--ink)}
+  .graph.focus .nd.on circle{stroke:var(--gold);fill:var(--gold-wash)}
+  .graph.focus .nd.on text{fill:var(--text)}
+  .graph-tip{
+    margin-top:10px;min-height:54px;padding:10px 12px;
+    border-top:1px solid var(--line-soft);
+    font-size:12.5px;color:var(--text-2);line-height:1.5;
+  }
+  .graph-tip .t{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+  .graph-tip .t .n{color:var(--muted);letter-spacing:.02em;text-transform:none;margin-left:.6em}
+  .graph-tip.idle{color:var(--muted);font-family:var(--mono);font-size:11.5px}
+  .js .graph .lk,.js .graph .nd{opacity:0}
+  .js .graph.in .lk,.js .graph.in .nd{opacity:1;transition:opacity .6s ease}
+  .js .graph.in.focus .lk,.js .graph.in.focus .nd{opacity:.18}
+  .js .graph.in.focus .lk.on,.js .graph.in.focus .nd.on{opacity:1}
+  @media (prefers-reduced-motion:reduce){.js .graph .lk,.js .graph .nd{opacity:1;transition:none}}
+  @media print{.graph{break-inside:avoid}.graph-tip{display:none}}
+
+  /* ---------- at a glance ---------- */
+  .glance{
+    margin-top:34px;
+    border:1px dashed var(--gold-dim);background:var(--wash-1);
+    position:relative;padding:22px 22px 18px;
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 24px;
+  }
+  .glance-tab{
+    position:absolute;top:-10px;right:22px;background:var(--ink);
+    padding:1px 12px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--gold);
+    transition:background-color .25s ease;
+  }
+  .g-k{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .g-v{font-size:13.5px;color:var(--text);line-height:1.5}
+  .g-v .m{font-family:var(--mono);font-size:12.5px;color:var(--text-2)}
+  @media(max-width:860px){.glance{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:480px){.glance{grid-template-columns:1fr;padding:22px 16px 16px}}
+
+  /* ---------- sections ---------- */
+  section.block{margin-top:56px}
+  .sh{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+    border-bottom:1px solid var(--line-soft);padding-bottom:12px;margin-bottom:22px;
+  }
+  .sh h2{
+    font-family:'Space Grotesk',var(--sans);font-weight:600;font-size:22px;letter-spacing:-.01em;
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .sh h2 .num{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--gold);font-weight:500}
+  .sh .note{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.03em}
+  .sh .note .k{color:var(--gold)}
+
+  /* ---------- skills ---------- */
+  .skills{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  .sk{
+    background:var(--panel);padding:20px 20px 18px;
+    display:flex;flex-direction:column;gap:10px;
+    transition:background .18s ease;
+  }
+  .sk:hover{background:var(--panel-2)}
+  .sk.wide{grid-column:1 / -1}
+  .sk.flash{background:var(--gold-wash);outline:1px solid var(--gold);outline-offset:-1px}
+  .sk-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .sk-num{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold)}
+  .sk-t{font-family:'Space Grotesk',var(--sans);font-weight:600;font-size:16.5px;letter-spacing:-.01em}
+  .sk-w{font-size:12.5px;color:var(--muted);line-height:1.55}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .tag{
+    font-family:var(--mono);font-size:11.5px;line-height:1.2;
+    color:var(--text-2);border:1px solid var(--line);border-radius:4px;
+    padding:6px 9px;background:var(--ink);
+    transition:background-color .25s ease;
+  }
+  .tag.core{color:var(--gold);border-color:var(--gold);font-weight:600;background:var(--gold-wash)}
+  .tag.fam{color:var(--muted);border-style:dashed}
+  .legend{
+    margin-top:12px;display:flex;gap:18px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:11px;color:var(--muted);
+  }
+  .legend .tag{padding:3px 7px;font-size:10.5px;margin-right:6px}
+  @media(max-width:760px){.skills{grid-template-columns:minmax(0,1fr)}.sk{padding:16px}}
+
+  /* ---------- experience ---------- */
+  .xp{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel)}
+  .xp-row{
+    display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px 24px;
+    padding:20px 22px;border-bottom:1px solid var(--line-soft);
+    transition:background .18s ease;
+  }
+  .xp-row:last-child{border-bottom:0}
+  .xp-row:hover{background:var(--panel-2)}
+  .xp-when{font-family:var(--mono);font-size:12px;color:var(--gold);line-height:1.7}
+  .xp-when .loc{display:block;color:var(--muted)}
+  .xp-when .st{display:block;color:var(--muted)}
+  .xp-role{font-family:'Space Grotesk',var(--sans);font-weight:600;font-size:17px;letter-spacing:-.01em}
+  .xp-role .org{color:var(--text-2);font-weight:600}
+  .xp-role .sep{color:var(--muted);font-weight:400;margin:0 .35em}
+  .xp ul{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:6px}
+  .xp li{position:relative;padding-left:16px;font-size:13.5px;color:var(--text-2);line-height:1.55}
+  .xp li::before{content:"–";position:absolute;left:0;color:var(--gold)}
+  .xp li b{color:var(--text);font-weight:500}
+  .stack{margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.7}
+  .stack .k{color:var(--gold);letter-spacing:.12em;text-transform:uppercase;font-size:10.5px;margin-right:.6em}
+  @media(max-width:680px){
+    .xp-row{grid-template-columns:minmax(0,1fr);gap:4px;padding:16px}
+    .xp-when .loc,.xp-when .st{display:inline;margin-left:.6em}
+  }
+
+  /* ---------- projects ---------- */
+  .projects{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;
+    background:var(--line);border:1px solid var(--line);
+    background-image:repeating-linear-gradient(135deg,var(--hatch) 0 1px,transparent 1px 9px);
+  }
+  .pj{
+    background:var(--panel);padding:20px;display:flex;flex-direction:column;gap:8px;
+    transition:background .18s ease;
+  }
+  .pj:hover{background:var(--panel-2)}
+  .pj-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .pj-n{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--text)}
+  .pj-n .go{color:var(--gold);font-weight:400}
+  .pj-lang{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+  .pj-t{font-size:13.5px;color:var(--text);font-weight:500}
+  .pj-d{font-size:13px;color:var(--text-2);line-height:1.55}
+  .pj-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:4px;font-family:var(--mono);font-size:11.5px}
+  .pj-links a{color:var(--gold)}
+  .pj-links a:hover{color:var(--gold-hover)}
+  @media(max-width:760px){.projects{grid-template-columns:minmax(0,1fr)}}
+
+  /* ---------- education ---------- */
+  .edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+  .edu-col h3{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:12px;
+  }
+  .ix{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel)}
+  .ix-row{
+    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;
+    padding:13px 16px;align-items:baseline;border-bottom:1px solid var(--line-soft);
+    transition:background .18s ease;
+  }
+  .ix-row:last-child{border-bottom:0}
+  .ix-row:hover{background:var(--panel-2)}
+  .ix-l{font-size:13.5px;color:var(--text)}
+  .ix-l .sub{display:block;font-size:12.5px;color:var(--muted)}
+  .ix-d{font-family:var(--mono);font-size:11.5px;color:var(--gold);text-align:right;white-space:nowrap}
+  .ix-d.dim{color:var(--muted)}
+  @media(max-width:760px){.edu{grid-template-columns:minmax(0,1fr)}}
+
+  /* ---------- footer ---------- */
+  footer{margin-top:60px;border-top:1px solid var(--line-soft);padding:24px 0 48px}
+  .foot{
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline;
+    font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.8;
+  }
+  .foot .t{color:var(--text-2);font-size:13px}
+  .foot .t .k{color:var(--gold)}
+  .foot a{color:var(--gold)}
+  .foot a:hover{color:var(--gold-hover)}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(12px);transition:opacity .55s ease,transform .55s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  /* ---------- print ---------- */
+  @media print{
+    :root{color-scheme:light;--ink:#fff;--ink-2:#fff;--panel:#fff;--panel-2:#fff;--line:#bbb;--line-soft:#ddd;--text:#111;--text-2:#333;--muted:#555;--gold:#7a5410;--gold-dim:#bba77a;--gold-wash:transparent;--wash-1:transparent;--hatch:transparent}
+    header,.contact button,.theme-sw{display:none!important}
+    body{font-size:12px}
+    .wrap{max-width:none;padding:0}
+    .hero{padding:0 0 8px}
+    .reveal{opacity:1;transform:none;transition:none}
+    section.block{margin-top:26px;break-inside:auto}
+    .sk,.pj,.xp-row,.ix-row{break-inside:avoid}
+    .skills,.projects{gap:0}
+    .sk,.pj{border:1px solid var(--line-soft);margin:-1px 0 0 -1px}
+    .tag{background:#fff}
+    a[href^="http"]::after{content:""}
+  }
+</style>
+<noscript><style>.reveal{opacity:1;transform:none}.theme-sw{display:none}.contact button{display:none}</style></noscript>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><span class="up">hp /</span>cv<span class="dot">.</span></a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="/" class="hideable">home</a>
+      <a href="#skills" class="hideable">skills</a>
+      <a href="#work" class="hideable">work</a>
+      <a href="#projects" class="hideable">projects</a>
+      <a href="#education" class="hideable">education</a>
+      <a href="https://github.com/hossainpazooki" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+      <div class="theme-sw" role="group" aria-label="Theme">
+        <button type="button" data-set="paper" aria-pressed="true">paper</button>
+        <button type="button" data-set="ink" aria-pressed="false">ink</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-txt">
+        <span class="eyebrow">CV — technical skills · New York</span>
+        <h1 class="name">Hossain Pazooki<br /><span class="ln2">The model interprets. A deterministic system executes.</span></h1>
+        <p class="lede">I build data platforms, evaluation harnesses, and reliable agentic and LLM systems for regulated
+        domains — <b>point-in-time financial data, healthcare claims, cross-border compliance</b> — where a wrong
+        answer has a real cost and "it usually works" isn't good enough.
+        <span class="open"><span class="k">open to</span> software engineering roles in data platform, AI infrastructure, and platform reliability.</span></p>
+
+        <div class="contact" aria-label="Contact">
+          <a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="go">→</span></a>
+          <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="go">↗</span></a>
+          <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="go">↗</span></a>
+          <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="go">↗</span></a>
+          <button type="button" id="print-btn">print / save as PDF <span class="go">⎙</span></button>
+        </div>
+      </div>
+
+      <div class="graph" id="graph" aria-label="Technical skills map: six hubs, each linked to its essential tools and practices">
+        <span class="graph-tab">TECHNICAL SKILLS</span>
+        <span class="graph-hint">hover for details</span>
+        <svg id="graph-svg" viewBox="0 0 540 520" role="img" aria-labelledby="graph-title">
+          <title id="graph-title">Skills map — six hubs: languages, AI and agents, ML research, backend and data, infra and DevEx, verification — each linked to its essential tools.</title>
+        </svg>
+        <div class="graph-tip idle" id="graph-tip" aria-live="polite">hover a hub for details · click to jump to the list</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AT A GLANCE -->
+  <section class="wrap">
+    <div class="glance" aria-label="At a glance">
+      <span class="glance-tab">AT A GLANCE</span>
+      <div>
+        <div class="g-k">Now</div>
+        <div class="g-v">AI Research Fellow, Algoverse<br /><span class="m">cross-model KV-cache transfer · agent evaluation under censored feedback</span></div>
+      </div>
+      <div>
+        <div class="g-k">Previously</div>
+        <div class="g-v">AI/ML Tech Lead, Orawell<br /><span class="m">HIPAA-aligned healthcare RCM platform · team of 4</span></div>
+      </div>
+      <div>
+        <div class="g-k">Production languages</div>
+        <div class="g-v"><span class="m">Python · SQL · TypeScript · Go · Rust · Scala · Java</span></div>
+      </div>
+      <div>
+        <div class="g-k">Certified</div>
+        <div class="g-v"><span class="m">GCP Professional ML Engineer · CKAD · Anthropic Claude Code · Stanford AI Security · AWS ML Engineer Associate</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="wrap block reveal" id="skills">
+    <div class="sh">
+      <h2><span class="num">01</span>Technical skills</h2>
+      <span class="note">grouped by where the work lands · <span class="k">core</span> = daily, load-bearing · dashed = familiar</span>
+    </div>
+
+    <div class="skills">
+
+      <div class="skNone" id="sk-lang">
+        <div class="sk-head"><span class="sk-t">Languages</span><span class="sk-num">01·A</span></div>
+        <p class="sk-w">Seven years writing, reviewing and debugging production code. Python and SQL are the daily instruments; the rest ship in the open-source work below.</p>
+        <div class="tags">
+          <span class="tag core">Python</span>
+          <span class="tag core">SQL</span>
+          <span class="tag">TypeScript / JavaScript</span>
+          <span class="tag">Go</span>
+          <span class="tag">Rust</span>
+          <span class="tag">Scala</span>
+          <span class="tag">Java</span>
+          <span class="tag">Bash</span>
+        </div>
+      </div>
+
+      <div class="skNone" id="sk-ai">
+        <div class="sk-head"><span class="sk-t">Applied AI &amp; agentic systems</span><span class="sk-num">01·B</span></div>
+        <p class="sk-w">Agents that propose; deterministic gates that dispose. Evaluation is the product, not the afterthought.</p>
+        <div class="tags">
+          <span class="tag core">Multi-agent orchestration</span>
+          <span class="tag core">Evaluation harnesses</span>
+          <span class="tag core">Confidence calibration</span>
+          <span class="tag core">HITL escalation</span>
+          <span class="tag">PydanticAI</span>
+          <span class="tag">LLM APIs (Anthropic, OpenAI)</span>
+          <span class="tag">Tool invocation</span>
+          <span class="tag">MCP servers</span>
+          <span class="tag">Agent skills &amp; hooks</span>
+          <span class="tag">Hybrid RAG (BM25 + vector)</span>
+          <span class="tag">LLM-as-judge</span>
+          <span class="tag">Entailment / hallucination (NLI) gates</span>
+          <span class="tag">Trajectory evaluation</span>
+          <span class="tag">Fan-out workflows</span>
+        </div>
+      </div>
+
+      <div class="skNone" id="sk-ml">
+        <div class="sk-head"><span class="sk-t">ML research &amp; serving</span><span class="sk-num">01·C</span></div>
+        <p class="sk-w">Instrumentation under the model, and the serving hooks that turn a fitted model into a production signal with drift you can see.</p>
+        <div class="tags">
+          <span class="tag core">PyTorch internals</span>
+          <span class="tag">HF attention hooks</span>
+          <span class="tag">KV-cache instrumentation</span>
+          <span class="tag">GPU memory profiling</span>
+          <span class="tag">Experiment &amp; intervention design</span>
+          <span class="tag">Inference under small samples</span>
+          <span class="tag">Model-serving hooks</span>
+          <span class="tag">Drift monitoring</span>
+          <span class="tag">Experiment tracking</span>
+          <span class="tag">Design of experiments</span>
+        </div>
+      </div>
+
+      <div class="skNone" id="sk-be">
+        <div class="sk-head"><span class="sk-t">Backend &amp; distributed systems</span><span class="sk-num">01·D</span></div>
+        <p class="sk-w">Event-driven services with durable state, idempotent consumers, and contracts generated from a single source of truth.</p>
+        <div class="tags">
+          <span class="tag core">FastAPI</span>
+          <span class="tag core">Pydantic</span>
+          <span class="tag core">async Python</span>
+          <span class="tag core">pytest · strict mypy</span>
+          <span class="tag">Event-driven workers</span>
+          <span class="tag">Durable job state machines</span>
+          <span class="tag">Queues &amp; multi-stage processing</span>
+          <span class="tag">Idempotency · at-most-once delivery</span>
+          <span class="tag">Microservices</span>
+          <span class="tag">OpenAPI 3.1 contract-first</span>
+          <span class="tag">WebSocket / SSE</span>
+          <span class="tag">Java / Spring Boot</span>
+        </div>
+      </div>
+
+      <div class="skNone" id="sk-data">
+        <div class="sk-head"><span class="sk-t">Data &amp; storage</span><span class="sk-num">01·E</span></div>
+        <p class="sk-w">Point-in-time correctness and fail-closed data-quality gates: as-of day D returns only what was known by D.</p>
+        <div class="tags">
+          <span class="tag core">PostgreSQL</span>
+          <span class="tag core">Point-in-time correctness</span>
+          <span class="tag">Schema design · migrations · tuning</span>
+          <span class="tag">Redis</span>
+          <span class="tag">Spark (Scala)</span>
+          <span class="tag">Delta Lake</span>
+          <span class="tag">Multi-source ETL / ELT</span>
+          <span class="tag">Fail-closed DQ gates</span>
+          <span class="tag fam">Kafka</span>
+          <span class="tag fam">Temporal</span>
+          <span class="tag fam">Dagster</span>
+          <span class="tag fam">Snowflake</span>
+          <span class="tag fam">PySpark</span>
+          <span class="tag fam">dbt</span>
+        </div>
+      </div>
+
+      <div class="skNone" id="sk-fe">
+        <div class="sk-head"><span class="sk-t">Full-stack &amp; contracts</span><span class="sk-num">01·F</span></div>
+        <p class="sk-w">The product surface, typed end to end from the API spec.</p>
+        <div class="tags">
+          <span class="tag core">React 19</span>
+          <span class="tag">Next.js 15</span>
+          <span class="tag">TypeScript / Node.js</span>
+          <span class="tag">Generated API types</span>
+          <span class="tag">oasdiff breaking-change gates</span>
+        </div>
+      </div>
+
+      <div class="skNone" id="sk-infra">
+        <div class="sk-head"><span class="sk-t">Infra, DevEx &amp; release</span><span class="sk-num">01·G</span></div>
+        <p class="sk-w">The platform, not the reviewer, carries the validation habits: required-check merge gates that have held a PR at BLOCKED under branch protection.</p>
+        <div class="tags">
+          <span class="tag core">Kubernetes (CKAD · EKS · Kustomize)</span>
+          <span class="tag core">GitHub Actions CI/CD</span>
+          <span class="tag core">Terraform</span>
+          <span class="tag core">Docker</span>
+          <span class="tag">AWS (S3, RDS, IAM/IRSA, Secrets Manager)</span>
+          <span class="tag">Required-check merge gates · branch protection</span>
+          <span class="tag">Policy as code (OPA/Rego, Conftest)</span>
+          <span class="tag">Infracost cost-delta gating</span>
+          <span class="tag">Release engineering (PyPI, marketplace)</span>
+          <span class="tag">Hook automation · regression gates</span>
+          <span class="tag fam">Helm</span>
+          <span class="tag fam">ArgoCD</span>
+          <span class="tag fam">Vault</span>
+          <span class="tag fam">CircleCI</span>
+          <span class="tag fam">Jenkins</span>
+        </div>
+      </div>
+
+      <div class="skNone" id="sk-sec">
+        <div class="sk-head"><span class="sk-t">Security &amp; observability</span><span class="sk-num">01·H</span></div>
+        <p class="sk-w">Least privilege, signed artifacts, and an audit record for every decision that can move value.</p>
+        <div class="tags">
+          <span class="tag core">Audit logging</span>
+          <span class="tag">Least-privilege IAM</span>
+          <span class="tag">Secrets handling</span>
+          <span class="tag">Signed content-addressed artifacts (BLAKE3 / ed25519)</span>
+          <span class="tag">Supply-chain &amp; provenance gating</span>
+          <span class="tag">PHI-safe logging (HIPAA)</span>
+          <span class="tag">OpenTelemetry</span>
+          <span class="tag">Prometheus</span>
+          <span class="tag">Grafana</span>
+        </div>
+      </div>
+
+      <div class="sk wide" id="sk-rev">
+        <div class="sk-head"><span class="sk-t">Code review, testing &amp; evaluation practice</span><span class="sk-num">01·I</span></div>
+        <p class="sk-w">A check that passes either way proves nothing. Verdicts are written so a second reviewer can reproduce them.</p>
+        <div class="tags">
+          <span class="tag core">Production PR review &amp; review standards</span>
+          <span class="tag core">Planted-defect negative controls</span>
+          <span class="tag core">Reproducible verdicts</span>
+          <span class="tag">Unit · integration · differential tests</span>
+          <span class="tag">Mutation-proven deny clauses</span>
+          <span class="tag">Debugging distributed services from traces</span>
+          <span class="tag">Type-driven design</span>
+          <span class="tag">Exemplar-tied rubric design</span>
+          <span class="tag">LLM-as-judge calibration vs. expert annotation</span>
+          <span class="tag">Grading correctness · efficiency · clarity · engineering practice</span>
+          <span class="tag">Structured written feedback</span>
+        </div>
+      </div>
+
+      <div class="sk wide" id="sk-quant">
+        <div class="sk-head"><span class="sk-t">Quantitative &amp; econometrics</span><span class="sk-num">01·J</span></div>
+        <p class="sk-w">Where the discipline started: the quantitative seat where a model that looks right and isn't moves capital.</p>
+        <div class="tags">
+          <span class="tag">Causal inference at scale</span>
+          <span class="tag">Propensity / IPW</span>
+          <span class="tag">IV / 2SLS</span>
+          <span class="tag">GMM</span>
+          <span class="tag">Heckman selection</span>
+          <span class="tag">Cross-country panel data</span>
+          <span class="tag">Capital allocation models</span>
+          <span class="tag">Marketing analytics &amp; reporting</span>
+          <span class="tag">Calibration under selective feedback</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="legend" aria-label="Legend">
+      <span><span class="tag core">core</span>daily, load-bearing</span>
+      <span><span class="tag">production</span>shipped with it</span>
+      <span><span class="tag fam">familiar</span>used, not owned</span>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="wrap block reveal" id="work">
+    <div class="sh">
+      <h2><span class="num">02</span>Experience</h2>
+      <span class="note">research · industry · founding · quant — most recent first</span>
+    </div>
+
+    <div class="xp">
+
+      <div class="xp-row">
+        <div class="xp-when">Jul 2026 – present<span class="loc">New York</span><span class="st">◐ paper in preparation</span></div>
+        <div>
+          <div class="xp-role">AI Research Fellow<span class="sep">·</span><span class="org">Algoverse</span></div>
+          <ul>
+            <li><b>Cross-model KV-cache transfer.</b> Model swaps (cascading, routing, mid-conversation handoff) discard the cache and repay full prefill. One model's cache is mapped into another's with a closed-form linear fit from a small calibration set — no gradients.</li>
+            <li>Own cache and model instrumentation (PyTorch internals, HF attention hooks, GPU memory) and the mechanism research: experiment and intervention design, inference under small samples.</li>
+            <li>Open question: at an agent handoff, can a short replay of the latest tool observation predict whether a translated cache changes the target's next action, without full prefill? Pair-level pre-fit screen plus a runtime commutation gate, fail-closed on disagreement.</li>
+            <li>Companion track: evaluating LLM agents where feedback is selective or censored — planted ground truth, negative controls, fail-closed gates. Replication and harness in progress.</li>
+          </ul>
+          <div class="stack"><span class="k">stack</span>PyTorch · Hugging Face · CUDA/GPU profiling · Python</div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <div class="xp-when">Nov 2024 – Jan 2026<span class="loc">New York</span></div>
+        <div>
+          <div class="xp-role">AI/ML Engineer → Tech Lead<span class="sep">·</span><span class="org">Orawell Group</span></div>
+          <ul>
+            <li>Led a team of 4 building agentic compliance pipelines for healthcare revenue-cycle management: <b>PydanticAI agents orchestrating claim review, denial prediction, and appeal generation</b> as staged workers with human-in-the-loop checkpoints.</li>
+            <li>Led incident response on a production calibration drift: root-caused systematic LLM over-confidence and rebuilt the decision layer as a <b>5-tier confidence-calibration and verification gate</b> — every output mapped to ground truth, deterministic and LLM-as-judge evaluators, HITL escalation on uncertain calls, regression gates in CI. Contributed to a 34% reduction in claim denials.</li>
+            <li>Built a hybrid retrieval pipeline (BM25 + vector search) over regulatory and payer policy documents, with a structured evaluation framework tracking precision, recall, and hallucination rates.</li>
+            <li>Owned the platform a HIPAA-aligned org ran on: FastAPI microservices (50+ endpoints) on Kubernetes (EKS), PostgreSQL schema design and tuning, Redis, multi-source ETL of claims data, Terraform-managed AWS; CI/CD gated by 450+ tests with auto-rollback and strict typing. Set the team's code-review practice.</li>
+            <li>Sat with billing specialists and compliance staff and turned their judgment into written evaluation guidelines and executable specs the team graded against.</li>
+          </ul>
+          <div class="stack"><span class="k">stack</span>Python · FastAPI · PydanticAI · PostgreSQL · Redis · Kubernetes/EKS · Terraform · GitHub Actions · mypy --strict · OpenTelemetry</div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <div class="xp-when">Mar 2022 – Nov 2024<span class="loc">New York</span></div>
+        <div>
+          <div class="xp-role">Co-Founder / Founding Engineer<span class="sep">·</span><span class="org">Engager Inc.</span></div>
+          <ul>
+            <li>Sole engineer taking a full product 0→1 under ambiguity: <b>architecture, CI/CD, and development practices from the first commit</b>, owning every call from design through rollout.</li>
+            <li>Designed the data model and core backend (Python, PostgreSQL) and shipped the React/TypeScript frontend; containerized AWS deployment, observability, releases end to end.</li>
+            <li>Owned the ingestion and analytics pipelines feeding product and growth decisions.</li>
+          </ul>
+          <div class="stack"><span class="k">stack</span>Python · PostgreSQL · React · TypeScript · AWS · Docker · CI/CD</div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <div class="xp-when">Sep 2020 – Feb 2022<span class="loc">Los Angeles</span></div>
+        <div>
+          <div class="xp-role">Founding ML Engineer<span class="sep">·</span><span class="org">3DEO</span></div>
+          <ul>
+            <li>Built the ML platform for a metal additive-manufacturing R&amp;D org, embedded with the scientists who used it daily: <b>a unified data layer linking process parameters, characterization results, and production outcomes by part ID</b> across sintering logs, mechanical-test data, and QA.</li>
+            <li>Designed experiment tracking for design-of-experiments work, keeping iterations reproducible and comparable across weeks.</li>
+            <li>Shipped model-serving hooks that scored new production runs automatically, plus monitoring that compared predictions against characterization ground truth to surface drift.</li>
+            <li>Translated materials-team objectives — yield, faster material qualification — into tractable ML KPIs, co-designed with non-technical domain experts.</li>
+          </ul>
+          <div class="stack"><span class="k">stack</span>Python · scikit-learn / PyTorch · SQL · experiment tracking · model serving · drift monitoring</div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <div class="xp-when">Jun 2019 – May 2020<span class="loc">Los Angeles</span></div>
+        <div>
+          <div class="xp-role">Data Research Engineer<span class="sep">·</span><span class="org">Penske Media Corporation</span></div>
+          <ul>
+            <li>Built marketing analytics models and reporting infrastructure for the revenue team, supporting data-driven ad sales and audience monetization across PMC's media portfolio.</li>
+            <li>Led research on greenfield projects exploring new revenue streams in creative industries, reporting directly to the Director of Revenue.</li>
+          </ul>
+          <div class="stack"><span class="k">stack</span>Python · SQL · analytics modeling · reporting infrastructure</div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <div class="xp-when">Aug 2017 – Jul 2019</div>
+        <div>
+          <div class="xp-role">Econometrics Research<span class="sep">·</span><span class="org">Institute for New Economic Thinking</span></div>
+          <ul>
+            <li>Econometrics research on sovereign wealth fund investment patterns, capital allocation models, and resource-based vs. pension fund return dynamics.</li>
+            <li><b>Causal inference at scale:</b> propensity/IPW, IV/2SLS, GMM, Heckman selection on cross-country panel data.</li>
+          </ul>
+          <div class="stack"><span class="k">stack</span>panel econometrics · causal inference · Python / R · Stata</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="wrap block reveal" id="projects">
+    <div class="sh">
+      <h2><span class="num">03</span>Open-source projects</h2>
+      <span class="note">the same discipline, shipped in the open · <span class="k">statuses restated from each repo</span></span>
+    </div>
+
+    <div class="projects">
+
+      <div class="pj">
+        <div class="pj-head"><span class="pj-n">rigor <span class="go">→</span></span><span class="pj-lang">Claude Code plugin · Python</span></div>
+        <div class="pj-t">Verification discipline for AI-assisted engineering</div>
+        <p class="pj-d">Plugin infrastructure other engineers install — 9 commands, 20 skills, 5 agents, 3 hooks, 12 check gates, marketplace install. A verification spine refutes each load-bearing claim (re-run the gate, dispatch a skeptic) before it is trusted; no claim credited until a negative control proves the check can fail. A git-guard hook refuses silent history rewrites, and a public ledger records its own misfires.</p>
+        <div class="pj-links"><a href="/rigor/">/rigor →</a><a href="https://github.com/hossainpazooki/rigor" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+      <div class="pj">
+        <div class="pj-head"><span class="pj-n">cldd <span class="go">→</span></span><span class="pj-lang">Python · PyPI</span></div>
+        <div class="pj-t">Evaluation harness — calibration under selective feedback</div>
+        <p class="pj-d">Measures model quality where the labels you need are the ones you can't observe: plant ground truth, hide it behind an approval policy, escalate severity until calibration correction fails. The deliverable is an operating frontier — 25 seeds, a distribution, not a point. A 13-claim gate recomputes every published number from hash-pinned CSVs and blocks publication when a pre-registered hypothesis fails — four did, and the claim was withdrawn. Written up in Towards AI.</p>
+        <div class="pj-links"><a href="/cldd/">/cldd →</a><a href="https://github.com/hossainpazooki/closed-loop-default-detection" target="_blank" rel="noopener">GitHub ↗</a><a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">essay ↗</a></div>
+      </div>
+
+      <div class="pj">
+        <div class="pj-head"><span class="pj-n">intent plane <span class="go">→</span></span><span class="pj-lang">Go · Rust · TypeScript · Python</span></div>
+        <div class="pj-t">Fail-closed authorization gate for agent tool calls</div>
+        <p class="pj-d">The model never holds authority to act: an agent declares intent; a deterministic Go gate authorizes it against a human-signed, content-addressed policy (BLAKE3/ed25519, compiled in Rust) or refuses — unevaluable, duplicate, unsigned all deny. Every decision lands as one durable record carrying its trajectory hash, recomputable by a stdlib-only verifier that runs none of the gate's code. LangChain and MCP adapters ship with it; an NLI gate retracts unentailed rationale.</p>
+        <div class="pj-links"><a href="/intent/">/intent →</a><a href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane ↗</a><a href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">treasury gate ↗</a><a href="https://github.com/hossainpazooki/regulatory-rule-engine" target="_blank" rel="noopener">atlas ↗</a></div>
+      </div>
+
+      <div class="pj">
+        <div class="pj-head"><span class="pj-n">network-as-code <span class="go">↗</span></span><span class="pj-lang">OPA/Rego · Terraform · Kubernetes</span></div>
+        <div class="pj-t">Policy-as-code merge gate</div>
+        <p class="pj-d">Security, observability and FinOps rules in OPA/Rego over Terraform and Kubernetes — 74 unit tests, 19 negative controls refused in CI, all 16 deny clauses proven load-bearing by mutation. Demonstrated blocking a merge: six required CI checks, no admin bypass — a planted violation turned exactly the job that reads it red (PR BLOCKED). Infracost cost-delta gating on pinned estimates, failing closed on a broken $0.00 parse.</p>
+        <div class="pj-links"><a href="https://github.com/hossainpazooki/network-as-code" target="_blank" rel="noopener">GitHub ↗</a></div>
+      </div>
+
+      <div class="pj">
+        <div class="pj-head"><span class="pj-n">baseline — vantage × parallax <span class="go">→</span></span><span class="pj-lang">Scala · Spark · Delta Lake</span></div>
+        <div class="pj-t">Point-in-time lakehouse × revision measurement</div>
+        <p class="pj-d">As-of date D returns only what was filed and accepted by D — no lookahead across restatements. 181M bronze rows to 86.6M gold facts across 16,667 filers; publish gate proven able to fail on a planted twin (429,949 rows, exact), with an independent consumer gate red on that twin in CI.</p>
+        <div class="pj-links"><a href="/baseline/">/baseline →</a><a href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">vantage ↗</a><a href="https://github.com/hossainpazooki/pit-revision-examiner" target="_blank" rel="noopener">parallax ↗</a></div>
+      </div>
+
+      <div class="pj">
+        <div class="pj-head"><span class="pj-n">writing <span class="go">↗</span></span><span class="pj-lang">Towards AI · Jul 2026</span></div>
+        <div class="pj-t">When you can't measure what matters</div>
+        <p class="pj-d">A closed-loop harness for probability-of-default estimation — the essay companion to cldd: why censored feedback breaks calibration, and how to plant the ground truth you cannot observe.</p>
+        <div class="pj-links"><a href="/blog/when-you-cant-measure-what-matters/">/blog →</a><a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">Medium ↗</a></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="wrap block reveal" id="education">
+    <div class="sh">
+      <h2><span class="num">04</span>Education &amp; certifications</h2>
+      <span class="note">issued dates where the record carries them</span>
+    </div>
+
+    <div class="edu">
+      <div class="edu-col">
+        <h3>Education</h3>
+        <div class="ix">
+          <div class="ix-row">
+            <span class="ix-l">Algoverse AI Research Program<span class="sub">AI Research Fellow — cross-model KV-cache transfer; agent evaluation under selective feedback</span></span>
+            <span class="ix-d">2026 –</span>
+          </div>
+          <div class="ix-row">
+            <span class="ix-l">University of Southern California<span class="sub">B.S. Electrical Engineering</span></span>
+            <span class="ix-d">2013 – 2019</span>
+          </div>
+          <div class="ix-row">
+            <span class="ix-l">University of Southern California<span class="sub">B.A. International Relations &amp; Global Economy</span></span>
+            <span class="ix-d">2013 – 2019</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-col">
+        <h3>Certifications</h3>
+        <div class="ix">
+          <div class="ix-row">
+            <span class="ix-l">Google Cloud Professional Machine Learning Engineer<span class="sub">Google</span></span>
+            <span class="ix-d">Mar 2026</span>
+          </div>
+          <div class="ix-row">
+            <span class="ix-l">Claude Code in Action<span class="sub">Anthropic</span></span>
+            <span class="ix-d">Feb 2026</span>
+          </div>
+          <div class="ix-row">
+            <span class="ix-l">Certified Kubernetes Application Developer (CKAD)<span class="sub">The Linux Foundation</span></span>
+            <span class="ix-d dim">—</span>
+          </div>
+          <div class="ix-row">
+            <span class="ix-l">AWS Certified Machine Learning Engineer — Associate<span class="sub">Amazon Web Services</span></span>
+            <span class="ix-d dim">—</span>
+          </div>
+          <div class="ix-row">
+            <span class="ix-l">Advanced Cybersecurity Program — AI Security<span class="sub">Stanford University School of Engineering</span></span>
+            <span class="ix-d dim">—</span>
+          </div>
+          <div class="ix-row">
+            <span class="ix-l">Applied AI &amp; Data Science — Agentic<span class="sub">MIT Professional Education</span></span>
+            <span class="ix-d dim">◐ in progress</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span class="t"><span class="k">interpret → execute → attest.</span> AI you can prove, not just trust.</span>
+    <span>© 2026 Hossain Pazooki · New York &nbsp;·&nbsp; <a href="/">hossainpazooki.github.io</a> &nbsp;·&nbsp; <a href="mailto:hossain@pazooki.com">hossain@pazooki.com</a></span>
+  </div>
+</footer>
+
+<script>
+// Skills map: a small force layout — hubs repel, leaves spring to their hub, everything stays in the box.
+(function(){
+  var svgNS='http://www.w3.org/2000/svg';
+  var svg=document.getElementById('graph-svg'), box=document.getElementById('graph'), tip=document.getElementById('graph-tip');
+  if(!svg||!box) return;
+  var W=540,H=520;
+  var HUBS=[
+    {id:'sk-lang', n:'01', name:'Languages',     note:'Python and SQL daily; TypeScript, Go and Rust ship in the open-source work.',
+      leaves:['Python','SQL','TypeScript','Go','Rust','React']},
+    {id:'sk-ai',   n:'02', name:'AI / Agents',   note:'Agents propose; deterministic gates dispose. Evaluation is the product.',
+      leaves:['PydanticAI','MCP','Hybrid RAG','LLM-as-judge','HITL']},
+    {id:'sk-ml',   n:'03', name:'ML Research',   note:'KV-cache instrumentation under the model; serving hooks and drift you can see.',
+      leaves:['PyTorch','KV-cache','HF hooks','Drift']},
+    {id:'sk-be',   n:'04', name:'Backend / Data',note:'Event-driven services and point-in-time data with fail-closed quality gates.',
+      leaves:['FastAPI','PostgreSQL','Redis','Spark / Delta','Point-in-time']},
+    {id:'sk-infra',n:'05', name:'Infra / DevEx', note:'The platform carries the validation habits: merge gates that have held a PR at BLOCKED.',
+      leaves:['Kubernetes','Terraform','AWS','GitHub Actions','OPA / Rego']},
+    {id:'sk-rev',  n:'06', name:'Verification',  note:'A check that passes either way proves nothing. Negative controls, calibration, audit trails.',
+      leaves:['Negative controls','Calibration','Mutation tests','Audit logs','OpenTelemetry']}
+  ];
+  var HR=40, LR=23, REST=96;
+  var nodes=[], links=[];
+  HUBS.forEach(function(h,i){
+    var a=-Math.PI/2+i*2*Math.PI/HUBS.length, R=Math.min(W,H)*0.24;
+    var hub={hub:true,h:h,r:HR,x:W/2+Math.cos(a)*R,y:H/2+Math.sin(a)*R,vx:0,vy:0};
+    nodes.push(hub);
+    h.leaves.forEach(function(l,j){
+      var b=a+(j-(h.leaves.length-1)/2)*0.5;
+      var n={hub:false,h:h,label:l.replace('*',''),fam:/\*$/.test(l),r:LR,tw:l.replace('*','').length*3.5+4,
+             x:hub.x+Math.cos(b)*REST,y:hub.y+Math.sin(b)*REST,vx:0,vy:0,p:hub};
+      nodes.push(n); links.push({s:hub,t:n});
+    });
+  });
+  function tick(alpha){
+    var i,j,a,b,dx,dy,d2,d,f;
+    for(i=0;i<nodes.length;i++){a=nodes[i];
+      for(j=i+1;j<nodes.length;j++){b=nodes[j];
+        dx=b.x-a.x;dy=b.y-a.y;d2=dx*dx+dy*dy;if(d2<1){dx=(Math.random()-.5);dy=(Math.random()-.5);d2=1}
+        var min=a.r+b.r+((a.hub&&b.hub)?50:(a.hub||b.hub)?18:20);
+        var k=(a.hub&&b.hub)?6500:(a.hub||b.hub)?2400:2000;
+        d=Math.sqrt(d2); f=k/d2*alpha; if(d<min) f+= (min-d)*0.25*alpha;
+        dx/=d;dy/=d; a.vx-=dx*f;a.vy-=dy*f;b.vx+=dx*f;b.vy+=dy*f;
+      }
+    }
+    links.forEach(function(l){
+      dx=l.t.x-l.s.x;dy=l.t.y-l.s.y;d=Math.sqrt(dx*dx+dy*dy)||1;f=(d-REST)*0.09*alpha;
+      dx/=d;dy/=d;l.t.vx-=dx*f;l.t.vy-=dy*f;l.s.vx+=dx*f*0.35;l.s.vy+=dy*f*0.35;
+    });
+    nodes.forEach(function(n){
+      if(n.hub){n.vx+=(W/2-n.x)*0.02*alpha;n.vy+=(H/2-n.y)*0.02*alpha}
+      n.vx*=0.78;n.vy*=0.78;n.x+=n.vx;n.y+=n.vy;
+      var pad=n.r+6, padx=Math.max(pad,(n.tw||0)+4);
+      if(n.x<padx){n.x=padx;n.vx=0} if(n.x>W-padx){n.x=W-padx;n.vx=0}
+      if(n.y<pad){n.y=pad;n.vy=0} if(n.y>H-pad){n.y=H-pad;n.vy=0}
+    });
+  }
+  // build DOM
+  var gl=document.createElementNS(svgNS,'g'), gn=document.createElementNS(svgNS,'g');
+  svg.appendChild(gl); svg.appendChild(gn);
+  links.forEach(function(l){
+    var e=document.createElementNS(svgNS,'line'); e.setAttribute('class','lk');
+    l.el=e; gl.appendChild(e);
+  });
+  nodes.forEach(function(n){
+    var g=document.createElementNS(svgNS,'g'); g.setAttribute('class','nd'+(n.hub?' hub':'')+(n.fam?' fam':''));
+    var c=document.createElementNS(svgNS,'circle'); c.setAttribute('r',n.r); g.appendChild(c);
+    if(n.hub){
+      var ic=document.createElementNS(svgNS,'text'); ic.setAttribute('class','ic'); ic.setAttribute('y','-6'); ic.setAttribute('text-anchor','middle'); ic.textContent=n.h.n; g.appendChild(ic);
+      var lb=document.createElementNS(svgNS,'text'); lb.setAttribute('class','lb'); lb.setAttribute('y','11'); lb.setAttribute('text-anchor','middle'); lb.textContent=n.h.name; g.appendChild(lb);
+      g.setAttribute('tabindex','0'); g.setAttribute('role','link'); g.setAttribute('aria-label',n.h.name+' — jump to the list');
+    }else{
+      var t=document.createElementNS(svgNS,'text'); t.setAttribute('y','4'); t.textContent=n.label; g.appendChild(t);
+    }
+    n.el=g; gn.appendChild(g);
+  });
+  function draw(){
+    links.forEach(function(l){l.el.setAttribute('x1',l.s.x);l.el.setAttribute('y1',l.s.y);l.el.setAttribute('x2',l.t.x);l.el.setAttribute('y2',l.t.y)});
+    nodes.forEach(function(n){n.el.setAttribute('transform','translate('+n.x.toFixed(1)+','+n.y.toFixed(1)+')')});
+  }
+  // settle: most of it before first paint, the tail on screen
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var i, alpha=1;
+  for(i=0;i<220;i++){tick(alpha);alpha=Math.max(0.35,alpha*0.992)}
+  draw(); box.classList.add('in');
+  if(!reduce){
+    var left=140;
+    (function step(){ if(left--<=0) return; tick(alpha); alpha*=0.985; draw(); requestAnimationFrame(step); })();
+  }else{ for(i=0;i<140;i++){tick(alpha);alpha*=0.985} draw(); }
+  // hover / focus / click
+  var idle=tip.textContent;
+  function focus(h){
+    box.classList.add('focus');
+    nodes.forEach(function(n){n.el.classList.toggle('on',n.h===h)});
+    links.forEach(function(l){l.el.classList.toggle('on',l.s.h===h)});
+    tip.classList.remove('idle');
+    tip.innerHTML='<div class="t">'+h.n+' · '+h.name+'<span class="n">click to jump to the list</span></div>'+h.note;
+  }
+  function blur(){ box.classList.remove('focus'); tip.classList.add('idle'); tip.textContent=idle; }
+  nodes.filter(function(n){return n.hub}).forEach(function(n){
+    n.el.addEventListener('mouseenter',function(){focus(n.h)});
+    n.el.addEventListener('mouseleave',blur);
+    n.el.addEventListener('focus',function(){focus(n.h)});
+    n.el.addEventListener('blur',blur);
+    function go(){ var t=document.getElementById(n.h.id); if(!t) return; var sec=t.closest('.reveal'); if(sec) sec.classList.add('in'); t.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'}); t.classList.add('flash'); setTimeout(function(){t.classList.remove('flash')},1600); }
+    n.el.addEventListener('click',go);
+    n.el.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();go()} });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.reveal');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {rootMargin:'0px 0px -6% 0px', threshold:0.05});
+  items.forEach(function(el){ io.observe(el); });
+  // If a section is targeted by the URL hash, reveal it immediately.
+  if (location.hash) {
+    var t = document.querySelector(location.hash);
+    if (t && t.classList.contains('reveal')) t.classList.add('in');
+  }
+})();
+
+(function(){
+  var b = document.getElementById('print-btn');
+  if (b) b.addEventListener('click', function(){ window.print(); });
+})();
+
+(function(){
+  var META = { paper:'#F6F4EE', ink:'#0A1424' };
+  var meta = document.getElementById('metatheme');
+  var btns = document.querySelectorAll('.theme-sw button');
+  function apply(t){
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('hp-theme', t); } catch(e){}
+    if (meta) meta.setAttribute('content', META[t] || META.paper);
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
+  apply(document.documentElement.dataset.theme === 'ink' ? 'ink' : 'paper');
+})();
+</script>
+</body>
+</html>
