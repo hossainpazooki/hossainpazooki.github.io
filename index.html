@@ -343,16 +343,17 @@
     .xsec{padding:22px 16px 16px}
   }
 
-  /* ---------- creed ---------- */
-  .creed{
+  /* ---------- footer ---------- */
+  .foot{
     margin-top:56px;border-top:1px solid var(--line-soft);
     padding:22px 0 46px;
-    display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px 24px;flex-wrap:wrap;
   }
-  .creed .t{font-family:var(--mono);font-size:13px;line-height:1.8;color:var(--text-2)}
-  .creed .t .k{color:var(--gold)}
-  .creed .t .q{color:var(--muted)}
-  .creed .copy{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .social{display:flex;gap:22px;flex-wrap:wrap}
+  .social a{font-family:var(--mono);font-size:13px;color:var(--text-2);transition:color .18s ease}
+  .social a:hover{color:var(--text)}
+  .social a .go{color:var(--gold)}
+  .foot .copy{font-family:var(--mono);font-size:12px;color:var(--muted)}
 
   /* ---------- settle ---------- */
   .js .settle{opacity:0;transform:translateY(10px)}
@@ -401,8 +402,8 @@
         <h1 class="headline">Building auditable agentic systems <span class="hl">and the cost-efficient serving infrastructure they run on.</span></h1>
         <p class="lede">Everything I build sits somewhere in this cut: <b>a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence.</b></p>
         <div class="cta-row">
-          <a class="hero-cta" href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener"><span class="lamp" aria-hidden="true"></span>Open to work — staff / founding engineer roles <span class="go">↗</span></a>
-          <a class="career" href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">previously algoverse · orawell · engager · 3deo · pmc · inet <span class="go">↗</span></a>
+          <a class="hero-cta" href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener"><span class="lamp" aria-hidden="true"></span>Available from Q4 2026 <span class="go">↗</span></a>
+          <a class="career" href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">previously orawell · engager · 3deo · pmc · inet <span class="go">↗</span></a>
         </div>
       </div>
 
@@ -411,9 +412,9 @@
           <span class="pf-n t">dated, replayable verdicts</span><span class="pf-src">baseline →</span>
           <span class="pf-l">the ledger every restated number is measured against</span>
         </a>
-        <a href="/blog/when-you-cant-measure-what-matters/">
-          <span class="pf-n">1<span class="u"> essay</span></span><span class="pf-src">blog →</span>
-          <span class="pf-l">when you can't measure what matters · towards ai, jul 2026</span>
+        <a href="/blog/">
+          <span class="pf-n t">essays argued in public</span><span class="pf-src">blog →</span>
+          <span class="pf-l">every figure drawn out, every number traceable to committed evidence</span>
         </a>
         <a href="/rigor/">
           <span class="pf-n">20<span class="u"> skills</span> · 11<span class="u"> gates</span></span><span class="pf-src">rigor →</span>
@@ -421,7 +422,7 @@
         </a>
         <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">
           <span class="pf-n t"><span class="lamp-t">◐</span> in progress</span><span class="pf-src">research ↗</span>
-          <span class="pf-l">cross-model KV-cache transfer · paper in preparation</span>
+          <span class="pf-l">cross-model KV-cache transfer with Algoverse AI Research · paper in preparation</span>
         </a>
       </aside>
     </div>
@@ -509,12 +510,17 @@
     </div>
   </section>
 
-  <!-- CREED -->
-  <footer class="wrap creed">
-    <div class="t">
-      <span class="q">interpret → execute → attest. AI you can prove, not just trust.</span>
+  <!-- FOOTER -->
+  <footer class="wrap">
+    <div class="foot">
+      <nav class="social" aria-label="Elsewhere">
+        <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="go">↗</span></a>
+        <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="go">↗</span></a>
+        <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">Medium <span class="go">↗</span></a>
+        <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="go">↗</span></a>
+      </nav>
+      <div class="copy">© 2026 Hossain Pazooki · New York</div>
     </div>
-    <div class="copy">© 2026 Hossain Pazooki · New York</div>
   </footer>
 
 </main>
