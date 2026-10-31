@@ -9,17 +9,17 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<title>Hossain Pazooki — auditable agentic systems</title>
-<meta name="description" content="Hossain Pazooki builds auditable agentic systems and the cost-efficient serving infrastructure they run on — a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence." />
+<title>Hossain Pazooki — LLM Inference &amp; Agentic Systems</title>
+<meta name="description" content="Hossain Pazooki — LLM Inference &amp; Agentic Systems. First author of Carryover: the reuse margin of a stale KV cache in long-horizon agents (NeurIPS 2026 Workshop on Long-Context Foundation Models). Five years building observability and release gates that are proven able to fail." />
 <link rel="canonical" href="https://hossainpazooki.github.io/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Hossain Pazooki" />
 <meta property="og:url" content="https://hossainpazooki.github.io/" />
-<meta property="og:title" content="Hossain Pazooki — auditable agentic systems" />
-<meta property="og:description" content="Building auditable agentic systems and the cost-efficient serving infrastructure they run on. A data plane for what is known, an authorization plane for what may act, an audit boundary that holds both to their evidence." />
+<meta property="og:title" content="Hossain Pazooki — LLM Inference &amp; Agentic Systems" />
+<meta property="og:description" content="First author of Carryover: the reuse margin of a stale KV cache in long-horizon agents. Five years building observability and release gates that are proven able to fail." />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Hossain Pazooki — auditable agentic systems" />
-<meta name="twitter:description" content="Building auditable agentic systems and the cost-efficient serving infrastructure they run on." />
+<meta name="twitter:title" content="Hossain Pazooki — LLM Inference &amp; Agentic Systems" />
+<meta name="twitter:description" content="First author of Carryover: the reuse margin of a stale KV cache in long-horizon agents. Five years building observability and release gates that are proven able to fail." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -39,9 +39,7 @@
     --gold-dim:#D3BE8F;
     --gold-hover:#B07C1E;
     --header-bg:rgba(246,244,238,.8);
-    --wash-1:rgba(30,35,44,.025);
-    --hatch:rgba(30,35,44,.03);
-    --maxw:1080px;
+    --maxw:760px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
   }
@@ -61,8 +59,6 @@
     --gold-dim:#7a5d22;
     --gold-hover:#f3c269;
     --header-bg:rgba(10,20,36,.72);
-    --wash-1:rgba(255,255,255,.012);
-    --hatch:rgba(255,255,255,.014);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -92,22 +88,10 @@
 
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
 
-  .eyebrow{
-    font-family:var(--mono);
-    font-size:12px;
-    font-weight:500;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--muted);
-  }
-  .eyebrow::before{
-    content:"";
-    width:18px;height:1px;
-    background:var(--gold);
-    display:inline-block;
-    vertical-align:middle;
-    margin-right:.8em;
-  }
+  /* inline links in running text */
+  .ln{color:var(--gold);border-bottom:1px solid var(--gold-dim);transition:color .18s ease,border-color .18s ease}
+  .ln:hover{color:var(--gold-hover);border-bottom-color:var(--gold-hover)}
+  .go{color:var(--gold)}
 
   /* ---------- header ---------- */
   header{
@@ -138,15 +122,6 @@
     transition:color .18s ease;
   }
   .nav-links a:hover{color:var(--text)}
-  .nav-links a.ext{color:var(--gold)}
-  .nav-links a.ext:hover{color:var(--gold-hover)}
-  .nav-links a.cta{
-    color:var(--ink);background:var(--gold);
-    border-radius:999px;padding:7px 14px;
-    font-weight:600;letter-spacing:.04em;
-    transition:background .18s ease;
-  }
-  .nav-links a.cta:hover{background:var(--gold-hover);color:var(--ink)}
   .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
   .theme-sw button{
     font-family:var(--mono);font-size:12px;font-weight:600;
@@ -157,224 +132,182 @@
   .theme-sw button+button{border-left:1px solid var(--line)}
   .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(138,98,23,.08)}
   :root[data-theme="ink"] .theme-sw button[aria-pressed="true"]{background:rgba(224,164,54,.08)}
-  @media(max-width:600px){.nav-links a.hideable,.nav-links a.cta{display:none}}
+  @media(max-width:600px){.nav-links{gap:16px}}
+  @media(max-width:420px){.nav-links a.hideable{display:none}}
 
   /* ---------- hero ---------- */
-  .hero{padding:60px 0 8px}
-  .hero-grid{
-    display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px 64px;align-items:start;
-  }
-  .hero .eyebrow{display:block;position:relative;padding-left:calc(18px + .8em);margin-bottom:24px}
-  .hero .eyebrow::before{position:absolute;left:0;top:.8em;margin:0}
-  .hero .eyebrow b{color:var(--text);font-weight:600}
-  .headline{
+  .hero{padding:72px 0 44px}
+  .name{
     font-weight:600;
-    font-size:clamp(28px,3.4vw,42px);
-    line-height:1.14;
-    letter-spacing:-.022em;
+    font-size:clamp(40px,7.2vw,64px);
+    line-height:1.02;
+    letter-spacing:-.03em;
     text-wrap:balance;
-    margin-bottom:22px;
+    margin-bottom:18px;
   }
-  .headline .hl{color:var(--text-2)}
-  .lede{
-    max-width:600px;
-    font-size:clamp(16px,2.2vw,17.5px);
-    line-height:1.65;
+  .headline{
+    font-family:var(--mono);
+    font-size:13.5px;
+    font-weight:500;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:30px;
+  }
+  .headline::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--gold);
+    display:inline-block;
+    vertical-align:middle;
+    margin-right:.8em;
+  }
+  .paper-line{
+    max-width:620px;
+    font-size:17px;
+    line-height:1.6;
     color:var(--text-2);
   }
-  .lede b{color:var(--text);font-weight:500}
-  .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:26px}
-  .career{font-family:var(--mono);font-size:12.5px;color:var(--muted);transition:color .18s ease}
-  .career:hover{color:var(--text)}
-  .career .go{color:var(--gold)}
-  .hero-cta{
-    display:inline-flex;align-items:center;gap:10px;
-    font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--text);
-    border:1px solid var(--line);border-radius:999px;padding:9px 16px;background:var(--panel);
-    transition:border-color .18s ease,background .18s ease;
+  .paper-line b{color:var(--text);font-weight:500}
+  .elsewhere{
+    display:flex;flex-wrap:wrap;gap:12px 28px;
+    margin-top:30px;
+    font-family:var(--mono);font-size:13px;color:var(--text-2);
   }
-  .hero-cta:hover{background:var(--panel-2);border-color:var(--gold)}
-  .hero-cta .lamp{
-    width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none;
-    box-shadow:0 0 0 3px rgba(138,98,23,.15);
-  }
-  :root[data-theme="ink"] .hero-cta .lamp{box-shadow:0 0 0 3px rgba(224,164,54,.18)}
-  .hero-cta .go{color:var(--gold)}
+  .elsewhere a{display:inline-flex;align-items:center;gap:9px;transition:color .18s ease}
+  .elsewhere a:hover{color:var(--text)}
+  .elsewhere svg{width:20px;height:20px;fill:var(--gold);flex:none;transition:fill .18s ease}
+  .elsewhere a:hover svg{fill:var(--gold-hover)}
+  @media(max-width:600px){.hero{padding:52px 0 36px}.headline{font-size:12.5px;letter-spacing:.14em}}
 
-  /* proof — the numbers the planes actually carry */
-  .proof{
-    margin-top:6px;
+  /* ---------- sections ---------- */
+  section.s{
     border-top:1px solid var(--line);
-    display:flex;flex-direction:column;
+    padding:36px 0 44px;
   }
-  .proof a{
-    display:grid;grid-template-columns:1fr auto;gap:2px 14px;align-items:baseline;
-    padding:14px 0 13px;
+  .s-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;
+    margin-bottom:26px;
+  }
+  .s-head h2{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .s-head h2::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--gold);
+    display:inline-block;
+    vertical-align:middle;
+    margin-right:.8em;
+  }
+  .s-head h2 a{transition:color .18s ease}
+  .s-head h2 a:hover{color:var(--text)}
+  .s-head .aside{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .s-head .aside a{color:var(--gold);transition:color .18s ease}
+  .s-head .aside a:hover{color:var(--gold-hover)}
+
+  .lead{
+    max-width:640px;
+    font-size:16.5px;line-height:1.62;color:var(--text-2);
+    margin-bottom:30px;
+  }
+  .lead b{color:var(--text);font-weight:500}
+
+  /* ---------- research ---------- */
+  .pub+.pub{margin-top:34px;padding-top:30px;border-top:1px solid var(--line-soft)}
+  .pub-t{
+    font-size:19px;font-weight:600;line-height:1.3;letter-spacing:-.012em;
+    text-wrap:balance;
+    margin-bottom:8px;
+  }
+  .pub-t a{transition:color .18s ease}
+  .pub-t a:hover{color:var(--gold-hover)}
+  .pub-t.sm{font-size:16.5px}
+  .pub-venue{
+    font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.6;
+    margin-bottom:14px;
+  }
+  .pub-venue .st{color:var(--gold)}
+  .pub-abs{
+    font-size:15.5px;line-height:1.65;color:var(--text-2);
+    max-width:660px;
+  }
+  .pub-abs b{color:var(--text);font-weight:500}
+  .pub-links{
+    display:flex;flex-wrap:wrap;gap:6px 0;
+    margin-top:14px;
+    font-family:var(--mono);font-size:12.5px;color:var(--muted);
+  }
+  .pub-links .k{color:var(--muted)}
+  .pub-links a{color:var(--gold);transition:color .18s ease}
+  .pub-links a:hover{color:var(--gold-hover)}
+  .pub-links .pend{color:var(--muted)}
+  .pub-links .sep{color:var(--line);margin:0 10px}
+
+  /* ---------- production ---------- */
+  .xp{display:grid;grid-template-columns:168px 1fr;gap:10px 28px;align-items:start}
+  .xp+.xp{margin-top:26px;padding-top:26px;border-top:1px solid var(--line-soft)}
+  .xp-org{font-weight:600;font-size:16px;letter-spacing:-.01em;line-height:1.35}
+  .xp-meta{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px}
+  .xp p{font-size:15.5px;line-height:1.65;color:var(--text-2);max-width:620px}
+  .xp p b{color:var(--text);font-weight:500}
+  @media(max-width:600px){.xp{grid-template-columns:1fr;gap:6px}}
+
+  /* ---------- code ---------- */
+  .repos{border-top:1px solid var(--line-soft)}
+  .repo{
+    display:grid;grid-template-columns:200px 1fr auto;gap:4px 24px;align-items:baseline;
+    padding:14px 0;
     border-bottom:1px solid var(--line-soft);
     transition:background .18s ease;
   }
-  .proof a:hover .pf-src{color:var(--gold-hover)}
-  .pf-n{
-    font-weight:600;font-size:26px;line-height:1.05;letter-spacing:-.025em;
-    font-variant-numeric:tabular-nums;color:var(--text);
-  }
-  .pf-n .u{font-size:15px;font-weight:500;letter-spacing:0;color:var(--text-2);margin-left:2px}
-  .pf-n.t{font-size:17px;line-height:1.3;letter-spacing:-.015em;padding-top:4px}
-  .pf-n .lamp-t{color:var(--gold);font-weight:400}
-  .pf-src{font-family:var(--mono);font-size:12px;color:var(--gold);white-space:nowrap;transition:color .18s ease}
-  .pf-l{grid-column:1 / -1;font-size:13px;color:var(--muted);line-height:1.5}
-  @media(max-width:920px){
-    .hero-grid{grid-template-columns:1fr;gap:36px}
-    .proof{
-      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px;
-    }
-  }
-  @media(max-width:520px){.proof{grid-template-columns:1fr}}
-
-  /* ---------- the cross-section ---------- */
-  .xwrap{margin-top:40px;position:relative}
-  .marker{
-    position:absolute;top:46%;
-    font-family:var(--mono);font-size:13px;color:var(--muted);
-  }
-  .marker.a{left:-44px}
-  .marker.b{right:-44px}
-  @media(max-width:1200px){.marker{display:none}}
-
-  .xsec{
-    display:block;
-    border:1px dashed var(--gold-dim);
-    background:var(--wash-1);
-    padding:28px 24px 20px;
-    position:relative;
-  }
-  .xsec-tab{
-    position:absolute;top:-10px;right:22px;
-    background:var(--ink);
-    padding:1px 12px;
-    font-family:var(--mono);font-size:12px;letter-spacing:.16em;
-    color:var(--gold);
-    transition:background-color .25s ease;
-  }
-  .plane{
-    display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:stretch;
-  }
-  .plane-label{padding:14px 0}
-  .p-num{
-    font-family:var(--mono);font-size:12px;letter-spacing:.2em;
-    color:var(--gold);margin-bottom:7px;
-  }
-  .p-link{border-bottom:1px solid var(--gold-dim)}
-  .p-link:hover{color:var(--gold-hover);border-bottom-color:var(--gold-hover)}
-  .p-creed{
-    font-size:20px;font-weight:600;letter-spacing:-.015em;margin-bottom:7px;
-  }
-  .p-what{font-size:13.5px;color:var(--muted);line-height:1.55}
-
-  .cells{
-    display:grid;gap:1px;
-    background:var(--line);border:1px solid var(--line);
-  }
-  .cells.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .cells.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .cells.hatched{
-    background-image:repeating-linear-gradient(135deg,var(--hatch) 0 1px,transparent 1px 9px);
-  }
-  .cell{
-    background:var(--panel);
-    padding:16px;
-    display:flex;flex-direction:column;gap:5px;
-    transition:background .18s ease;
-  }
-  .cell:hover{background:var(--panel-2)}
-  .cell .n{font-family:var(--mono);font-size:13.5px;color:var(--text)}
-  .cell .n .go{color:var(--gold)}
-  .cell .d{font-size:13.5px;color:var(--muted);line-height:1.55}
-  .cell .st{
-    margin-top:auto;padding-top:8px;
-    font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--gold);
+  .repo-n{font-family:var(--mono);font-size:13.5px;font-weight:500;color:var(--text);transition:color .18s ease}
+  .repo-n:hover{color:var(--gold-hover)}
+  .repo-d{font-size:15px;line-height:1.55;color:var(--text-2)}
+  .repo-s{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+  a.repo-s{color:var(--gold);transition:color .18s ease}
+  a.repo-s:hover{color:var(--gold-hover)}
+  @media(max-width:600px){
+    .repo{grid-template-columns:1fr}
+    .repo-s:empty{display:none}
   }
 
-  .gate-line{display:flex;align-items:center;gap:14px;margin:16px 0}
-  .gate-rule{flex-grow:1;border-top:1px dashed var(--gold-dim);position:relative}
-  .gate-rule i{
-    position:absolute;top:-6px;width:11px;height:11px;
-    background:var(--ink);border:1.4px solid var(--gold);
-    transition:background-color .25s ease;
-  }
-  .gate-rule i:nth-child(1){left:22%}
-  .gate-rule i:nth-child(2){left:52%}
-  .gate-rule i:nth-child(3){left:82%}
-  .gate-cap{
-    font-family:var(--mono);font-size:12px;letter-spacing:.08em;
-    color:var(--muted);white-space:nowrap;
-  }
+  /* ---------- writing ---------- */
+  .post{display:block;padding:2px 0}
+  .post-t{font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.35;margin-bottom:6px;transition:color .18s ease}
+  .post:hover .post-t{color:var(--gold-hover)}
+  .post-m{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-bottom:10px}
+  .post p{font-size:15px;line-height:1.62;color:var(--text-2);max-width:640px}
+  .post-links{margin-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .post-links a{color:var(--gold)}
+  .post-links a:hover{color:var(--gold-hover)}
+  .post-links .sep{color:var(--line);margin:0 10px}
 
-  .rail{
-    margin-top:16px;border-top:1px dashed var(--gold-dim);padding-top:14px;
-    display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:center;
-  }
-  .rail-label{font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.6}
-  .rail-label .k{color:var(--gold)}
-  .rail-chips{display:flex;gap:10px;flex-wrap:wrap}
-  .rail-chips a{
-    font-family:var(--mono);font-size:12.5px;color:var(--text-2);
-    border:1px solid var(--line);border-radius:4px;padding:8px 12px;
-    background:var(--panel);
-    transition:background .18s ease,border-color .18s ease;
-  }
-  .rail-chips a:hover{background:var(--panel-2);border-color:var(--muted)}
-  .rail-chips a .go{color:var(--gold)}
-
-  .xcap{
-    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
-    margin-top:12px;
-    font-family:var(--mono);font-size:12px;color:var(--muted);
-  }
-
-  @media(max-width:860px){
-    .plane,.rail{grid-template-columns:1fr;gap:14px}
-    .plane-label{padding:4px 0 0}
-    .cells.c3{grid-template-columns:1fr}
-    .cells.c4{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .gate-line{flex-direction:column;align-items:stretch;gap:8px}
-    .gate-cap{white-space:normal}
-  }
-  @media(max-width:480px){
-    .cells.c4{grid-template-columns:1fr}
-    .xsec{padding:22px 16px 16px}
-  }
+  /* ---------- contact ---------- */
+  .contact{display:grid;grid-template-columns:168px 1fr;gap:10px 28px;align-items:baseline}
+  .contact .k{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .contact .v{font-family:var(--mono);font-size:13.5px;color:var(--text-2)}
+  .contact .v a{transition:color .18s ease}
+  .contact .v a:hover{color:var(--text)}
+  .contact .v .pend{color:var(--muted)}
+  @media(max-width:600px){.contact{grid-template-columns:1fr;gap:2px 0}.contact .k{margin-top:10px}}
 
   /* ---------- footer ---------- */
   .foot{
-    margin-top:56px;border-top:1px solid var(--line-soft);
+    border-top:1px solid var(--line-soft);
     padding:22px 0 46px;
-    display:flex;justify-content:space-between;align-items:baseline;gap:16px 24px;flex-wrap:wrap;
+    display:flex;justify-content:space-between;align-items:baseline;gap:8px 24px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:12px;color:var(--muted);
   }
-  .social{display:flex;gap:22px;flex-wrap:wrap}
-  .social a{font-family:var(--mono);font-size:13px;color:var(--text-2);transition:color .18s ease}
-  .social a:hover{color:var(--text)}
-  .social a .go{color:var(--gold)}
-  .foot .copy{font-family:var(--mono);font-size:12px;color:var(--muted)}
-
-  /* ---------- settle ---------- */
-  .js .settle{opacity:0;transform:translateY(10px)}
-  .js .xsec{border-color:transparent}
-  .js .xsec .xsec-tab{opacity:0}
-  .js .xsec.in{border-color:var(--gold-dim);transition:border-color .45s ease .85s}
-  .js .xsec.in .xsec-tab{opacity:1;transition:opacity .45s ease .85s}
-  .js .xsec.in .settle{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
-  .js .xsec.in .s-datum{transition-delay:.05s}
-  .js .xsec.in .s-gate{transition-delay:.3s}
-  .js .xsec.in .s-intent{transition-delay:.5s}
-  .js .xsec.in .s-rigor{transition-delay:.85s}
-  @media (prefers-reduced-motion:reduce){
-    .js .settle{opacity:1;transform:none;transition:none}
-    .js .xsec{border-color:var(--gold-dim)}
-    .js .xsec .xsec-tab{opacity:1}
-  }
+  .foot a{transition:color .18s ease}
+  .foot a:hover{color:var(--text)}
 </style>
-<noscript><style>.settle{opacity:1;transform:none}.xsec{border-color:var(--gold-dim)}.xsec-tab{opacity:1}.theme-sw{display:none}</style></noscript>
+<noscript><style>.theme-sw{display:none}</style></noscript>
 </head>
 <body>
 
@@ -382,10 +315,9 @@
   <div class="wrap nav">
     <a class="brand" href="/">HP<span class="dot">.</span></a>
     <nav class="nav-links" aria-label="Site">
+      <a href="/portfolio/">portfolio</a>
       <a href="/cv/">cv</a>
-      <a href="/blog/">blog</a>
-      <a href="https://hossainpazooki.com" class="ext hideable" target="_blank" rel="noopener">hossainpazooki.com&nbsp;↗</a>
-      <a href="https://www.linkedin.com/in/hossainpazooki" class="cta" target="_blank" rel="noopener">open to work</a>
+      <a href="/blog/" class="hideable">blog</a>
       <div class="theme-sw" role="group" aria-label="Theme">
         <button type="button" data-set="paper" aria-pressed="true">paper</button>
         <button type="button" data-set="ink" aria-pressed="false">ink</button>
@@ -398,145 +330,164 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <span class="eyebrow"><b>Hossain Pazooki</b> — New York</span>
-        <h1 class="headline">Building auditable agentic systems <span class="hl">and the cost-efficient serving infrastructure they run on.</span></h1>
-        <p class="lede">Everything I build sits somewhere in this cut: <b>a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence.</b></p>
-        <div class="cta-row">
-          <a class="hero-cta" href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener"><span class="lamp" aria-hidden="true"></span>Available from Q4 2026 <span class="go">↗</span></a>
-          <a class="career" href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">previously orawell · engager · 3deo · pmc · inet <span class="go">↗</span></a>
-        </div>
-      </div>
-
-      <aside class="proof" aria-label="Proof">
-        <a href="/baseline/">
-          <span class="pf-n t">dated, replayable verdicts</span><span class="pf-src">baseline →</span>
-          <span class="pf-l">the ledger every restated number is measured against</span>
-        </a>
-        <a href="/blog/">
-          <span class="pf-n t">essays with the method shown</span><span class="pf-src">blog →</span>
-          <span class="pf-l">every figure drawn out, every number traceable to committed evidence</span>
-        </a>
-        <a href="/rigor/">
-          <span class="pf-n">20<span class="u"> skills</span> · 11<span class="u"> gates</span></span><span class="pf-src">rigor →</span>
-          <span class="pf-l">the audit plugin that holds both planes to their evidence</span>
-        </a>
-        <a href="https://scholar.google.com/citations?user=XVFs01sAAAAJ" target="_blank" rel="noopener">
-          <span class="pf-n t"><span class="lamp-t">◐</span> in progress</span><span class="pf-src">research ↗</span>
-          <span class="pf-l">cross-model KV-cache transfer with Algoverse AI Research · paper in preparation</span>
-        </a>
-      </aside>
+    <div class="wrap">
+      <h1 class="name">Hossain Pazooki</h1>
+      <p class="headline">LLM Inference &amp; Agentic Systems</p>
+      <p class="paper-line"><b>Carryover:</b> the reuse margin of a stale KV cache in long-horizon agents — <a class="ln" href="https://carryover.pub" target="_blank" rel="noopener">carryover.pub</a></p>
+      <nav class="elsewhere" aria-label="Elsewhere">
+        <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+        <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>LinkedIn</a>
+        <a href="mailto:hossain@pazooki.com"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm1 2.6V18h18V6.6l-9 6.3-9-6.3zM4.3 6l7.7 5.4L19.7 6H4.3z"/></svg>Email</a>
+      </nav>
     </div>
   </section>
 
-  <!-- THE CROSS-SECTION -->
-  <section class="wrap xwrap">
-    <span class="marker a" aria-hidden="true">A —</span>
-    <span class="marker b" aria-hidden="true">— A′</span>
-
-    <nav class="xsec" id="xsec" aria-label="Site map — the cross-section of three programs">
-      <span class="xsec-tab s-rigor">RIGOR — THE AUDIT BOUNDARY</span>
-
-      <!-- 02 INTENT -->
-      <div class="plane settle s-intent">
-        <div class="plane-label">
-          <div class="p-num">02 · INTENT</div>
-          <div class="p-creed">What may act.</div>
-          <p class="p-what">The plane where irreversible actions pass — or wait. Agents propose; a deterministic gate disposes.</p>
-        </div>
-        <div class="cells c3">
-          <a class="cell" href="/intent/">
-            <span class="n">intent-plane <span class="go">→</span></span>
-            <span class="d">declarant + verifier — the record re-verified without trusting the gate</span>
-          </a>
-          <a class="cell" href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">
-            <span class="n">treasury gate <span class="go">↗</span></span>
-            <span class="d">sole emitter of one durable ACHIEVED record — no record, no value moved</span>
-          </a>
-          <a class="cell" href="https://github.com/hossainpazooki/regulatory-rule-engine" target="_blank" rel="noopener">
-            <span class="n">atlas <span class="go">↗</span></span>
-            <span class="d">signed, expert-attested specs the gate consumes, never authors</span>
-          </a>
-        </div>
+  <!-- RESEARCH -->
+  <section class="s" id="research">
+    <div class="wrap">
+      <div class="s-head">
+        <h2>Research</h2>
       </div>
 
-      <!-- gate interface -->
-      <div class="gate-line settle s-gate" aria-hidden="true">
-        <div class="gate-rule"><i></i><i></i><i></i></div>
-        <span class="gate-cap">actions touch the data plane only through gates · fail-closed on unevaluable</span>
+      <article class="pub">
+        <h3 class="pub-t"><a href="https://carryover.pub" target="_blank" rel="noopener">Carryover: The Reuse Margin of a Stale KV Cache in Long-Horizon Agents</a></h3>
+        <div class="pub-venue">First author · NeurIPS 2026 Workshop on Long-Context Foundation Models</div>
+        <p class="pub-abs">When a long-horizon agent hands off, can the next step reuse the cache the last one left behind? We measured it at 35 recorded coding-agent handoffs with 35K–80K-token histories. At a tolerance fixed before any run, the median same-model removal fraction is zero — replicated across three models — yet reused states still shift next-token predictions (median 90.2% top-1 agreement with a fresh cache). <b>Cache agreement and prediction sensitivity have to be checked separately; meeting one does not guarantee the other.</b> The study was pre-registered: hypotheses and decision rules committed before any run, results on a hash-chained ledger, outcomes reported as decided, including the ones the data would not support.</p>
+        <div class="pub-links">
+          <span><span class="k">paper</span> <a href="https://carryover.pub" target="_blank" rel="noopener">carryover.pub ↗</a></span><span class="sep" aria-hidden="true">·</span>
+          <span><span class="k">code</span> <a href="https://github.com/hossainpazooki/linear-ceiling" target="_blank" rel="noopener">linear-ceiling ↗</a></span><span class="sep" aria-hidden="true">·</span>
+          <span><span class="k">arXiv</span> <span class="pend">pending</span></span>
+        </div>
+      </article>
+
+      <article class="pub">
+        <h3 class="pub-t sm">Prefix mortality</h3>
+        <div class="pub-venue"><span class="st">◐ in preparation</span></div>
+        <p class="pub-abs">How long a cached prefix stays useful as an agent's context moves on.</p>
+        <div class="pub-links">
+          <span><span class="k">code</span> <a href="https://github.com/hossainpazooki/prefix-mortality" target="_blank" rel="noopener">prefix-mortality ↗</a></span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- PRODUCTION -->
+  <section class="s" id="production">
+    <div class="wrap">
+      <div class="s-head">
+        <h2>Production</h2>
+        <span class="aside"><a href="/cv/">full cv →</a></span>
       </div>
 
-      <!-- 01 DATUM -->
-      <div class="plane settle s-datum">
-        <div class="plane-label">
-          <div class="p-num">01 · <a class="p-link" href="/datum/">DATUM <span class="go">→</span></a></div>
-          <div class="p-creed">What is known.</div>
-          <p class="p-what">The bedrock — a reference frame for checkable claims. Produced, adversarially re-derived, recorded as replayable verdicts.</p>
+      <p class="lead">Five years building the layer that makes failure loud and early: <b>observability that catches drift before users do, and release gates that earn no credit until they are proven able to fail.</b></p>
+
+      <article class="xp">
+        <div>
+          <div class="xp-org">Orawell</div>
+          <div class="xp-meta">Tech lead · 2024 – 2026<br />New York</div>
         </div>
-        <div class="cells c4 hatched">
-          <a class="cell" href="/baseline/">
-            <span class="n">baseline <span class="go">→</span></span>
-            <span class="d">the catalog of dated, replayable verdicts</span>
-          </a>
-          <a class="cell" href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">
-            <span class="n">vantage <span class="go">↗</span></span>
-            <span class="d">point-in-time SEC fundamentals — 86.6M gold facts</span>
-          </a>
-          <a class="cell" href="https://github.com/hossainpazooki/pit-revision-examiner" target="_blank" rel="noopener">
-            <span class="n">parallax <span class="go">↗</span></span>
-            <span class="d">the consumer side re-derives every number</span>
-          </a>
-          <a class="cell" href="https://github.com/hossainpazooki/replayable-portfolio-ledger" target="_blank" rel="noopener">
-            <span class="n">meridian <span class="go">↗</span></span>
-            <span class="d">event-sourced portfolio ledger — replayable to the byte</span>
-            <span class="st">◐ in progress</span>
-          </a>
+        <p>Tech lead of a regulated, HIPAA-aligned platform: FastAPI services on Kubernetes (EKS), CI/CD gated by 450+ tests with auto-rollback, an observability and performance-monitoring stack on OpenTelemetry, Prometheus, and Grafana. Carried on-call and led incident response; a production calibration-drift incident was root-caused and closed by <b>rebuilding the decision gate to fail closed, not fail silent.</b></p>
+      </article>
+
+      <article class="xp">
+        <div>
+          <div class="xp-org">Engager</div>
+          <div class="xp-meta">Technical co-founder · sole engineer · 2022 – 2024<br />New York</div>
         </div>
+        <p>Sole engineer taking a product from zero to one: <b>architecture, CI/CD, and development practice from the first commit.</b> Designed the data model and core backend in Python and PostgreSQL, shipped the React/TypeScript frontend, and ran containerized AWS deployment, observability, and releases end to end.</p>
+      </article>
+
+      <article class="xp">
+        <div>
+          <div class="xp-org">3DEO</div>
+          <div class="xp-meta">Founding ML engineer · 2020 – 2022<br />Los Angeles</div>
+        </div>
+        <p>Founding ML engineer at an additive-manufacturing R&amp;D org: a unified data layer joining process parameters to outcomes by part ID, and model-serving hooks with <b>drift monitoring against ground truth</b>, built alongside the scientists who used it daily.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- CODE -->
+  <section class="s" id="code">
+    <div class="wrap">
+      <div class="s-head">
+        <h2><a href="/portfolio/">Code</a></h2>
+        <span class="aside"><a href="/portfolio/">the three-plane architecture, in full →</a></span>
       </div>
 
-      <!-- 03 RIGOR rail -->
-      <div class="rail settle s-rigor">
-        <div class="rail-label">03 · <span class="k">RIGOR</span> — the boundary itself: the discipline that audits both planes.</div>
-        <div class="rail-chips">
-          <a href="/rigor/">rigor — plugin · 20 skills · 11 gates <span class="go">→</span></a>
-          <a href="/cldd/">cldd — closed-loop default detection <span class="go">→</span></a>
-          <a href="https://github.com/hossainpazooki/network-as-code" target="_blank" rel="noopener">network-as-code <span class="go">↗</span></a>
-          <a href="https://github.com/hossainpazooki/upstream-label-correction" target="_blank" rel="noopener">clue — upstream label correction <span class="go">↗</span></a>
+      <div class="repos">
+        <div class="repo">
+          <a class="repo-n" href="https://github.com/hossainpazooki/linear-ceiling" target="_blank" rel="noopener">linear-ceiling <span class="go">↗</span></a>
+          <span class="repo-d">the harness behind Carryover; results credited only through it, decision rules fixed before any run</span>
+          <span class="repo-s">paper code</span>
+        </div>
+        <div class="repo">
+          <a class="repo-n" href="https://github.com/hossainpazooki/rigor" target="_blank" rel="noopener">rigor <span class="go">↗</span></a>
+          <span class="repo-d">audits the other two: no claim credited until its gate is proven able to fail on a known-bad twin</span>
+          <a class="repo-s" href="/rigor/">/rigor →</a>
+        </div>
+        <div class="repo">
+          <a class="repo-n" href="https://github.com/hossainpazooki/regulatory-rule-engine" target="_blank" rel="noopener">regulatory-rule-engine <span class="go">↗</span></a>
+          <span class="repo-d">irreversible actions pass a deterministic gate; unevaluable never collapses into a pass</span>
+          <span class="repo-s"></span>
+        </div>
+        <div class="repo">
+          <a class="repo-n" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane <span class="go">↗</span></a>
+          <span class="repo-d">agents propose, the gate disposes</span>
+          <a class="repo-s" href="/intent/">/intent →</a>
         </div>
       </div>
-    </nav>
+    </div>
+  </section>
 
-    <div class="xcap">
-      <span>every cell is a link — the section is the site map</span>
+  <!-- WRITING -->
+  <section class="s" id="writing">
+    <div class="wrap">
+      <div class="s-head">
+        <h2><a href="/blog/">Writing</a></h2>
+        <span class="aside"><a href="/blog/">all essays →</a></span>
+      </div>
+
+      <a class="post" href="/blog/when-you-cant-measure-what-matters/">
+        <div class="post-t">When You Can't Measure What Matters: A Closed-Loop Harness for Probability-of-Default Estimation</div>
+        <div class="post-m">essay · Towards AI · Jul 2026</div>
+        <p>Lending data only labels the loans a past policy approved, so the cohort a new model must be right on is the one it can't be graded on. Plant the truth in a synthetic world, hide it the way approval policies do, escalate until correction fails, and report the operating frontier as a distribution, not a point.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="s" id="contact">
+    <div class="wrap">
+      <div class="s-head">
+        <h2>Contact</h2>
+      </div>
+      <div class="contact">
+        <span class="k">email</span>
+        <span class="v"><a href="mailto:hossain@pazooki.com">hossain@pazooki.com <span class="go">→</span></a></span>
+        <span class="k">github</span>
+        <span class="v"><a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">github.com/hossainpazooki <span class="go">↗</span></a></span>
+        <span class="k">linkedin</span>
+        <span class="v"><a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">linkedin.com/in/hossainpazooki <span class="go">↗</span></a></span>
+        <span class="k">scholar</span>
+        <span class="v"><a href="https://scholar.google.com/citations?user=XVFs01sAAAAJ" target="_blank" rel="noopener">Google Scholar <span class="go">↗</span></a></span>
+        <span class="k">arxiv</span>
+        <span class="v"><span class="pend">pending</span></span>
+        <span class="k">education</span>
+        <span class="v">B.A. International Relations &amp; Global Economy, University of Southern California</span>
+      </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="wrap">
     <div class="foot">
-      <nav class="social" aria-label="Elsewhere">
-        <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="go">↗</span></a>
-        <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="go">↗</span></a>
-        <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">Medium <span class="go">↗</span></a>
-        <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="go">↗</span></a>
-      </nav>
-      <div class="copy">© 2026 Hossain Pazooki · New York</div>
+      <span>© 2026 Hossain Pazooki · New York</span>
+      <span><a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="go">↗</span></a></span>
     </div>
   </footer>
 
 </main>
-
-<script>
-  // One-time settle: datum, then intent, then the boundary traces around both.
-  (function(){
-    var x = document.getElementById('xsec');
-    if(!x) return;
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(reduce){ x.classList.add('in'); return; }
-    requestAnimationFrame(function(){ requestAnimationFrame(function(){ x.classList.add('in'); }); });
-  })();
-</script>
 
 <script>
 (function(){
