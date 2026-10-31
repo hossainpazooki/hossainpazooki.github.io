@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="paper">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#F6F4EE" id="metatheme" />
+<script>(function(){var t='paper';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='ink'?'ink':'paper'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<title>Portfolio — three planes, one section · Hossain Pazooki</title>
+<meta name="description" content="The three-plane architecture behind Hossain Pazooki's code: a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence. Every cell is a repository." />
+<link rel="canonical" href="https://hossainpazooki.github.io/portfolio/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Hossain Pazooki" />
+<meta property="og:url" content="https://hossainpazooki.github.io/portfolio/" />
+<meta property="og:title" content="Portfolio — three planes, one section · Hossain Pazooki" />
+<meta property="og:description" content="A data plane for what is known, an authorization plane for what may act, an audit boundary that holds both to their evidence. Every cell is a repository." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Portfolio — three planes, one section · Hossain Pazooki" />
+<meta name="twitter:description" content="The three-plane architecture: DATUM, INTENT, RIGOR. Every cell is a repository." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    color-scheme:light;
+    --ink:#F6F4EE;
+    --ink-2:#EFECE2;
+    --panel:#FCFBF7;
+    --panel-2:#F1EEE5;
+    --line:#D8D3C4;
+    --line-soft:#E5E1D4;
+    --text:#1E232C;
+    --text-2:#454D5C;
+    --muted:#6C7484;
+    --gold:#8A6217;
+    --gold-dim:#D3BE8F;
+    --gold-hover:#B07C1E;
+    --header-bg:rgba(246,244,238,.8);
+    --wash-1:rgba(30,35,44,.025);
+    --hatch:rgba(30,35,44,.03);
+    --maxw:1080px;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  }
+
+  :root[data-theme="ink"]{
+    color-scheme:dark;
+    --ink:#0A1424;
+    --ink-2:#0D1930;
+    --panel:#101E38;
+    --panel-2:#142440;
+    --line:#1D3050;
+    --line-soft:#172942;
+    --text:#E9EEF8;
+    --text-2:#B8C5DB;
+    --muted:#7F92B0;
+    --gold:#E0A436;
+    --gold-dim:#7a5d22;
+    --gold-hover:#f3c269;
+    --header-bg:rgba(10,20,36,.72);
+    --wash-1:rgba(255,255,255,.012);
+    --hatch:rgba(255,255,255,.014);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+    transition:background-color .25s ease,color .25s ease;
+  }
+
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--gold);color:var(--ink)}
+
+  :focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--gold);
+    display:inline-block;
+    vertical-align:middle;
+    margin-right:.8em;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--header-bg);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    height:60px;
+  }
+  .brand{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:.04em;
+    color:var(--text);
+  }
+  .brand .dot{color:var(--gold)}
+  .brand .up{color:var(--muted);font-weight:500}
+  .nav-links{display:flex;gap:24px;align-items:center}
+  .nav-links a{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--muted);
+    letter-spacing:.02em;
+    white-space:nowrap;
+    transition:color .18s ease;
+  }
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.ext{color:var(--gold)}
+  .nav-links a.ext:hover{color:var(--gold-hover)}
+    .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
+  .theme-sw button{
+    font-family:var(--mono);font-size:12px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    background:transparent;border:0;padding:6px 12px;cursor:pointer;
+    transition:color .18s ease,background .18s ease;
+  }
+  .theme-sw button+button{border-left:1px solid var(--line)}
+  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(138,98,23,.08)}
+  :root[data-theme="ink"] .theme-sw button[aria-pressed="true"]{background:rgba(224,164,54,.08)}
+  @media(max-width:600px){.nav-links a.hideable{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:60px 0 8px}
+  .hero .wrap{max-width:var(--maxw)}
+  .hero .eyebrow{display:block;position:relative;padding-left:calc(18px + .8em);margin-bottom:24px}
+  .hero .eyebrow::before{position:absolute;left:0;top:.8em;margin:0}
+  .hero .eyebrow b{color:var(--text);font-weight:600}
+  .headline{
+    font-weight:600;
+    font-size:clamp(28px,3.4vw,42px);
+    line-height:1.14;
+    letter-spacing:-.022em;
+    text-wrap:balance;
+    margin-bottom:22px;
+  }
+  .headline .hl{color:var(--text-2)}
+  .lede{
+    max-width:600px;
+    font-size:clamp(16px,2.2vw,17.5px);
+    line-height:1.65;
+    color:var(--text-2);
+  }
+  .lede b{color:var(--text);font-weight:500}
+  .lede a.in{color:var(--gold);border-bottom:1px solid var(--gold-dim)}
+  .lede a.in:hover{color:var(--gold-hover);border-bottom-color:var(--gold-hover)}
+
+  /* ---------- the cross-section ---------- */
+  .xwrap{margin-top:40px;position:relative}
+  .marker{
+    position:absolute;top:46%;
+    font-family:var(--mono);font-size:13px;color:var(--muted);
+  }
+  .marker.a{left:-44px}
+  .marker.b{right:-44px}
+  @media(max-width:1200px){.marker{display:none}}
+
+  .xsec{
+    display:block;
+    border:1px dashed var(--gold-dim);
+    background:var(--wash-1);
+    padding:28px 24px 20px;
+    position:relative;
+  }
+  .xsec-tab{
+    position:absolute;top:-10px;right:22px;
+    background:var(--ink);
+    padding:1px 12px;
+    font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+    color:var(--gold);
+    transition:background-color .25s ease;
+  }
+  .plane{
+    display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:stretch;
+  }
+  .plane-label{padding:14px 0}
+  .p-num{
+    font-family:var(--mono);font-size:12px;letter-spacing:.2em;
+    color:var(--gold);margin-bottom:7px;
+  }
+  .p-link{border-bottom:1px solid var(--gold-dim)}
+  .p-link:hover{color:var(--gold-hover);border-bottom-color:var(--gold-hover)}
+  .p-creed{
+    font-size:20px;font-weight:600;letter-spacing:-.015em;margin-bottom:7px;
+  }
+  .p-what{font-size:13.5px;color:var(--muted);line-height:1.55}
+
+  .cells{
+    display:grid;gap:1px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  .cells.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cells.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .cells.hatched{
+    background-image:repeating-linear-gradient(135deg,var(--hatch) 0 1px,transparent 1px 9px);
+  }
+  .cell{
+    background:var(--panel);
+    padding:16px;
+    display:flex;flex-direction:column;gap:5px;
+    transition:background .18s ease;
+  }
+  .cell:hover{background:var(--panel-2)}
+  .cell .n{font-family:var(--mono);font-size:13.5px;color:var(--text)}
+  .cell .n .go{color:var(--gold)}
+  .cell .d{font-size:13.5px;color:var(--muted);line-height:1.55}
+  .cell .st{
+    margin-top:auto;padding-top:8px;
+    font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--gold);
+  }
+
+  .gate-line{display:flex;align-items:center;gap:14px;margin:16px 0}
+  .gate-rule{flex-grow:1;border-top:1px dashed var(--gold-dim);position:relative}
+  .gate-rule i{
+    position:absolute;top:-6px;width:11px;height:11px;
+    background:var(--ink);border:1.4px solid var(--gold);
+    transition:background-color .25s ease;
+  }
+  .gate-rule i:nth-child(1){left:22%}
+  .gate-rule i:nth-child(2){left:52%}
+  .gate-rule i:nth-child(3){left:82%}
+  .gate-cap{
+    font-family:var(--mono);font-size:12px;letter-spacing:.08em;
+    color:var(--muted);white-space:nowrap;
+  }
+
+  .rail{
+    margin-top:16px;border-top:1px dashed var(--gold-dim);padding-top:14px;
+    display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:center;
+  }
+  .rail-label{font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.6}
+  .rail-label .k{color:var(--gold)}
+  .rail-chips{display:flex;gap:10px;flex-wrap:wrap}
+  .rail-chips a{
+    font-family:var(--mono);font-size:12.5px;color:var(--text-2);
+    border:1px solid var(--line);border-radius:4px;padding:8px 12px;
+    background:var(--panel);
+    transition:background .18s ease,border-color .18s ease;
+  }
+  .rail-chips a:hover{background:var(--panel-2);border-color:var(--muted)}
+  .rail-chips a .go{color:var(--gold)}
+
+  .xcap{
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    margin-top:12px;
+    font-family:var(--mono);font-size:12px;color:var(--muted);
+  }
+
+  @media(max-width:860px){
+    .plane,.rail{grid-template-columns:1fr;gap:14px}
+    .plane-label{padding:4px 0 0}
+    .cells.c3{grid-template-columns:1fr}
+    .cells.c4{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .gate-line{flex-direction:column;align-items:stretch;gap:8px}
+    .gate-cap{white-space:normal}
+  }
+  @media(max-width:480px){
+    .cells.c4{grid-template-columns:1fr}
+    .xsec{padding:22px 16px 16px}
+  }
+
+  /* ---------- footer ---------- */
+  .foot{
+    margin-top:56px;border-top:1px solid var(--line-soft);
+    padding:22px 0 46px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px 24px;flex-wrap:wrap;
+  }
+  .social{display:flex;gap:22px;flex-wrap:wrap}
+  .social a{font-family:var(--mono);font-size:13px;color:var(--text-2);transition:color .18s ease}
+  .social a:hover{color:var(--text)}
+  .social a .go{color:var(--gold)}
+  .foot .copy{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+  /* ---------- settle ---------- */
+  .js .settle{opacity:0;transform:translateY(10px)}
+  .js .xsec{border-color:transparent}
+  .js .xsec .xsec-tab{opacity:0}
+  .js .xsec.in{border-color:var(--gold-dim);transition:border-color .45s ease .85s}
+  .js .xsec.in .xsec-tab{opacity:1;transition:opacity .45s ease .85s}
+  .js .xsec.in .settle{opacity:1;transform:none;transition:opacity .5s ease,transform .5s ease}
+  .js .xsec.in .s-datum{transition-delay:.05s}
+  .js .xsec.in .s-gate{transition-delay:.3s}
+  .js .xsec.in .s-intent{transition-delay:.5s}
+  .js .xsec.in .s-rigor{transition-delay:.85s}
+  @media (prefers-reduced-motion:reduce){
+    .js .settle{opacity:1;transform:none;transition:none}
+    .js .xsec{border-color:var(--gold-dim)}
+    .js .xsec .xsec-tab{opacity:1}
+  }
+</style>
+<noscript><style>.settle{opacity:1;transform:none}.xsec{border-color:var(--gold-dim)}.xsec-tab{opacity:1}.theme-sw{display:none}</style></noscript>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/"><span class="up">hp /</span>portfolio<span class="dot">.</span></a>
+    <nav class="nav-links" aria-label="Site">
+      <a href="/" class="hideable">home</a>
+      <a href="/cv/" class="hideable">cv</a>
+      <a href="/blog/" class="hideable">blog</a>
+      <a href="https://github.com/hossainpazooki" class="ext" target="_blank" rel="noopener">GitHub&nbsp;↗</a>
+      <div class="theme-sw" role="group" aria-label="Theme">
+        <button type="button" data-set="paper" aria-pressed="true">paper</button>
+        <button type="button" data-set="ink" aria-pressed="false">ink</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow"><b>Portfolio</b> — the three-plane architecture</span>
+      <h1 class="headline">Three planes, one section. <span class="hl">Nothing credited until its gate is proven able to fail.</span></h1>
+      <p class="lede">Everything I build sits somewhere in this cut: <b>a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence.</b> The same discipline the <a class="in" href="/#research">Carryover</a> paper runs on — decision rules fixed before any run, verdicts recorded, outcomes reported as decided — is how these repositories are built.</p>
+    </div>
+  </section>
+
+  <!-- THE CROSS-SECTION -->
+  <section class="wrap xwrap">
+    <span class="marker a" aria-hidden="true">A —</span>
+    <span class="marker b" aria-hidden="true">— A′</span>
+
+    <nav class="xsec" id="xsec" aria-label="Site map — the cross-section of three programs">
+      <span class="xsec-tab s-rigor">RIGOR — THE AUDIT BOUNDARY</span>
+
+      <!-- 02 INTENT -->
+      <div class="plane settle s-intent">
+        <div class="plane-label">
+          <div class="p-num">02 · INTENT</div>
+          <div class="p-creed">What may act.</div>
+          <p class="p-what">The plane where irreversible actions pass — or wait. Agents propose; a deterministic gate disposes.</p>
+        </div>
+        <div class="cells c3">
+          <a class="cell" href="/intent/">
+            <span class="n">intent-plane <span class="go">→</span></span>
+            <span class="d">declarant + verifier — the record re-verified without trusting the gate</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/treasury-intent-controller" target="_blank" rel="noopener">
+            <span class="n">treasury gate <span class="go">↗</span></span>
+            <span class="d">sole emitter of one durable ACHIEVED record — no record, no value moved</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/regulatory-rule-engine" target="_blank" rel="noopener">
+            <span class="n">atlas <span class="go">↗</span></span>
+            <span class="d">signed, expert-attested specs the gate consumes, never authors</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- gate interface -->
+      <div class="gate-line settle s-gate" aria-hidden="true">
+        <div class="gate-rule"><i></i><i></i><i></i></div>
+        <span class="gate-cap">actions touch the data plane only through gates · fail-closed on unevaluable</span>
+      </div>
+
+      <!-- 01 DATUM -->
+      <div class="plane settle s-datum">
+        <div class="plane-label">
+          <div class="p-num">01 · <a class="p-link" href="/datum/">DATUM <span class="go">→</span></a></div>
+          <div class="p-creed">What is known.</div>
+          <p class="p-what">The bedrock — a reference frame for checkable claims. Produced, adversarially re-derived, recorded as replayable verdicts.</p>
+        </div>
+        <div class="cells c4 hatched">
+          <a class="cell" href="/baseline/">
+            <span class="n">baseline <span class="go">→</span></span>
+            <span class="d">the catalog of dated, replayable verdicts</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">
+            <span class="n">vantage <span class="go">↗</span></span>
+            <span class="d">point-in-time SEC fundamentals — 86.6M gold facts</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/pit-revision-examiner" target="_blank" rel="noopener">
+            <span class="n">parallax <span class="go">↗</span></span>
+            <span class="d">the consumer side re-derives every number</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/replayable-portfolio-ledger" target="_blank" rel="noopener">
+            <span class="n">meridian <span class="go">↗</span></span>
+            <span class="d">event-sourced portfolio ledger — replayable to the byte</span>
+            <span class="st">◐ in progress</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 03 RIGOR rail -->
+      <div class="rail settle s-rigor">
+        <div class="rail-label">03 · <span class="k">RIGOR</span> — the boundary itself: the discipline that audits both planes.</div>
+        <div class="rail-chips">
+          <a href="/rigor/">rigor — plugin · 20 skills · 11 gates <span class="go">→</span></a>
+          <a href="/cldd/">cldd — closed-loop default detection <span class="go">→</span></a>
+          <a href="https://github.com/hossainpazooki/network-as-code" target="_blank" rel="noopener">network-as-code <span class="go">↗</span></a>
+          <a href="https://github.com/hossainpazooki/upstream-label-correction" target="_blank" rel="noopener">clue — upstream label correction <span class="go">↗</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="xcap">
+      <span>every cell is a link — the section is the site map</span>
+      <span>statuses restated from each repo's own record · nothing upgraded</span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="wrap">
+    <div class="foot">
+      <nav class="social" aria-label="Elsewhere">
+        <a href="/">home <span class="go">→</span></a>
+        <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener">GitHub <span class="go">↗</span></a>
+        <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener">LinkedIn <span class="go">↗</span></a>
+        <a href="mailto:hossain@pazooki.com">Email <span class="go">→</span></a>
+        <a href="https://pub.towardsai.net/when-you-cant-measure-what-matters-a-closed-loop-harness-for-probability-of-default-estimation-1260fd1730c3" target="_blank" rel="noopener">Medium <span class="go">↗</span></a>
+        <a href="https://hossainpazooki.com" target="_blank" rel="noopener">hossainpazooki.com <span class="go">↗</span></a>
+      </nav>
+      <div class="copy">© 2026 Hossain Pazooki · New York</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // One-time settle: datum, then intent, then the boundary traces around both.
+  (function(){
+    var x = document.getElementById('xsec');
+    if(!x) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduce){ x.classList.add('in'); return; }
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ x.classList.add('in'); }); });
+  })();
+</script>
+
+<script>
+(function(){
+  var META = { paper:'#F6F4EE', ink:'#0A1424' };
+  var meta = document.getElementById('metatheme');
+  var btns = document.querySelectorAll('.theme-sw button');
+  function apply(t){
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('hp-theme', t); } catch(e){}
+    if (meta) meta.setAttribute('content', META[t] || META.paper);
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
+  apply(document.documentElement.dataset.theme === 'ink' ? 'ink' : 'paper');
+})();
+</script>
+</body>
+</html>
