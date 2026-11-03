@@ -695,7 +695,7 @@
 
       <div class="hero-meta">
         <span class="pill"><span class="dot-gold"></span>current&nbsp;<b>v0.3.0</b>&nbsp;· alpha</span>
-        <span class="pill"><span class="dot-ok"></span><b>331</b>&nbsp;tests at the tip, all synthetic</span>
+        <span class="pill"><span class="dot-ok"></span><b>340</b>&nbsp;tests at the tip, all synthetic</span>
         <span class="pill">deterministic — byte-identical per seed</span>
         <span class="pill">MIT · Python ≥ 3.10</span>
       </div>
@@ -764,9 +764,9 @@
         <div class="vindex-bar"><span>release index</span><span>changelog.md · semver · pypi</span></div>
         <a class="vrow" href="#tip">
           <span class="v"><span class="pre">tip</span></span>
-          <span class="d">2026-07-29 → 09-30</span>
+          <span class="d">2026-07-29 → 11-03</span>
           <span class="badge badge-alpha">committed · unreleased</span>
-          <span class="theme">Four campaigns after the essay — a spaced replication, the v4 intervention, a hardened gate, a pre-registered replication on fresh seeds</span>
+          <span class="theme">Five campaigns after the essay — a spaced replication, the v4 intervention, a hardened gate, a pre-registered replication on fresh seeds, and the wall at strength 0 rebuilt by hand</span>
           <span class="go">details ↓</span>
         </a>
         <a class="vrow" href="#v030">
@@ -800,14 +800,14 @@
           <span class="node" aria-hidden="true"><i></i></span>
           <div class="rel-head">
             <span class="ver"><span class="pre">tip</span></span>
-            <span class="badge badge-alpha">committed · unreleased · 55e271d</span>
-            <span class="date">2026-07-29 → 2026-09-30 · four campaigns after v0.3.0</span>
+            <span class="badge badge-alpha">committed · unreleased</span>
+            <span class="date">2026-07-29 → 2026-11-03 · five campaigns after v0.3.0</span>
           </div>
-          <h3 class="rel-title">The loop kept running after the essay: a seed-disjoint replication, an interventional test of the essay's central claim, a hardened doc-number gate, and a replication pre-registered by digest and run on fresh seeds.</h3>
-          <p class="rel-sub">Nothing here is released. Every number recomputes from a CSV committed in the repository and is checked in CI by the doc-number gate; the artifacts are pinned by content hash. The essay's one-cause explanation was <b>withdrawn as measured</b>; the boundary measurements stand; and the one thing the surface had only observed was then confirmed under a digest published before the first fresh seed ran.</p>
+          <h3 class="rel-title">The loop kept running after the essay: a seed-disjoint replication, an interventional test of the essay's central claim, a hardened doc-number gate, and two experiments pre-registered by digest: a replication on fresh seeds, and the wall at strength 0 rebuilt by removing overlap by hand.</h3>
+          <p class="rel-sub">Nothing here is released. Every number recomputes from a CSV committed in the repository and is checked in CI by the doc-number gate; the artifacts are pinned by content hash. The essay's one-cause explanation was <b>withdrawn as measured</b>; the boundary measurements stand; and the one thing the surface had only observed was then confirmed under a digest published before the first fresh seed ran. Then the candidate cause of the wall with the confounder off, an overlap wall, was tested by removing overlap directly, under its own digest, and it reproduced the wall.</p>
 
           <div class="rel-stats">
-            <div class="st"><div class="big"><span class="u">25</span> disjoint seeds</div><div class="cap">both sweeps re-run on a seed-disjoint draw; the counterfactual advantage survives</div></div>
+            <div class="st"><div class="big"><span class="u">400</span> runs, overlap removed</div><div class="cap">the wall at strength 0 rebuilt by hand under a digest: both families confirmed, the placebo held</div></div>
             <div class="st"><div class="big"><span class="u">300</span>+450 runs</div><div class="cap">the v4 strength × severity surface: four pre-registered hypotheses, all not confirmed</div></div>
             <div class="st"><div class="big"><span class="u">15</span> gate claims</div><div class="cap">every quoted figure recomputed in CI; artifacts pinned by LF-normalized sha256</div></div>
             <div class="st"><div class="big"><span class="u">300</span> runs, fresh seeds</div><div class="cap">the strength-1.0 move replicated in 2 of 2 worlds, digest committed first</div></div>
@@ -829,6 +829,10 @@
             <div class="finding">
               <span class="f-label">Campaign · 04 · 2026-09-30 · strength-1.0 replication, pre-registered by digest</span>
               <p><b>At full strength the confounder moves the wall, in both worlds.</b> v4 had observed this after the fact and filed it as a future pre-registration. The specification's SHA-256 was committed in <code>PREREGISTRATION.md</code> at 22:39 UTC on 2026-09-29; the matrix ran after that, on 25 seeds no committed artifact had consumed. Primary outcome, the control lever's declined-cohort calibration error at severity 0.4 from strength 0 to 1.0: <b>+0.0515</b> flat on 25/25 seeds (floor 0.0311), <b>+0.0201</b> SCM on 20/25 (floor 0.0130). Secondary outcome, the frontier: receded one step in both worlds, <b>confirmed on its floor</b> in the registered words, the SCM with no margin (13 receded, 10 tied, 2 advanced). The overlap flag fired at the failing severity on 24/25 flat and 17/25 SCM runs at strength 0, which neither withdraws nor confirms the overlap explanation: the flag and the failure both follow severity. The confounder does not build the wall; at full strength it moves it; what builds it at strength 0 is still untested by intervention.</p>
+            </div>
+            <div class="finding">
+              <span class="f-label">Campaign · 05 · 2026-11-03 · the wall at strength 0, built by hand</span>
+              <p><b>Removing overlap by hand reproduces the wall.</b> v4 had left the wall at strength 0 unexplained and the replication had shown the confounder is not what builds it. The candidate was an overlap wall. A segmented selection policy splits each cohort into five equal-mass segments by one observed feature and funds the top utilization segment at a fraction of the common rate: approval rate unchanged, features and planted defaults byte-identical, nothing hidden, every cell at strength 0. The design's SHA-256 went into <code>PREREGISTRATION.md</code> and the 400-run matrix started four minutes after that commit was public. Primary outcome, the control lever's declined-cohort calibration error at severity 0, depth 1 against depth 0: <b>+0.0213</b> flat on 24/25 seeds, <b>+0.0268</b> SCM on 24/25, both over re-cut floors measured inside the experiment. Secondary outcome, the frontier: receded one step in both worlds, <b>confirmed on its floor</b>, flat 13 receded of 25 with 0 advancing, SCM 15 of 25 with 0 advancing. The placebo knockout on a feature with no risk coefficient held (+0.0008, 14/25). By the registered falsification statement the overlap-wall explanation is <b>stated as measured</b>. One correction after the data were seen, disclosed in the README: the script compared a float median to the 0.2 floor with a raw <code>&gt;=</code>, and the flat median, one grid step stored as 0.6 − 0.4, failed it until the comparison tolerated 10⁻⁹. The fix can only turn a false "not confirmed" into a confirmation, and it re-generates the committed v4 statistics byte for byte.</p>
             </div>
           </div>
 
@@ -856,6 +860,20 @@
             </table>
           </div>
 
+          <div class="dtable-wrap">
+            <table class="dtable">
+              <caption>segmented selection at strength 0 — artifacts/segment_stats.csv · 400 runs · depth 1 vs depth 0 on utilization · digest committed first</caption>
+              <thead><tr><th>hypothesis</th><th>world</th><th>median</th><th>floor</th><th>seeds moving</th><th>verdict</th></tr></thead>
+              <tbody>
+                <tr><td>H-C1f — error rise at severity 0</td><td>flat</td><td class="hi">+0.0213</td><td>0.0064</td><td>24/25 rose</td><td class="hi">confirmed</td></tr>
+                <tr><td>H-C1s — error rise at severity 0</td><td>SCM</td><td class="hi">+0.0268</td><td>0.0085</td><td>24/25 rose</td><td class="hi">confirmed</td></tr>
+                <tr><td>H-C2f — frontier recession</td><td>flat</td><td>0.2</td><td>0.2</td><td>13 receded · 12 tied · 0 advanced</td><td class="hi">confirmed on its floor</td></tr>
+                <tr><td>H-C2s — frontier recession</td><td>SCM</td><td>0.2</td><td>0.2</td><td>15 receded · 10 tied · 0 advanced</td><td class="hi">confirmed on its floor</td></tr>
+                <tr><td>placebo — requested amount, no risk coefficient</td><td>flat</td><td>+0.0008</td><td>0.0059</td><td>14/25 rose</td><td>held</td></tr>
+              </tbody>
+            </table>
+          </div>
+
           <div class="chg">
             <details class="chg-grp" open>
               <summary><span class="tag tag-added">Added</span> <span class="count">5 entries</span><span class="chev">›</span></summary>
@@ -864,21 +882,23 @@
                 <li><b>Two additive knobs</b>, byte-exact at their defaults: <code>SelectiveLabelsLoop(generator_kwargs=...)</code> and <code>run_counterfactual_eval(unobserved_strength=...)</code>; <code>scripts/run_surface_sweep.py</code> and the fail-closed <code>surface_stats.py</code> with the I-1 byte-identity embed gate.</li>
                 <li><b><code>scripts/check_doc_numbers.py</code></b> — 15 registered claims, each with a continuous non-vacuity test; <code>artifacts/SHA256SUMS.json</code> content-hash pins.</li>
                 <li><b><code>PREREGISTRATION.md</code></b> — the digest record; <code>scripts/run_strength_replication.py</code> and <code>strength_replication_stats.py</code>, two Holm families of two with effect floors and a spent-seed guard.</li>
-                <li><b>Segmented selection</b> (<code>cldd.selection</code>, <code>selection_policy=</code> on both generators): built, byte-identical at the default, not run.</li>
+                <li><b>Segmented selection</b> (<code>cldd.selection</code>, <code>selection_policy=</code> on both generators, <code>scripts/run_segment_sweep.py</code>, <code>segment_stats.py</code>): byte-identical at the default; pre-registered by digest, 400 runs at strength 0, I-C1 byte-identity against the v4 surface; two more gate claims (17) and two pinned artifacts.</li>
               </ul>
             </details>
             <details class="chg-grp">
-              <summary><span class="tag tag-changed">Changed</span> <span class="count">3 entries</span><span class="chev">›</span></summary>
+              <summary><span class="tag tag-changed">Changed</span> <span class="count">4 entries</span><span class="chev">›</span></summary>
               <ul>
+                <li><b>The floor comparison tolerates IEEE noise</b> in <code>segment_stats.py</code> and <code>surface_stats.py</code>: a one-step frontier difference stored as 0.6 − 0.4 failed a raw <code>&gt;= 0.2</code>. Corrected after the segmented data were seen, disclosed, pinned by three regression tests; the committed v4 statistics re-generate byte for byte.</li>
                 <li><b>The README's one-cause mechanism claim is withdrawn as measured</b> and replaced by a registered v4 section whose verdict words the gate controls.</li>
                 <li><b>Every design specification left the repository</b>; the v4 pre-registration is cited by history permalink. The replication specification is held outside the repository and its text is not released: the digest fixes the document and its date, not its content.</li>
                 <li>A suffixed spaced run no longer overwrites the committed environment manifest; <code>write_env_manifest</code> has no default target.</li>
               </ul>
             </details>
             <details class="chg-grp">
-              <summary><span class="tag tag-limits">Reading caveats</span> <span class="count">3 boundaries, stated</span><span class="chev">›</span></summary>
+              <summary><span class="tag tag-limits">Reading caveats</span> <span class="count">4 boundaries, stated</span><span class="chev">›</span></summary>
               <ul>
-                <li><b>"Confirmed on its floor" carries no margin.</b> The frontier moves in 0.2 steps, so a confirmed one-step move equals its floor by construction; in the SCM, 13 receding seeds is exactly what the median needs.</li>
+                <li><b>"Confirmed on its floor" carries no margin.</b> The frontier moves in 0.2 steps, so a confirmed one-step move equals its floor by construction; in the SCM replication 13 receding seeds is exactly what the median needs, and in the flat segmented cell it is 13 again.</li>
+                <li><b>The segmented result names the wall at strength 0 only.</b> Overlap builds it with the confounder off; at full strength the confounder also moves it, and the two are not decomposed.</li>
                 <li><b>On fresh seeds the SCM median frontier already moves at strength 0.7.</b> The v4 sentence "only at strength 1.0, in both worlds" describes the v4 seeds; the replication describes its own.</li>
                 <li><b>The overlap explanation is untested by intervention.</b> The flag's co-occurrence with failure cannot show cause; within severity 0.4 the diagnostics do not separate failing runs from passing ones.</li>
               </ul>
