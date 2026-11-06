@@ -1,64 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="paper">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#F6F4EE" id="metatheme" />
-<script>(function(){var t='paper';try{var s=localStorage.getItem('hp-theme')||localStorage.getItem('baseline-theme');t=s==='ink'?'ink':'paper'}catch(e){}var d=document.documentElement;d.dataset.theme=t;d.classList.add('js');})();</script>
+<meta name="theme-color" content="#FFFFFF" />
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>Hossain Pazooki — LLM Inference &amp; Agentic Systems</title>
-<meta name="description" content="Hossain Pazooki — LLM Inference &amp; Agentic Systems. First author of Carryover: the reuse margin of a stale KV cache in long-horizon agents (NeurIPS 2026 Workshop on Long-Context Foundation Models). Five years building observability and release gates that are proven able to fail." />
+<meta name="description" content="Hossain Pazooki — LLM Inference &amp; Agentic Systems. Three series: KV-cache reuse (Carryover, NeurIPS 2026 Workshop on Long-Context Foundation Models; prefix mortality), ML under selective feedback (CLDD), and the know-act-measure architecture (datum, intent, rigor). Five years building observability and release gates that are proven able to fail." />
 <link rel="canonical" href="https://hossainpazooki.github.io/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Hossain Pazooki" />
 <meta property="og:url" content="https://hossainpazooki.github.io/" />
 <meta property="og:title" content="Hossain Pazooki — LLM Inference &amp; Agentic Systems" />
-<meta property="og:description" content="First author of Carryover: the reuse margin of a stale KV cache in long-horizon agents. Five years building observability and release gates that are proven able to fail." />
+<meta property="og:description" content="Three series: KV-cache reuse, ML under selective feedback, and the know-act-measure architecture. Five years building observability and release gates that are proven able to fail." />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Hossain Pazooki — LLM Inference &amp; Agentic Systems" />
-<meta name="twitter:description" content="First author of Carryover: the reuse margin of a stale KV cache in long-horizon agents. Five years building observability and release gates that are proven able to fail." />
+<meta name="twitter:description" content="Three series: KV-cache reuse, ML under selective feedback, and the know-act-measure architecture. Five years building observability and release gates that are proven able to fail." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root{
     color-scheme:light;
-    --ink:#F6F4EE;
-    --ink-2:#EFECE2;
-    --panel:#FCFBF7;
-    --panel-2:#F1EEE5;
-    --line:#D8D3C4;
-    --line-soft:#E5E1D4;
-    --text:#1E232C;
-    --text-2:#454D5C;
-    --muted:#6C7484;
+    --ink:#FFFFFF;
+    --ink-2:#FAFAFA;
+    --panel:#FFFFFF;
+    --panel-2:#F5F5F5;
+    --line:#D9D9D9;
+    --line-soft:#EAEAEA;
+    --text:#1A1A1A;
+    --text-2:#444444;
+    --muted:#6F6F6F;
     --gold:#8A6217;
     --gold-dim:#D3BE8F;
     --gold-hover:#B07C1E;
-    --header-bg:rgba(246,244,238,.8);
+    --header-bg:rgba(255,255,255,.85);
     --maxw:760px;
     --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
     --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
-  }
-
-  :root[data-theme="ink"]{
-    color-scheme:dark;
-    --ink:#0A1424;
-    --ink-2:#0D1930;
-    --panel:#101E38;
-    --panel-2:#142440;
-    --line:#1D3050;
-    --line-soft:#172942;
-    --text:#E9EEF8;
-    --text-2:#B8C5DB;
-    --muted:#7F92B0;
-    --gold:#E0A436;
-    --gold-dim:#7a5d22;
-    --gold-hover:#f3c269;
-    --header-bg:rgba(10,20,36,.72);
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -66,7 +48,7 @@
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
   body{
-    background:var(--ink);
+    background:#FFFFFF;
     color:var(--text);
     font-family:var(--sans);
     font-weight:400;
@@ -74,7 +56,6 @@
     -webkit-font-smoothing:antialiased;
     text-rendering:optimizeLegibility;
     overflow-x:hidden;
-    transition:background-color .25s ease,color .25s ease;
   }
 
   a{color:inherit;text-decoration:none}
@@ -122,23 +103,13 @@
     transition:color .18s ease;
   }
   .nav-links a:hover{color:var(--text)}
-  .theme-sw{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:4px}
-  .theme-sw button{
-    font-family:var(--mono);font-size:12px;font-weight:600;
-    letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
-    background:transparent;border:0;padding:6px 12px;cursor:pointer;
-    transition:color .18s ease,background .18s ease;
-  }
-  .theme-sw button+button{border-left:1px solid var(--line)}
-  .theme-sw button[aria-pressed="true"]{color:var(--gold);background:rgba(138,98,23,.08)}
-  :root[data-theme="ink"] .theme-sw button[aria-pressed="true"]{background:rgba(224,164,54,.08)}
   @media(max-width:600px){.nav-links{gap:16px}}
   @media(max-width:420px){.nav-links a.hideable{display:none}}
 
   /* ---------- hero ---------- */
   .hero{padding:72px 0 44px}
   .name{
-    font-weight:600;
+    font-weight:400;
     font-size:clamp(40px,7.2vw,64px);
     line-height:1.02;
     letter-spacing:-.03em;
@@ -183,11 +154,11 @@
   /* ---------- sections ---------- */
   section.s{
     border-top:1px solid var(--line);
-    padding:36px 0 44px;
+    padding:30px 0 34px;
   }
   .s-head{
     display:flex;align-items:baseline;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;
-    margin-bottom:26px;
+    margin-bottom:18px;
   }
   .s-head h2{
     font-family:var(--mono);
@@ -218,75 +189,40 @@
   }
   .lead b{color:var(--text);font-weight:500}
 
-  /* ---------- research ---------- */
-  .pub+.pub{margin-top:34px;padding-top:30px;border-top:1px solid var(--line-soft)}
-  .pub-t{
-    font-size:19px;font-weight:600;line-height:1.3;letter-spacing:-.012em;
-    text-wrap:balance;
-    margin-bottom:8px;
-  }
-  .pub-t a{transition:color .18s ease}
-  .pub-t a:hover{color:var(--gold-hover)}
-  .pub-t.sm{font-size:16.5px}
-  .pub-venue{
-    font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.6;
-    margin-bottom:14px;
-  }
-  .pub-venue .st{color:var(--gold)}
-  .pub-abs{
-    font-size:15.5px;line-height:1.65;color:var(--text-2);
-    max-width:660px;
-  }
-  .pub-abs b{color:var(--text);font-weight:500}
-  .pub-links{
-    display:flex;flex-wrap:wrap;gap:6px 0;
-    margin-top:14px;
-    font-family:var(--mono);font-size:12.5px;color:var(--muted);
-  }
-  .pub-links .k{color:var(--muted)}
-  .pub-links a{color:var(--gold);transition:color .18s ease}
-  .pub-links a:hover{color:var(--gold-hover)}
-  .pub-links .pend{color:var(--muted)}
-  .pub-links .sep{color:var(--line);margin:0 10px}
+  /* ---------- series rows ---------- */
+  .tags{display:inline-flex;gap:6px;flex-wrap:wrap}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold-dim);border-radius:999px;padding:2px 9px}
+  .lead{margin-bottom:22px}
+  .row+.row{margin-top:20px;padding-top:20px;border-top:1px solid var(--line-soft)}
+  .row-h{display:flex;flex-direction:column;gap:3px;margin-bottom:8px}
+  .row-t{font-size:17px;font-weight:600;line-height:1.3;letter-spacing:-.012em;text-wrap:balance;transition:color .18s ease}
+  .row-t:hover{color:var(--gold-hover)}
+  .row-m{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.5}
+  .row-m .st{color:var(--gold)}
+  .row p{font-size:15px;line-height:1.62;color:var(--text-2);max-width:660px}
+  .row p b{color:var(--text);font-weight:500}
+  .row-l{margin-top:9px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .row-l a{color:var(--gold);transition:color .18s ease}
+  .row-l a:hover{color:var(--gold-hover)}
+  .row-l .pend{color:var(--muted)}
+  .row-l .sep{color:var(--line);margin:0 10px}
 
-  /* ---------- production ---------- */
-  .xp{display:grid;grid-template-columns:168px 1fr;gap:10px 28px;align-items:start}
-  .xp+.xp{margin-top:26px;padding-top:26px;border-top:1px solid var(--line-soft)}
-  .xp-org{font-weight:600;font-size:16px;letter-spacing:-.01em;line-height:1.35}
-  .xp-meta{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px}
-  .xp p{font-size:15.5px;line-height:1.65;color:var(--text-2);max-width:620px}
-  .xp p b{color:var(--text);font-weight:500}
-  @media(max-width:600px){.xp{grid-template-columns:1fr;gap:6px}}
+  /* ---------- planes ---------- */
+  .planes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .plane{display:flex;flex-direction:column;gap:6px;padding:16px 16px 18px;border:1px solid var(--line-soft);border-radius:6px;background:var(--panel);transition:border-color .18s ease,background .18s ease}
+  .plane:hover{border-color:var(--gold-dim);background:var(--panel-2)}
+  .plane-k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+  .plane-n{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.06em;color:var(--text)}
+  .plane-d{font-size:13.5px;line-height:1.5;color:var(--text-2)}
+  @media(max-width:600px){.planes{grid-template-columns:1fr}}
 
-  /* ---------- code ---------- */
-  .repos{border-top:1px solid var(--line-soft)}
-  .repo{
-    display:grid;grid-template-columns:200px 1fr auto;gap:4px 24px;align-items:baseline;
-    padding:14px 0;
-    border-bottom:1px solid var(--line-soft);
-    transition:background .18s ease;
-  }
-  .repo-n{font-family:var(--mono);font-size:13.5px;font-weight:500;color:var(--text);transition:color .18s ease}
-  .repo-n:hover{color:var(--gold-hover)}
-  .repo-d{font-size:15px;line-height:1.55;color:var(--text-2)}
-  .repo-s{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
-  a.repo-s{color:var(--gold);transition:color .18s ease}
-  a.repo-s:hover{color:var(--gold-hover)}
-  @media(max-width:600px){
-    .repo{grid-template-columns:1fr}
-    .repo-s:empty{display:none}
-  }
-
-  /* ---------- writing ---------- */
-  .post{display:block;padding:2px 0}
-  .post-t{font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.35;margin-bottom:6px;transition:color .18s ease}
-  .post:hover .post-t{color:var(--gold-hover)}
-  .post-m{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-bottom:10px}
-  .post p{font-size:15px;line-height:1.62;color:var(--text-2);max-width:640px}
-  .post-links{margin-top:12px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
-  .post-links a{color:var(--gold)}
-  .post-links a:hover{color:var(--gold-hover)}
-  .post-links .sep{color:var(--line);margin:0 10px}
+  /* ---------- roles ---------- */
+  .role{display:grid;grid-template-columns:120px 1fr;gap:2px 24px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line-soft)}
+  .role:last-child{border-bottom:1px solid var(--line-soft)}
+  .role-o{font-weight:600;font-size:15px;grid-row:span 2;align-self:start}
+  .role-m{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .role-d{font-size:14.5px;line-height:1.55;color:var(--text-2);max-width:620px}
+  @media(max-width:600px){.role{grid-template-columns:1fr}.role-o{grid-row:auto}}
 
   /* ---------- contact ---------- */
   .contact{display:grid;grid-template-columns:168px 1fr;gap:10px 28px;align-items:baseline}
@@ -307,7 +243,6 @@
   .foot a{transition:color .18s ease}
   .foot a:hover{color:var(--text)}
 </style>
-<noscript><style>.theme-sw{display:none}</style></noscript>
 </head>
 <body>
 
@@ -318,10 +253,6 @@
       <a href="/portfolio/">portfolio</a>
       <a href="/cv/">cv</a>
       <a href="/blog/" class="hideable">blog</a>
-      <div class="theme-sw" role="group" aria-label="Theme">
-        <button type="button" data-set="paper" aria-pressed="true">paper</button>
-        <button type="button" data-set="ink" aria-pressed="false">ink</button>
-      </div>
     </nav>
   </div>
 </header>
@@ -333,7 +264,7 @@
     <div class="wrap">
       <h1 class="name">Hossain Pazooki</h1>
       <p class="headline">LLM Inference &amp; Agentic Systems</p>
-      <p class="paper-line"><b>Carryover:</b> the reuse margin of a stale KV cache in long-horizon agents — <a class="ln" href="https://carryover.pub" target="_blank" rel="noopener">carryover.pub</a></p>
+      <p class="paper-line">Three series below: <a class="ln" href="#kv-cache"><b>KV-cache reuse</b></a>, what a cached context is worth after a handoff and what ends it before one; <a class="ln" href="#ml"><b>ML under selective feedback</b></a>, grading a model on the cases it was never allowed to see; and <a class="ln" href="#architecture"><b>know · act · measure</b></a>, an architecture for agents that take irreversible actions.</p>
       <nav class="elsewhere" aria-label="Elsewhere">
         <a href="https://github.com/hossainpazooki" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
         <a href="https://www.linkedin.com/in/hossainpazooki" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>LinkedIn</a>
@@ -342,32 +273,88 @@
     </div>
   </section>
 
-  <!-- RESEARCH -->
-  <section class="s" id="research">
+  <!-- SERIES: KV-CACHE REUSE -->
+  <section class="s" id="kv-cache">
     <div class="wrap">
       <div class="s-head">
-        <h2>Research</h2>
+        <h2>KV-cache reuse</h2>
+        <span class="tags"><span class="tag">research</span><span class="tag">open source</span></span>
       </div>
+      <p class="lead">Two measurements of one margin: <b>what a cached context is still worth after a handoff, and what ends it before one.</b> Hypotheses sealed before any run, results on a hash-chained ledger, outcomes reported as decided.</p>
 
-      <article class="pub">
-        <h3 class="pub-t"><a href="https://carryover.pub" target="_blank" rel="noopener">Carryover: The Reuse Margin of a Stale KV Cache in Long-Horizon Agents</a></h3>
-        <div class="pub-venue">First author · NeurIPS 2026 Workshop on Long-Context Foundation Models</div>
-        <p class="pub-abs">When a long-horizon agent hands off, can the next step reuse the cache the last one left behind? We measured it at 35 recorded coding-agent handoffs with 35K–80K-token histories. At a tolerance fixed before any run, the median same-model removal fraction is zero — replicated across three models — yet reused states still shift next-token predictions (median 90.2% top-1 agreement with a fresh cache). <b>Cache agreement and prediction sensitivity have to be checked separately; meeting one does not guarantee the other.</b> The study was pre-registered: hypotheses and decision rules committed before any run, results on a hash-chained ledger, outcomes reported as decided, including the ones the data would not support.</p>
-        <div class="pub-links">
-          <span><span class="k">paper</span> <a href="https://carryover.pub" target="_blank" rel="noopener">carryover.pub ↗</a></span><span class="sep" aria-hidden="true">·</span>
-          <span><span class="k">code</span> <a href="https://github.com/hossainpazooki/linear-ceiling" target="_blank" rel="noopener">linear-ceiling ↗</a></span><span class="sep" aria-hidden="true">·</span>
-          <span><span class="k">arXiv</span> <span class="pend">pending</span></span>
+      <article class="row">
+        <div class="row-h">
+          <a class="row-t" href="https://carryover.pub" target="_blank" rel="noopener">Carryover: The Reuse Margin of a Stale KV Cache in Long-Horizon Agents</a>
+          <span class="row-m">first author · NeurIPS 2026 Workshop on Long-Context Foundation Models</span>
         </div>
+        <p>Can the next step of an agent reuse the cache the last one left behind? At 35 recorded coding-agent handoffs, the median same-model removal fraction is zero across three models, yet reused states still shift next-token predictions. <b>Cache agreement and prediction sensitivity are separate checks.</b></p>
+        <div class="row-l"><span class="k">paper</span> <a href="https://carryover.pub" target="_blank" rel="noopener">carryover.pub ↗</a><span class="sep">·</span><span class="k">code</span> <a href="https://github.com/hossainpazooki/linear-ceiling" target="_blank" rel="noopener">linear-ceiling ↗</a><span class="sep">·</span><span class="k">arXiv</span> <span class="pend">pending</span></div>
       </article>
 
-      <article class="pub">
-        <h3 class="pub-t sm">Prefix mortality</h3>
-        <div class="pub-venue"><span class="st">◐ in preparation</span></div>
-        <p class="pub-abs">How long a cached prefix stays useful as an agent's context moves on.</p>
-        <div class="pub-links">
-          <span><span class="k">code</span> <a href="https://github.com/hossainpazooki/prefix-mortality" target="_blank" rel="noopener">prefix-mortality ↗</a></span>
+      <article class="row">
+        <div class="row-h">
+          <a class="row-t" href="https://github.com/hossainpazooki/prefix-mortality" target="_blank" rel="noopener">Prefix mortality: how long a cached prefix lives, and what kills it</a>
+          <span class="row-m"><span class="st">◐ post in preparation</span></span>
         </div>
+        <p>A prefix cache matches on bytes. Five registered changes end the match while the content stays put: an edit's position, intervening requests, idle time, how the tool schemas are serialized, and the chat template. Measured on llama.cpp and vLLM, every hypothesis pre-registered and each result passed by an independent refuter. <b>The price of each death is set by server parameters neither engine exposes to the client.</b></p>
+        <div class="row-l"><span class="k">code</span> <a href="https://github.com/hossainpazooki/prefix-mortality" target="_blank" rel="noopener">prefix-mortality ↗</a></div>
       </article>
+    </div>
+  </section>
+
+  <!-- SERIES: ML -->
+  <section class="s" id="ml">
+    <div class="wrap">
+      <div class="s-head">
+        <h2>ML under selective feedback</h2>
+        <span class="tags"><span class="tag">essay</span><span class="tag">open source</span></span>
+      </div>
+      <p class="lead">A model is graded only on the cases a past policy let through. <b>Plant the truth in a synthetic world, hide it the way approval policies do, and escalate until correction fails.</b></p>
+
+      <article class="row">
+        <div class="row-h">
+          <a class="row-t" href="/cldd/">CLDD — closed-loop default detection</a>
+          <span class="row-m">harness · measurement layer · feedback-loop profit decomposition</span>
+        </div>
+        <p>Stress-tests a probability-of-default model under selective labels and reports the severity at which it breaks; the operating frontier as a distribution, not a point.</p>
+        <div class="row-l"><span class="k">essay</span> <a href="/blog/when-you-cant-measure-what-matters/">When You Can't Measure What Matters →</a><span class="sep">·</span><span class="k">code</span> <a href="https://github.com/hossainpazooki/closed-loop-default-detection" target="_blank" rel="noopener">closed-loop-default-detection ↗</a><span class="sep">·</span><a href="/cldd/">/cldd →</a></div>
+      </article>
+
+      <article class="row">
+        <div class="row-h">
+          <a class="row-t" href="https://github.com/hossainpazooki/upstream-label-correction" target="_blank" rel="noopener">clue — upstream label correction</a>
+        </div>
+        <div class="row-l"><span class="k">code</span> <a href="https://github.com/hossainpazooki/upstream-label-correction" target="_blank" rel="noopener">upstream-label-correction ↗</a></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SERIES: KNOW · ACT · MEASURE -->
+  <section class="s" id="architecture">
+    <div class="wrap">
+      <div class="s-head">
+        <h2><a href="/portfolio/">Know · Act · Measure</a></h2>
+        <span class="aside"><a href="/portfolio/">the three-plane architecture, in full →</a></span>
+      </div>
+      <p class="lead">Everything I build sits in one cut: <b>a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence.</b> Nothing is credited until its gate is proven able to fail.</p>
+
+      <div class="planes">
+        <a class="plane" href="/datum/">
+          <span class="plane-k">01 · know</span>
+          <span class="plane-n">DATUM</span>
+          <span class="plane-d">a reference frame for checkable claims: produced, adversarially re-derived, recorded as replayable verdicts</span>
+        </a>
+        <a class="plane" href="/intent/">
+          <span class="plane-k">02 · act</span>
+          <span class="plane-n">INTENT</span>
+          <span class="plane-d">irreversible actions pass a deterministic gate; agents propose, the gate disposes; unevaluable never collapses into a pass</span>
+        </a>
+        <a class="plane" href="/rigor/">
+          <span class="plane-k">03 · measure</span>
+          <span class="plane-n">RIGOR</span>
+          <span class="plane-d">the boundary that audits both planes: a report of success is a claim, and no claim counts until its gate has been seen to fail</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -378,81 +365,11 @@
         <h2>Production</h2>
         <span class="aside"><a href="/cv/">full cv →</a></span>
       </div>
-
-      <p class="lead">Five years building the layer that makes failure loud and early: <b>observability that catches drift before users do, and release gates that earn no credit until they are proven able to fail.</b></p>
-
-      <article class="xp">
-        <div>
-          <div class="xp-org">Orawell</div>
-          <div class="xp-meta">Tech lead · 2024 – 2026<br />New York</div>
-        </div>
-        <p>Tech lead of a regulated, HIPAA-aligned platform: FastAPI services on Kubernetes (EKS), CI/CD gated by 450+ tests with auto-rollback, an observability and performance-monitoring stack on OpenTelemetry, Prometheus, and Grafana. Carried on-call and led incident response; a production calibration-drift incident was root-caused and closed by <b>rebuilding the decision gate to fail closed, not fail silent.</b></p>
-      </article>
-
-      <article class="xp">
-        <div>
-          <div class="xp-org">Engager</div>
-          <div class="xp-meta">Technical co-founder · sole engineer · 2022 – 2024<br />New York</div>
-        </div>
-        <p>Sole engineer taking a product from zero to one: <b>architecture, CI/CD, and development practice from the first commit.</b> Designed the data model and core backend in Python and PostgreSQL, shipped the React/TypeScript frontend, and ran containerized AWS deployment, observability, and releases end to end.</p>
-      </article>
-
-      <article class="xp">
-        <div>
-          <div class="xp-org">3DEO</div>
-          <div class="xp-meta">Founding ML engineer · 2020 – 2022<br />Los Angeles</div>
-        </div>
-        <p>Founding ML engineer at an additive-manufacturing R&amp;D org: a unified data layer joining process parameters to outcomes by part ID, and model-serving hooks with <b>drift monitoring against ground truth</b>, built alongside the scientists who used it daily.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- CODE -->
-  <section class="s" id="code">
-    <div class="wrap">
-      <div class="s-head">
-        <h2><a href="/portfolio/">Code</a></h2>
-        <span class="aside"><a href="/portfolio/">the three-plane architecture, in full →</a></span>
+      <div class="roles">
+        <div class="role"><span class="role-o">Orawell</span><span class="role-m">tech lead · 2024 – 2026 · New York</span><span class="role-d">HIPAA-aligned platform on EKS; CI/CD gated by 450+ tests with auto-rollback; on-call and incident lead. A calibration-drift incident closed by rebuilding the gate to fail closed, not silent.</span></div>
+        <div class="role"><span class="role-o">Engager</span><span class="role-m">technical co-founder · 2022 – 2024 · New York</span><span class="role-d">Sole engineer from zero to one: data model, Python/PostgreSQL backend, React/TypeScript frontend, AWS deployment and releases end to end.</span></div>
+        <div class="role"><span class="role-o">3DEO</span><span class="role-m">founding ML engineer · 2020 – 2022 · Los Angeles</span><span class="role-d">A unified data layer joining process parameters to outcomes, and model-serving hooks with drift monitoring against ground truth.</span></div>
       </div>
-
-      <div class="repos">
-        <div class="repo">
-          <a class="repo-n" href="https://github.com/hossainpazooki/linear-ceiling" target="_blank" rel="noopener">linear-ceiling <span class="go">↗</span></a>
-          <span class="repo-d">the harness behind Carryover; results credited only through it, decision rules fixed before any run</span>
-          <span class="repo-s">paper code</span>
-        </div>
-        <div class="repo">
-          <a class="repo-n" href="https://github.com/hossainpazooki/rigor" target="_blank" rel="noopener">rigor <span class="go">↗</span></a>
-          <span class="repo-d">audits the other two: no claim credited until its gate is proven able to fail on a known-bad twin</span>
-          <a class="repo-s" href="/rigor/">/rigor →</a>
-        </div>
-        <div class="repo">
-          <a class="repo-n" href="https://github.com/hossainpazooki/regulatory-rule-engine" target="_blank" rel="noopener">regulatory-rule-engine <span class="go">↗</span></a>
-          <span class="repo-d">irreversible actions pass a deterministic gate; unevaluable never collapses into a pass</span>
-          <span class="repo-s"></span>
-        </div>
-        <div class="repo">
-          <a class="repo-n" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane <span class="go">↗</span></a>
-          <span class="repo-d">agents propose, the gate disposes</span>
-          <a class="repo-s" href="/intent/">/intent →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WRITING -->
-  <section class="s" id="writing">
-    <div class="wrap">
-      <div class="s-head">
-        <h2><a href="/blog/">Writing</a></h2>
-        <span class="aside"><a href="/blog/">all essays →</a></span>
-      </div>
-
-      <a class="post" href="/blog/when-you-cant-measure-what-matters/">
-        <div class="post-t">When You Can't Measure What Matters: A Closed-Loop Harness for Probability-of-Default Estimation</div>
-        <div class="post-m">essay · Jul 2026</div>
-        <p>Lending data only labels the loans a past policy approved, so the cohort a new model must be right on is the one it can't be graded on. Plant the truth in a synthetic world, hide it the way approval policies do, escalate until correction fails, and report the operating frontier as a distribution, not a point.</p>
-      </a>
     </div>
   </section>
 
@@ -474,7 +391,7 @@
         <span class="k">arxiv</span>
         <span class="v"><span class="pend">pending</span></span>
         <span class="k">education</span>
-        <span class="v">B.A. International Relations &amp; Global Economy, University of Southern California</span>
+        <span class="v">B.S. Electrical Engineering, University of Southern California</span>
       </div>
     </div>
   </section>
@@ -489,20 +406,5 @@
 
 </main>
 
-<script>
-(function(){
-  var META = { paper:'#F6F4EE', ink:'#0A1424' };
-  var meta = document.getElementById('metatheme');
-  var btns = document.querySelectorAll('.theme-sw button');
-  function apply(t){
-    document.documentElement.dataset.theme = t;
-    try { localStorage.setItem('hp-theme', t); } catch(e){}
-    if (meta) meta.setAttribute('content', META[t] || META.paper);
-    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === t)); });
-  }
-  btns.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.set); }); });
-  apply(document.documentElement.dataset.theme === 'ink' ? 'ink' : 'paper');
-})();
-</script>
 </body>
 </html>
