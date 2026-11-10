@@ -10,16 +10,16 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <title>Portfolio — three planes, one section · Hossain Pazooki</title>
-<meta name="description" content="The three-plane architecture behind Hossain Pazooki's code: a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence. Every cell is a repository." />
+<meta name="description" content="The three planes behind Hossain Pazooki's code: evaluation for what is measured, execution for what may act, and provenance for the record both rest on. Every cell is a repository." />
 <link rel="canonical" href="https://hossainpazooki.github.io/portfolio/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Hossain Pazooki" />
 <meta property="og:url" content="https://hossainpazooki.github.io/portfolio/" />
 <meta property="og:title" content="Portfolio — three planes, one section · Hossain Pazooki" />
-<meta property="og:description" content="A data plane for what is known, an authorization plane for what may act, an audit boundary that holds both to their evidence. Every cell is a repository." />
+<meta property="og:description" content="Evaluation for what is measured, execution for what may act, provenance for the record both rest on. Every cell is a repository." />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Portfolio — three planes, one section · Hossain Pazooki" />
-<meta name="twitter:description" content="The three-plane architecture: DATUM, INTENT, RIGOR. Every cell is a repository." />
+<meta name="twitter:description" content="The three planes: evaluation, execution, provenance. Every cell is a repository." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -206,6 +206,7 @@
   .plane{
     display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:stretch;
   }
+  .plane+.plane{margin-top:16px}
   .plane-label{padding:14px 0}
   .p-num{
     font-family:var(--mono);font-size:12px;letter-spacing:.2em;
@@ -257,22 +258,6 @@
     color:var(--muted);white-space:nowrap;
   }
 
-  .rail{
-    margin-top:16px;border-top:1px dashed var(--gold-dim);padding-top:14px;
-    display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:center;
-  }
-  .rail-label{font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.6}
-  .rail-label .k{color:var(--gold)}
-  .rail-chips{display:flex;gap:10px;flex-wrap:wrap}
-  .rail-chips a{
-    font-family:var(--mono);font-size:12.5px;color:var(--text-2);
-    border:1px solid var(--line);border-radius:4px;padding:8px 12px;
-    background:var(--panel);
-    transition:background .18s ease,border-color .18s ease;
-  }
-  .rail-chips a:hover{background:var(--panel-2);border-color:var(--muted)}
-  .rail-chips a .go{color:var(--gold)}
-
   .xcap{
     display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     margin-top:12px;
@@ -280,7 +265,7 @@
   }
 
   @media(max-width:860px){
-    .plane,.rail{grid-template-columns:1fr;gap:14px}
+    .plane{grid-template-columns:1fr;gap:14px}
     .plane-label{padding:4px 0 0}
     .cells.c3{grid-template-columns:1fr}
     .cells.c4{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -314,7 +299,7 @@
   .js .xsec.in .s-datum{transition-delay:.05s}
   .js .xsec.in .s-gate{transition-delay:.3s}
   .js .xsec.in .s-intent{transition-delay:.5s}
-  .js .xsec.in .s-rigor{transition-delay:.85s}
+  .js .xsec.in .s-eval{transition-delay:.7s}
   @media (prefers-reduced-motion:reduce){
     .js .settle{opacity:1;transform:none;transition:none}
     .js .xsec{border-color:var(--gold-dim)}
@@ -346,9 +331,9 @@
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <span class="eyebrow"><b>Portfolio</b> — the three-plane architecture</span>
+      <span class="eyebrow"><b>Portfolio</b> — evaluation · execution · provenance</span>
       <h1 class="headline">Three planes, one section. <span class="hl">Nothing credited until its gate is proven able to fail.</span></h1>
-      <p class="lede">Everything I build sits somewhere in this cut: <b>a data plane for what is known, an authorization plane for what may act, and an audit boundary that holds both to their evidence.</b> The same discipline the <a class="in" href="/#research">Carryover</a> paper runs on — decision rules fixed before any run, verdicts recorded, outcomes reported as decided — is how these repositories are built.</p>
+      <p class="lede">Everything I build sits somewhere in this cut: <b>evaluation for what is measured, execution for what may act, and provenance for the record both rest on.</b> The same discipline the <a class="in" href="/#kv-cache">Carryover</a> paper runs on — decision rules fixed before any run, verdicts recorded, outcomes reported as decided — is how these repositories are built.</p>
     </div>
   </section>
 
@@ -358,12 +343,37 @@
     <span class="marker b" aria-hidden="true">— A′</span>
 
     <nav class="xsec" id="xsec" aria-label="Site map — the cross-section of three programs">
-      <span class="xsec-tab s-rigor">RIGOR — THE AUDIT BOUNDARY</span>
+      <span class="xsec-tab">SECTION A — A′</span>
 
-      <!-- 02 INTENT -->
+      <!-- 01 EVALUATION — centered on baseline -->
+      <div class="plane settle s-eval">
+        <div class="plane-label">
+          <div class="p-num">01 · <a class="p-link" href="/baseline/">EVALUATION <span class="go">→</span></a></div>
+          <div class="p-creed">What is measured.</div>
+          <p class="p-what">The instrument. A shift becomes a measurement only across a baseline that can be cited — pinned viewpoints, the difference recorded, never overwritten.</p>
+        </div>
+        <div class="cells c3">
+          <a class="cell" href="/baseline/">
+            <span class="n">baseline <span class="go">→</span></span>
+            <span class="d">the cited separation that turns a restatement into a measurement — dated, machine-checked rows</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">
+            <span class="n">vantage <span class="go">↗</span></span>
+            <span class="d">no-lookahead SEC fundamentals lakehouse — a DQ gate that fails closed on unevaluable</span>
+            <span class="st">◐ in progress</span>
+          </a>
+          <a class="cell" href="https://github.com/hossainpazooki/pit-revision-examiner" target="_blank" rel="noopener">
+            <span class="n">parallax <span class="go">↗</span></span>
+            <span class="d">adversarial consumer — re-verifies PIT invariants at read time</span>
+            <span class="st">◐ in progress</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 02 EXECUTION — centered on intent -->
       <div class="plane settle s-intent">
         <div class="plane-label">
-          <div class="p-num">02 · INTENT</div>
+          <div class="p-num">02 · <a class="p-link" href="/intent/">EXECUTION <span class="go">→</span></a></div>
           <div class="p-creed">What may act.</div>
           <p class="p-what">The plane where irreversible actions pass — or wait. Agents propose; a deterministic gate disposes.</p>
         </div>
@@ -386,30 +396,20 @@
       <!-- gate interface -->
       <div class="gate-line settle s-gate" aria-hidden="true">
         <div class="gate-rule"><i></i><i></i><i></i></div>
-        <span class="gate-cap">actions touch the data plane only through gates · fail-closed on unevaluable</span>
+        <span class="gate-cap">actions touch the record only through gates · fail-closed on unevaluable</span>
       </div>
 
-      <!-- 01 DATUM -->
+      <!-- 03 PROVENANCE — centered on datum -->
       <div class="plane settle s-datum">
         <div class="plane-label">
-          <div class="p-num">01 · <a class="p-link" href="/datum/">DATUM <span class="go">→</span></a></div>
-          <div class="p-creed">What is known.</div>
-          <p class="p-what">The bedrock — a reference frame for checkable claims. Produced, adversarially re-derived, recorded as replayable verdicts.</p>
+          <div class="p-num">03 · <a class="p-link" href="/datum/">PROVENANCE <span class="go">→</span></a></div>
+          <div class="p-creed">What is on record.</div>
+          <p class="p-what">The bedrock — the row every claim rests on. Dated, hash-bound, and credited only after its gate has been seen to fail.</p>
         </div>
-        <div class="cells c4 hatched">
-          <a class="cell" href="/baseline/">
-            <span class="n">baseline <span class="go">→</span></span>
-            <span class="d">the catalog of dated, replayable verdicts</span>
-          </a>
-          <a class="cell" href="https://github.com/hossainpazooki/pit-fundamentals-lakehouse" target="_blank" rel="noopener">
-            <span class="n">vantage <span class="go">↗</span></span>
-            <span class="d">no-lookahead SEC fundamentals lakehouse — a DQ gate that fails closed on unevaluable</span>
-            <span class="st">◐ in progress</span>
-          </a>
-          <a class="cell" href="https://github.com/hossainpazooki/pit-revision-examiner" target="_blank" rel="noopener">
-            <span class="n">parallax <span class="go">↗</span></span>
-            <span class="d">adversarial consumer — re-verifies PIT invariants at read time</span>
-            <span class="st">◐ in progress</span>
+        <div class="cells c3 hatched">
+          <a class="cell" href="/datum/">
+            <span class="n">datum <span class="go">→</span></span>
+            <span class="d">the governing discipline — twelve rules and one shared row, claimed only under a pinned conformance pack</span>
           </a>
           <a class="cell" href="https://github.com/hossainpazooki/asof-query-engine" target="_blank" rel="noopener">
             <span class="n">meridian <span class="go">↗</span></span>
@@ -421,17 +421,6 @@
             <span class="d">design and gate scaffold for serving a vision-language model over rendered SEC filings — in build</span>
             <span class="st">◐ in progress</span>
           </a>
-        </div>
-      </div>
-
-      <!-- 03 RIGOR rail -->
-      <div class="rail settle s-rigor">
-        <div class="rail-label">03 · <span class="k">RIGOR</span> — the boundary itself: the discipline that audits both planes.</div>
-        <div class="rail-chips">
-          <a href="/rigor/">rigor — plugin · 20 skills · 11 gates <span class="go">→</span></a>
-          <a href="/cldd/">cldd — closed-loop default detection <span class="go">→</span></a>
-          <a href="https://github.com/hossainpazooki/network-as-code" target="_blank" rel="noopener">network-as-code <span class="go">↗</span></a>
-          <a href="https://github.com/hossainpazooki/upstream-label-correction" target="_blank" rel="noopener">clue — upstream label correction <span class="go">↗</span></a>
         </div>
       </div>
     </nav>
@@ -460,7 +449,7 @@
 </main>
 
 <script>
-  // One-time settle: datum, then intent, then the boundary traces around both.
+  // One-time settle: provenance, then execution, then evaluation; the section border traces last.
   (function(){
     var x = document.getElementById('xsec');
     if(!x) return;
