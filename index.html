@@ -242,17 +242,40 @@
   }
   .foot a{transition:color .18s ease}
   .foot a:hover{color:var(--text)}
+  /* Site header: the same markup and rules on every page. The logo is drawn in the text colour through a mask, so
+     it follows the paper and ink themes. The subheader holds page links, external links and the theme switch. */
+  html{scroll-padding-top:72px}
+  .site-hd{position:sticky;top:0;z-index:50;background:var(--header-bg,var(--bg));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft,var(--line))}
+  .site-hd .wrap,.sub-hd .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  .site-hd .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .site-hd .brand{display:inline-flex;align-items:center;color:var(--text);line-height:0}
+  .site-hd .logo{display:block;width:38px;height:26px;background:currentColor;-webkit-mask:url(/hp-logo.png) center/contain no-repeat;mask:url(/hp-logo.png) center/contain no-repeat}
+  .site-hd .brand:hover .logo{background:var(--gold,var(--accent))}
+  .site-hd .nav-links{display:flex;gap:24px;align-items:center}
+  .site-hd .nav-links a{font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .18s ease}
+  .site-hd .nav-links a:hover{color:var(--text)}
+  .site-hd .nav-links a[aria-current="page"]{color:var(--text);text-decoration:underline;text-decoration-color:var(--gold,var(--accent));text-decoration-thickness:1px;text-underline-offset:7px}
+  .sub-hd{border-bottom:1px solid var(--line-soft,var(--line))}
+  .sub-hd .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 20px;min-height:44px;padding-top:6px;padding-bottom:6px}
+  .sub-hd .sub-l,.sub-hd .sub-r{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
+  .sub-hd .sub-r{margin-left:auto}
+  .sub-hd a{font-family:var(--mono);font-size:12px;letter-spacing:.02em;color:var(--muted);white-space:nowrap;text-decoration:none;transition:color .18s ease}
+  .sub-hd a:hover{color:var(--text)}
+  .sub-hd a.ext{color:var(--gold,var(--accent))}
+  .sub-hd .crumb{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap}
+  .sub-hd .crumb b{color:var(--text);font-weight:500}
+  @media(max-width:600px){.site-hd .wrap,.sub-hd .wrap{padding:0 18px}.sub-hd .wrap{padding-top:6px;padding-bottom:6px}.site-hd .nav-links{gap:18px}}
 </style>
 </head>
 <body>
 
-<header>
+<header class="site-hd">
   <div class="wrap nav">
-    <a class="brand" href="/">HP<span class="dot">.</span></a>
+    <a class="brand" href="/" aria-label="Hossain Pazooki, home"><span class="logo" aria-hidden="true"></span></a>
     <nav class="nav-links" aria-label="Site">
       <a href="/portfolio/">portfolio</a>
       <a href="/cv/">cv</a>
-      <a href="/blog/" class="hideable">blog</a>
+      <a href="/blog/">blog</a>
     </nav>
   </div>
 </header>
