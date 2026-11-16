@@ -977,20 +977,22 @@ step_out = <span class="g">gate_cdm_event</span>(<br />
         </div>
       </div>
 
-      <div class="install reveal" style="max-width:860px" role="img" aria-label="The live demonstration, one command: the monorepo's quickstart runs keygen, attestation, publish, an authorization against the signed spec, an idempotency collision, a refusal of an unattested hash, a revocation whose reason surfaces, declarations through both SDK languages, a gated LangChain tool, a gated MCP server, a gated MCP proxy fronting a server the operator does not own, a live reporting-adapter submission with a same-identity retry refused, a scorer outage that makes the plane deny, and a final recompute of the whole live feed by both verifier twins — expected final line: RESULT: 15 of 15 probes passed.">
-        <div class="install-bar"><span>the whole plane, live — one command in the monorepo</span><span>self-asserting</span></div>
+      <div class="install reveal" style="max-width:860px" role="img" aria-label="The live demonstration, one command: intent-plane's quickstart runs keygen, attestation, publish, an authorization against the signed spec, an idempotency collision, a refusal of an unattested hash, a revocation whose reason surfaces, declarations through both SDK languages, a gated LangChain tool, a gated MCP server, a gated MCP proxy fronting a server the operator does not own, a live reporting-adapter submission refused for a same-identity retry and for an unresolved human-judgment obligation, a CDM step scored by an external judge (TypeSafe AI's System One, model jev-1.14.0, replayed from a committed recording), a rule-artifact citation verified against the authoring plane (Linux/WSL; skipped visibly on Windows), a scorer outage that makes the plane deny, and a final recompute of the whole live feed by both verifier twins — expected final line: RESULT: 17 of 17 probes passed on Linux/WSL, 16 of 16 with 1 skipped on Windows.">
+        <div class="install-bar"><span>the whole plane, live — one command in intent-plane</span><span>self-asserting</span></div>
         <div class="install-body" aria-hidden="true">
 <span class="p">$</span> treasury/quickstart.sh <span class="c"># or quickstart.ps1 — real gate, real scorer, live feed</span><br />
 <span class="c">→</span> keygen → attest → publish → <span class="k">authorize</span> → <span class="r">collide on the key</span> → <span class="r">refuse an unattested hash</span><br />
 <span class="c">→</span> <span class="r">revoke — the reason surfaces</span> → <span class="k">declare through both SDKs</span> <span class="c">(PROCEED · ALREADY_RESERVED)</span><br />
 <span class="c">→</span> <span class="k">gate a LangChain tool · an MCP server · a gated proxy</span> <span class="c">(each consequence fires once)</span><br />
-<span class="c">→</span> <span class="k">submit a report</span> → <span class="r">same identity, new bytes — refused</span><br />
+<span class="c">→</span> <span class="k">submit a report</span> → <span class="r">same identity, new bytes — refused</span> → <span class="r">unresolved human judgment — refused</span><br />
+<span class="c">→</span> <span class="k">score a CDM step with an external judge</span> <span class="c">(grant · low score · outage · human judgment)</span> → <span class="k">cite a rule artifact by hash</span> <span class="c">(Linux/WSL)</span><br />
 <span class="c">→</span> <span class="r">kill the scorer — the plane denies</span> → <span class="b">verifier twins re-derive the live feed, byte-compared</span><br />
-<span class="c">→</span> RESULT: <span class="g">15/15 probes passed</span>
+<span class="c">→</span> RESULT: <span class="g">17/17 probes passed</span> <span class="c"># 16/16, 1 skipped, on Windows</span>
         </div>
       </div>
 
-      <p class="note reveal"><b>No production claim.</b> A working authorization plane with proven invariants, not a deployed payment system. Everything else on this page is a fact of the <code>intent-plane</code> repo, reproducible from its test suites; the treasury facts reproduce from the monorepo's quickstart. No metric on this page is invented.</p>
+      <p class="note reveal"><b>The external judge.</b> One probe scores a CDM step with TypeSafe AI's System One (model <code>jev-1.14.0</code>), replayed from a recording committed in the repo. The judge's probability is a fact, not a verdict: the signed spec's threshold (0.7) decides, an outage refuses, a human-judgment provision refuses before the judge is asked, and the probability never enters the record.</p>
+      <p class="note reveal"><b>No production claim.</b> A working authorization plane with proven invariants, not a deployed payment system. Everything else on this page is a fact of the <code>intent-plane</code> repo, reproducible from its test suites; the treasury facts reproduce from intent-plane's quickstart. No metric on this page is invented.</p>
 
       <div class="cta-row reveal">
         <a class="btn btn-ghost" href="https://github.com/hossainpazooki/intent-plane" target="_blank" rel="noopener">intent-plane — the SDK ↗</a>
